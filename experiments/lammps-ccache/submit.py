@@ -26,18 +26,16 @@ def main():
     import md_lammps_standalone as standalone
     from md_ccache import prepare_store
     from remote_controller import private_scratch, project_batch_directives
-    cache = prepare_store(root, '16v100-avx2')
-    # Failed setup may leave statistics/tag files. ccache 4.14 data files use
-    # plain hash names, without the older M/R suffixes. Reject every other
-    # file, including unknown formats, rather than mislabel a warm cache cold.
-    if any(p.is_file() and p.name not in ('stats', 'CACHEDIR.TAG') for p in cache.rglob('*')):
-        raise ValueError('cold/warm comparison requires zero cached objects; never delete an existing cache')
+    production_cache = prepare_store(root, '16v100-avx2')
     dep, files = standalone.dependency('16v100-avx2')
     verified = standalone.verify_dependency(dep, files)
     source = dict(track='development', source_ref='refs/pull/5308/head',
                   source_sha=SHA, source_version='pr5308-2026-11-07')
     delivery = standalone.make_delivery(source, '16v100-avx2')
     experiment.mkdir(parents=True)
+    # Experiments own an empty cache; accepted production caches are preserved.
+    cache = experiment / 'compiler-cache'
+    cache.mkdir(mode=0o700)
     variants = []
     for label in ('cold', 'warm'):
         run = root / 'runs' / (experiment.name + '-' + label)
@@ -53,6 +51,10 @@ def main():
             raise ValueError('standalone entry/source binding changed')
         script = script.replace(entry, '/control/benchmark/entry.sh')
         script = script.replace(bind, str(source_repo) + ':/input/lammps:ro')
+        cache_bind = str(production_cache) + ':/ccache-store:rw'
+        if script.count(cache_bind) != 1:
+            raise ValueError('standalone cache binding changed')
+        script = script.replace(cache_bind, str(cache) + ':/ccache-store:rw')
         script = script.replace('set -eo pipefail',
             "set -eo pipefail\nexport APPTAINERENV_SAI_BENCH_GENERATOR='Unix Makefiles'\n"
             'export APPTAINERENV_SAI_BENCH_VARIANT=pr5308', 1)

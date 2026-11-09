@@ -11,8 +11,10 @@ if [[ $1 == build ]]; then
     esac
     if [[ $phase == configure ]]; then
       /usr/bin/python3 /control/benchmark/provenance.py source
-      /usr/bin/python3 /control/benchmark/probe.py
       set -- "$@" -G 'Unix Makefiles'
+    fi
+    if [[ $phase == build ]]; then
+      /usr/bin/python3 /control/benchmark/probe.py
     fi
     code=0
     /usr/bin/python3 /control/benchmark/measure.py "/runtime/cmake-$phase.json" \

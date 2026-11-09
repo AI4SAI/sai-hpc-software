@@ -15,6 +15,20 @@ import md_ccache as cache
 import md_lammps_standalone as standalone
 
 
+def settled(*paths):
+    # Mounted filesystems can use a host clock slightly ahead of Python's clock.
+    # Retain ccache's race checks; wait until these test inputs are old enough.
+    newest = max(max(p.stat().st_ctime, p.stat().st_mtime) for p in paths)
+    delay = max(0, newest - time.time() + 1.05)
+    if delay > 30:
+        raise RuntimeError('test filesystem clock differs by more than 30 seconds')
+    time.sleep(delay)
+
+
+def ready(config, *directories):
+    return dict(config, ready=True, namespace=cache.include_layout(directories)['sha256'])
+
+
 class CachePolicyTests(unittest.TestCase):
     def test_only_build_has_a_writable_cache_and_it_is_partition_specific(self):
         for target in cache.TARGETS:
@@ -39,14 +53,46 @@ class CachePolicyTests(unittest.TestCase):
         self.assertNotIn('CCACHE_IGNOREHEADERS', env)
         self.assertNotIn('CCACHE_REMOTE_STORAGE', env)
         self.assertEqual(env['CCACHE_NOINODECACHE'], 'true')
+        self.assertEqual(env['CCACHE_NODEPEND'], 'true')
+        self.assertNotIn('CCACHE_DEPEND', env)
 
-    def test_unknown_arguments_bypass_and_scanning_does_not_omit_system_headers(self):
+    def test_unknown_arguments_and_unfinalized_configuration_compile_without_cache(self):
         for option in ('@response', '-Wp,-MD,file', '-fmodules', '-include-pch'):
-            self.assertIsNone(cache.dependency_arguments(['-c', 'a.cpp', option], '/dep'))
-        args = cache.dependency_arguments(['-c', 'a.cpp', '-MMD', '-MF', 'a.d', '-MT', 'a.o',
-                                           '-o', 'a.o', '-Iheaders', '-DVALUE=2'], '/dep')
-        self.assertEqual(args, ['a.cpp', '-Iheaders', '-DVALUE=2', '-M', '-o', '/dep',
-                                '-MT', 'sai_ccache_dependencies'])
+            args = ['-c', 'a.cpp', option]
+            self.assertFalse(cache.cacheable(args))
+            with patch.object(cache.subprocess, 'call', return_value=0) as run:
+                cache.compile_command(dict(ready=True), '/compiler', args)
+                run.assert_called_once_with(['/compiler', *args])
+        with patch.object(cache.subprocess, 'call', return_value=0) as run:
+            cache.compile_command(dict(ready=False), '/compiler', ['-c', 'a.cpp'])
+            run.assert_called_once_with(['/compiler', '-c', 'a.cpp'])
+
+    def test_layout_tracks_names_and_symlinks_but_not_content(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            include = root / 'include'; include.mkdir()
+            header = include / 'extensionless'; header.write_text('one')
+            original = cache.include_layout([include])
+            header.write_text('two')
+            self.assertEqual(original, cache.include_layout([include]))
+            alias = include / 'alias'; alias.symlink_to(header)
+            linked = cache.include_layout([include])
+            self.assertNotEqual(original['sha256'], linked['sha256'])
+            # A directory symlink cycle must terminate, while names under the
+            # linked directory must still participate in the inventory.
+            (include / 'loop').symlink_to(include, target_is_directory=True)
+            before = cache.include_layout([include])
+            (include / 'new.h').write_text('three')
+            self.assertNotEqual(before['sha256'], cache.include_layout([include])['sha256'])
+
+    def test_compile_database_covers_quote_system_cuda_and_default_include_paths(self):
+        rows = [dict(directory='/build', file='/source/a.cpp', arguments=[
+            'nvcc_wrapper', '-Irelative', '-isystem', '/system', '-iquote/quotes',
+            '-idirafter', '/after', '--include-path=/cuda/one,/cuda/two', '-c', '/source/a.cpp'])]
+        with patch.dict(os.environ, {}, clear=True):
+            self.assertEqual(cache.include_dirs(rows, ['/default']), {
+                '/source', '/build/relative', '/system', '/quotes', '/after',
+                '/cuda/one', '/cuda/two', '/default'})
 
     def test_tool_checksum_mismatch_is_rejected(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -73,7 +119,8 @@ class RealCompilerCacheTests(unittest.TestCase):
             wrapper.write_text('#!/bin/sh\nif [ "$1" = "-###" ]; then exit 93; fi\nexec ' +
                                shutil.which('g++') + ' "$@"\n')
             wrapper.chmod(0o755)
-            time.sleep(1.05)
+            config = ready(config, root)
+            settled(source, wrapper)
             args = ['-march=native', '-mtune=native', '-MD', '-MF', str(root / 'a.d'),
                     '-c', str(source), '-o', str(root / 'a.o')]
             for expected in (False, True):
@@ -87,7 +134,7 @@ class RealCompilerCacheTests(unittest.TestCase):
             self.assertEqual(cache.compile_command(config, str(wrapper), args), 0)
             self.assertNotIn('direct_cache_hit', Path(config['stats_log']).read_text())
 
-    def test_raw_inputs_flags_context_and_new_include_invalidate_only_affected_objects(self):
+    def test_native_content_checks_and_layout_guard_return_current_code(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             tool = os.environ.get('CCACHE_TEST_BINARY') or shutil.which('ccache')
@@ -95,15 +142,16 @@ class RealCompilerCacheTests(unittest.TestCase):
                           context=str(root / 'context'), stats_log=str(root / 'stats'))
             (root / 'tmp').mkdir()
             (root / 'context').write_text('compiler-and-partition-A')
-            (root / 'early').mkdir(); (root / 'late').mkdir()
+            (root / 'early').mkdir(); (root / 'late').mkdir(); (root / 'src').mkdir()
             header = root / 'late/value.h'
             header.write_text('#define VALUE 11\n')
-            source = root / 'a.cpp'
-            source.write_text('#include "value.h"\nint value() { return VALUE; }\n')
-            other = root / 'b.cpp'
+            source = root / 'src/a.cpp'
+            source.write_text('#include "value.h"\n#ifndef OFFSET\n#define OFFSET 0\n#endif\n'
+                              'int value() { return VALUE + OFFSET; }\n')
+            other = root / 'src/b.cpp'
             other.write_text('int other() {return 33;}\n')
-            # Retain the real race checks even on coarse timestamp filesystems.
-            time.sleep(1.05)
+            config = ready(config, root / 'src', root / 'early', root / 'late')
+            settled(source, other, header)
 
             def build(path, *flags):
                 log = Path(config['stats_log']); log.unlink(missing_ok=True)
@@ -122,28 +170,60 @@ class RealCompilerCacheTests(unittest.TestCase):
             original = header.stat()
             header.write_text('#define VALUE 22\n')
             os.utime(header, ns=(original.st_atime_ns, original.st_mtime_ns))
-            time.sleep(1.05)
+            settled(header)
             hit, changed = build(source)
             self.assertFalse(hit); self.assertNotEqual(baseline, changed)
             self.assertTrue(build(other)[0])
             self.assertTrue(build(source)[0])
-            # Even a comment-only change must miss; ordinary preprocessor
-            # caching would otherwise consider the result interchangeable.
+            # Native preprocessor fallback may safely reuse equivalent output.
             source.write_text(source.read_text() + '// comment changed\n')
-            time.sleep(1.05)
-            self.assertFalse(build(source)[0]); self.assertTrue(build(source)[0])
+            settled(source)
+            hit, commented = build(source)
+            self.assertTrue(hit); self.assertEqual(changed, commented)
+            self.assertTrue(build(source)[0])
             self.assertTrue(build(other)[0])
-            self.assertFalse(build(source, '-DNEW_OPTION=1')[0])
-            self.assertTrue(build(source, '-DNEW_OPTION=1')[0])
+            hit, flags = build(source, '-DOFFSET=1')
+            self.assertFalse(hit); self.assertNotEqual(changed, flags)
+            self.assertTrue(build(source, '-DOFFSET=1')[0])
             # An earlier include directory gaining a header must not return an
             # old direct-mode hit just because its previously used file exists.
             (root / 'early/value.h').write_text('#define VALUE 44\n')
-            time.sleep(1.05)
+            config = ready(config, root / 'src', root / 'early', root / 'late')
+            settled(root / 'early/value.h')
             hit, shadowed = build(source)
             self.assertFalse(hit); self.assertNotEqual(changed, shadowed)
+            # A file-set change conservatively starts a new namespace for the
+            # entire build. Content-only changes above retain unrelated hits.
+            self.assertFalse(build(other)[0])
             self.assertTrue(build(other)[0])
             (root / 'context').write_text('compiler-and-partition-B')
             self.assertFalse(build(other)[0])
+
+    def test_mmd_still_checks_system_header_contents(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'tmp').mkdir(); (root / 'src').mkdir(); (root / 'system').mkdir()
+            context = root / 'context'; context.write_text('toolchain')
+            header = root / 'system/value.h'; header.write_text('#define VALUE 11\n')
+            source = root / 'src/a.cpp'
+            source.write_text('#include <value.h>\nint value() {return VALUE;}\n')
+            config = ready(dict(tool=os.environ.get('CCACHE_TEST_BINARY') or shutil.which('ccache'),
+                store=str(root / 'cache'), temporary=str(root / 'tmp'), context=str(context),
+                stats_log=str(root / 'stats')), root / 'src', root / 'system')
+            args = ['-isystem', str(root / 'system'), '-MMD', '-MF', str(root / 'a.d'),
+                    '-c', str(source), '-o', str(root / 'a.o')]
+            settled(source, header)
+            for expected in (False, True):
+                Path(config['stats_log']).unlink(missing_ok=True)
+                self.assertEqual(cache.compile_command(config, shutil.which('g++'), args), 0)
+                self.assertEqual('direct_cache_hit' in Path(config['stats_log']).read_text(), expected)
+            previous = header.stat()
+            header.write_text('#define VALUE 22\n')
+            os.utime(header, ns=(previous.st_atime_ns, previous.st_mtime_ns))
+            settled(header)
+            Path(config['stats_log']).unlink()
+            self.assertEqual(cache.compile_command(config, shutil.which('g++'), args), 0)
+            self.assertNotIn('cache_hit', Path(config['stats_log']).read_text())
 
 
 if __name__ == '__main__':
