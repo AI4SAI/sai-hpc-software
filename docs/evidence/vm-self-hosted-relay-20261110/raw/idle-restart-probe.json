@@ -1,0 +1,25 @@
+{
+  "probe": "idle-listener-crash",
+  "utc_epoch": 1794247725.6027606,
+  "before": "ActiveState=active\nMainPID=6577\nNRestarts=0\nMemoryPeak=739602432\n",
+  "workflow": "42666380120",
+  "ephemeral_hpc_key_absent": true,
+  "verified_utc": "2026-11-09T18:15:38.647904+00:00",
+  "after": {
+    "ActiveState": "active",
+    "SubState": "running",
+    "MainPID": "10895",
+    "NRestarts": "1",
+    "MemoryCurrent": "39333888",
+    "MemoryPeak": "40140800"
+  },
+  "linux_service_enabled": "enabled",
+  "linger": "yes",
+  "journal": "2026-11-10T01:34:08+08:00 STARDUST-VM python3[6575]: Runner startup memory check passed; this does not reserve host memory.\n2026-11-10T01:34:08+08:00 STARDUST-VM systemd[3621]: Started sai-hpc-runner.service - SAI daily build relay (GitHub Actions).\n2026-11-10T01:34:08+08:00 STARDUST-VM python3[6577]: /home/sai/ci/deployment/sandbox.py:13: DeprecationWarning: Due to '_pack_', the 'PathRule' Structure will use memory layout compatible with MSVC (Windows). If this is intended, set _layout_ to 'ms'. The implicit default is deprecated and slated to become an error in Python 3.19.\n2026-11-10T01:34:08+08:00 STARDUST-VM python3[6577]:   class PathRule(c.Structure):\n2026-11-10T01:34:11+08:00 STARDUST-VM python3[6589]: \u221a Connected to GitHub\n2026-11-10T01:34:14+08:00 STARDUST-VM python3[6589]: Current runner version: '2.338.2'\n2026-11-10T01:34:14+08:00 STARDUST-VM python3[6589]: 2026-11-09 17:34:14Z: Listening for Jobs\n2026-11-10T01:37:12+08:00 STARDUST-VM python3[6589]: 2026-11-09 17:37:12Z: Running job: relay\n2026-11-10T02:06:27+08:00 STARDUST-VM python3[6589]: 2026-11-09 18:06:27Z: Job relay completed with result: Succeeded\n2026-11-10T02:08:45+08:00 STARDUST-VM systemd[3621]: sai-hpc-runner.service: Sent signal SIGKILL to main process 6577 (run.sh) on client request.\n2026-11-10T02:08:45+08:00 STARDUST-VM systemd[3621]: sai-hpc-runner.service: Main process exited, code=killed, status=9/KILL\n2026-11-10T02:08:46+08:00 STARDUST-VM systemd[3621]: sai-hpc-runner.service: Failed with result 'signal'.\n2026-11-10T02:08:46+08:00 STARDUST-VM systemd[3621]: sai-hpc-runner.service: Consumed 57.863s CPU time over 34min 38.460s wall clock time, 705.3M memory peak.\n2026-11-10T02:09:46+08:00 STARDUST-VM systemd[3621]: sai-hpc-runner.service: Scheduled restart job, restart counter is at 1.\n2026-11-10T02:09:46+08:00 STARDUST-VM systemd[3621]: Starting sai-hpc-runner.service - SAI daily build relay (GitHub Actions)...\n2026-11-10T02:09:46+08:00 STARDUST-VM python3[10893]: Runner startup memory check passed; this does not reserve host memory.\n2026-11-10T02:09:46+08:00 STARDUST-VM systemd[3621]: Started sai-hpc-runner.service - SAI daily build relay (GitHub Actions).\n2026-11-10T02:09:46+08:00 STARDUST-VM python3[10895]: /home/sai/ci/deployment/sandbox.py:13: DeprecationWarning: Due to '_pack_', the 'PathRule' Structure will use memory layout compatible with MSVC (Windows). If this is intended, set _layout_ to 'ms'. The implicit default is deprecated and slated to become an error in Python 3.19.\n2026-11-10T02:09:46+08:00 STARDUST-VM python3[10895]:   class PathRule(c.Structure):\n2026-11-10T02:09:49+08:00 STARDUST-VM python3[10903]: \u221a Connected to GitHub\n2026-11-10T02:09:51+08:00 STARDUST-VM python3[10903]: Current runner version: '2.338.2'\n2026-11-10T02:09:51+08:00 STARDUST-VM python3[10903]: 2026-11-09 18:09:51Z: Listening for Jobs",
+  "github_runner_after": {
+    "id": 22,
+    "name": "vm-sai-hpc",
+    "status": "online",
+    "busy": false
+  }
+}

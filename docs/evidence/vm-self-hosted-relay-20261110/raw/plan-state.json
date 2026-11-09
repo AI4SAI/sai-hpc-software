@@ -10,7 +10,7 @@
     "tracks": "development"
   },
   "skipped_sources": [],
-  "state": "active",
+  "state": "succeeded",
   "tasks": [
     {
       "id": "gpumd-development-4v100-avx512",
@@ -51,7 +51,7 @@
     {
       "id": "gpumd-development-8v100v0-avx512",
       "kind": "build",
-      "last_exit": 75,
+      "last_exit": 0,
       "software": "gpumd",
       "source": {
         "repository": "brucefan1983/GPUMD",
@@ -64,7 +64,7 @@
         "target": "8v100v0-avx512",
         "track": "development"
       },
-      "state": "waiting"
+      "state": "succeeded"
     },
     {
       "builds": [
@@ -109,8 +109,9 @@
       ],
       "id": "gpumd-beta",
       "kind": "beta",
+      "last_exit": 0,
       "software": "gpumd",
-      "state": "new"
+      "state": "succeeded"
     }
   ],
   "workflow": "42666380120"

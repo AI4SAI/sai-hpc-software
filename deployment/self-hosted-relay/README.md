@@ -10,8 +10,10 @@ The current deployment target is the `sai` account on `STARDUST-VM` (Ubuntu
 not pass full source preparation. The VM has about 16 GiB RAM available to
 WSL and eight logical CPUs. Initial source preparation and runtime qualification
 passed. The [live VM validation](../../docs/evidence/vm-self-hosted-relay-20261110/README.md)
-records accepted 4V100/16V100 builds, the pending 8V100V0 task, and the remaining
-Windows administrator startup step.
+records the complete GPUMD build/science/Lmod/beta workflow on 4V100, 16V100 and
+8V100V0, recovery after a deliberate idle runner crash, and the remaining
+Windows administrator startup step. The measured whole-service peak was
+705.34 MiB during that workflow.
 
 ## Layout and resource limits
 
@@ -110,8 +112,9 @@ Dispatch `daily.yml` with `mode=smoke` to validate runner identity, cluster
 credentials, project access and Slurm commands without allocating nodes.
 Use `mode=start` for real builds and `mode=resume` after interrupted observation.
 Selecting all development partitions also runs existing beta gates. PR and
-legacy per-software workflows remain on GitHub-hosted runners. Keep the
-migration branch separate until a complete live build has passed.
+legacy per-software workflows remain on GitHub-hosted runners. The complete
+live GPUMD build has passed; keep the migration branch separate until the
+Windows unattended-startup task is also installed and verified.
 
 Plans retain the original source, controller and run identity across reruns,
 midnight and service restarts. Before advancing, the relay checks Slurm
