@@ -1,4 +1,58 @@
-# Workflow closure — 2026-11-06
+# Workflow closure — 2026-11-09
+
+## LAMMPS compiler cache
+
+Standalone LAMMPS now has a private project-backed compiler cache for each GPU
+partition. Standard ccache direct mode and preprocessor fallback check source
+and header contents; actual toolchain and native CPU fingerprints remain part
+of the cache inputs. A once-per-build include-layout inventory invalidates new
+shadowing headers without a compiler dependency scan on every lookup. Compiler
+content checks, system-header checks and empty sloppiness remain enforced.
+Linking and scientific acceptance run on every new candidate. The runner
+provisions the pinned tool, so no administrator installation is needed.
+
+The November 9 standard-cache cold/warm pair on the same 16V100 node completed
+successfully: compile/link time fell from 46m49.64s to 1m51.89s (25.11x), with all
+2,543 cacheable calls hitting and zero misses on the second build. The include
+inventory took 7.43s/6.01s. Both fresh-overlay SIFs retained all 71 packages and
+identical style inventories, and all 28 one/two-rank numerical executions passed
+through host MPI. Build job 2319272 and science job 2320795 both completed with
+zero exits. The experiment uses pinned upstream PR #5308 sources and does not
+apply that patch to daily source selection. These SIFs are unpublished; regular
+per-partition production acceptance remains required. Daily hit rates depend
+on changed inputs; the first build under the new policy populates its cache.
+
+See the [reuse policy](lammps-compiler-cache.md) and
+[timings, Slurm receipts and raw evidence](evidence/lammps-ccache-standard-20261109/README.md).
+The [former scanner's results](evidence/lammps-ccache-20261109/README.md) remain
+available as a historical comparison from a different allocation.
+
+## CP2K development source compatibility
+
+The November 7 daily CP2K build stopped when upstream #6465 replaced three
+NCCL initialization sites with a shared cuSOLVERMp context. The guarded source
+repair now recognizes that reviewed layout, synchronizes `ctx->comm` once at
+initialization, and preserves the byte-identical v2026.2 repair. Upstream #6476
+also changed the required LibXS revision; the workflow stages `cc9188a` with
+the exact upstream checksum. Unknown source and dependency inputs still fail
+for review.
+
+Recovery workflow `42331323249` built source `0761fd1b052d` successfully on
+DSPRHBM, 16V100, 4V100 and 8V100V0. SIF executable/version/loader/feature checks
+and all twelve overlay teardown receipts passed. All four targets completed
+their 14 single/two-node calculations, for 56 numerically verified runs. The
+16V100 two-node water64 log confirms 112 cuSOLVER calls and passing energy/force
+comparisons. Separate host-MPI SIF launch checks also passed on every target.
+
+The workflow completed successfully on attempt 2 at 04:55 UTC. Attempt 1's
+DSPRHBM publication check stalled in Apptainer's memory-bootstrap startup on
+`d9470n02`; its diagnostic stack and failed receipt are retained. Retrying only
+publication reused the accepted SIFs, and DSPRHBM passed on `d9470n01` in 55 s.
+The startup stall's root cause remains unproven; this recovery changed neither
+the runtime nor the SIFs. The public `cp2k/master-beta-later` now points to
+`master-beta-20261107-0761fd1b052d-r4d85319d4295-b5186e4e26126`.
+The module help, generation manifest, catalog and SIF identities were checked
+after selection. See the [completed qualification and publication evidence](evidence/cp2k-upstream-adaptation-20261107/README.md).
 
 ## Daily builds at 03:00 Asia/Shanghai
 

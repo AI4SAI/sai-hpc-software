@@ -78,6 +78,8 @@ class LifecycleTests(unittest.TestCase):
                     return subprocess.CompletedProcess(argv, 0, json.dumps(decision))
                 if name == 'source_cache.py':
                     return subprocess.CompletedProcess(argv, 0, json.dumps({'cache_shas': [command[-1]]}))
+                if name == 'md_ccache.py' and command[2] == 'tool-status':
+                    return subprocess.CompletedProcess(argv, 0, json.dumps({'ready': True}))
                 if (name, command[2]) == failure:
                     raise subprocess.CalledProcessError(1, argv)
                 if name == 'lammps_acceptance.py' and command[2] == 'submit':
@@ -108,9 +110,10 @@ class LifecycleTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             commands, uploads, output = self.exercise(root, root / 'history')
-            self.assertEqual([(name, args[0]) for name, args in commands[1:5]],
+            self.assertEqual(commands[1][0:1], ('md_ccache.py',))
+            self.assertEqual([(name, args[0]) for name, args in commands[2:6]],
                              [('source_cache.py', action) for action in ('seed', 'inventory', 'seed', 'inventory')])
-            actions = [(name, args[0]) for name, args in commands[5:]]
+            actions = [(name, args[0]) for name, args in commands[6:]]
             self.assertEqual(actions, [('md_lammps_standalone.py', 'submit'), ('md_lammps_standalone.py', 'monitor'),
                 ('lammps_acceptance.py', 'submit'), ('lammps_acceptance.py', 'monitor'), ('lammps_acceptance.py', 'verify')])
             run_id = commands[0][1][1]

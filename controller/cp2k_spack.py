@@ -42,9 +42,9 @@ ELPA_ARCHIVE = 'elpa-2026.02.002.tar.gz'
 ELPA_SHA256 = '02e3c59fec53cd8eb66a4cc15fa4fbf190cf9654227223fb8ad55713e9427932'
 LIBXC_ARCHIVE = 'libxc-7.1.2.tar.bz2'
 LIBXC_SHA256 = '3915fac94416e4c415534223ea492ad2663f928acf27e98662c861b094a6c306'
-LIBXS_ARCHIVE = 'libxs-930a2c4.tar.gz'
-LIBXS_SHA256 = '552f9dd5af66b593d81aeb5aeb8acedba01943ae8d0c1bc036ea79f5fa591e88'
-LIBXS_URL = 'https://codeload.github.com/hfp/libxs/tar.gz/930a2c4'
+LIBXS_ARCHIVE = 'libxs-cc9188a.tar.gz'
+LIBXS_SHA256 = 'df7ce1ea8087663cff31e0ac9d018b8406d4489bd86f2923bf27147de62f33e5'
+LIBXS_URL = 'https://codeload.github.com/hfp/libxs/tar.gz/cc9188a'
 
 
 def cache_source_updates(destination):

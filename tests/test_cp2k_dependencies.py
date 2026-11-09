@@ -67,14 +67,14 @@ class CP2KDependencyArchiveTests(unittest.TestCase):
             "tblite-0.8.0.tar.xz": b"verified tblite development fixture",
             "elpa-2026.02.002.tar.gz": b"verified ELPA toolchain fixture",
             "libxc-7.1.2.tar.bz2": b"verified LibXC toolchain fixture",
-            "libxs-930a2c4.tar.gz": b"verified LibXS toolchain fixture",
+            "libxs-cc9188a.tar.gz": b"verified LibXS toolchain fixture",
         }
         for constant, name in (("WIGNERNJ_SHA256", "libwignernj-0.8.0.tar.gz"),
                                ("TBLITE_RELEASE_SHA256", "tblite-0.6.0.tar.xz"),
                                ("TBLITE_DEVELOPMENT_SHA256", "tblite-0.8.0.tar.xz"),
                                ("ELPA_SHA256", "elpa-2026.02.002.tar.gz"),
                                ("LIBXC_SHA256", "libxc-7.1.2.tar.bz2"),
-                               ("LIBXS_SHA256", "libxs-930a2c4.tar.gz")):
+                               ("LIBXS_SHA256", "libxs-cc9188a.tar.gz")):
             digest = patch.object(cp2k_spack, constant,
                                   hashlib.sha256(self.contents[name]).hexdigest())
             digest.start()
@@ -188,7 +188,8 @@ class CP2KLibxsSelectionTests(unittest.TestCase):
     def test_source_declaration_selects_release_or_updated_archive_without_fallback(self):
         for version, checksum, directory in (
                 ("1.0.0", "de26f50cb986a2f0e4f92c0eb489d40a44f7e4c5acd22751a6cfa2829dabd04d", "cache"),
-                ("930a2c4", cp2k_spack.LIBXS_SHA256, "updates")):
+                ("930a2c4", "552f9dd5af66b593d81aeb5aeb8acedba01943ae8d0c1bc036ea79f5fa591e88", "updates"),
+                ("cc9188a", cp2k_spack.LIBXS_SHA256, "updates")):
             with self.subTest(version=version):
                 result = self.run_helper(version, checksum)
                 self.assertNotEqual(result.returncode, 0)
@@ -197,7 +198,7 @@ class CP2KLibxsSelectionTests(unittest.TestCase):
 
     def test_changed_version_or_checksum_is_rejected(self):
         for version, checksum in (("1.1.0", cp2k_spack.LIBXS_SHA256),
-                                  ("930a2c4", "0" * 64), ("", "")):
+                                  ("930a2c4", "0" * 64), ("cc9188a", "0" * 64), ("", "")):
             with self.subTest(version=version):
                 result = self.run_helper(version, checksum)
                 self.assertNotEqual(result.returncode, 0)
@@ -216,7 +217,7 @@ class CP2KLibxsSelectionTests(unittest.TestCase):
         updates = self.root / "updates"
         updates.mkdir()
         (updates / cp2k_spack.LIBXS_ARCHIVE).write_bytes(b"damaged archive")
-        result = self.run_helper("930a2c4", cp2k_spack.LIBXS_SHA256)
+        result = self.run_helper("cc9188a", cp2k_spack.LIBXS_SHA256)
         self.assertNotEqual(result.returncode, 0)
         self.assertFalse((self.root / "work").exists())
 

@@ -1,0 +1,100 @@
+CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/org/org-open-sai/proj-sai-hpc-software/runs/lammps-compile-overhead-20261108-r2/runtime/apptainer-fuse2fs.conf
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+INFO:    Using fakeroot command combined with root-mapped namespace
+WARNING: user: unknown userid 0
+WARNING: user: unknown userid 0
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+MD_COMPILER CC=/opt/devtools/gcc/14.3.0/bin/gcc version=14.3.0
+MD_COMPILER CXX=/opt/devtools/gcc/14.3.0/bin/g++ version=14.3.0
+MD_COMPILER FC=/opt/devtools/gcc/14.3.0/bin/gfortran version=14.3.0
+{"source": "angle.cpp", "source_sha256": "a2464667a6799e6f0f24f34a97dc87312414472468fe51ed12e763679ddf21d0", "seconds": 4.290848705917597, "cpu_seconds": 4.049729, "exit_code": 0, "output_sha256": "2d94f0b33f794f5ad1a521e342d2b65380f32bc07b9ec44e0839f78a6e266792"}
+{"source": "pair.cpp", "source_sha256": "7826ee86dd611eefbbaf1f331f11010fb8bb37791e6f5769b271aaeb984e7d3e", "seconds": 5.115616539493203, "cpu_seconds": 5.066145, "exit_code": 0, "output_sha256": "41e09040a98fd7d6a9e56c2522ebb52eaee7061c14b2c05565b8751803488bb6"}
+{"source": "MANYBODY/pair_tersoff.cpp", "source_sha256": "96d30032cad5b74ecc1667a33fa1879979d0b44e9cc3440bf37781a9560b27af", "seconds": 4.847720989957452, "cpu_seconds": 4.805529, "exit_code": 0, "output_sha256": "b19d632aa7af91c83a683d735e300f2c6c8309800e64f2195df87748f38d67e1"}
+{"source": "KOKKOS/pair_lj_cut_kokkos.cpp", "source_sha256": "cf9c8d1b6663b6d3679a25f40f6c93f505fea8ff3f3cf6aef39df7474b92129a", "seconds": 47.20370452478528, "cpu_seconds": 46.7631, "exit_code": 0, "output_sha256": "99802c24742691ba0879fc3e8a75a66544a9b36352bdf45bc972a13ba84d79aa"}
+MANAGED_OVERLAY_EXIT /org/org-open-sai/proj-sai-hpc-software/runs/lammps-compile-overhead-20261108-r2/results/managed-overlay-0908075ee78543198d8b240698e754d2.json status=0
+CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/org/org-open-sai/proj-sai-hpc-software/runs/lammps-compile-overhead-20261108-r2/runtime/apptainer-fuse2fs.conf
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+WARNING: user: unknown userid 0
+WARNING: user: unknown userid 0
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+MD_COMPILER CC=/opt/devtools/gcc/14.3.0/bin/gcc version=14.3.0
+MD_COMPILER CXX=/opt/devtools/gcc/14.3.0/bin/g++ version=14.3.0
+MD_COMPILER FC=/opt/devtools/gcc/14.3.0/bin/gfortran version=14.3.0
+{"source": "angle.cpp", "source_sha256": "a2464667a6799e6f0f24f34a97dc87312414472468fe51ed12e763679ddf21d0", "seconds": 4.095888463780284, "cpu_seconds": 3.980775, "exit_code": 0, "output_sha256": "cb480bbdc2562a21f6b58320d2db72807d4a3003c35d9bdefeaca1de63dbe0b9"}
+{"source": "pair.cpp", "source_sha256": "7826ee86dd611eefbbaf1f331f11010fb8bb37791e6f5769b271aaeb984e7d3e", "seconds": 5.09081350825727, "cpu_seconds": 5.056816, "exit_code": 0, "output_sha256": "3c9f7fe9dbfc22a7c9181753d74897ca639e1cc375cab9bafff5a7084332582a"}
+{"source": "MANYBODY/pair_tersoff.cpp", "source_sha256": "96d30032cad5b74ecc1667a33fa1879979d0b44e9cc3440bf37781a9560b27af", "seconds": 4.8946297485381365, "cpu_seconds": 4.867590000000001, "exit_code": 0, "output_sha256": "684c7d2e39ef901bc76525ac7175a586aa47ad69c77dc06a23714c5bdcfb6abb"}
+{"source": "KOKKOS/pair_lj_cut_kokkos.cpp", "source_sha256": "cf9c8d1b6663b6d3679a25f40f6c93f505fea8ff3f3cf6aef39df7474b92129a", "seconds": 47.715827733278275, "cpu_seconds": 46.555138, "exit_code": 0, "output_sha256": "798b9648f6c0665fa4b1fa17e2f68b2f97ac2abd23629dea779d5ad60872c705"}
+MANAGED_OVERLAY_EXIT /org/org-open-sai/proj-sai-hpc-software/runs/lammps-compile-overhead-20261108-r2/results/managed-overlay-b7e4d0f967604f9685ba8ff05b54c139.json status=0
+CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/org/org-open-sai/proj-sai-hpc-software/runs/lammps-compile-overhead-20261108-r2/runtime/apptainer-fuse2fs.conf
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+WARNING: user: unknown userid 0
+WARNING: user: unknown userid 0
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+MD_COMPILER CC=/opt/devtools/gcc/14.3.0/bin/gcc version=14.3.0
+MD_COMPILER CXX=/opt/devtools/gcc/14.3.0/bin/g++ version=14.3.0
+MD_COMPILER FC=/opt/devtools/gcc/14.3.0/bin/gfortran version=14.3.0
+{"source": "angle.cpp", "source_sha256": "a2464667a6799e6f0f24f34a97dc87312414472468fe51ed12e763679ddf21d0", "seconds": 3.910455981269479, "cpu_seconds": 3.795402, "exit_code": 0, "output_sha256": "cb480bbdc2562a21f6b58320d2db72807d4a3003c35d9bdefeaca1de63dbe0b9"}
+{"source": "pair.cpp", "source_sha256": "7826ee86dd611eefbbaf1f331f11010fb8bb37791e6f5769b271aaeb984e7d3e", "seconds": 4.76926114410162, "cpu_seconds": 4.736275, "exit_code": 0, "output_sha256": "3c9f7fe9dbfc22a7c9181753d74897ca639e1cc375cab9bafff5a7084332582a"}
+{"source": "MANYBODY/pair_tersoff.cpp", "source_sha256": "96d30032cad5b74ecc1667a33fa1879979d0b44e9cc3440bf37781a9560b27af", "seconds": 4.581726714968681, "cpu_seconds": 4.551646999999999, "exit_code": 0, "output_sha256": "684c7d2e39ef901bc76525ac7175a586aa47ad69c77dc06a23714c5bdcfb6abb"}
+{"source": "KOKKOS/pair_lj_cut_kokkos.cpp", "source_sha256": "cf9c8d1b6663b6d3679a25f40f6c93f505fea8ff3f3cf6aef39df7474b92129a", "seconds": 44.91280721127987, "cpu_seconds": 44.69682, "exit_code": 0, "output_sha256": "798b9648f6c0665fa4b1fa17e2f68b2f97ac2abd23629dea779d5ad60872c705"}
+MANAGED_OVERLAY_EXIT /org/org-open-sai/proj-sai-hpc-software/runs/lammps-compile-overhead-20261108-r2/results/managed-overlay-094a64bc83fe41fcb9711233e484fe92.json status=0
+CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/org/org-open-sai/proj-sai-hpc-software/runs/lammps-compile-overhead-20261108-r2/runtime/apptainer-fuse2fs.conf
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+INFO:    Using fakeroot command combined with root-mapped namespace
+WARNING: user: unknown userid 0
+WARNING: user: unknown userid 0
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+MD_COMPILER CC=/opt/devtools/gcc/14.3.0/bin/gcc version=14.3.0
+MD_COMPILER CXX=/opt/devtools/gcc/14.3.0/bin/g++ version=14.3.0
+MD_COMPILER FC=/opt/devtools/gcc/14.3.0/bin/gfortran version=14.3.0
+{"source": "angle.cpp", "source_sha256": "a2464667a6799e6f0f24f34a97dc87312414472468fe51ed12e763679ddf21d0", "seconds": 4.2120325323194265, "cpu_seconds": 4.080381, "exit_code": 0, "output_sha256": "d784450a2d6d06cdcc4b2a0c56b8364167096fc17feb6461637596843559cccc"}
+{"source": "pair.cpp", "source_sha256": "7826ee86dd611eefbbaf1f331f11010fb8bb37791e6f5769b271aaeb984e7d3e", "seconds": 5.052472155541182, "cpu_seconds": 5.009765000000002, "exit_code": 0, "output_sha256": "8d4b96ade0dd22d11c13d2fd5962c6a955ba827b2ce6404dc4129c52f115f7bb"}
+{"source": "MANYBODY/pair_tersoff.cpp", "source_sha256": "96d30032cad5b74ecc1667a33fa1879979d0b44e9cc3440bf37781a9560b27af", "seconds": 4.85193619504571, "cpu_seconds": 4.817370000000001, "exit_code": 0, "output_sha256": "a8b5a78b60da474bec180804f540d71c0e49e7bfeecad9c28627f7ea8869fe41"}
+{"source": "KOKKOS/pair_lj_cut_kokkos.cpp", "source_sha256": "cf9c8d1b6663b6d3679a25f40f6c93f505fea8ff3f3cf6aef39df7474b92129a", "seconds": 46.9431148506701, "cpu_seconds": 46.69097800000001, "exit_code": 0, "output_sha256": "ff84ad3988d06740671cb313ac3ac40c2a4b2c6862793acc5b8ae93b42d6d9dd"}
+MANAGED_OVERLAY_EXIT /org/org-open-sai/proj-sai-hpc-software/runs/lammps-compile-overhead-20261108-r2/results/managed-overlay-b76a5e2402e54b6fa082037b5f0f7d5c.json status=0

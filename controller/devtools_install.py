@@ -14,6 +14,10 @@ import sys
 LIBRARIES = {'libint', 'libxsmm', 'libvori', 'hdf5', 'plumed', 'cosma', 'spla', 'costa', 'tiled-mm', 'gcc-runtime'}
 PARTITIONS = {'16V100', '4V100', '8V100V0', 'DSPRHBM'}
 APPTAINER = '/opt/devtools/apptainer/1.4.4/bin/apptainer'
+APP_LIBRARY_PREFIXES = {
+    'qe-hdf5': '/opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM',
+    'abacus-libtorch': '/opt/apps/abacus/dependencies/libtorch/2.1.2-cpu-cxx11abi1',
+}
 
 
 def require(value, message):
@@ -105,6 +109,9 @@ def restore_extracted_modes(root, expected):
 
 def package_prefix(record):
     name = record['name']
+    if name in APP_LIBRARY_PREFIXES:
+        require(record['prefix'] == APP_LIBRARY_PREFIXES[name], 'Unexpected application dependency prefix')
+        return plain(Path(record['prefix']))
     require(name in LIBRARIES, 'Not an approved dependency library: ' + name)
     pattern = (r'/opt/devtools/' + re.escape(name) + r'/[A-Za-z0-9][A-Za-z0-9_.-]*'
                r'-gcc14\.3\.0-[a-z0-9_.-]+-[a-z2-7]{32}(?:-p[0-9a-f]{12})?')
@@ -120,10 +127,13 @@ def read_release(package):
     receipt = plain(package / 'release.sha256')
     require(checksum(manifest) == receipt.read_text().strip(), 'Release checksum mismatch')
     release = json.loads(manifest.read_text())
-    require(release.get('schema') == 1 and release.get('purpose') == 'cp2k-spack-devtools', 'Wrong release manifest')
+    require(release.get('schema') == 1 and release.get('purpose') in
+            ('cp2k-spack-devtools', 'application-dependencies'), 'Wrong release manifest')
     require(set(release['partitions']) <= PARTITIONS and release['partitions'], 'Invalid partitions')
     records = release['packages']
     require(records and len({row['prefix'] for row in records}) == len(records), 'Duplicate or empty package set')
+    allowed = LIBRARIES if release['purpose'] == 'cp2k-spack-devtools' else set(APP_LIBRARY_PREFIXES)
+    require(all(row['name'] in allowed for row in records), 'Library does not belong to this release family')
     for record in records:
         package_prefix(record)
         require(('payload' in record) != ('image' in record), 'Expected one payload source')
@@ -203,7 +213,7 @@ def deploy(package, *, install=False, installed=False):
             source.rename(prefix)
             if source != stage:
                 shutil.rmtree(stage)  # Only this invocation's empty extraction parents.
-        print('Installed libraries. Run --verify, then compute-node CP2K acceptance before activating reuse.')
+        print('Installed libraries. Run --verify, then compute-node application acceptance before activating reuse.')
     elif installed:
         print('Physical library inventories verified; this does not replace compute-node acceptance.')
     else:

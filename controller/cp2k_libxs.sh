@@ -14,6 +14,8 @@ case "$version:$checksum" in
     archive="$cache/libxs-$version.tar.gz" ;;
   930a2c4:552f9dd5af66b593d81aeb5aeb8acedba01943ae8d0c1bc036ea79f5fa591e88)
     archive="$updates/libxs-$version.tar.gz" ;;
+  cc9188a:df7ce1ea8087663cff31e0ac9d018b8406d4489bd86f2923bf27147de62f33e5)
+    archive="$updates/libxs-$version.tar.gz" ;;
   *) echo "unsupported or missing CP2K LibXS version/checksum: $version" >&2; exit 1 ;;
 esac
 # Intermediate development commits used 1.0.0 plus an upstream repair. Newer

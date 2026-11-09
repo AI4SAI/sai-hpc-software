@@ -302,7 +302,10 @@ class RuntimeTests(unittest.TestCase):
                     bundle.mkdir(exist_ok=True)
                     (bundle / 'catalog.json').write_text(json.dumps(snapshot))
                     output = root / (software + '-' + partition)
-                    beta_check.prepare(software, partition, bundle, output, root / 'payload/fixtures')
+                    # These historical catalog paths are not real local SIFs.
+                    # GPUMD model extraction is tested with real Squashfs files.
+                    with patch.object(beta_check, 'prepare_gpumd_model', return_value={}):
+                        beta_check.prepare(software, partition, bundle, output, root / 'payload/fixtures')
                     script = beta_check.render(software, partition, bundle, output)
                     subprocess.run(['bash', '-n'], input=script, text=True, check=True)
                     if partition != 'DSPRHBM':

@@ -1,0 +1,814 @@
+{
+  "accounting": "2274454|DSPRHBM|COMPLETED|00:26:17|0:0|d9470n01\n2274465|8V100V0|COMPLETED|00:38:34|0:0|8v100v0n01\n2274466|16V100|COMPLETED|00:28:30|0:0|16v100n02\n2274504|4V100|COMPLETED|00:33:42|0:0|4v100n20\n2274775|DSPRHBM|COMPLETED|00:38:48|0:0|d9470n[01-02]\n2274820|16V100|COMPLETED|00:07:26|0:0|16v100n[49-50]\n2274952|4V100|COMPLETED|00:06:02|0:0|4v100n[05,20]\n2274966|8V100V0|COMPLETED|00:10:53|0:0|8v100v0n[01,03]\n",
+  "controller": "65ed8ef8870fe8688b635fdcf07c25cf71f7621c",
+  "deliveries": {
+    "16V100": {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-06-g0761fd1b052d-r072a856f73b7/16V100/42331323249-1-development-16v100-avx2-2026-11-07-0761fd1b052d.sif",
+      "artifact_sha256": "ed90e01cbd11c0a2a9c402da148e00dc0bd94484adde0fd3b5a03c850bd58988",
+      "artifact_size": 314765312,
+      "build_run": "42331323249-1-development-16v100-avx2-2026-11-07-0761fd1b052d",
+      "build_status": {
+        "exit_code": "0:0",
+        "job": "2274466",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "cusolver_timers": {
+        "multi": [
+          " cp_fm_diag_cusolver                112 11.7    6.584    6.586    6.584    6.586"
+        ],
+        "single": []
+      },
+      "dependency_cache": {
+        "hit": false,
+        "key": "0bc82cb837696ca85eca8a5cbdfc4640d6878094ad4978dfec5ccdd47bc6fd67",
+        "timings": {
+          "cp2k": 915.3637912273407,
+          "dbcsr": 85.98119783401489,
+          "libxc": 478.2939510345459,
+          "libxs": 18.82802104949951,
+          "tblite": 84.8657751083374,
+          "wignernj": 1.1470162868499756
+        }
+      },
+      "identity": {
+        "build_id": "master-2026-11-06-g0761fd1b052d-r072a856f73b7",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-06-g0761fd1b052d-r072a856f73b7/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "072a856f73b76b1b9f0e5fc819ac4b7c6b8bf17971a33003ea1b6657fd0065e1",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "0761fd1b052d62503997faf4d66c0f8b9cec03b7",
+        "source_version": "master-2026-11-06",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "development",
+        "version_label": "master-2026-11-06"
+      },
+      "libxs_selection": [
+        "CP2K_LIBXS_VERSION cc9188a df7ce1ea8087663cff31e0ac9d018b8406d4489bd86f2923bf27147de62f33e5"
+      ],
+      "overlays": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 171069,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794022194.3321767,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/42331323249-1-development-16v100-avx2-2026-11-07-0761fd1b052d/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794020564.2865255,
+          "teardown_seconds": 0.6515960823744535,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 236364,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794022231.4944112,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/42331323249-1-development-16v100-avx2-2026-11-07-0761fd1b052d/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794022194.6160233,
+          "teardown_seconds": 0.38154940493404865,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 237641,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794022259.5109112,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/42331323249-1-development-16v100-avx2-2026-11-07-0761fd1b052d/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1794022231.7585075,
+          "teardown_seconds": 0.02068743109703064,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ],
+      "science": {
+        "comparisons": {
+          "ch2o-tblite": {
+            "energy_delta_ha": 4.440892098500626e-15,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water-dftd4": {
+            "energy_delta_ha": 6.679101716144942e-13,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water-diag": {
+            "energy_delta_ha": 2.1316282072803006e-14,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water-elpa": {
+            "energy_delta_ha": 7.105427357601002e-15,
+            "max_force_delta_ha_bohr": 9.999999999746641e-13
+          },
+          "water-gpw": {
+            "energy_delta_ha": 6.181721801112872e-13,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 4.092726157978177e-12,
+            "max_force_delta_ha_bohr": 9.999986949615902e-13
+          },
+          "water64-gpw": {
+            "energy_delta_ha": 7.958078640513122e-12,
+            "max_force_delta_ha_bohr": 1.09999995223653e-11
+          }
+        },
+        "energy_tolerance_ha": 1e-06,
+        "evidence_path": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/42331323249-1-development-16v100-avx2-2026-11-07-0761fd1b052d-science/results/evidence.json",
+        "evidence_sha256": "73723ae8b4335aa96184f441c5f568b64c6ac020369ac0ba65905270d6581d31",
+        "files_hashed": 238,
+        "force_tolerance_ha_bohr": 1e-05,
+        "sample_count": 14,
+        "solver_comparisons": {
+          "multi": {
+            "water-diag": {
+              "energy_delta_ha": 3.552713678800501e-14,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water-elpa": {
+              "energy_delta_ha": 3.552713678800501e-14,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water64-elpa": {
+              "energy_delta_ha": 1.5916157281026244e-11,
+              "max_force_delta_ha_bohr": 1.5409999994803192e-09
+            }
+          },
+          "single": {
+            "water-diag": {
+              "energy_delta_ha": 6.750155989720952e-13,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water-elpa": {
+              "energy_delta_ha": 6.608047442568932e-13,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water64-elpa": {
+              "energy_delta_ha": 1.2050804798491299e-11,
+              "max_force_delta_ha_bohr": 1.5419999999100042e-09
+            }
+          }
+        }
+      },
+      "science_job": "2274820",
+      "science_run": "42331323249-1-development-16v100-avx2-2026-11-07-0761fd1b052d-science",
+      "science_status": {
+        "exit_code": "0:0",
+        "job": "2274820",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "source_repairs": [
+        {
+          "after_sha256": "6fa681c45d5dce92eeb33a7047a851d5bcc5146133e4e50d48804a30f1fa7b40",
+          "applied": true,
+          "before_sha256": "9f68fe666f1f1c9da411c8bd6dd7810dd8572c39c486efbe4afb4a3c15e14b31",
+          "bootstrap_sites": 1,
+          "repair": "MPI progress barrier before blocking NCCL bootstrap",
+          "source_file": "src/fm/cp_fm_cusolver.c"
+        }
+      ]
+    },
+    "4V100": {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-06-g0761fd1b052d-r072a856f73b7/4V100/42331323249-1-development-4v100-avx512-2026-11-07-0761fd1b052d.sif",
+      "artifact_sha256": "42f457e43418c60847a3b79f958b0e10b640c9d2642ef18a47313117d751ac73",
+      "artifact_size": 315965440,
+      "build_run": "42331323249-1-development-4v100-avx512-2026-11-07-0761fd1b052d",
+      "build_status": {
+        "exit_code": "0:0",
+        "job": "2274504",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "cusolver_timers": {
+        "multi": [
+          " cp_fm_diag_cusolver                112 11.7    5.306    5.306    5.306    5.306"
+        ],
+        "single": []
+      },
+      "dependency_cache": {
+        "hit": false,
+        "key": "410b71ed3c906ac206f88ee1b9cbb38b04668336b5d4ecab1eb7f8d1c51b53d3",
+        "timings": {
+          "cp2k": 1209.097885608673,
+          "dbcsr": 154.6263530254364,
+          "libxc": 255.72659015655518,
+          "libxs": 22.5322744846344,
+          "tblite": 207.4147822856903,
+          "wignernj": 2.140460968017578
+        }
+      },
+      "identity": {
+        "build_id": "master-2026-11-06-g0761fd1b052d-r072a856f73b7",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-06-g0761fd1b052d-r072a856f73b7/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "072a856f73b76b1b9f0e5fc819ac4b7c6b8bf17971a33003ea1b6657fd0065e1",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "0761fd1b052d62503997faf4d66c0f8b9cec03b7",
+        "source_version": "master-2026-11-06",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "development",
+        "version_label": "master-2026-11-06"
+      },
+      "libxs_selection": [
+        "CP2K_LIBXS_VERSION cc9188a df7ce1ea8087663cff31e0ac9d018b8406d4489bd86f2923bf27147de62f33e5"
+      ],
+      "overlays": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3958969,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794022748.0019982,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/42331323249-1-development-4v100-avx512-2026-11-07-0761fd1b052d/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1794022721.3505268,
+          "teardown_seconds": 0.012270813807845116,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3956991,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794022721.1870744,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/42331323249-1-development-4v100-avx512-2026-11-07-0761fd1b052d/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794022693.6181512,
+          "teardown_seconds": 0.2453739121556282,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3896771,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794022693.4398944,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/42331323249-1-development-4v100-avx512-2026-11-07-0761fd1b052d/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794020750.5066075,
+          "teardown_seconds": 1.8421048317104578,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ],
+      "science": {
+        "comparisons": {
+          "ch2o-tblite": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water-dftd4": {
+            "energy_delta_ha": 7.531752999057062e-13,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water-diag": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water-elpa": {
+            "energy_delta_ha": 7.105427357601002e-15,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water-gpw": {
+            "energy_delta_ha": 6.963318810448982e-13,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 4.092726157978177e-12,
+            "max_force_delta_ha_bohr": 9.999999960041972e-13
+          },
+          "water64-gpw": {
+            "energy_delta_ha": 4.774847184307873e-12,
+            "max_force_delta_ha_bohr": 1.3000000381735433e-11
+          }
+        },
+        "energy_tolerance_ha": 1e-06,
+        "evidence_path": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/42331323249-1-development-4v100-avx512-2026-11-07-0761fd1b052d-science/results/evidence.json",
+        "evidence_sha256": "36bf2c6bcc29d3bde3f0a545d6e712d6b7ddeee98b08e2a6243f4f1b9ab256f0",
+        "files_hashed": 238,
+        "force_tolerance_ha_bohr": 1e-05,
+        "sample_count": 14,
+        "solver_comparisons": {
+          "multi": {
+            "water-diag": {
+              "energy_delta_ha": 5.542233338928781e-13,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water-elpa": {
+              "energy_delta_ha": 5.613287612504791e-13,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water64-elpa": {
+              "energy_delta_ha": 4.547473508864641e-12,
+              "max_force_delta_ha_bohr": 1.5379999999259875e-09
+            }
+          },
+          "single": {
+            "water-diag": {
+              "energy_delta_ha": 1.4210854715202004e-13,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water-elpa": {
+              "energy_delta_ha": 1.2789769243681803e-13,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water64-elpa": {
+              "energy_delta_ha": 4.320099833421409e-12,
+              "max_force_delta_ha_bohr": 1.5430000003396893e-09
+            }
+          }
+        }
+      },
+      "science_job": "2274952",
+      "science_run": "42331323249-1-development-4v100-avx512-2026-11-07-0761fd1b052d-science",
+      "science_status": {
+        "exit_code": "0:0",
+        "job": "2274952",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "source_repairs": [
+        {
+          "after_sha256": "6fa681c45d5dce92eeb33a7047a851d5bcc5146133e4e50d48804a30f1fa7b40",
+          "applied": true,
+          "before_sha256": "9f68fe666f1f1c9da411c8bd6dd7810dd8572c39c486efbe4afb4a3c15e14b31",
+          "bootstrap_sites": 1,
+          "repair": "MPI progress barrier before blocking NCCL bootstrap",
+          "source_file": "src/fm/cp_fm_cusolver.c"
+        }
+      ]
+    },
+    "8V100V0": {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-06-g0761fd1b052d-r072a856f73b7/8V100V0/42331323249-1-development-8v100v0-avx512-2026-11-07-0761fd1b052d.sif",
+      "artifact_sha256": "6b739f2a63b1f2fe8f7c39f5f26b02db61a0b89c28794ac8b36b54adce8abc4f",
+      "artifact_size": 315211776,
+      "build_run": "42331323249-1-development-8v100v0-avx512-2026-11-07-0761fd1b052d",
+      "build_status": {
+        "exit_code": "0:0",
+        "job": "2274465",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "cusolver_timers": {
+        "multi": [
+          " cp_fm_diag_cusolver                112 11.7    9.178    9.179    9.178    9.179"
+        ],
+        "single": []
+      },
+      "dependency_cache": {
+        "hit": false,
+        "key": "2e8b17a80363b9c6773f10f00b647f9d7b0bd724a4e18ec906083c8a7347cbee",
+        "timings": {
+          "cp2k": 1260.2916104793549,
+          "dbcsr": 100.90616822242737,
+          "libxc": 661.8928737640381,
+          "libxs": 23.387997150421143,
+          "tblite": 107.83003449440002,
+          "wignernj": 1.494049072265625
+        }
+      },
+      "identity": {
+        "build_id": "master-2026-11-06-g0761fd1b052d-r072a856f73b7",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-06-g0761fd1b052d-r072a856f73b7/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "072a856f73b76b1b9f0e5fc819ac4b7c6b8bf17971a33003ea1b6657fd0065e1",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "0761fd1b052d62503997faf4d66c0f8b9cec03b7",
+        "source_version": "master-2026-11-06",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "development",
+        "version_label": "master-2026-11-06"
+      },
+      "libxs_selection": [
+        "CP2K_LIBXS_VERSION cc9188a df7ce1ea8087663cff31e0ac9d018b8406d4489bd86f2923bf27147de62f33e5"
+      ],
+      "overlays": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 1102179,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794022807.2194495,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/42331323249-1-development-8v100v0-avx512-2026-11-07-0761fd1b052d/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794022761.5839124,
+          "teardown_seconds": 0.5053026739915367,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 1102528,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794022835.8383293,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/42331323249-1-development-8v100v0-avx512-2026-11-07-0761fd1b052d/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1794022807.5318387,
+          "teardown_seconds": 0.03031381400069222,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 1063529,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794022760.800416,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/42331323249-1-development-8v100v0-avx512-2026-11-07-0761fd1b052d/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794020543.2125747,
+          "teardown_seconds": 0.6130629399995087,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ],
+      "science": {
+        "comparisons": {
+          "ch2o-tblite": {
+            "energy_delta_ha": 4.440892098500626e-15,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water-dftd4": {
+            "energy_delta_ha": 9.947598300641403e-14,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water-diag": {
+            "energy_delta_ha": 1.4210854715202004e-14,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water-elpa": {
+            "energy_delta_ha": 7.105427357601002e-15,
+            "max_force_delta_ha_bohr": 9.999999999746641e-13
+          },
+          "water-gpw": {
+            "energy_delta_ha": 1.0658141036401503e-13,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 3.865352482534945e-12,
+            "max_force_delta_ha_bohr": 9.999999960041972e-13
+          },
+          "water64-gpw": {
+            "energy_delta_ha": 3.069544618483633e-11,
+            "max_force_delta_ha_bohr": 1.2999998647011957e-11
+          }
+        },
+        "energy_tolerance_ha": 1e-06,
+        "evidence_path": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/42331323249-1-development-8v100v0-avx512-2026-11-07-0761fd1b052d-science/results/evidence.json",
+        "evidence_sha256": "b115c0a6286d12c0160f67586c88b8f8496859ae77a2032a079dffcaff53e004",
+        "files_hashed": 238,
+        "force_tolerance_ha_bohr": 1e-05,
+        "sample_count": 14,
+        "solver_comparisons": {
+          "multi": {
+            "water-diag": {
+              "energy_delta_ha": 2.2737367544323206e-13,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water-elpa": {
+              "energy_delta_ha": 2.3447910280083306e-13,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water64-elpa": {
+              "energy_delta_ha": 8.640199666842818e-12,
+              "max_force_delta_ha_bohr": 1.5390000003556725e-09
+            }
+          },
+          "single": {
+            "water-diag": {
+              "energy_delta_ha": 3.481659405224491e-13,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water-elpa": {
+              "energy_delta_ha": 3.481659405224491e-13,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water64-elpa": {
+              "energy_delta_ha": 1.8189894035458565e-11,
+              "max_force_delta_ha_bohr": 1.5339999999419707e-09
+            }
+          }
+        }
+      },
+      "science_job": "2274966",
+      "science_run": "42331323249-1-development-8v100v0-avx512-2026-11-07-0761fd1b052d-science",
+      "science_status": {
+        "exit_code": "0:0",
+        "job": "2274966",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "source_repairs": [
+        {
+          "after_sha256": "6fa681c45d5dce92eeb33a7047a851d5bcc5146133e4e50d48804a30f1fa7b40",
+          "applied": true,
+          "before_sha256": "9f68fe666f1f1c9da411c8bd6dd7810dd8572c39c486efbe4afb4a3c15e14b31",
+          "bootstrap_sites": 1,
+          "repair": "MPI progress barrier before blocking NCCL bootstrap",
+          "source_file": "src/fm/cp_fm_cusolver.c"
+        }
+      ]
+    },
+    "DSPRHBM": {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-06-g0761fd1b052d-r072a856f73b7/DSPRHBM/42331323249-1-development-dsprhbm-2026-11-07-0761fd1b052d.sif",
+      "artifact_sha256": "a37a19b1426d2bcd67f8dc90928163903d36e3c0153b33e019f74301bef616b1",
+      "artifact_size": 159113216,
+      "build_run": "42331323249-1-development-dsprhbm-2026-11-07-0761fd1b052d",
+      "build_status": {
+        "exit_code": "0:0",
+        "job": "2274454",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "cusolver_timers": {
+        "multi": [],
+        "single": []
+      },
+      "dependency_cache": {
+        "hit": false,
+        "key": "48f614832b732c761eeecb0ea5347e5ec717e714643a7f6ed091ddb2b587ec2f",
+        "timings": {
+          "cp2k": 1020.475551366806,
+          "dbcsr": 116.12853622436523,
+          "libxc": 149.856773853302,
+          "libxs": 26.479777574539185,
+          "tblite": 138.39524507522583,
+          "wignernj": 3.1626975536346436
+        }
+      },
+      "identity": {
+        "build_id": "master-2026-11-06-g0761fd1b052d-r072a856f73b7",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-06-g0761fd1b052d-r072a856f73b7/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "072a856f73b76b1b9f0e5fc819ac4b7c6b8bf17971a33003ea1b6657fd0065e1",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "0761fd1b052d62503997faf4d66c0f8b9cec03b7",
+        "source_version": "master-2026-11-06",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "master-2026-11-06"
+      },
+      "libxs_selection": [
+        "CP2K_LIBXS_VERSION cc9188a df7ce1ea8087663cff31e0ac9d018b8406d4489bd86f2923bf27147de62f33e5"
+      ],
+      "overlays": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 99645,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794022008.2703428,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/42331323249-1-development-dsprhbm-2026-11-07-0761fd1b052d/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794020510.424185,
+          "teardown_seconds": 0.5192976947873831,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 137218,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794022061.4167976,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/42331323249-1-development-dsprhbm-2026-11-07-0761fd1b052d/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1794022047.2461593,
+          "teardown_seconds": 0.01621549902483821,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 136609,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794022046.6238832,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/42331323249-1-development-dsprhbm-2026-11-07-0761fd1b052d/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794022009.0122101,
+          "teardown_seconds": 0.4709593839943409,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ],
+      "science": {
+        "comparisons": {
+          "ch2o-tblite": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water-dftd4": {
+            "energy_delta_ha": 5.542233338928781e-13,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water-diag": {
+            "energy_delta_ha": 7.105427357601002e-15,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water-elpa": {
+            "energy_delta_ha": 7.105427357601002e-15,
+            "max_force_delta_ha_bohr": 9.999999999746641e-13
+          },
+          "water-gpw": {
+            "energy_delta_ha": 7.744915819785092e-13,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 4.547473508864641e-13,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "water64-gpw": {
+            "energy_delta_ha": 7.275957614183426e-12,
+            "max_force_delta_ha_bohr": 1.4999997771658613e-11
+          }
+        },
+        "energy_tolerance_ha": 1e-06,
+        "evidence_path": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/42331323249-1-development-dsprhbm-2026-11-07-0761fd1b052d-science/results/evidence.json",
+        "evidence_sha256": "edc97eb5d1df5609a19b3ba3598480f9687326c5bb8070288f481cb9abfb248c",
+        "files_hashed": 238,
+        "force_tolerance_ha_bohr": 1e-05,
+        "sample_count": 14,
+        "solver_comparisons": {
+          "multi": {
+            "water-diag": {
+              "energy_delta_ha": 3.339550858072471e-13,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water-elpa": {
+              "energy_delta_ha": 3.339550858072471e-13,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water64-elpa": {
+              "energy_delta_ha": 9.094947017729282e-12,
+              "max_force_delta_ha_bohr": 1.5359999990666173e-09
+            }
+          },
+          "single": {
+            "water-diag": {
+              "energy_delta_ha": 1.1013412404281553e-12,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water-elpa": {
+              "energy_delta_ha": 1.1013412404281553e-12,
+              "max_force_delta_ha_bohr": 2.7100000021818005e-10
+            },
+            "water64-elpa": {
+              "energy_delta_ha": 1.5916157281026244e-11,
+              "max_force_delta_ha_bohr": 1.5409999994803192e-09
+            }
+          }
+        }
+      },
+      "science_job": "2274775",
+      "science_run": "42331323249-1-development-dsprhbm-2026-11-07-0761fd1b052d-science",
+      "science_status": {
+        "exit_code": "0:0",
+        "job": "2274775",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "source_repairs": [
+        {
+          "after_sha256": "6fa681c45d5dce92eeb33a7047a851d5bcc5146133e4e50d48804a30f1fa7b40",
+          "applied": true,
+          "before_sha256": "9f68fe666f1f1c9da411c8bd6dd7810dd8572c39c486efbe4afb4a3c15e14b31",
+          "bootstrap_sites": 1,
+          "repair": "MPI progress barrier before blocking NCCL bootstrap",
+          "source_file": "src/fm/cp_fm_cusolver.c"
+        }
+      ]
+    }
+  },
+  "observed_at": "2026-11-07T04:24:01.504869+00:00",
+  "workflow": "42331323249"
+}
