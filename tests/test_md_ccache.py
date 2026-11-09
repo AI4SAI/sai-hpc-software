@@ -45,7 +45,7 @@ class CachePolicyTests(unittest.TestCase):
             self.assertIsNone(cache.dependency_arguments(['-c', 'a.cpp', option], '/dep'))
         args = cache.dependency_arguments(['-c', 'a.cpp', '-MMD', '-MF', 'a.d', '-MT', 'a.o',
                                            '-o', 'a.o', '-Iheaders', '-DVALUE=2'], '/dep')
-        self.assertEqual(args, ['a.cpp', '-Iheaders', '-DVALUE=2', '-M', '-MF', '/dep',
+        self.assertEqual(args, ['a.cpp', '-Iheaders', '-DVALUE=2', '-M', '-o', '/dep',
                                 '-MT', 'sai_ccache_dependencies'])
 
     def test_tool_checksum_mismatch_is_rejected(self):

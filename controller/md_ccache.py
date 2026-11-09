@@ -197,16 +197,19 @@ def dependency_arguments(argv, depfile):
             return None
         output.append(arg)
         i += 1
-    return [*output, '-M', '-MF', str(depfile), '-MT', 'sai_ccache_dependencies']
+    # nvcc_wrapper only forwards -MF to NVCC during its separate -MD pass.
+    # With standalone -M, -o is the common GCC/NVCC dependency-output option.
+    return [*output, '-M', '-o', str(depfile), '-MT', 'sai_ccache_dependencies']
 
 
 def dependencies(text):
     text = text.replace('\\\n', '')
-    if not text.startswith('sai_ccache_dependencies:'):
+    target, separator, body = text.partition(':')
+    if not separator or not target.strip() or '\n' in target:
         raise ValueError('unrecognized compiler dependency output')
     # Make escaping differs from shell quoting: quotes are literal; backslash
     # escapes spaces/# and $$ denotes a literal dollar. No shell is executed.
-    lexer = shlex.shlex(text.split(':', 1)[1], posix=True)
+    lexer = shlex.shlex(body, posix=True)
     lexer.whitespace_split = True
     lexer.commenters = ''
     lexer.quotes = ''
