@@ -122,7 +122,13 @@ def compiler_files(cc, cxx, nvcc):
                 raise ValueError('compiler component not found: ' + value)
             paths.add(path.resolve())
     cuda = Path(nvcc).resolve().parent.parent
-    for folder in ('bin', 'nvvm/bin', 'nvvm/lib64', 'nvvm/libdevice'):
+    # CUDA also ships debuggers/profilers with optional Python/GUI libraries.
+    # Those are not compilation inputs and need not be runnable in the SIF.
+    for name in ('nvcc', 'nvcc.profile', 'ptxas', 'fatbinary', 'nvlink', 'cudafe++', 'bin2c'):
+        path = cuda / 'bin' / name
+        if path.is_file():
+            paths.add(path.resolve())
+    for folder in ('nvvm/bin', 'nvvm/lib64', 'nvvm/libdevice'):
         paths.update(p.resolve() for p in (cuda / folder).rglob('*') if p.is_file())
     # A changed shared implementation of a driver also invalidates the cache.
     for path in sorted(paths):
@@ -149,6 +155,8 @@ def prepare(target, output=Path('/runtime')):
                    compilers=compiler_files(os.environ['CC'], os.environ['CXX'], shutil.which('nvcc')),
                    native_flags=subprocess.check_output(
                        [os.environ['CC'], '-march=native', '-Q', '--help=target'], text=True),
+                   compiler_specs={name: subprocess.check_output(
+                       [os.environ[name], '-dumpspecs'], text=True) for name in ('CC', 'CXX')},
                    environment={k: os.environ.get(k, '') for k in (
                        'NVCC_WRAPPER_DEFAULT_COMPILER', 'CUDAHOSTCXX', 'CUDA_ROOT',
                        'NVCC_PREPEND_FLAGS', 'NVCC_APPEND_FLAGS', 'GCC_EXEC_PREFIX',
