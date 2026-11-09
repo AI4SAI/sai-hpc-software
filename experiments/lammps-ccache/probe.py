@@ -22,6 +22,8 @@ def main():
             ('kokkos-host', '/workspace/lammps/lib/kokkos/bin/nvcc_wrapper', ['--host-only']),
             ('kokkos-cuda', '/workspace/lammps/lib/kokkos/bin/nvcc_wrapper', ['-arch=sm_70']),
             ('cuda', shutil.which('nvcc'), ['-x', 'cu', '-arch=sm_70', '-ccbin', os.environ['CXX']])):
+        flags += (['-Xcompiler=-march=native,-mtune=native'] if label == 'cuda'
+                  else ['-march=native', '-mtune=native'])
         folder = root / label
         folder.mkdir()
         source = folder / 'probe.cpp'

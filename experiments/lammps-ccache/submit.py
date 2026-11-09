@@ -27,8 +27,10 @@ def main():
     from md_ccache import prepare_store
     from remote_controller import private_scratch, project_batch_directives
     cache = prepare_store(root, '16v100-avx2')
-    if any(cache.iterdir()):
-        raise ValueError('cold/warm comparison requires an empty new cache; never delete an existing cache')
+    # Failed compiler-cache setup may leave statistics directories. Preserve
+    # those receipts; only actual cached manifests/results would warm a build.
+    if any(p.is_file() and p.name.endswith(('M', 'R')) for p in cache.rglob('*')):
+        raise ValueError('cold/warm comparison requires zero cached objects; never delete an existing cache')
     dep, files = standalone.dependency('16v100-avx2')
     verified = standalone.verify_dependency(dep, files)
     source = dict(track='development', source_ref='refs/pull/5308/head',
@@ -77,7 +79,8 @@ def main():
     pins = {str(p.relative_to(control)): digest(p) for p in control.rglob('*') if p.is_file()}
     record = dict(schema=1, variants=variants, controller=str(control), controller_files=pins,
                   job_script_sha256=digest(script), source_sha=SHA, build_jobs=24,
-                  cache=str(cache), order='cold then warm; separate fresh overlays; OS caches not flushed',
+                  cache=str(cache), initial_cached_manifests_and_results=0,
+                  order='cold then warm; separate fresh overlays; OS caches not flushed',
                   scope='unpublished compiler-cache experiment; science requires separate acceptance')
     (experiment / 'request.json').write_text(json.dumps(record, indent=2, sort_keys=True) + '\n')
     subprocess.run(['bash', '-n', str(script)], check=True)

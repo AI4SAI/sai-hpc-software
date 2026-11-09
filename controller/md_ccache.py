@@ -154,7 +154,7 @@ def prepare(target, output=Path('/runtime')):
                    tool_sha256=BINARY_SHA256,
                    compilers=compiler_files(os.environ['CC'], os.environ['CXX'], shutil.which('nvcc')),
                    native_flags=subprocess.check_output(
-                       [os.environ['CC'], '-march=native', '-Q', '--help=target'], text=True),
+                       [os.environ['CC'], '-march=native', '-mtune=native', '-Q', '--help=target'], text=True),
                    compiler_specs={name: subprocess.check_output(
                        [os.environ[name], '-dumpspecs'], text=True) for name in ('CC', 'CXX')},
                    environment={k: os.environ.get(k, '') for k in (
@@ -248,7 +248,17 @@ def compile_command(config, compiler, argv):
         # Raw bytes participate even when preprocessing would erase the change
         # (comments, inactive #if branches), and system headers are included.
         namespace = hashlib.sha256(json.dumps(records, separators=(',', ':')).encode()).hexdigest()
-        return subprocess.call([config['tool'], compiler, *argv],
+        cached_argv = []
+        for arg in argv:
+            if Path(compiler).name == 'nvcc_wrapper' and arg in ('-march=native', '-mtune=native'):
+                # ccache 4.14 queries -### through nvcc_wrapper without
+                # --host-only, which NVCC rejects. Keep these options in the
+                # hash and actual invocation, but avoid that unsupported
+                # query. prepare() already hashes GCC's expanded native flags
+                # and the real toolchain. This is NOT ignore_options.
+                cached_argv.append('--ccache-skip')
+            cached_argv.append(arg)
+        return subprocess.call([config['tool'], compiler, *cached_argv],
                                env=cache_environment(config, namespace))
 
 

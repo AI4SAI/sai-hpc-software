@@ -22,6 +22,13 @@ which has not changed cannot conceal a changed underlying compiler. External
 library headers participate in the dependency scan; linking against libraries
 is always performed afresh.
 
+Ccache 4.14's native-CPU query uses `-###`, which `nvcc_wrapper` routes to NVCC
+and NVCC rejects. The launcher marks `-march=native` and `-mtune=native` with
+ccache's `--ccache-skip` when invoking that wrapper. Both options still enter
+the direct hash and reach the compiler unchanged; the expanded CPU options
+are checked through the context above. This avoids the unsupported query
+without ignoring either the options or the actual CPU architecture.
+
 The launcher removes inherited `CCACHE_*` overrides and supplies its own
 configuration: content checks, empty `sloppiness`, no inode/stat-only cache,
 compression, and a 20 GiB limit per partition. Unsupported scanning modes or

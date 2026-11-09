@@ -59,6 +59,34 @@ class CachePolicyTests(unittest.TestCase):
 @unittest.skipUnless(shutil.which('g++') and (os.environ.get('CCACHE_TEST_BINARY') or shutil.which('ccache')),
                      'requires g++ and ccache for real object-cache invalidation tests')
 class RealCompilerCacheTests(unittest.TestCase):
+    def test_native_cpu_flags_survive_a_wrapper_without_gcc_query_support(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            tool = os.environ.get('CCACHE_TEST_BINARY') or shutil.which('ccache')
+            config = dict(tool=tool, store=str(root / 'cache'), temporary=str(root / 'tmp'),
+                          context=str(root / 'context'), stats_log=str(root / 'stats'))
+            (root / 'tmp').mkdir()
+            (root / 'context').write_text('expanded-native-cpu-options-A')
+            source = root / 'a.cpp'
+            source.write_text('int answer() {return 42;}\n')
+            wrapper = root / 'nvcc_wrapper'
+            wrapper.write_text('#!/bin/sh\nif [ "$1" = "-###" ]; then exit 93; fi\nexec ' +
+                               shutil.which('g++') + ' "$@"\n')
+            wrapper.chmod(0o755)
+            time.sleep(1.05)
+            args = ['-march=native', '-mtune=native', '-MD', '-MF', str(root / 'a.d'),
+                    '-c', str(source), '-o', str(root / 'a.o')]
+            for expected in (False, True):
+                Path(config['stats_log']).unlink(missing_ok=True)
+                self.assertEqual(cache.compile_command(config, str(wrapper), args), 0)
+                stats = Path(config['stats_log']).read_text()
+                self.assertNotIn('internal_error', stats)
+                self.assertEqual('direct_cache_hit' in stats, expected)
+            (root / 'context').write_text('expanded-native-cpu-options-B')
+            Path(config['stats_log']).unlink()
+            self.assertEqual(cache.compile_command(config, str(wrapper), args), 0)
+            self.assertNotIn('direct_cache_hit', Path(config['stats_log']).read_text())
+
     def test_raw_inputs_flags_context_and_new_include_invalidate_only_affected_objects(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
