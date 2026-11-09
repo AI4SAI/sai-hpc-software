@@ -21,6 +21,7 @@ from release_contract import make_identity, validate_identity
 from remote_controller import (container_command, private_scratch, project_batch_directives,
                                safe_name, site_app_binds)
 from source_cache import checksum
+from md_ccache import prepare_store, store_path, tool_path
 
 CONTROL = Path(__file__).resolve().parent
 
@@ -105,6 +106,14 @@ def render(delivery, run_id):
             overlay=None if final else overlay, control=CONTROL, jobs=24, gpu=True,
             runtime=directory / 'runtime',
             extra_binds=[*binds, *([] if final else sources)])
+        if phase == 'build':
+            # Only the compiler cache is shared/writable; source/build trees
+            # and all export/acceptance phases retain their existing isolation.
+            position = argv.index(str(base))
+            argv[position:position] = [
+                '--bind', str(tool_path(ROOT).parent) + ':/ccache-tool:ro',
+                '--bind', str(store_path(ROOT, identity['target'])) + ':/ccache-store:rw',
+                '--env', 'SAI_MD_CCACHE=1']
         return ([arg for arg in argv if arg != '--fakeroot'] if final
                 else wrap_command(ROOT, directory, CONTROL, argv))
 
@@ -132,7 +141,11 @@ def render(delivery, run_id):
              'unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH',
              '[[ ${SLURM_CPUS_ON_NODE:?} -ge 24 ]]',
              shlex.join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', '32768', str(overlay)]),
-             shlex.join(command('build')), fsck('build'),
+             'build_exit=0', shlex.join(command('build')) + ' || build_exit=$?',
+             'for name in ccache-context.json ccache-statistics.json ccache-stats.log lammps-host-only.json; do',
+             '  if [[ -f "$TMPDIR/$name" ]]; then cp "$TMPDIR/$name" ' +
+             shlex.quote(str(directory / 'results')) + '/; fi',
+             'done', '[[ $build_exit == 0 ]] || exit "$build_exit"', fsck('build'),
              shlex.join(command('export')), fsck('export'),
              shlex.join(emit) + ' > ' + shlex.quote(str(directory / 'final.squashfs')),
              shlex.join(['apptainer', 'sif', 'new', str(image)]),
@@ -166,6 +179,7 @@ def submit(run_id, delivery):
         validate_claim_directory(directory, run_id, delivery)
     dep, files = dependency(delivery['identity']['target'])
     observed = verify_dependency(dep, files)
+    prepare_store(ROOT, delivery['identity']['target'])
     for name, sha in (('lammps', delivery['identity']['source_sha']),
                       ('deepmd-kit', dep['identity']['source_sha'])):
         subprocess.run(['git', '--git-dir', str(ROOT / 'cache/repositories' / name),

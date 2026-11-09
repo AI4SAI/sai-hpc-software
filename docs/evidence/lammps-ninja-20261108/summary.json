@@ -1,0 +1,56 @@
+{
+  "artifacts": {
+    "make": {
+      "bytes": 285421568,
+      "path": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/ninja-make-20261108-v1-make/candidate.sif",
+      "sha256": "ba93aa01030a4678108db9126551b5e3106fef64d37a5d7fa4d27e4edcdfec87"
+    },
+    "ninja": {
+      "bytes": 285421568,
+      "path": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/ninja-make-20261108-v1-ninja/candidate.sif",
+      "sha256": "4ed0072033d86e7d66e0ba02037ff3a31886ed8b80da15efb05e5699f471c373"
+    }
+  },
+  "build_job": "2302625",
+  "build_node": "16v100n16",
+  "compiler_commands": 2651,
+  "compiler_inputs_identical": true,
+  "full_flow_seconds": {
+    "make": 3606,
+    "ninja": 3751
+  },
+  "logical_cpus": 32,
+  "ninja_build_time_increase_percent": 5.681419593785867,
+  "ninja_full_flow_time_increase_percent": 4.021075984470324,
+  "numerical_cases": 28,
+  "numerical_passed": true,
+  "package_count": {
+    "make": 71,
+    "ninja": 71
+  },
+  "physical_cores": 16,
+  "science_job": "2304039",
+  "science_node": "16v100n06",
+  "scope": "one clean pair, Ninja first, OS cache not flushed; one-node scientific regression, not production publication",
+  "source_sha": "d291d572cf3c73a8a720774b78482a7c931304ca",
+  "styles_identical": true,
+  "variants": {
+    "make": {
+      "average_compiler_cpu_cores": 10.492625160000683,
+      "build_cpu_seconds": 34349.183284,
+      "build_seconds": 3273.6500885349233,
+      "configure_seconds": 29.949860948952846,
+      "install_seconds": 54.89954914001282,
+      "sampled_compiler_pss_peak_gib": 21.778377532958984
+    },
+    "ninja": {
+      "average_compiler_cpu_cores": 9.574289963852014,
+      "build_cpu_seconds": 33123.595440000005,
+      "build_seconds": 3459.639886096935,
+      "configure_seconds": 30.363561942940578,
+      "install_seconds": 45.09500002290588,
+      "sampled_compiler_pss_peak_gib": 22.066051483154297
+    }
+  },
+  "workers": 24
+}

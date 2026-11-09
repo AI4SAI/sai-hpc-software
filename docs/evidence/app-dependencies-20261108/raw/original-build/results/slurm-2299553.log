@@ -1,0 +1,1738 @@
+CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/org/org-open-sai/proj-sai-hpc-software/runs/app-dependencies-20261108-r1/runtime/apptainer-fuse2fs.conf
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+-- The C compiler identification is NVHPC 26.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/bin/mpicc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Final: share
+-- Looking for include file sys/file.h
+-- Looking for include file sys/file.h - found
+-- Looking for include files sys/file.h, sys/ioctl.h
+-- Looking for include files sys/file.h, sys/ioctl.h - found
+-- Looking for 3 include files sys/file.h, ..., sys/resource.h
+-- Looking for 3 include files sys/file.h, ..., sys/resource.h - found
+-- Looking for 4 include files sys/file.h, ..., sys/socket.h
+-- Looking for 4 include files sys/file.h, ..., sys/socket.h - found
+-- Looking for 5 include files sys/file.h, ..., sys/stat.h
+-- Looking for 5 include files sys/file.h, ..., sys/stat.h - found
+-- Looking for 6 include files sys/file.h, ..., sys/time.h
+-- Looking for 6 include files sys/file.h, ..., sys/time.h - found
+-- Looking for 7 include files sys/file.h, ..., sys/types.h
+-- Looking for 7 include files sys/file.h, ..., sys/types.h - found
+-- Looking for 8 include files sys/file.h, ..., features.h
+-- Looking for 8 include files sys/file.h, ..., features.h - found
+-- Looking for 9 include files sys/file.h, ..., dirent.h
+-- Looking for 9 include files sys/file.h, ..., dirent.h - found
+-- Looking for 10 include files sys/file.h, ..., unistd.h
+-- Looking for 10 include files sys/file.h, ..., unistd.h - found
+-- Looking for 11 include files sys/file.h, ..., pwd.h
+-- Looking for 11 include files sys/file.h, ..., pwd.h - found
+-- Looking for 12 include files sys/file.h, ..., pthread.h
+-- Looking for 12 include files sys/file.h, ..., pthread.h - found
+-- Looking for 13 include files sys/file.h, ..., dlfcn.h
+-- Looking for 13 include files sys/file.h, ..., dlfcn.h - found
+-- Looking for 14 include files sys/file.h, ..., netinet/in.h
+-- Looking for 14 include files sys/file.h, ..., netinet/in.h - found
+-- Looking for 15 include files sys/file.h, ..., netdb.h
+-- Looking for 15 include files sys/file.h, ..., netdb.h - found
+-- Looking for 16 include files sys/file.h, ..., arpa/inet.h
+-- Looking for 16 include files sys/file.h, ..., arpa/inet.h - found
+-- Looking for include file quadmath.h
+-- Looking for include file quadmath.h - found
+-- Looking for ceil in m;
+-- Looking for ceil in m; - found
+-- Looking for dlopen in dl;m
+-- Looking for dlopen in dl;m - found
+-- Looking for WSAStartup in ws2_32;m;dl
+-- Looking for WSAStartup in ws2_32;m;dl - not found
+-- Looking for gethostbyname in wsock32;m;dl
+-- Looking for gethostbyname in wsock32;m;dl - not found
+-- Looking for gethostname in ucb;m;dl
+-- Looking for gethostname in ucb;m;dl - not found
+-- Looking for sys/types.h
+-- Looking for sys/types.h - found
+-- Looking for stdint.h
+-- Looking for stdint.h - found
+-- Looking for stddef.h
+-- Looking for stddef.h - found
+-- Check size of char
+-- Check size of char - done
+-- Check size of short
+-- Check size of short - done
+-- Check size of int
+-- Check size of int - done
+-- Check size of unsigned
+-- Check size of unsigned - done
+-- Check size of long
+-- Check size of long - done
+-- Check size of long long
+-- Check size of long long - done
+-- Check size of float
+-- Check size of float - done
+-- Check size of double
+-- Check size of double - done
+-- Check size of long double
+-- Check size of long double - done
+-- Check size of int8_t
+-- Check size of int8_t - done
+-- Check size of uint8_t
+-- Check size of uint8_t - done
+-- Check size of int_least8_t
+-- Check size of int_least8_t - done
+-- Check size of uint_least8_t
+-- Check size of uint_least8_t - done
+-- Check size of int_fast8_t
+-- Check size of int_fast8_t - done
+-- Check size of uint_fast8_t
+-- Check size of uint_fast8_t - done
+-- Check size of int16_t
+-- Check size of int16_t - done
+-- Check size of uint16_t
+-- Check size of uint16_t - done
+-- Check size of int_least16_t
+-- Check size of int_least16_t - done
+-- Check size of uint_least16_t
+-- Check size of uint_least16_t - done
+-- Check size of int_fast16_t
+-- Check size of int_fast16_t - done
+-- Check size of uint_fast16_t
+-- Check size of uint_fast16_t - done
+-- Check size of int32_t
+-- Check size of int32_t - done
+-- Check size of uint32_t
+-- Check size of uint32_t - done
+-- Check size of int_least32_t
+-- Check size of int_least32_t - done
+-- Check size of uint_least32_t
+-- Check size of uint_least32_t - done
+-- Check size of int_fast32_t
+-- Check size of int_fast32_t - done
+-- Check size of uint_fast32_t
+-- Check size of uint_fast32_t - done
+-- Check size of int64_t
+-- Check size of int64_t - done
+-- Check size of uint64_t
+-- Check size of uint64_t - done
+-- Check size of int_least64_t
+-- Check size of int_least64_t - done
+-- Check size of uint_least64_t
+-- Check size of uint_least64_t - done
+-- Check size of int_fast64_t
+-- Check size of int_fast64_t - done
+-- Check size of uint_fast64_t
+-- Check size of uint_fast64_t - done
+-- Check size of size_t
+-- Check size of size_t - done
+-- Check size of ssize_t
+-- Check size of ssize_t - done
+-- Check size of ptrdiff_t
+-- Check size of ptrdiff_t - done
+-- Check size of off_t
+-- Check size of off_t - done
+-- Check size of time_t
+-- Check size of time_t - done
+-- Check size of _Bool
+-- Check size of _Bool - done
+-- Looking for CLOCK_MONOTONIC
+-- Looking for CLOCK_MONOTONIC - not found
+-- Performing Test H5_HAVE_TM_GMTOFF
+-- Performing Test H5_HAVE_TM_GMTOFF - Success
+-- Performing Test H5_HAVE___TM_GMTOFF
+-- Performing Test H5_HAVE___TM_GMTOFF - Failed
+-- Performing Test H5_HAVE_STRUCT_TIMEZONE
+-- Performing Test H5_HAVE_STRUCT_TIMEZONE - Failed
+-- Looking for gettimeofday
+-- Looking for gettimeofday - found
+-- Performing Test H5_HAVE_STAT_ST_BLOCKS
+-- Performing Test H5_HAVE_STAT_ST_BLOCKS - Success
+-- Looking for ioctl
+-- Looking for ioctl - found
+-- Performing Test H5_HAVE_STRUCT_VIDEOCONFIG
+-- Performing Test H5_HAVE_STRUCT_VIDEOCONFIG - Failed
+-- Performing Test H5_HAVE_STRUCT_TEXT_INFO
+-- Performing Test H5_HAVE_STRUCT_TEXT_INFO - Failed
+-- Looking for _getvideoconfig
+-- Looking for _getvideoconfig - not found
+-- Looking for gettextinfo
+-- Looking for gettextinfo - not found
+-- Looking for _scrsize
+-- Looking for _scrsize - not found
+-- Looking for GetConsoleScreenBufferInfo
+-- Looking for GetConsoleScreenBufferInfo - not found
+-- Looking for TIOCGWINSZ
+-- Looking for TIOCGWINSZ - found
+-- Looking for TIOCGETD
+-- Looking for TIOCGETD - found
+-- Looking for alarm
+-- Looking for alarm - found
+-- Looking for fcntl
+-- Looking for fcntl - found
+-- Looking for flock
+-- Looking for flock - found
+-- Looking for fork
+-- Looking for fork - found
+-- Looking for gethostname
+-- Looking for gethostname - found
+-- Looking for getrusage
+-- Looking for getrusage - found
+-- Looking for pread
+-- Looking for pread - found
+-- Looking for pwrite
+-- Looking for pwrite - found
+-- Looking for rand_r
+-- Looking for rand_r - found
+-- Looking for random
+-- Looking for random - found
+-- Looking for strcasestr
+-- Looking for strcasestr - found
+-- Looking for strdup
+-- Looking for strdup - found
+-- Looking for symlink
+-- Looking for symlink - found
+-- Looking for tmpfile
+-- Looking for tmpfile - found
+-- Looking for asprintf
+-- Looking for asprintf - found
+-- Looking for vasprintf
+-- Looking for vasprintf - found
+-- Looking for waitpid
+-- Looking for waitpid - found
+-- Looking for sigsetjmp
+-- Looking for sigsetjmp - found
+-- Looking for clock_gettime
+-- Looking for clock_gettime - found
+-- Looking for clock_gettime in rt
+-- Looking for clock_gettime in rt - found
+-- Looking for clock_gettime in posix4
+-- Looking for clock_gettime in posix4 - not found
+-- Check size of CLOCK_MONOTONIC_COARSE
+-- Check size of CLOCK_MONOTONIC_COARSE - done
+-- Testing maximum decimal precision for C - 21;33
+-- maximum decimal precision for C var - 33
+-- Checking if _Float16 support is available
+-- Check size of _Float16
+-- Check size of _Float16 - done
+-- Looking for FLT16_EPSILON
+-- Looking for FLT16_EPSILON - found
+-- Looking for FLT16_MIN
+-- Looking for FLT16_MIN - found
+-- Looking for FLT16_MAX
+-- Looking for FLT16_MAX - found
+-- Looking for FLT16_MIN_10_EXP
+-- Looking for FLT16_MIN_10_EXP - found
+-- Looking for FLT16_MAX_10_EXP
+-- Looking for FLT16_MAX_10_EXP - found
+-- Looking for FLT16_MANT_DIG
+-- Looking for FLT16_MANT_DIG - found
+-- Looking for fabsf16
+-- Looking for fabsf16 - not found
+-- Found Perl: /usr/bin/perl (found version "5.38.2") 
+-- ....All Warnings are enabled
+-- Found MPI_C: /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/bin/mpicc (found version "3.1") 
+-- Found MPI: TRUE (found version "3.1")  
+-- Looking for MPI_Comm_c2f
+-- Looking for MPI_Comm_c2f - found
+-- Looking for MPI_Info_c2f
+-- Looking for MPI_Info_c2f - found
+-- Looking for MPI_Ibarrier
+-- Looking for MPI_Ibarrier - found
+-- Looking for MPI_Issend
+-- Looking for MPI_Issend - found
+-- Looking for MPI_Iprobe
+-- Looking for MPI_Iprobe - found
+-- Looking for MPI_Irecv
+-- Looking for MPI_Irecv - found
+-- Looking for MPI_Get_elements_x
+-- Looking for MPI_Get_elements_x - found
+-- Looking for MPI_Type_size_x
+-- Looking for MPI_Type_size_x - found
+-- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.3")  
+-- The Fortran compiler identification is NVHPC 26.3.0
+-- Detecting Fortran compiler ABI info
+-- Detecting Fortran compiler ABI info - done
+-- Check for working Fortran compiler: /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/bin/mpifort - skipped
+-- Detecting Fortran/C Interface
+-- Detecting Fortran/C Interface - Found GLOBAL and MODULE mangling
+-- Verifying Fortran/C Compiler Compatibility
+-- Verifying Fortran/C Compiler Compatibility - Success
+-- Performing Test H5_FORTRAN_HAVE_SIZEOF
+-- Performing Test H5_FORTRAN_HAVE_SIZEOF - Success
+-- Performing Test H5_FORTRAN_HAVE_C_SIZEOF
+-- Performing Test H5_FORTRAN_HAVE_C_SIZEOF - Success
+-- Performing Test H5_FORTRAN_HAVE_STORAGE_SIZE
+-- Performing Test H5_FORTRAN_HAVE_STORAGE_SIZE - Success
+-- Performing Test H5_FORTRAN_HAVE_ISO_C_BINDING
+-- Performing Test H5_FORTRAN_HAVE_ISO_C_BINDING - Success
+-- Performing Test FORTRAN_HAVE_C_LONG_DOUBLE
+-- Performing Test FORTRAN_HAVE_C_LONG_DOUBLE - Success
+-- Performing Test FORTRAN_C_LONG_DOUBLE_IS_UNIQUE
+-- Performing Test FORTRAN_C_LONG_DOUBLE_IS_UNIQUE - Failed
+-- Performing Test FORTRAN_C_BOOL_IS_UNIQUE
+-- Performing Test FORTRAN_C_BOOL_IS_UNIQUE - Success
+-- Performing Test HAVE_ISO_FORTRAN_ENV
+-- Performing Test HAVE_ISO_FORTRAN_ENV - Success
+-- Performing Test FORTRAN_CHAR_ALLOC
+-- Performing Test FORTRAN_CHAR_ALLOC - Success
+-- ....NUMBER OF INTEGER KINDS FOUND 4
+-- ....REAL KINDS FOUND {4,8}
+-- ....INTEGER KINDS FOUND {1,2,4,8}
+-- ....MAX DECIMAL PRECISION 15
+-- ....LOGICAL KINDS FOUND {1,2,4,8}
+-- ....FOUND SIZEOF for REAL KINDs {4,8}
+-- Found MPI_Fortran: /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/bin/mpifort (found version "3.1") 
+-- Found MPI: TRUE (found version "3.1") found components: Fortran 
+-- Configuring done (56.1s)
+-- Generating done (0.5s)
+-- Build files have been written to: /workspace/hdf5-build
+[  1%] Building C object fortran/src/CMakeFiles/H5match_types.dir/H5match_types.c.o
+[  1%] Building Fortran object fortran/src/CMakeFiles/H5_buildiface.dir/H5_buildiface.F90.o
+[  1%] Building Fortran object hl/fortran/src/CMakeFiles/H5HL_buildiface.dir/H5HL_buildiface.F90.o
+[  2%] Building C object src/CMakeFiles/hdf5-static.dir/H5checksum.c.o
+[  2%] Building C object src/CMakeFiles/hdf5-static.dir/H5dbg.c.o
+[  2%] Building C object src/CMakeFiles/hdf5-static.dir/H5.c.o
+[  2%] Building C object src/CMakeFiles/hdf5-static.dir/H5build_settings.c.o
+[  2%] Building C object src/CMakeFiles/hdf5-static.dir/H5mpi.c.o
+[  2%] Linking C executable ../../bin/H5match_types
+[  2%] Building C object src/CMakeFiles/hdf5-static.dir/H5system.c.o
+[  3%] Building C object src/CMakeFiles/hdf5-static.dir/H5timer.c.o
+"/workspace/hdf5-source/src/H5.c", line 930: warning: pointless comparison of unsigned integer with zero [unsigned_compare_with_zero]
+          for (unsigned i = 0; i < VERS_RELEASE_EXCEPTIONS_SIZE; i++) {
+                                 ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[  3%] Built target H5match_types
+[  3%] Building C object src/CMakeFiles/hdf5-static.dir/H5trace.c.o
+[  3%] Building C object src/CMakeFiles/hdf5-static.dir/H5A.c.o
+[  3%] Building C object src/CMakeFiles/hdf5-static.dir/H5Abtree2.c.o
+[  4%] Building C object src/CMakeFiles/hdf5-static.dir/H5Adense.c.o
+"/workspace/hdf5-source/src/H5trace.c", line 2410: warning: statement is unreachable [code_is_unreachable]
+                          break;
+                          ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5trace.c", line 2426: warning: statement is unreachable [code_is_unreachable]
+                          break;
+                          ^
+
+[  4%] Built target H5gen_i
+[  4%] Building C object src/CMakeFiles/hdf5-static.dir/H5Adeprec.c.o
+[  4%] Building C object src/CMakeFiles/hdf5-static.dir/H5Aint.c.o
+[  4%] Building C object src/CMakeFiles/hdf5-static.dir/H5Atest.c.o
+[  4%] Linking Fortran executable ../../../bin/H5HL_buildiface
+[  4%] Building C object src/CMakeFiles/hdf5-static.dir/H5AC.c.o
+Generating the H5LTff_gen.F90, H5TBff_gen.F90 files
+[  5%] Building C object src/CMakeFiles/hdf5-static.dir/H5ACdbg.c.o
+[  5%] Built target H5HL_buildiface
+[  5%] Linking Fortran executable ../../bin/H5_buildiface
+[  5%] Built target H5HLgen
+[  5%] Building C object src/CMakeFiles/hdf5-static.dir/H5ACmpio.c.o
+[  5%] Building C object src/CMakeFiles/hdf5-static.dir/H5ACproxy_entry.c.o
+[  5%] Building C object src/CMakeFiles/hdf5-static.dir/H5B.c.o
+Generating the H5_gen.F90 file
+Generating the H5_gen.F90 file
+[  5%] Built target H5_buildiface
+[  6%] Building C object src/CMakeFiles/hdf5-static.dir/H5Bcache.c.o
+"/workspace/hdf5-source/src/H5ACmpio.c", line 501: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5ACmpio.c", line 2059: warning: statement is unreachable [code_is_unreachable]
+                      break;
+                      ^
+
+"/workspace/hdf5-source/src/H5ACmpio.c", line 2079: warning: statement is unreachable [code_is_unreachable]
+                      break;
+                      ^
+
+"/workspace/hdf5-source/src/H5ACmpio.c", line 2085: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+[  6%] Building C object src/CMakeFiles/hdf5-static.dir/H5Bdbg.c.o
+[  6%] Built target H5gen
+[  6%] Building C object src/CMakeFiles/hdf5-static.dir/H5B2.c.o
+[  6%] Building C object src/CMakeFiles/hdf5-static.dir/H5B2cache.c.o
+[  7%] Building C object src/CMakeFiles/hdf5-static.dir/H5B2dbg.c.o
+[  7%] Building C object src/CMakeFiles/hdf5-static.dir/H5B2hdr.c.o
+[  7%] Building C object src/CMakeFiles/hdf5-static.dir/H5B2int.c.o
+[  7%] Building C object src/CMakeFiles/hdf5-static.dir/H5B2internal.c.o
+[  8%] Building C object src/CMakeFiles/hdf5-static.dir/H5B2leaf.c.o
+[  8%] Building C object src/CMakeFiles/hdf5-static.dir/H5B2stat.c.o
+[  8%] Building C object src/CMakeFiles/hdf5-static.dir/H5B2test.c.o
+[  8%] Building C object src/CMakeFiles/hdf5-static.dir/H5C.c.o
+[  8%] Building C object src/CMakeFiles/hdf5-static.dir/H5Cdbg.c.o
+[  9%] Building C object src/CMakeFiles/hdf5-static.dir/H5Centry.c.o
+[  9%] Building C object src/CMakeFiles/hdf5-static.dir/H5Cepoch.c.o
+"/workspace/hdf5-source/src/H5C.c", line 703: warning: statement is unreachable [code_is_unreachable]
+                          break;
+                          ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5C.c", line 982: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+"/workspace/hdf5-source/src/H5C.c", line 1267: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+[  9%] Building C object src/CMakeFiles/hdf5-static.dir/H5Cimage.c.o
+[  9%] Building C object src/CMakeFiles/hdf5-static.dir/H5Cint.c.o
+[ 10%] Building C object src/CMakeFiles/hdf5-static.dir/H5Clog.c.o
+[ 10%] Building C object src/CMakeFiles/hdf5-static.dir/H5Clog_json.c.o
+[ 10%] Building C object src/CMakeFiles/hdf5-static.dir/H5Clog_trace.c.o
+"/workspace/hdf5-source/src/H5Cint.c", line 288: warning: statement is unreachable [code_is_unreachable]
+                      break;
+                      ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5Cint.c", line 298: warning: statement is unreachable [code_is_unreachable]
+                      break;
+                      ^
+
+"/workspace/hdf5-source/src/H5Cint.c", line 886: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+"/workspace/hdf5-source/src/H5Cint.c", line 899: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+"/workspace/hdf5-source/src/H5Cint.c", line 922: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+"/workspace/hdf5-source/src/H5Cint.c", line 931: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+[ 10%] Building C object src/CMakeFiles/hdf5-static.dir/H5Cmpio.c.o
+"/workspace/hdf5-source/src/H5Cint.c", line 2218: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+[ 11%] Building C object src/CMakeFiles/hdf5-static.dir/H5Cprefetched.c.o
+[ 11%] Building C object src/CMakeFiles/hdf5-static.dir/H5Cquery.c.o
+"/workspace/hdf5-source/src/H5Cprefetched.c", line 262: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 11%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ctag.c.o
+[ 11%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ctest.c.o
+[ 12%] Building C object src/CMakeFiles/hdf5-static.dir/H5CX.c.o
+[ 12%] Building C object src/CMakeFiles/hdf5-static.dir/H5D.c.o
+[ 12%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dbtree.c.o
+[ 12%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dbtree2.c.o
+[ 12%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dchunk.c.o
+[ 13%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dcompact.c.o
+[ 13%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dcontig.c.o
+[ 13%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ddbg.c.o
+[ 13%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ddeprec.c.o
+[ 14%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dearray.c.o
+[ 14%] Building C object src/CMakeFiles/hdf5-static.dir/H5Defl.c.o
+[ 14%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dfarray.c.o
+[ 14%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dfill.c.o
+[ 15%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dint.c.o
+[ 15%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dio.c.o
+[ 15%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dlayout.c.o
+[ 15%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dmpio.c.o
+[ 16%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dnone.c.o
+[ 16%] Building C object src/CMakeFiles/hdf5-static.dir/H5Doh.c.o
+"/workspace/hdf5-source/src/H5Dmpio.c", line 1510: warning: enumerated type mixed with another type [mixed_enum_type]
+      H5D_mpio_actual_io_mode_t        actual_io_mode        = 0;
+                                                               ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 16%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dscatgath.c.o
+[ 16%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dselect.c.o
+[ 16%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dsingle.c.o
+[ 17%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dtest.c.o
+[ 17%] Building C object src/CMakeFiles/hdf5-static.dir/H5Dvirtual.c.o
+[ 17%] Building C object src/CMakeFiles/hdf5-static.dir/H5E.c.o
+[ 17%] Building C object src/CMakeFiles/hdf5-static.dir/H5Edeprec.c.o
+[ 18%] Building C object src/CMakeFiles/hdf5-static.dir/H5Eint.c.o
+[ 18%] Building C object src/CMakeFiles/hdf5-static.dir/H5EA.c.o
+[ 18%] Building C object src/CMakeFiles/hdf5-static.dir/H5EAcache.c.o
+[ 18%] Building C object src/CMakeFiles/hdf5-static.dir/H5EAdbg.c.o
+[ 19%] Building C object src/CMakeFiles/hdf5-static.dir/H5EAdblkpage.c.o
+[ 19%] Building C object src/CMakeFiles/hdf5-static.dir/H5EAdblock.c.o
+[ 19%] Building C object src/CMakeFiles/hdf5-static.dir/H5EAhdr.c.o
+[ 19%] Building C object src/CMakeFiles/hdf5-static.dir/H5EAiblock.c.o
+[ 20%] Building C object src/CMakeFiles/hdf5-static.dir/H5EAint.c.o
+[ 20%] Building C object src/CMakeFiles/hdf5-static.dir/H5EAsblock.c.o
+[ 20%] Building C object src/CMakeFiles/hdf5-static.dir/H5EAstat.c.o
+[ 20%] Building C object src/CMakeFiles/hdf5-static.dir/H5EAtest.c.o
+[ 20%] Building C object src/CMakeFiles/hdf5-static.dir/H5ES.c.o
+[ 21%] Building C object src/CMakeFiles/hdf5-static.dir/H5ESevent.c.o
+[ 21%] Building C object src/CMakeFiles/hdf5-static.dir/H5ESint.c.o
+[ 21%] Building C object src/CMakeFiles/hdf5-static.dir/H5ESlist.c.o
+[ 21%] Building C object src/CMakeFiles/hdf5-static.dir/H5F.c.o
+[ 22%] Building C object src/CMakeFiles/hdf5-static.dir/H5Faccum.c.o
+[ 22%] Building C object src/CMakeFiles/hdf5-static.dir/H5Fcwfs.c.o
+[ 22%] Building C object src/CMakeFiles/hdf5-static.dir/H5Fdbg.c.o
+[ 22%] Building C object src/CMakeFiles/hdf5-static.dir/H5Fdeprec.c.o
+[ 23%] Building C object src/CMakeFiles/hdf5-static.dir/H5Fefc.c.o
+[ 23%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ffake.c.o
+[ 23%] Building C object src/CMakeFiles/hdf5-static.dir/H5Fint.c.o
+[ 23%] Building C object src/CMakeFiles/hdf5-static.dir/H5Fio.c.o
+[ 24%] Building C object src/CMakeFiles/hdf5-static.dir/H5Fmount.c.o
+[ 24%] Building C object src/CMakeFiles/hdf5-static.dir/H5Fmpi.c.o
+[ 24%] Building C object src/CMakeFiles/hdf5-static.dir/H5Fquery.c.o
+[ 24%] Building C object src/CMakeFiles/hdf5-static.dir/H5Fsfile.c.o
+"/workspace/hdf5-source/src/H5Fint.c", line 1039: warning: variable "shared" was set but never used [set_but_not_used]
+      H5F_shared_t *shared     = NULL;        /* Shared part of file              */
+                    ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5Fint.c", line 3877: warning: statement is unreachable [code_is_unreachable]
+                      break;
+                      ^
+
+[ 25%] Building C object src/CMakeFiles/hdf5-static.dir/H5Fspace.c.o
+[ 25%] Building C object src/CMakeFiles/hdf5-static.dir/H5Fsuper.c.o
+[ 25%] Building C object src/CMakeFiles/hdf5-static.dir/H5Fsuper_cache.c.o
+[ 25%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ftest.c.o
+[ 25%] Building C object src/CMakeFiles/hdf5-static.dir/H5FA.c.o
+[ 26%] Building C object src/CMakeFiles/hdf5-static.dir/H5FAcache.c.o
+[ 26%] Building C object src/CMakeFiles/hdf5-static.dir/H5FAdbg.c.o
+[ 26%] Building C object src/CMakeFiles/hdf5-static.dir/H5FAdblkpage.c.o
+[ 26%] Building C object src/CMakeFiles/hdf5-static.dir/H5FAdblock.c.o
+[ 27%] Building C object src/CMakeFiles/hdf5-static.dir/H5FAhdr.c.o
+[ 27%] Building C object src/CMakeFiles/hdf5-static.dir/H5FAint.c.o
+[ 27%] Building C object src/CMakeFiles/hdf5-static.dir/H5FAstat.c.o
+[ 27%] Building C object src/CMakeFiles/hdf5-static.dir/H5FAtest.c.o
+[ 28%] Building C object src/CMakeFiles/hdf5-static.dir/H5FD.c.o
+[ 28%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDcore.c.o
+[ 28%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDdirect.c.o
+[ 28%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDfamily.c.o
+[ 29%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDhdfs.c.o
+[ 29%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDint.c.o
+[ 29%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDlog.c.o
+[ 29%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDmirror.c.o
+"/workspace/hdf5-source/src/H5FDfamily.c", line 1164: warning: variable "plist" was set but never used [set_but_not_used]
+      H5P_genplist_t *plist;               /* Property list pointer */
+                      ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5FDfamily.c", line 1226: warning: variable "plist" was set but never used [set_but_not_used]
+      H5P_genplist_t      *plist;               /* Property list pointer */
+                           ^
+
+[ 29%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDmpi.c.o
+[ 30%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDmpio.c.o
+[ 30%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDmulti.c.o
+[ 30%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDonion.c.o
+[ 30%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDonion_header.c.o
+[ 31%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDonion_history.c.o
+[ 31%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDonion_index.c.o
+[ 31%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDperform.c.o
+[ 31%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDros3.c.o
+[ 32%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDs3comms.c.o
+[ 32%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDsec2.c.o
+[ 32%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDspace.c.o
+[ 32%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDsplitter.c.o
+[ 33%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDstdio.c.o
+[ 33%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDtest.c.o
+[ 33%] Building C object src/CMakeFiles/hdf5-static.dir/H5FDwindows.c.o
+[ 33%] Building C object src/CMakeFiles/hdf5-static.dir/H5FL.c.o
+[ 33%] Building C object src/CMakeFiles/hdf5-static.dir/H5FO.c.o
+"/workspace/hdf5-source/src/H5FDsplitter.c", line 647: warning: variable "plist_ptr" was set but never used [set_but_not_used]
+      H5P_genplist_t  *plist_ptr = NULL;
+                       ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 34%] Building C object src/CMakeFiles/hdf5-static.dir/H5FS.c.o
+[ 34%] Building C object src/CMakeFiles/hdf5-static.dir/H5FScache.c.o
+[ 34%] Building C object src/CMakeFiles/hdf5-static.dir/H5FSdbg.c.o
+[ 34%] Building C object src/CMakeFiles/hdf5-static.dir/H5FSint.c.o
+[ 35%] Building C object src/CMakeFiles/hdf5-static.dir/H5FSsection.c.o
+[ 35%] Building C object src/CMakeFiles/hdf5-static.dir/H5FSstat.c.o
+[ 35%] Building C object src/CMakeFiles/hdf5-static.dir/H5FStest.c.o
+[ 35%] Building C object src/CMakeFiles/hdf5-static.dir/H5G.c.o
+[ 36%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gbtree2.c.o
+[ 36%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gcache.c.o
+[ 36%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gcompact.c.o
+[ 36%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gdense.c.o
+[ 37%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gdeprec.c.o
+[ 37%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gent.c.o
+[ 37%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gint.c.o
+[ 37%] Building C object src/CMakeFiles/hdf5-static.dir/H5Glink.c.o
+[ 37%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gloc.c.o
+[ 38%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gname.c.o
+[ 38%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gnode.c.o
+[ 38%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gobj.c.o
+[ 38%] Building C object src/CMakeFiles/hdf5-static.dir/H5Goh.c.o
+[ 39%] Building C object src/CMakeFiles/hdf5-static.dir/H5Groot.c.o
+[ 39%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gtest.c.o
+[ 39%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gstab.c.o
+[ 39%] Building C object src/CMakeFiles/hdf5-static.dir/H5Gtraverse.c.o
+[ 40%] Building C object src/CMakeFiles/hdf5-static.dir/H5HF.c.o
+[ 40%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFbtree2.c.o
+[ 40%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFcache.c.o
+[ 40%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFdbg.c.o
+[ 41%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFdblock.c.o
+"/workspace/hdf5-source/src/H5HFcache.c", line 713: warning: a value of type "const H5F_t *" cannot be assigned to an entity of type "H5F_t *" (aka "struct H5F_t *") [incompatible_assignment_operands]
+      hdr->f = f;
+             ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5HFcache.c", line 1277: warning: a value of type "const H5F_t *" cannot be assigned to an entity of type "H5F_t *" (aka "struct H5F_t *") [incompatible_assignment_operands]
+      hdr->f = f;
+             ^
+
+"/workspace/hdf5-source/src/H5HFcache.c", line 1435: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+[ 41%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFdtable.c.o
+[ 41%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFhdr.c.o
+"/workspace/hdf5-source/src/H5HFcache.c", line 2424: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+[ 41%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFhuge.c.o
+[ 41%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFiblock.c.o
+[ 42%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFiter.c.o
+[ 42%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFman.c.o
+[ 42%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFsection.c.o
+[ 42%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFspace.c.o
+[ 43%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFstat.c.o
+[ 43%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFtest.c.o
+[ 43%] Building C object src/CMakeFiles/hdf5-static.dir/H5HFtiny.c.o
+[ 43%] Building C object src/CMakeFiles/hdf5-static.dir/H5HG.c.o
+[ 44%] Building C object src/CMakeFiles/hdf5-static.dir/H5HGcache.c.o
+[ 44%] Building C object src/CMakeFiles/hdf5-static.dir/H5HGdbg.c.o
+[ 44%] Building C object src/CMakeFiles/hdf5-static.dir/H5HGquery.c.o
+[ 44%] Building C object src/CMakeFiles/hdf5-static.dir/H5HL.c.o
+[ 45%] Building C object src/CMakeFiles/hdf5-static.dir/H5HLcache.c.o
+[ 45%] Building C object src/CMakeFiles/hdf5-static.dir/H5HLdbg.c.o
+[ 45%] Building C object src/CMakeFiles/hdf5-static.dir/H5HLdblk.c.o
+[ 45%] Building C object src/CMakeFiles/hdf5-static.dir/H5HLint.c.o
+[ 45%] Building C object src/CMakeFiles/hdf5-static.dir/H5HLprfx.c.o
+"/workspace/hdf5-source/src/H5HLcache.c", line 863: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 46%] Building C object src/CMakeFiles/hdf5-static.dir/H5I.c.o
+[ 46%] Building C object src/CMakeFiles/hdf5-static.dir/H5Idbg.c.o
+[ 46%] Building C object src/CMakeFiles/hdf5-static.dir/H5Iint.c.o
+[ 46%] Building C object src/CMakeFiles/hdf5-static.dir/H5Itest.c.o
+[ 47%] Building C object src/CMakeFiles/hdf5-static.dir/H5L.c.o
+[ 47%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ldeprec.c.o
+[ 47%] Building C object src/CMakeFiles/hdf5-static.dir/H5Lexternal.c.o
+[ 47%] Building C object src/CMakeFiles/hdf5-static.dir/H5Lint.c.o
+[ 48%] Building C object src/CMakeFiles/hdf5-static.dir/H5MF.c.o
+[ 48%] Building C object src/CMakeFiles/hdf5-static.dir/H5M.c.o
+"/workspace/hdf5-source/src/H5Lint.c", line 1521: warning: variable "lc_plist" was set but never used [set_but_not_used]
+      H5P_genplist_t *lc_plist;                            /* Link creation property list */
+                      ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 48%] Building C object src/CMakeFiles/hdf5-static.dir/H5MFaggr.c.o
+[ 48%] Building C object src/CMakeFiles/hdf5-static.dir/H5MFdbg.c.o
+"/workspace/hdf5-source/src/H5MF.c", line 954: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5MF.c", line 2151: warning: variable "fs_eoa" was set but never used [set_but_not_used]
+      haddr_t fs_eoa[H5FD_MEM_NTYPES];            /* EAO for each free-space manager */
+              ^
+
+[ 49%] Building C object src/CMakeFiles/hdf5-static.dir/H5MFsection.c.o
+"/workspace/hdf5-source/src/H5MF.c", line 3322: warning: pointless comparison of unsigned integer with zero [unsigned_compare_with_zero]
+      assert(fsm_type >= H5F_MEM_PAGE_DEFAULT);
+      ^
+
+[ 49%] Building C object src/CMakeFiles/hdf5-static.dir/H5MM.c.o
+[ 49%] Building C object src/CMakeFiles/hdf5-static.dir/H5O.c.o
+[ 49%] Building C object src/CMakeFiles/hdf5-static.dir/H5Oainfo.c.o
+[ 50%] Building C object src/CMakeFiles/hdf5-static.dir/H5Oalloc.c.o
+[ 50%] Building C object src/CMakeFiles/hdf5-static.dir/H5Oattr.c.o
+[ 50%] Building C object src/CMakeFiles/hdf5-static.dir/H5Oattribute.c.o
+[ 50%] Building C object src/CMakeFiles/hdf5-static.dir/H5Obogus.c.o
+"/workspace/hdf5-source/src/H5O.c", line 1877: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 50%] Building C object src/CMakeFiles/hdf5-static.dir/H5Obtreek.c.o
+[ 51%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ocache.c.o
+[ 51%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ocache_image.c.o
+[ 51%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ochunk.c.o
+[ 51%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ocont.c.o
+[ 52%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ocopy.c.o
+[ 52%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ocopy_ref.c.o
+[ 52%] Building C object src/CMakeFiles/hdf5-static.dir/H5Odbg.c.o
+[ 52%] Building C object src/CMakeFiles/hdf5-static.dir/H5Odeprec.c.o
+[ 53%] Building C object src/CMakeFiles/hdf5-static.dir/H5Odrvinfo.c.o
+"/workspace/hdf5-source/src/H5Ocopy_ref.c", line 472: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 53%] Building C object src/CMakeFiles/hdf5-static.dir/H5Odtype.c.o
+[ 53%] Building C object src/CMakeFiles/hdf5-static.dir/H5Oefl.c.o
+[ 53%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ofill.c.o
+[ 54%] Building C object src/CMakeFiles/hdf5-static.dir/H5Oflush.c.o
+[ 54%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ofsinfo.c.o
+[ 54%] Building C object src/CMakeFiles/hdf5-static.dir/H5Oginfo.c.o
+"/workspace/hdf5-source/src/H5Oflush.c", line 414: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 54%] Building C object src/CMakeFiles/hdf5-static.dir/H5Oint.c.o
+[ 54%] Building C object src/CMakeFiles/hdf5-static.dir/H5Olayout.c.o
+[ 55%] Building C object src/CMakeFiles/hdf5-static.dir/H5Olinfo.c.o
+[ 55%] Building C object src/CMakeFiles/hdf5-static.dir/H5Olink.c.o
+[ 55%] Building C object src/CMakeFiles/hdf5-static.dir/H5Omessage.c.o
+[ 55%] Building C object src/CMakeFiles/hdf5-static.dir/H5Omtime.c.o
+[ 56%] Building C object src/CMakeFiles/hdf5-static.dir/H5Oname.c.o
+"/workspace/hdf5-source/src/H5Olayout.c", line 387: warning: statement is unreachable [code_is_unreachable]
+                              break;
+                              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5Olayout.c", line 882: warning: statement is unreachable [code_is_unreachable]
+                          break;
+                          ^
+
+[ 56%] Building C object src/CMakeFiles/hdf5-static.dir/H5Onull.c.o
+[ 56%] Building C object src/CMakeFiles/hdf5-static.dir/H5Opline.c.o
+[ 56%] Building C object src/CMakeFiles/hdf5-static.dir/H5Orefcount.c.o
+[ 57%] Building C object src/CMakeFiles/hdf5-static.dir/H5Osdspace.c.o
+[ 57%] Building C object src/CMakeFiles/hdf5-static.dir/H5Oshared.c.o
+[ 57%] Building C object src/CMakeFiles/hdf5-static.dir/H5Oshmesg.c.o
+[ 57%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ostab.c.o
+[ 58%] Building C object src/CMakeFiles/hdf5-static.dir/H5Otest.c.o
+[ 58%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ounknown.c.o
+[ 58%] Building C object src/CMakeFiles/hdf5-static.dir/H5P.c.o
+[ 58%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pacpl.c.o
+[ 58%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pdapl.c.o
+[ 59%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pdcpl.c.o
+[ 59%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pdeprec.c.o
+[ 59%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pdxpl.c.o
+[ 59%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pencdec.c.o
+[ 60%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pfapl.c.o
+[ 60%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pfcpl.c.o
+[ 60%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pfmpl.c.o
+[ 60%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pgcpl.c.o
+[ 61%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pint.c.o
+[ 61%] Building C object src/CMakeFiles/hdf5-static.dir/H5Plapl.c.o
+[ 61%] Building C object src/CMakeFiles/hdf5-static.dir/H5Plcpl.c.o
+"/workspace/hdf5-source/src/H5Pint.c", line 5530: warning: pointless comparison of unsigned integer with zero [unsigned_compare_with_zero]
+      assert(type >= H5P_TYPE_USER && type <= H5P_TYPE_REFERENCE_ACCESS);
+      ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 61%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pmapl.c.o
+[ 62%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pmcpl.c.o
+[ 62%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pocpl.c.o
+[ 62%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pocpypl.c.o
+[ 62%] Building C object src/CMakeFiles/hdf5-static.dir/H5Pstrcpl.c.o
+[ 62%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ptest.c.o
+[ 63%] Building C object src/CMakeFiles/hdf5-static.dir/H5PB.c.o
+"/workspace/hdf5-source/src/H5Pocpl.c", line 660: warning: variable "filter_avail" was set but never used [set_but_not_used]
+      htri_t      filter_avail;        /* Filter availability */
+                  ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 63%] Building C object src/CMakeFiles/hdf5-static.dir/H5PL.c.o
+[ 63%] Building C object src/CMakeFiles/hdf5-static.dir/H5PLint.c.o
+[ 63%] Building C object src/CMakeFiles/hdf5-static.dir/H5PLpath.c.o
+[ 64%] Building C object src/CMakeFiles/hdf5-static.dir/H5PLplugin_cache.c.o
+[ 64%] Building C object src/CMakeFiles/hdf5-static.dir/H5R.c.o
+[ 64%] Building C object src/CMakeFiles/hdf5-static.dir/H5Rdeprec.c.o
+[ 64%] Building C object src/CMakeFiles/hdf5-static.dir/H5Rint.c.o
+[ 65%] Building C object src/CMakeFiles/hdf5-static.dir/H5UC.c.o
+[ 65%] Building C object src/CMakeFiles/hdf5-static.dir/H5RS.c.o
+[ 65%] Building C object src/CMakeFiles/hdf5-static.dir/H5S.c.o
+[ 65%] Building C object src/CMakeFiles/hdf5-static.dir/H5Sall.c.o
+[ 66%] Building C object src/CMakeFiles/hdf5-static.dir/H5Sdbg.c.o
+[ 66%] Building C object src/CMakeFiles/hdf5-static.dir/H5Sdeprec.c.o
+[ 66%] Building C object src/CMakeFiles/hdf5-static.dir/H5Shyper.c.o
+[ 66%] Building C object src/CMakeFiles/hdf5-static.dir/H5Smpio.c.o
+[ 66%] Building C object src/CMakeFiles/hdf5-static.dir/H5Snone.c.o
+[ 67%] Building C object src/CMakeFiles/hdf5-static.dir/H5Spoint.c.o
+[ 67%] Building C object src/CMakeFiles/hdf5-static.dir/H5Sselect.c.o
+"/workspace/hdf5-source/src/H5Shyper.c", line 3696: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5Shyper.c", line 4064: warning: statement is unreachable [code_is_unreachable]
+                      break;
+                      ^
+
+"/workspace/hdf5-source/src/H5Shyper.c", line 4167: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+"/workspace/hdf5-source/src/H5Shyper.c", line 4382: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+"/workspace/hdf5-source/src/H5Shyper.c", line 4424: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+"/workspace/hdf5-source/src/H5Shyper.c", line 4470: warning: statement is unreachable [code_is_unreachable]
+                      break;
+                      ^
+
+[ 67%] Building C object src/CMakeFiles/hdf5-static.dir/H5Stest.c.o
+"/workspace/hdf5-source/src/H5Spoint.c", line 1130: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5Spoint.c", line 1313: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+"/workspace/hdf5-source/src/H5Spoint.c", line 1457: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+"/workspace/hdf5-source/src/H5Spoint.c", line 1475: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+"/workspace/hdf5-source/src/H5Spoint.c", line 1508: warning: statement is unreachable [code_is_unreachable]
+                      break;
+                      ^
+
+[ 67%] Building C object src/CMakeFiles/hdf5-static.dir/H5SL.c.o
+[ 68%] Building C object src/CMakeFiles/hdf5-static.dir/H5SM.c.o
+[ 68%] Building C object src/CMakeFiles/hdf5-static.dir/H5SMbtree2.c.o
+"/workspace/hdf5-source/src/H5SL.c", line 925: warning: pointless comparison of unsigned integer with zero [unsigned_compare_with_zero]
+      assert(type >= H5SL_TYPE_INT && type <= H5SL_TYPE_GENERIC);
+      ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 68%] Building C object src/CMakeFiles/hdf5-static.dir/H5SMcache.c.o
+[ 68%] Building C object src/CMakeFiles/hdf5-static.dir/H5SMmessage.c.o
+[ 69%] Building C object src/CMakeFiles/hdf5-static.dir/H5SMtest.c.o
+[ 69%] Building C object src/CMakeFiles/hdf5-static.dir/H5T.c.o
+[ 69%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tarray.c.o
+[ 69%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tbit.c.o
+[ 70%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tcommit.c.o
+[ 70%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tcompound.c.o
+"/workspace/hdf5-source/src/H5T.c", line 2353: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5T.c", line 4757: warning: pointless comparison of unsigned integer with zero [unsigned_compare_with_zero]
+              assert(dt1->shared->u.vlen.loc >= H5T_LOC_BADLOC && dt1->shared->u.vlen.loc < H5T_LOC_MAXLOC);
+              ^
+
+"/workspace/hdf5-source/src/H5T.c", line 4758: warning: pointless comparison of unsigned integer with zero [unsigned_compare_with_zero]
+              assert(dt2->shared->u.vlen.loc >= H5T_LOC_BADLOC && dt2->shared->u.vlen.loc < H5T_LOC_MAXLOC);
+              ^
+
+"/workspace/hdf5-source/src/H5T.c", line 6231: warning: pointless comparison of unsigned integer with zero [unsigned_compare_with_zero]
+      assert(loc >= H5T_LOC_BADLOC && loc < H5T_LOC_MAXLOC);
+      ^
+
+"/workspace/hdf5-source/src/H5T.c", line 6438: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+[ 70%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tconv.c.o
+[ 70%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tconv_integer.c.o
+[ 70%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tconv_float.c.o
+[ 71%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tconv_string.c.o
+[ 71%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tconv_bitfield.c.o
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1735: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(FLOAT, FLOAT16, float, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1735: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(FLOAT, FLOAT16, float, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1735: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(FLOAT, FLOAT16, float, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1735: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(FLOAT, FLOAT16, float, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1735: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(FLOAT, FLOAT16, float, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1735: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(FLOAT, FLOAT16, float, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1735: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(FLOAT, FLOAT16, float, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1735: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(FLOAT, FLOAT16, float, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+[ 71%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tconv_compound.c.o
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1994: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(DOUBLE, FLOAT16, double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1994: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(DOUBLE, FLOAT16, double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1994: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(DOUBLE, FLOAT16, double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1994: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(DOUBLE, FLOAT16, double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1994: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(DOUBLE, FLOAT16, double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1994: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(DOUBLE, FLOAT16, double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1994: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(DOUBLE, FLOAT16, double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 1994: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(DOUBLE, FLOAT16, double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+[ 71%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tconv_reference.c.o
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 2258: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(LDOUBLE, FLOAT16, long double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 2258: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(LDOUBLE, FLOAT16, long double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 2258: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(LDOUBLE, FLOAT16, long double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 2258: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(LDOUBLE, FLOAT16, long double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 2258: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(LDOUBLE, FLOAT16, long double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 2258: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(LDOUBLE, FLOAT16, long double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 2258: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(LDOUBLE, FLOAT16, long double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+"/workspace/hdf5-source/src/H5Tconv_float.c", line 2258: warning: conversion may change the value [lossy_conversion]
+      H5T_CONV_Ff(LDOUBLE, FLOAT16, long double, H5__Float16, -FLT16_MAX, FLT16_MAX);
+      ^
+
+[ 72%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tconv_enum.c.o
+[ 72%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tconv_vlen.c.o
+[ 72%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tconv_array.c.o
+[ 72%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tcset.c.o
+[ 73%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tdbg.c.o
+[ 73%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tdeprec.c.o
+[ 73%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tenum.c.o
+"/workspace/hdf5-source/src/H5Tdbg.c", line 155: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5Tdbg.c", line 236: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+"/workspace/hdf5-source/src/H5Tdbg.c", line 270: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+"/workspace/hdf5-source/src/H5Tdbg.c", line 276: warning: statement is unreachable [code_is_unreachable]
+                          break;
+                          ^
+
+"/workspace/hdf5-source/src/H5Tdbg.c", line 300: warning: statement is unreachable [code_is_unreachable]
+                          break;
+                          ^
+
+"/workspace/hdf5-source/src/H5Tdbg.c", line 365: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+[ 73%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tfields.c.o
+[ 74%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tfixed.c.o
+[ 74%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tfloat.c.o
+[ 74%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tinit_float.c.o
+[ 74%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tnative.c.o
+[ 75%] Building C object src/CMakeFiles/hdf5-static.dir/H5Toffset.c.o
+[ 75%] Building C object src/CMakeFiles/hdf5-static.dir/H5Toh.c.o
+[ 75%] Building C object src/CMakeFiles/hdf5-static.dir/H5Topaque.c.o
+[ 75%] Building C object src/CMakeFiles/hdf5-static.dir/H5Torder.c.o
+[ 75%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tpad.c.o
+[ 76%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tprecis.c.o
+[ 76%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tref.c.o
+[ 76%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tstrpad.c.o
+[ 76%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tvisit.c.o
+[ 77%] Building C object src/CMakeFiles/hdf5-static.dir/H5Tvlen.c.o
+"/workspace/hdf5-source/src/H5Tref.c", line 168: warning: pointless comparison of unsigned integer with zero [unsigned_compare_with_zero]
+      assert(loc >= H5T_LOC_BADLOC && loc < H5T_LOC_MAXLOC);
+      ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 77%] Building C object src/CMakeFiles/hdf5-static.dir/H5TS.c.o
+[ 77%] Building C object src/CMakeFiles/hdf5-static.dir/H5VL.c.o
+"/workspace/hdf5-source/src/H5Tvisit.c", line 124: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5Tvlen.c", line 243: warning: pointless comparison of unsigned integer with zero [unsigned_compare_with_zero]
+      assert(loc >= H5T_LOC_BADLOC && loc < H5T_LOC_MAXLOC);
+      ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5Tvlen.c", line 1033: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+[ 77%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLcallback.c.o
+[ 78%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLdyn_ops.c.o
+[ 78%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLint.c.o
+[ 78%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLnative.c.o
+[ 78%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLnative_attr.c.o
+"/workspace/hdf5-source/src/H5VLcallback.c", line 6113: warning: pointless comparison of unsigned integer with zero [unsigned_compare_with_zero]
+      assert(lvl >= H5VL_GET_CONN_LVL_CURR && lvl <= H5VL_GET_CONN_LVL_TERM);
+      ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 79%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLnative_blob.c.o
+[ 79%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLnative_dataset.c.o
+"/workspace/hdf5-source/src/H5VLnative_attr.c", line 80: warning: variable "plist" was set but never used [set_but_not_used]
+      H5P_genplist_t *plist;
+                      ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5VLnative_attr.c", line 146: warning: variable "plist" was set but never used [set_but_not_used]
+      H5P_genplist_t *plist;
+                      ^
+
+[ 79%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLnative_datatype.c.o
+[ 79%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLnative_file.c.o
+[ 79%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLnative_group.c.o
+[ 80%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLnative_link.c.o
+[ 80%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLnative_introspect.c.o
+[ 80%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLnative_object.c.o
+[ 80%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLnative_token.c.o
+"/workspace/hdf5-source/src/H5VLnative_introspect.c", line 105: warning: statement is unreachable [code_is_unreachable]
+                      break;
+                      ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5VLnative_introspect.c", line 135: warning: statement is unreachable [code_is_unreachable]
+                      break;
+                      ^
+
+"/workspace/hdf5-source/src/H5VLnative_introspect.c", line 194: warning: statement is unreachable [code_is_unreachable]
+                      break;
+                      ^
+
+"/workspace/hdf5-source/src/H5VLnative_introspect.c", line 213: warning: statement is unreachable [code_is_unreachable]
+                      break;
+                      ^
+
+"/workspace/hdf5-source/src/H5VLnative_introspect.c", line 241: warning: statement is unreachable [code_is_unreachable]
+                      break;
+                      ^
+
+[ 81%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLpassthru.c.o
+[ 81%] Building C object src/CMakeFiles/hdf5-static.dir/H5VLtest.c.o
+[ 81%] Building C object src/CMakeFiles/hdf5-static.dir/H5VM.c.o
+[ 81%] Building C object src/CMakeFiles/hdf5-static.dir/H5WB.c.o
+[ 82%] Building C object src/CMakeFiles/hdf5-static.dir/H5Z.c.o
+[ 82%] Building C object src/CMakeFiles/hdf5-static.dir/H5Zdeflate.c.o
+[ 82%] Building C object src/CMakeFiles/hdf5-static.dir/H5Zfletcher32.c.o
+[ 82%] Building C object src/CMakeFiles/hdf5-static.dir/H5Znbit.c.o
+[ 83%] Building C object src/CMakeFiles/hdf5-static.dir/H5Zscaleoffset.c.o
+[ 83%] Building C object src/CMakeFiles/hdf5-static.dir/H5Zshuffle.c.o
+"/workspace/hdf5-source/src/H5Znbit.c", line 258: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/src/H5Znbit.c", line 352: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+"/workspace/hdf5-source/src/H5Znbit.c", line 582: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+"/workspace/hdf5-source/src/H5Znbit.c", line 720: warning: statement is unreachable [code_is_unreachable]
+                  break;
+                  ^
+
+"/workspace/hdf5-source/src/H5Znbit.c", line 811: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+"/workspace/hdf5-source/src/H5Znbit.c", line 883: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+[ 83%] Building C object src/CMakeFiles/hdf5-static.dir/H5Zszip.c.o
+[ 83%] Building C object src/CMakeFiles/hdf5-static.dir/H5Ztrans.c.o
+[ 83%] Linking C static library ../bin/libhdf5.a
+[ 83%] Built target hdf5-static
+[ 84%] Building C object utils/mirror_vfd/CMakeFiles/mirror_server.dir/mirror_server.c.o
+[ 84%] Building C object utils/mirror_vfd/CMakeFiles/mirror_server.dir/mirror_remote.c.o
+[ 84%] Building C object utils/mirror_vfd/CMakeFiles/mirror_server.dir/mirror_writer.c.o
+[ 84%] Building C object utils/mirror_vfd/CMakeFiles/mirror_server_stop.dir/mirror_server_stop.c.o
+[ 86%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5f90kit.c.o
+[ 86%] Building C object hl/src/CMakeFiles/hdf5_hl-static.dir/H5DO.c.o
+[ 86%] Building C object hl/src/CMakeFiles/hdf5_hl-static.dir/H5DS.c.o
+[ 86%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5_f.c.o
+[ 87%] Linking C executable ../../bin/mirror_server_stop
+"/workspace/hdf5-source/fortran/src/H5_f.c", line 603: warning: variable "mpi_code" was set but never used [set_but_not_used]
+      int mpi_code;
+          ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 87%] Building C object hl/src/CMakeFiles/hdf5_hl-static.dir/H5IM.c.o
+[ 87%] Building C object hl/src/CMakeFiles/hdf5_hl-static.dir/H5LT.c.o
+[ 87%] Linking C executable ../../bin/mirror_server
+[ 87%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5Af.c.o
+[ 88%] Building C object hl/src/CMakeFiles/hdf5_hl-static.dir/H5LTanalyze.c.o
+[ 88%] Built target mirror_server_stop
+[ 88%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5Df.c.o
+[ 89%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5Ef.c.o
+[ 89%] Built target mirror_server
+[ 89%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5Ff.c.o
+"/workspace/hdf5-source/hl/src/H5LT.c", line 3292: warning: variable "obj_type" was set but never used [set_but_not_used]
+      H5I_type_t obj_type;
+                 ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"hl/src//H5LTanalyze.l", line 56: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"hl/src//H5LTanalyze.l", line 57: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 58: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 59: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 60: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 61: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 62: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 63: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 65: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 66: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 67: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 68: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 69: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 70: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 71: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 72: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 74: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 75: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 76: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 77: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 78: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 79: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 80: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 81: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 82: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 83: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 84: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 86: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 87: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 88: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 89: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 90: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 91: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 92: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 93: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 94: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 95: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 97: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 98: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 99: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 100: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 101: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 102: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 103: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 104: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 105: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 106: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 107: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 108: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 109: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 111: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 112: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 113: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 114: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 116: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 117: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 118: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 123: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 128: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 130: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 131: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 132: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 133: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 134: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+"hl/src//H5LTanalyze.l", line 135: warning: statement is unreachable [code_is_unreachable]
+  	YY_BREAK
+  	^
+
+[ 89%] Building C object hl/src/CMakeFiles/hdf5_hl-static.dir/H5LTparse.c.o
+[ 89%] Building C object hl/src/CMakeFiles/hdf5_hl-static.dir/H5PT.c.o
+[ 89%] Building C object hl/src/CMakeFiles/hdf5_hl-static.dir/H5TB.c.o
+[ 90%] Building C object hl/src/CMakeFiles/hdf5_hl-static.dir/H5LD.c.o
+[ 90%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5Gf.c.o
+[ 90%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5If.c.o
+"hl/src//H5LTparse.c", line 1366: warning: statement is unreachable [code_is_unreachable]
+      break;
+      ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+[ 91%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5Lf.c.o
+"/workspace/hdf5-source/fortran/src/H5Gf.c", line 201: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+Remark: individual warnings can be suppressed with "--diag_suppress <warning-name>"
+
+"/workspace/hdf5-source/fortran/src/H5Gf.c", line 206: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+"/workspace/hdf5-source/fortran/src/H5Gf.c", line 211: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+"/workspace/hdf5-source/fortran/src/H5Gf.c", line 285: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+"/workspace/hdf5-source/fortran/src/H5Gf.c", line 290: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+"/workspace/hdf5-source/fortran/src/H5Gf.c", line 295: warning: statement is unreachable [code_is_unreachable]
+              break;
+              ^
+
+[ 91%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5Of.c.o
+[ 91%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5Pf.c.o
+[ 91%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5Rf.c.o
+[ 92%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5Sf.c.o
+[ 92%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5Tf.c.o
+[ 92%] Building C object fortran/src/CMakeFiles/hdf5_f90cstub-static.dir/H5Zf.c.o
+[ 92%] Linking C static library ../../bin/libhdf5_f90cstub.a
+[ 92%] Built target hdf5_f90cstub-static
+[ 92%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/__/static/H5fortran_types.F90.o
+[ 93%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5fortkit.F90.o
+[ 93%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5f90global.F90.o
+[ 93%] Linking C static library ../../bin/libhdf5_hl.a
+[ 93%] Built target hdf5_hl-static
+[ 93%] Building C object hl/fortran/src/CMakeFiles/hdf5_hl_f90cstub-static.dir/H5DSfc.c.o
+[ 93%] Building C object hl/fortran/src/CMakeFiles/hdf5_hl_f90cstub-static.dir/H5LTfc.c.o
+[ 93%] Building C object hl/fortran/src/CMakeFiles/hdf5_hl_f90cstub-static.dir/H5IMfc.c.o
+[ 93%] Building C object hl/fortran/src/CMakeFiles/hdf5_hl_f90cstub-static.dir/H5TBfc.c.o
+[ 94%] Building C object hl/fortran/src/CMakeFiles/hdf5_hl_f90cstub-static.dir/H5IMcc.c.o
+[ 94%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5Fff.F90.o
+[ 94%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5Sff.F90.o
+[ 94%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5Aff.F90.o
+[ 94%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5ESff.F90.o
+[ 94%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5Eff.F90.o
+[ 95%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5Pff.F90.o
+[ 95%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5Iff.F90.o
+[ 95%] Linking C static library ../../../bin/libhdf5_hl_f90cstub.a
+[ 95%] Built target hdf5_hl_f90cstub-static
+[ 95%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5Lff.F90.o
+[ 95%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5Off.F90.o
+[ 95%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5Rff.F90.o
+[ 95%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5Tff.F90.o
+[ 95%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5VLff.F90.o
+[ 96%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5Zff.F90.o
+[ 96%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5_ff.F90.o
+[ 97%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5Dff.F90.o
+[ 98%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/__/static/H5_gen.F90.o
+[ 98%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/H5Gff.F90.o
+[ 98%] Building Fortran object fortran/src/CMakeFiles/hdf5_fortran-static.dir/HDF5.F90.o
+[ 98%] Linking Fortran static library ../../bin/libhdf5_fortran.a
+[ 98%] Built target hdf5_fortran-static
+[ 98%] Building Fortran object hl/fortran/src/CMakeFiles/hdf5_hl_fortran-static.dir/H5DOff.F90.o
+[ 98%] Building Fortran object hl/fortran/src/CMakeFiles/hdf5_hl_fortran-static.dir/H5DSff.F90.o
+[ 98%] Building Fortran object hl/fortran/src/CMakeFiles/hdf5_hl_fortran-static.dir/H5IMff.F90.o
+[ 98%] Building Fortran object hl/fortran/src/CMakeFiles/hdf5_hl_fortran-static.dir/H5LTff.F90.o
+[ 99%] Building Fortran object hl/fortran/src/CMakeFiles/hdf5_hl_fortran-static.dir/H5TBff.F90.o
+[ 99%] Building Fortran object hl/fortran/src/CMakeFiles/hdf5_hl_fortran-static.dir/__/static/H5TBff_gen.F90.o
+[100%] Building Fortran object hl/fortran/src/CMakeFiles/hdf5_hl_fortran-static.dir/__/static/H5LTff_gen.F90.o
+[100%] Linking Fortran static library ../../../bin/libhdf5_hl_fortran.a
+[100%] Built target hdf5_hl_fortran-static
+-- Install configuration: "Release"
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/hdf5.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5api_adpt.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5encode.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5public.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Apublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5ACpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Cpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Dpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Epubgen.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Epublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5ESdevelop.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5ESpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Fpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDcore.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDdevelop.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDdirect.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDfamily.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDhdfs.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDlog.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDmirror.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDmpi.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDmpio.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDmulti.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDonion.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDros3.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDs3comms.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDsec2.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDsplitter.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDstdio.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDwindows.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDsubfiling.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5FDioc.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Gpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Idevelop.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Ipublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Ldevelop.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Lpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Mpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5MMpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Opublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Ppublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5PLextern.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5PLpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Rpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Spublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Tdevelop.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Tpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5TSdevelop.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5VLconnector.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5VLconnector_passthru.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5VLnative.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5VLpassthru.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5VLpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Zdevelop.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Zpublic.h
+-- Up-to-date: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5Epubgen.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5version.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5overflow.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5pubconf.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/libhdf5.a
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/pkgconfig/hdf5.pc
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/bin/h5cc
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/bin/h5pcc
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/bin/mirror_server
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/bin/mirror_server_stop
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/bin/h5fuse
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5DOpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5DSpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5IMpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5LTpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5PTpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5TBpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5LDpublic.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/hdf5_hl.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/libhdf5_hl.a
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/pkgconfig/hdf5_hl.pc
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/bin/h5hlcc
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5f90.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5f90i.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5f90proto.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5f90i_gen.h
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5fortran_types.F90
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/H5config_f.inc
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5fortran_types.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/hdf5.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5fortkit.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5global.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5a.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5d.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5e.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5es.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5f.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5g.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5i.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5l.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5lib.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5o.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5p.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5r.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5s.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5t.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5vl.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5z.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5_gen.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5fortran_types.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/hdf5.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5fortkit.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5global.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5a.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5d.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5e.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5es.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5f.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5g.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5i.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5l.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5lib.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5o.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5p.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5r.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5s.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5t.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5vl.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5z.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5_gen.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/libhdf5_f90cstub.a
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/libhdf5_fortran.a
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/pkgconfig/hdf5_fortran.pc
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/bin/h5fc
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/bin/h5pfc
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5ds.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5tb.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5tb_const.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5lt.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5lt_const.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5im.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static/h5do.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5ds.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5tb.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5tb_const.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5lt.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5lt_const.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5im.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include/h5do.mod
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/libhdf5_hl_f90cstub.a
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/libhdf5_hl_fortran.a
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/pkgconfig/hdf5_hl_fortran.pc
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/bin/h5hlfc
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/cmake/hdf5-targets.cmake
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/cmake/hdf5-targets-release.cmake
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/cmake/hdf5-config.cmake
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/cmake/hdf5-config-version.cmake
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/libhdf5.settings
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/share/COPYING
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/share/USING_HDF5_CMake.txt
+-- Installing: /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/share/RELEASE.txt
+Parallel mksquashfs: Using 8 processors
+Creating 4.0 filesystem on /workspace/final.squashfs, block size 131072.
+
+[/                                                             ]    0/1253   0%
+[===================\                                        ]  4600/14026  32%
+[=======================================/                    ]  9300/14026  66%
+[===========================================================\] 14026/14026 100%
+
+Exportable Squashfs 4.0 filesystem, gzip compressed, data block size 131072
+	compressed data, compressed metadata, compressed fragments,
+	no xattrs, compressed ids
+	duplicates are removed
+Filesystem size 174084.84 Kbytes (170.00 Mbytes)
+	24.04% of uncompressed filesystem size (724125.54 Kbytes)
+Inode table size 90729 bytes (88.60 Kbytes)
+	29.83% of uncompressed inode table size (304195 bytes)
+Directory table size 87222 bytes (85.18 Kbytes)
+	29.49% of uncompressed directory table size (295743 bytes)
+Number of duplicate files found 34
+Number of inodes 8768
+Number of files 8585
+Number of fragments 193
+Number of symbolic links 1
+Number of device nodes 0
+Number of fifo nodes 0
+Number of socket nodes 0
+Number of directories 182
+Number of hard-links 0
+Number of ids (unique uids + gids) 1
+Number of uids 1
+	root (0)
+Number of gids 1
+	root (0)
+CP2K_OVERLAY_SYNC_START dependencies
+CP2K_OVERLAY_SYNC_COMPLETE dependencies
+MANAGED_OVERLAY_EXIT /org/org-open-sai/proj-sai-hpc-software/runs/app-dependencies-20261108-r1/results/managed-overlay-99d7b827232647d3b087b46e6493019b.json status=0
+CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/org/org-open-sai/proj-sai-hpc-software/runs/app-dependencies-20261108-r1/runtime/apptainer-fuse2fs.conf
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+WARNING: user: unknown userid 0
+WARNING: user: unknown userid 0
+MANAGED_OVERLAY_EXIT /org/org-open-sai/proj-sai-hpc-software/runs/app-dependencies-20261108-r1/results/managed-overlay-7989229b17b244fda05e5d903411fa20.json status=0
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+Traceback (most recent call last):
+  File "/control/app_dependency.py", line 161, in <module>
+    globals()[args.op.replace('-', '_')]()
+  File "/control/app_dependency.py", line 108, in verify_hdf5
+    compile_output = run([Path(os.environ['MPI_HOME'])/'bin/mpifort',
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/control/app_dependency.py", line 28, in run
+    raise RuntimeError(str(argv) + '\n' + result.stdout)
+RuntimeError: [PosixPath('/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/bin/mpifort'), '-I/opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include', '-I/opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static', PosixPath('/runtime/hdf5-consumer/consumer.f90'), PosixPath('/opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/libhdf5_fortran.a'), PosixPath('/opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/libhdf5_f90cstub.a'), PosixPath('/opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/libhdf5.a'), '-lsz', '-lz', '-ldl', '-lm', '-o', PosixPath('/runtime/hdf5-consumer/consumer')]
+mkdir: cannot create directory ‘/root/.config’: Read-only file system
+ERROR: output directory '/root/.config/NVIDIA/nvhpc/26.3' not found
+

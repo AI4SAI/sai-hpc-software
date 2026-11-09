@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Select and verify the Volta build for legacy FindCUDA and native CUDA CMake."""
 import argparse
+import json
 from pathlib import Path
 import re
+import shlex
 
 
 def native_cuda(source):
@@ -22,6 +24,30 @@ def options(source, host_compiler):
             '-DCUDA_HOST_COMPILER=' + host_compiler]
 
 
+def target_commands(build, target):
+    """Inspect generated compiler commands for either Make or Ninja.
+
+    Keep flags.make compatibility for older frozen controllers. An existing
+    compile database must be complete; never hide missing Ninja targets by
+    falling back to a stale Makefile.
+    """
+    database = build / 'compile_commands.json'
+    if not database.exists():
+        return [(build / 'CMakeFiles' / (target + '.dir') / 'flags.make').read_text()]
+    commands = []
+    pattern = r'(?:^|/)CMakeFiles/' + re.escape(target) + r'\.dir/'
+    for entry in json.loads(database.read_text()):
+        args = entry.get('arguments') or shlex.split(entry['command'])
+        output = entry.get('output')
+        if output is None and '-o' in args:
+            output = args[args.index('-o') + 1]
+        if output and re.search(pattern, output):
+            commands.append(shlex.join(args))
+    if not commands:
+        raise ValueError('missing generated compiler commands for target: ' + target)
+    return commands
+
+
 def verify(source, build):
     build = Path(build)
     modern = native_cuda(source)
@@ -35,13 +61,13 @@ def verify(source, build):
     if missing:
         raise ValueError('unrecognized or incorrect CMake options: ' + ', '.join(sorted(missing)))
     for target, definition in (('lammps', '-DFFT_KOKKOS_CUFFT'), ('gpu', '-DCUDA_MPS_SUPPORT')):
-        if definition not in (build / 'CMakeFiles' / (target + '.dir') / 'flags.make').read_text():
+        if any(definition not in shlex.split(command) for command in target_commands(build, target)):
             raise ValueError('missing generated definition: ' + definition)
     if modern:
-        flags = (build / 'CMakeFiles/gpu_fatbin.dir/flags.make').read_text()
-        architectures = set(re.findall(r'(?:compute|sm)_([0-9]+)', flags))
-        if architectures != {'70'}:
-            raise ValueError('GPU fatbinary compilation must target only Volta SM70')
+        for command in target_commands(build, 'gpu_fatbin'):
+            architectures = set(re.findall(r'(?:compute|sm)_([0-9]+)', command))
+            if architectures != {'70'}:
+                raise ValueError('GPU fatbinary compilation must target only Volta SM70')
     return 'native-cuda' if modern else 'find-cuda'
 
 
