@@ -36,6 +36,9 @@ The service cgroup includes Listener, Worker, Python, Git, SSH and charged file
 cache. It has `MemoryHigh=1G`, `MemoryMax=2G`, no swap, and a two-CPU quota.
 Startup requires at least 3 GiB available memory and low memory pressure.
 This is a one-shot capacity check, not a reservation or resident monitor.
+Startup retries once per minute if capacity is insufficient or the runner
+exits; it never launches a listener when the capacity check fails. A deliberate
+`systemctl --user stop` still stops it without restarting.
 Keep the old 512 MiB host disabled; these limits are for the larger VM.
 
 Source preparation is serial, while submitted Slurm jobs run concurrently.

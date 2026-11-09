@@ -1,12 +1,11 @@
 [Unit]
 Description=SAI daily build relay (GitHub Actions)
 After=network-online.target
-StartLimitIntervalSec=1800
-StartLimitBurst=2
+StartLimitIntervalSec=0
 
 [Service]
 WorkingDirectory=%h/ci/runner
-ExecCondition=/usr/bin/python3 %h/ci/deployment/check_capacity.py --runner-mib 2048 --reserve-mib 1024
+ExecStartPre=/usr/bin/python3 %h/ci/deployment/check_capacity.py --runner-mib 2048 --reserve-mib 1024
 ExecStart=/usr/bin/python3 %h/ci/deployment/sandbox.py %h/ci %h/ci/runner/run.sh
 Environment=HOME=%h/ci/work/home
 Environment=PATH=%h/ci/bin:/usr/local/bin:/usr/bin:/bin
@@ -40,8 +39,8 @@ OOMPolicy=kill
 CPUWeight=50
 CPUQuota=200%
 IOWeight=50
-Restart=on-failure
-RestartSec=300
+Restart=always
+RestartSec=60
 KillMode=control-group
 TimeoutStopSec=60
 

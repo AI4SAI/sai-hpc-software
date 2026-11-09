@@ -34,7 +34,7 @@ def main():
     except (OSError, KeyError, ValueError) as error:
         reason = f'cannot verify memory headroom: {error}'
     if reason:
-        # ExecCondition exit 1 skips ExecStart without an automatic restart.
+        # ExecStartPre failure prevents the listener; systemd retries later.
         print('Runner left stopped: ' + reason, flush=True)
         return 1
     print('Runner startup memory check passed; this does not reserve host memory.', flush=True)
