@@ -27,9 +27,10 @@ def main():
     from md_ccache import prepare_store
     from remote_controller import private_scratch, project_batch_directives
     cache = prepare_store(root, '16v100-avx2')
-    # Failed compiler-cache setup may leave statistics directories. Preserve
-    # those receipts; only actual cached manifests/results would warm a build.
-    if any(p.is_file() and p.name.endswith(('M', 'R')) for p in cache.rglob('*')):
+    # Failed setup may leave statistics/tag files. ccache 4.14 data files use
+    # plain hash names, without the older M/R suffixes. Reject every other
+    # file, including unknown formats, rather than mislabel a warm cache cold.
+    if any(p.is_file() and p.name not in ('stats', 'CACHEDIR.TAG') for p in cache.rglob('*')):
         raise ValueError('cold/warm comparison requires zero cached objects; never delete an existing cache')
     dep, files = standalone.dependency('16v100-avx2')
     verified = standalone.verify_dependency(dep, files)

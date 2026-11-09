@@ -62,10 +62,17 @@ work; it never permits skipping acceptance. The current upstream source and
 package selection remain authoritative; enabling ccache does not apply an
 unmerged upstream patch or change the CMake generator.
 
-The additional dependency scan and raw-content hashing have a cost, so the
-warm-cache speedup must be measured on the cluster. The experiment in
+The additional dependency scan and raw-content hashing have a cost. The experiment in
 `experiments/lammps-ccache` uses the same pinned PR #5308 source twice, fresh
 overlays, one node, 24 workers and identical options. It separately records
 configuration, compilation/linking, installation and numerical validation.
 These measurements are distinct from the previous comparison of PR #5308
 against its base without any compiler cache.
+
+The [November 9 qualification](evidence/lammps-ccache-20261109/README.md) completed
+both builds and all 28 numerical executions. On 16V100, compile/link time fell
+from 48m10.88s with a cold cache to 11m18.00s with a warm cache (76.55% less time,
+4.26x speedup). All 2,543 cacheable calls hit; 107 special CUDA commands still
+compiled normally. This is a fully unchanged-source comparison on the pinned
+PR #5308 source. Daily hit rates depend on changed inputs and compiler options;
+other partitions populate their own caches on their first build.
