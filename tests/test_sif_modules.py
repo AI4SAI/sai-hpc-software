@@ -128,6 +128,30 @@ proc setenv {name value} {puts "ENV $name=$value"}
         self.assertEqual(command[-len(argv):], argv)
         self.assertEqual(environment, original)
 
+    def test_all_applications_expose_host_data_but_keep_sif_and_private_scratch(self):
+        memory = runtime.memory_root({'SLURM_JOB_ID': '123'})
+        scratch = memory / 'runtime/rank0'
+        for software, app in self.snapshot['applications'].items():
+            for partition, row in app['partitions'].items():
+                with self.subTest(software=software, partition=partition):
+                    environment = dict(SLURM_JOB_PARTITION=partition, SLURM_JOB_ID='123',
+                                       MPI_HOME=row.get('mpi_prefix', ''), TMPDIR=str(memory), PATH='/usr/bin')
+                    with patch.object(runtime.shutil, 'which', return_value='/opt/apptainer'), \
+                            patch.object(runtime.Path, 'is_dir', return_value=True):
+                        args, child = runtime.command(self.snapshot, Path('/org/example/catalog.json'),
+                            software, runtime.PROGRAMS[software][0], [], environment,
+                            Path('/org/example/work'), scratch)
+                    binds = [args[i + 1] for i, arg in enumerate(args) if arg == '--bind']
+                    self.assertIn('/home:/home:rw', binds)
+                    self.assertIn('/org:/org:rw', binds)
+                    self.assertIn(str(scratch) + ':/tmp:rw', binds)
+                    self.assertIn(str(scratch) + ':/var/tmp:rw', binds)
+                    self.assertIn('/dev/shm:/dev/shm:rw', binds)
+                    self.assertFalse(any(value.split(':')[0] in ('/', '/opt', '/opt/apps', '/tmp')
+                                         for value in binds))
+                    self.assertIn(row['image'], args)
+                    self.assertEqual(child['APPTAINERENV_XDG_CACHE_HOME'], str(scratch / 'cache'))
+
     def test_qe_standard_aliases_preserve_elf_argv0_and_literal_arguments(self):
         if not shutil.which('cc'):
             self.skipTest('a C compiler is required for the ELF argv[0] probe')

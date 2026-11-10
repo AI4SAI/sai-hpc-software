@@ -317,6 +317,11 @@ def command(manifest, manifest_path, software, program, arguments, environment, 
         # wrapper and ldconfig.real together, with the cache for the host
         # libraries already exposed through /usr and /lib.
         binds += [('/usr/sbin', '/sbin', 'ro'), ('/etc/ld.so.cache', '/etc/ld.so.cache', 'ro')]
+    # Match native data access: inputs, restart files and symlink targets can
+    # live outside cwd. Bind the site's data trees at their original paths;
+    # the caller's UID/groups/ACLs still govern access. Do not bind /opt/apps,
+    # which would hide the executable and private libraries stored in the SIF.
+    binds += [(path, path, 'rw') for path in ('/home', '/org') if Path(path).is_dir()]
     binds += [(str(work), str(work), 'rw'), (str(host_tmp), str(host_tmp), 'rw'),
               (str(scratch), '/tmp', 'rw'), (str(scratch), '/var/tmp', 'rw'),
               ('/dev/shm', '/dev/shm', 'rw')]

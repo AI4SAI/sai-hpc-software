@@ -141,8 +141,8 @@ def render(software, partition, bundle, output):
         runner = ("import os,sys,runpy; os.chdir('training'); sys.argv="
                   + repr(['../control/deepmd_training_check.py', prefix, '../case/fixture.json'])
                   + "; runpy.run_path(sys.argv[0], run_name='__main__')")
-        # Bind the complete case tree by launching from its parent; the SIF
-        # exposes only the current work directory, never arbitrary siblings.
+        # Launch from the case tree's parent so the training script's relative
+        # fixture and output paths match its standalone acceptance layout.
         lines += ['cd ..', 'deepmd-python -c ' + q(runner) + ' > training/training.log 2>&1']
     lines += ['cd ' + q(str(output)), 'python3 -B ' + q(str(Path(__file__).resolve())) + ' verify ' + q(str(output))]
     return '\n'.join(lines) + '\n'
