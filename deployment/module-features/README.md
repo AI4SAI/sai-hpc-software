@@ -44,7 +44,7 @@ The reusable audit reports this as an error, not a complete inventory. Run it
 from an account with access to check for additional `saiuser01` files there:
 
 ```bash
-python3 audit.py > owner-audit.json
+python3 audit.py > "$HOME/sai-module-audit.json"
 ```
 
 With the account allowed to update these `/opt` modulefiles:
