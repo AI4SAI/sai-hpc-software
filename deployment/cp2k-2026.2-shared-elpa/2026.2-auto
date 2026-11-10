@@ -4,6 +4,7 @@ proc ModulesHelp {} {
     puts stderr "Run cp2k.psmp; CP2K_DATA_DIR selects the original packaged data."
 }
 module-whatis "CP2K 2026.2; shared ELPA; native MPI/OpenMP; Slurm partition selection"
+module-whatis "Features: DBCSR; LibXC/Libint2; PLUMED; DFT-D4/TBLITE; HDF5; CUDA on V100; CPU on DSPRHBM"
 
 set build cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43
 if {[module-info mode load]} {

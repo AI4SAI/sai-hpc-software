@@ -7,6 +7,7 @@ proc ModulesHelp {} {
     puts stderr "Example: mpirun -np \$SLURM_NTASKS pw.x -in input.in > output.out"
 }
 module-whatis "Quantum ESPRESSO 7.6; NVHPC 26.3 / OpenMPI 5.0.10; native partition selection"
+module-whatis "Features: MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on V100"
 conflict qe
 if {[module-info mode load]} {
     if {![info exists env(SLURM_JOB_ID)] || ![regexp {^[1-9][0-9]*$} $env(SLURM_JOB_ID)] || ![info exists env(SLURM_JOB_PARTITION)]} {

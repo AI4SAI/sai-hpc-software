@@ -9,7 +9,7 @@ import re
 import shlex
 import shutil
 
-from module_publication import tcl
+from module_publication import feature_summary, tcl
 from release_contract import validate_identity
 from sif_runtime import MPI_LAUNCHERS, MPI_PROGRAMS, PROGRAMS, bind_path, digest, file_identity, require
 
@@ -60,8 +60,11 @@ def render_module(root, software, app, *, help_text=None, notice=None,
     identity = next(iter(app['partitions'].values()))['identity']
     description = (f"{software} {app['version']}; accepted SIF; partitions: {partitions}; "
                    f"source: {identity['source_sha']}")
+    features = 'Features: ' + feature_summary(software)
     lines = ['#%Module1.0', 'module-whatis ' + tcl(description),
+             'module-whatis ' + tcl(features),
              'proc ModulesHelp {} {',
+             '    puts stderr ' + tcl(features),
              '    puts stderr ' + tcl(help_text or description + '\nLoad inside the allocation. Runtime temporary files use private node memory automatically. '
                                       'GPUMD and dp are direct commands; deepmd-python selects this Python package.'),
              '}', f'conflict {software}', f'conflict {software}-sif',

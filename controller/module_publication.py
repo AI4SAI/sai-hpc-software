@@ -8,6 +8,22 @@ from remote_controller import safe_name
 from source_cache import checksum
 
 
+def feature_summary(software):
+    """User-facing capabilities of the workflow recipes, not upstream defaults.
+
+    Keep these highlights aligned with the build recipes and their acceptance
+    gates. Optional external plugins and unaccepted scaling are not implied.
+    """
+    return {
+        'abacus': 'MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions',
+        'cp2k': 'MPI/OpenMP; DBCSR; ELPA; LibXC/Libint2; PLUMED; DFT-D4/TBLITE; HDF5; CUDA on GPU partitions',
+        'lammps': 'MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP',
+        'deepmd-kit': 'PyTorch CUDA; TensorFlow/JAX CPU; Python/C++ interfaces; i-PI',
+        'gpumd': 'CUDA (V100/SM70); NEP; DeePMD; PLUMED; gpumd/nep; single-process execution',
+        'qe': 'MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions',
+    }[software]
+
+
 def tcl(value):
     value = str(value)
     for old, new in (("\\", "\\\\"), ('"', '\\"'), ("$", "\\$"),
@@ -31,6 +47,7 @@ def render_selector(root, software, track, build_id, description):
     targets = SOFTWARE[software]["targets"]
     lines = ["#%Module1.0",
              "module-whatis " + tcl(f"{description} {track}/{build_id}: partition-native, accepted SIF and launcher"),
+             "module-whatis " + tcl('Features: ' + feature_summary(software)),
              f"conflict {software}", f"set sai_catalog {tcl(catalog)}",
              'set sai_target ""', 'set sai_partition ""', 'set sai_run ""',
              'if {[module-info mode remove]} {',
