@@ -18,7 +18,8 @@ esac
 if [[ -n "$QE_GPU" ]]; then
   module load hdf5/1.14.6-pgi-ompi508
 else
-  # CPU HDF5 is built below the QE prefix; do not mix in site Fortran modules.
+  # The build selects and verifies the pinned NVHPC/F90 application provider.
+  # CPU runtime uses static HDF5 and needs no HDF5 module or external prefix.
   export HDF5_ROOT=
 fi
 [[ "$MPI_HOME" == "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-$QE_DEPENDENCY_ISA" ]]

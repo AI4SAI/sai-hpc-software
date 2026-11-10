@@ -16,7 +16,10 @@ build)
   git -C /workspace/source -c core.hooksPath=/dev/null checkout --detach "$sha"
   python3 /control/qe_dependencies.py populate /workspace/source /input/qe-dependencies
   source /control/qe_environment.sh "$target"
-  if [[ "$target" == dsprhbm ]]; then source /control/qe_hdf5.sh; fi
+  if [[ "$target" == dsprhbm ]]; then
+    HDF5_ROOT=$(python3 /control/qe_site_hdf5.py prepare "$INSTALL_PREFIX")
+    export HDF5_ROOT
+  fi
   bash /control/qe_build.sh
   printf '%s\n' "$sha" > "$INSTALL_PREFIX/share/sai/source-sha"
   module -t list > "$INSTALL_PREFIX/share/sai/modules.txt" 2>&1

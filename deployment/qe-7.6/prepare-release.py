@@ -79,12 +79,9 @@ def main():
         native[partition] = manifest
         print(partition + ': copied accepted compressed image', flush=True)
     cpu = native['DSPRHBM']
-    license_path = cpu['entry']['identity']['install_prefix'].lstrip('/') + '/deps/hdf5/share/COPYING'
-    original, = [row for row in cpu['files'] if row['path'] == license_path]
-    license = dict(path='share/licenses/hdf5/COPYING', source=license_path,
-                   image_partition='DSPRHBM', sha256=original['sha256'], size=original['size'], mode=0o444)
+    license = deployment.hdf5_license(cpu)
     for row in deliveries:
-        row['files'] = sorted([*row['files'], license], key=lambda item: item['path'])
+        row['files'] = deployment.with_hdf5_license(row['files'], license)
     release = dict(schema=1, software='qe', version='qe-7.6', generated_at=datetime.now(timezone.utc).isoformat(),
                    module_sha256=deployment.digest(package / deployment.MODULE.name),
                    hdf5_license=license, deliveries=deliveries)

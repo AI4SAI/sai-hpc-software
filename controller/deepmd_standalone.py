@@ -123,6 +123,9 @@ def render(delivery, run_id):
              seal('build'),
              'echo DEEPMD_STANDALONE_BUILD_VERIFIED', shlex.join(command('science')),
              seal('science'),
+             # Keep the SIF and all proof files; successful training/science
+             # no longer needs the writable build disk or packing duplicate.
+             shlex.join(['rm', '--', str(overlay), str(directory / 'final.squashfs')]),
              'echo DEEPMD_STANDALONE_SCIENCE_VERIFIED_NOT_PUBLISHED']
     return '\n'.join(lines) + '\n'
 

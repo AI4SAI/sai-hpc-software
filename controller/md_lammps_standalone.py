@@ -142,7 +142,7 @@ def render(delivery, run_id):
              '[[ ${SLURM_CPUS_ON_NODE:?} -ge 24 ]]',
              shlex.join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', '32768', str(overlay)]),
              'build_exit=0', shlex.join(command('build')) + ' || build_exit=$?',
-             'for name in ccache-context.json ccache-statistics.json ccache-stats.log lammps-host-only.json; do',
+             'for name in ccache-context.json ccache-layout.json ccache-statistics.json ccache-stats.log lammps-host-only.json; do',
              '  if [[ -f "$TMPDIR/$name" ]]; then cp "$TMPDIR/$name" ' +
              shlex.quote(str(directory / 'results')) + '/; fi',
              'done', '[[ $build_exit == 0 ]] || exit "$build_exit"', fsck('build'),
@@ -152,6 +152,10 @@ def render(delivery, run_id):
              shlex.join(['apptainer', 'sif', 'add', '--datatype', '4', '--partfs', '1', '--parttype', '2',
                          '--partarch', '2', '--groupid', '1', str(image), str(directory / 'final.squashfs')]),
              shlex.join(command('verify')), shlex.join(['chmod', '0444', str(image)]),
+             # The sealed SIF is sufficient for later scientific acceptance.
+             # Match software_controller: retain failed build disks, remove
+             # only this successful run's two disposable packaging inputs.
+             shlex.join(['rm', '--', str(overlay), str(directory / 'final.squashfs')]),
              'echo LAMMPS_STANDALONE_BUILD_VERIFIED_NOT_PUBLISHED']
     return '\n'.join(lines) + '\n'
 
