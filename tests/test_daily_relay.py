@@ -1,5 +1,6 @@
 """Exercise interruption windows and scheduling, without submitting real jobs."""
 import ast
+from argparse import Namespace
 import hashlib
 import json
 import os
@@ -216,6 +217,32 @@ class RelayTests(unittest.TestCase):
                         and any(isinstance(t, ast.Name) and t.id in ('prepare', 'collect', 'unpack', 'collect_metadata')
                                 for t in node.targets)):
                     compile(node.value.value, name, 'exec')
+
+    def test_repeated_dispatch_and_manual_daily_build_reuse_frozen_generation(self):
+        for state in ('active', 'succeeded', 'failed'):
+            for explicit_date in (False, True):
+                with self.subTest(state=state, explicit_date=explicit_date), tempfile.TemporaryDirectory() as temporary:
+                    root = Path(temporary).resolve()
+                    original = root / '100' / 'plan.json'; original.parent.mkdir()
+                    record = dict(workflow='100', created='2026-11-10T19:10:00+00:00', state=state,
+                                  retry_releases=False, selection=dict(software='all',
+                                  tracks='development,prerelease,release', targets='all'))
+                    if explicit_date: record['schedule_date'] = '2026-11-11'
+                    original.write_text(json.dumps(record))
+                    args = Namespace(schedule_date='2026-11-11', software='all',
+                                     tracks='development,prerelease,release', targets='all', retry_releases=False)
+                    with patch.dict(os.environ, GITHUB_RUN_ID='200'), patch.object(relay, 'make_plan') as plan:
+                        self.assertEqual(relay.enqueue(root, args), original)
+                        plan.assert_not_called()
+                    self.assertFalse((root / '200').exists())
+
+    def test_invalid_or_partial_scheduled_requests_fail_before_source_resolution(self):
+        with tempfile.TemporaryDirectory() as temporary, patch.dict(os.environ, GITHUB_RUN_ID='200'):
+            args = Namespace(schedule_date='20261111', software='all',
+                             tracks='development,prerelease,release', targets='all', retry_releases=False)
+            with self.assertRaises(ValueError): relay.enqueue(Path(temporary), args)
+            args.schedule_date = '2026-11-11'; args.software = 'gpumd'
+            with self.assertRaises(ValueError): relay.enqueue(Path(temporary), args)
 
 
 class ClaimResumeTests(unittest.TestCase):
