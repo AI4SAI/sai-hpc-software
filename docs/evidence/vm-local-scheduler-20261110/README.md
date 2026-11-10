@@ -32,6 +32,11 @@ timer did not interrupt it or request another full build.
   `SCHEDULE busy`, exit 0, at 09:41:31. Peak cgroup memory was 15,360,000 bytes
   (14.65 MiB), and the next calendar tick was 09:45:00. The timer itself has no
   resident Python process.
+- The calendar fired on its own at 09:45:00 and finished successfully at
+  09:45:03, again detecting active work. That invocation peaked at 22,659,072
+  bytes (21.61 MiB). [timer-state.json](timer-state.json) records the enabled
+  timer, automatic invocation, memory limits, journal and installed file hashes;
+  all three deployed files match the committed sources.
 - A probe under the runner's actual Landlock sandbox could neither open the
   scheduler token for reading nor open its trusted Python script for writing.
   Both live permission checks returned `PermissionError`; no credential value
