@@ -1,0 +1,20 @@
+--- a/src/uct/cuda/cuda_ipc/cuda_ipc_cache.c
++++ b/src/uct/cuda/cuda_ipc/cuda_ipc_cache.c
+@@ -600,6 +600,17 @@
+             uct_cuda_ipc_close_memhandle(region);
+             ucs_free(region);
+         }
++    }
++
++    /* A new allocation may overlap a stale cached region without its base
++     * address falling inside that region. The point lookup above then misses
++     * the stale entry, and opening the new IPC handle returns ALREADY_MAPPED.
++     * Retire overlapping regions before opening, just as the recovery path
++     * below does after a failed import. Cache hits have already returned. */
++    if (key->ph.handle_type == UCT_CUDA_IPC_KEY_HANDLE_TYPE_LEGACY) {
++        uct_cuda_ipc_cache_invalidate_regions(cache, (void *)key->d_bptr,
++                                              UCS_PTR_BYTE_OFFSET(key->d_bptr,
++                                                                  key->b_len));
+     }
+ 
+     status = uct_cuda_ipc_open_memhandle(key, cu_dev, (CUdeviceptr*)mapped_addr,
