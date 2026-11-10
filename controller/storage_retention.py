@@ -225,16 +225,23 @@ def check(plan, *, require_idle=True):
         require(digest(Path(row['proof']['image'])) == row['proof']['sha256'], 'retained SIF changed')
         for item in row['files']:
             require(info(Path(item['path'])) == item['info'], 'scratch file changed: ' + item['path'])
+        # Exercise the same directory traversal as apply, without deleting.
+        descriptor = open_directory(directory)
+        os.close(descriptor)
     if require_idle:
         idle()
 
 
 def open_directory(path):
     """Anchor deletion below real directories even if a path is renamed."""
-    descriptor = os.open('/', os.O_RDONLY | os.O_DIRECTORY)
+    # /org permits search but not directory listing. Linux O_PATH obtains a
+    # dir_fd without requiring read access; O_DIRECTORY|O_NOFOLLOW still rejects
+    # symlinks, including the last component, and unlinkat checks permissions.
+    flags = os.O_PATH | os.O_DIRECTORY | os.O_NOFOLLOW
+    descriptor = os.open('/', flags)
     try:
         for name in path.parts[1:]:
-            next_fd = os.open(name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=descriptor)
+            next_fd = os.open(name, flags, dir_fd=descriptor)
             os.close(descriptor)
             descriptor = next_fd
         return descriptor
