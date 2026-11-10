@@ -101,6 +101,7 @@ def render_help(software, snapshot, module_root, checks=None):
             f"  module load {software}/{channel(software)}\n"
             f"Command: {command}\n" + launch +
             "Commands enter the read-only SIF automatically; no extraction is needed.\n"
+            "Host /home and /org paths are available with your normal file permissions.\n"
             "Runtime temporary files use private node memory automatically; no TMPDIR setup is needed.\n"
             f"For a fixed version: module use {module_root}; module load {fixed}\n")
 
