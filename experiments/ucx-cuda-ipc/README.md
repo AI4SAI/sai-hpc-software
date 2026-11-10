@@ -1,6 +1,16 @@
 # CUDA IPC address-recycling diagnosis (2026-11-10)
 
-## Review revision: generalized cleanup and CI
+## Release-build review fixes (2026-11-11)
+
+Commit [`09ebff09a61d0e2e2219acc7892efa2fb1017d45`](https://github.com/Stardust0831/ucx/commit/09ebff09a61d0e2e2219acc7892efa2fb1017d45) restores the original `release-mt --with-mpi --enable-assertions` CI build flags. The test now accesses GPU memory through UCT `cuda_ipc` MD/rkey APIs while MPI exchanges host metadata, so MPI transport fallback cannot bypass the tested cache. It counts ERROR/WARN severity without matching internal message strings; trace logging is compiled out in the validated release build. The launcher selects the shared-build `.libs` executable when present and otherwise uses the normal test executable.
+
+Final Slurm job **2355446** completed with **0:0 in 76 seconds** on `16v100n15`. All **18 expected-outcome scenarios**, **nine executions of the actual added CI block**, and **24 completed-process UCX library-map audits** passed their checks. Both the direct UCT regression and the independent MPI reproducer exercised 30 lower-start overlaps per variant: baseline had 30 recovered error-208 imports per program, the candidate had zero, and all byte checks passed. The existing MPI/CUDA matrix recorded **450 passes and 36 Fabric-related skips per variant**. Error injection verified that unexpected imports fail, unsupported prerequisites skip, recovered import errors still fail the regression, and a warning with unrelated wording is counted.
+
+Shared and plain non-libtool executables passed the GPU regression. The static regression target also built and launched without a missing-path error; it explicitly skipped because that build had no registered `cuda_ipc` component. The full static build stopped earlier in `ucx_read_profile` with an unresolved `ucs_load_modules` symbol, so these results do not establish full static-build or static-GPU support. The allocator trigger remains hardware dependent; Fabric IPC, concurrent allocation/free, and application/performance acceptance of the generalized change are outside this validation.
+
+The [release-build validation record](release-review-validation-20261111.json) includes the exact tested source hashes, driver results, library hashes/maps, command outputs, scheduler accounting and all prior failed-attempt explanations. Every source hash matches `09ebff0`. Raw evidence is retained as `release-review-evidence.tar.gz` under `/org/org-open-sai/proj-sai-hpc-software/ucx-review-release-20261110` and the corresponding local `.work` directory (SHA256 `598708c0a4ed2db2dcc6c5f8251c4b203f5298afd235d3a4c15f8492561cf188`). This verifies the added command block and focused suites; it does not claim completion of the full upstream CI pipeline.
+
+## Prior review revision: generalized cleanup and CI
 
 Upstream [PR #12292](https://github.com/openucx/ucx/pull/12292) now has review follow-up commit [`6d92f85ea2432592c7c1e780fdeb5dd95a743306`](https://github.com/Stardust0831/ucx/commit/6d92f85ea2432592c7c1e780fdeb5dd95a743306), based on `74b413ab19d63c277ffa3fb553ed83e42bc50f6f`. Cache hits retain the fast point lookup; misses use the existing range helper to remove stale overlaps for all handle types. The redundant range-invalidation retry is removed, while the full-cache purge/retry fallback is retained. A direct IPC capability probe distinguishes unavailable prerequisites from real import errors, and the regression is now invoked by the upstream MPI CI script.
 
