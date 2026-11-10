@@ -101,6 +101,23 @@ class QEDeploymentTests(unittest.TestCase):
             deployment.preflight(self.release, self.package, self.physical, installed=True)
         self.assertEqual((self.physical / deployment.MODULE.relative_to('/')).read_bytes(), self.module)
 
+    def test_site_hdf5_license_is_selected_once_and_legacy_layout_still_works(self):
+        row = next(row for row in self.release['deliveries'] if row['partition'] == 'DSPRHBM')
+        manifest = json.loads((self.package / row['manifest']).read_text())
+        self.assertEqual(deployment.hdf5_license(manifest), self.release['hdf5_license'])
+        original = next(record for record in manifest['files'] if record['path'].endswith('/deps/hdf5/share/COPYING'))
+        original['path'] = row['prefix'].lstrip('/') + '/share/licenses/hdf5/COPYING'
+        original['mode'] = 0o444
+        license = deployment.hdf5_license(manifest)
+        records = deployment.runtime_records(manifest, row['prefix'].lstrip('/'))
+        selected = deployment.with_hdf5_license(records, license)
+        self.assertEqual(sum(record['path'] == license['path'] for record in selected), 1)
+        self.assertEqual(deployment.with_hdf5_license(selected, license), selected)
+        with self.assertRaisesRegex(ValueError, 'conflicting'):
+            deployment.with_hdf5_license(records, dict(license, sha256='0' * 64))
+        with self.assertRaisesRegex(ValueError, 'duplicate'):
+            deployment.with_hdf5_license(records + [records[0]], license)
+
     def test_changed_image_fails_before_any_installation(self):
         image = self.package / self.release['deliveries'][-1]['image']
         image.chmod(0o644); image.write_bytes(b'changed')

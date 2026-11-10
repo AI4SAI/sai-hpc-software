@@ -41,6 +41,7 @@ def contract_files(software):
     if software == "qe":
         return [name for name in common if name != "environment.sh"] + [
             "qe_environment.sh", "qe_container_entry.sh", "qe_build.sh", "qe_extra_tools.cmake", "qe_dependencies.py", "qe_hdf5.sh", "qe_szipConfig.cmake",
+            "qe_site_hdf5.py", "qe_site_hdf5.json", "devtools_install.py",
             "qe_science.py", "qe_acceptance.py", "qe_fixture.json", "qe", "sif_runtime.py",
             "export_native.py", "native_module.py", "cp2k_image_driver.py", "managed_overlay.py", "cp2k_overlay_sync.py"]
     if software == "gpumd":
@@ -362,6 +363,9 @@ def render_job(args):
         extra_binds = (*dependency_binds(ROOT), *runtime_binds())
     elif args.software == "qe":
         extra_binds = ((r / "input/qe-dependencies", "/input/qe-dependencies"), *cp2k_mpi_build_binds())
+        if args.target == 'dsprhbm':
+            from qe_site_hdf5 import PREFIX as qe_hdf5_prefix
+            extra_binds += ((qe_hdf5_prefix, qe_hdf5_prefix),)
     elif args.software == "gpumd":
         extra_binds = site_app_binds("gpumd")
     def container(phase, final=False):

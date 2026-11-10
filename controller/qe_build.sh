@@ -27,6 +27,9 @@ else
 fi
 printf '%q ' cmake -S /workspace/source -B /workspace/build "${options[@]}" > "$INSTALL_PREFIX/share/sai/configure-command.txt"
 cmake -S /workspace/source -B /workspace/build "${options[@]}"
+if [[ -z "$QE_GPU" ]]; then
+  python3 /control/qe_site_hdf5.py verify-links /workspace/build > "$INSTALL_PREFIX/share/sai/hdf5-link-provider.json"
+fi
 cmake --build /workspace/build --parallel "$BUILD_JOBS" --target pwall upf \
   qe_pp_wannier2pw_exe qe_upflib_casino2upf_exe sai_qe_tools
 for binary in /workspace/build/bin/*.x; do

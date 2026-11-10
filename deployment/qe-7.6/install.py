@@ -96,6 +96,31 @@ def installation_records(files):
     return sorted(result.values(), key=lambda row: row['path'])
 
 
+def hdf5_license(manifest):
+    """Read either an older private build or the installed-provider layout."""
+    prefix = manifest['entry']['identity']['install_prefix'].lstrip('/')
+    paths = {prefix + '/share/licenses/hdf5/COPYING', prefix + '/deps/hdf5/share/COPYING'}
+    originals = [row for row in manifest['files'] if row['path'] in paths]
+    require(len(originals) == 1 and originals[0]['kind'] == 'file',
+            'expected one accepted HDF5 license')
+    original = originals[0]
+    return dict(path='share/licenses/hdf5/COPYING', source=original['path'],
+                image_partition='DSPRHBM', sha256=original['sha256'], size=original['size'], mode=0o444)
+
+
+def with_hdf5_license(files, license):
+    """Share the CPU license without duplicating its standard runtime path."""
+    require(len({row['path'] for row in files}) == len(files), 'duplicate runtime path')
+    result = []
+    for row in files:
+        if row['path'] == license['path']:
+            require(all(row.get(key) == license[key] for key in ('sha256', 'size')),
+                    'conflicting HDF5 license')
+        else:
+            result.append(row)
+    return sorted([*result, license], key=lambda row: row['path'])
+
+
 def load_release():
     release = json.loads((PACKAGE / 'release.json').read_text())
     require(release['schema'] == 1 and release['software'] == 'qe' and release['version'] == 'qe-7.6',
@@ -201,7 +226,8 @@ def preflight(release, project, physical_root=Path('/'), *, installed=False, all
             require(row['manifest_sha256'] == receipt['manifest_sha256'], 'export provenance changed')
             manifest = pinned(project / row['manifest'], row['manifest_sha256'])
             require(manifest['entry']['identity'] == row['identity'], 'native identity changed')
-            expected = runtime_records(manifest, row['prefix'].lstrip('/')) + [release['hdf5_license']]
+            expected = with_hdf5_license(runtime_records(manifest, row['prefix'].lstrip('/')),
+                                        release['hdf5_license'])
             require(sorted(expected, key=lambda item: item['path']) == row['files'], 'runtime selection changed')
             if row['partition'] == 'DSPRHBM':
                 license = release['hdf5_license']
