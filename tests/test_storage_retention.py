@@ -57,6 +57,36 @@ class StorageRetentionTests(unittest.TestCase):
                 storage.apply(self.plan)
         self.assertTrue((self.run / 'final.squashfs').exists())
 
+    @unittest.skipIf(os.geteuid() == 0, 'permission checks need an unprivileged user')
+    def test_check_and_apply_work_through_search_only_ancestor(self):
+        self.root.chmod(0o100)
+        self.addCleanup(self.root.chmod, 0o700)
+        self.assertTrue(os.access(self.root, os.X_OK))
+        self.assertFalse(os.access(self.root, os.R_OK))
+        with self.assertRaises(PermissionError):
+            self.root.iterdir().__next__()
+        with patch.object(storage, 'command', side_effect=self.scheduler):
+            storage.check(self.plan, require_idle=False)
+            self.assertTrue(all((self.run / name).exists() for name in storage.SCRATCH))
+            storage.apply(self.plan)
+        self.assertFalse(any((self.run / name).exists() for name in storage.SCRATCH))
+        self.assertEqual(self.image.read_bytes(), b'accepted SIF')
+        self.assertTrue(self.status.exists())
+
+    def test_directory_handles_reject_ancestor_and_final_symlinks(self):
+        link = self.root / 'redirected-run'
+        link.symlink_to(self.run, target_is_directory=True)
+        for path in (link, link / 'results'):
+            with self.subTest(path=path), self.assertRaises(OSError):
+                storage.open_directory(path)
+
+    def test_readonly_check_reports_directory_handle_failure_before_apply(self):
+        with patch.object(storage, 'command', side_effect=self.scheduler), \
+                patch.object(storage, 'open_directory', side_effect=PermissionError('directory denied')):
+            with self.assertRaisesRegex(PermissionError, 'directory denied'):
+                storage.check(self.plan, require_idle=False)
+        self.assertTrue(all((self.run / name).exists() for name in storage.SCRATCH))
+
     def test_changed_sif_pin_and_active_job_block_cleanup(self):
         with patch.object(storage, 'command', return_value='123\n'):
             with self.assertRaisesRegex(ValueError, 'active or queued'):

@@ -58,7 +58,10 @@ check and requires the invoking user's Slurm queue to be empty. It checks
 successful scheduler accounting, retained SIF hashes, request/status hashes and
 each scratch file's device/inode/size/timestamps/mode before deletion. It only
 unlinks the listed `work.ext3` and `final.squashfs`, through directory handles
-that reject symlink ancestors. Run cleanup between workflow jobs. If a check
+that reject symlink ancestors. The Linux handles use `O_PATH`, allowing traversal
+through ancestors such as `/org` that permit search but not directory listing;
+`check` opens the same directory handles before reporting success. Run cleanup
+between workflow jobs. If a check
 fails or a partial cleanup is interrupted, generate and review a fresh plan.
 
 The prepared November 10 package is on SAI at:
