@@ -1,3 +1,18 @@
 #%Module1.0
 # Maintained by stardust; this gateway does not rotate.
 source "/home/stardust/sai-hpc-software/modulefiles/apps/qe/develop-beta-later"
+# Documentation fallback for immutable generations predating feature help.
+# New generations supply their own build-specific documentation.
+if {![info exists sai_feature_documentation]} {
+    module-whatis "Features: MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions"
+    if {[llength [info commands ModulesHelp]]} {
+        rename ModulesHelp sai_original_beta_help
+        proc ModulesHelp {} {
+            global sai_beta_root sai_beta_generation
+            sai_original_beta_help
+            puts stderr "Features: MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions"
+            puts stderr "After loading in an allocation: pw.x -h (version and parallel command options); the calculation banner lists active acceleration."
+            puts stderr "Local generation record (includes the runtime bundle path): cat [file join $sai_beta_root generations $sai_beta_generation manifest.json]"
+        }
+    }
+}

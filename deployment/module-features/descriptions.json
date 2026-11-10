@@ -1,0 +1,309 @@
+[
+  {
+    "module": "apps/abacus/3.11.0-beta11-auto",
+    "summary": "ABACUS 3.11.0-beta11; native CPU/V100 partition selection",
+    "features": "MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions",
+    "details": [
+      "Load inside the matching Slurm allocation before running inspection commands.",
+      "After loading in an allocation: abacus --info (full build options and libraries).",
+      "Run with host mpirun; system examples: /opt/sbatch_examples.",
+      "Selected executable and libraries: $SAI_ABACUS_PREFIX."
+    ],
+    "source_sha256": "74d00d70d824420d0ae03dc672ac2dee3298cb69093d375b4a1028e265d1c497"
+  },
+  {
+    "module": "apps/abacus/3.11.0-beta12-auto",
+    "summary": "ABACUS 3.11.0-beta12; native CPU/V100 partition selection",
+    "features": "MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions",
+    "details": [
+      "Load inside the matching Slurm allocation before running inspection commands.",
+      "After loading in an allocation: abacus --info (full build options and libraries).",
+      "Run with host mpirun; system examples: /opt/sbatch_examples.",
+      "Selected executable and libraries: $SAI_ABACUS_PREFIX."
+    ],
+    "source_sha256": "5713d0050804fcfcadb40a32fa9a3431ae7fcd82e82570286dd437098aecef82"
+  },
+  {
+    "module": "apps/abacus/develop-git-079fd0c-260724-sm70-auto",
+    "summary": "ABACUS develop 079fd0c (2026-07-24); x86-64-v3 / V100",
+    "features": "MPI/OpenMP; PW/LCAO; CUDA; cuSOLVERMp; ELPA; LibXC",
+    "details": [
+      "Full recorded build options: cat /opt/apps/abacus/abacus-develop-git-079fd0c-260724/abacus-info.txt",
+      "After loading in an allocation: abacus --info (full build options and libraries).",
+      "This build has LibRI, LibTorch/DeePKS and NEP disabled."
+    ],
+    "source_sha256": "9f8df532ec162bc4451fc833f415cc24a8de65b23004485bc1d844f76506ae67"
+  },
+  {
+    "module": "apps/abacus/v3.11.0-beta9-auto",
+    "summary": "ABACUS 3.11.0-beta9; native CPU/V100 partition selection",
+    "features": "MPI/OpenMP; PW/LCAO; ELPA; LibXC; CUDA on GPU partitions",
+    "details": [
+      "Load inside the matching Slurm allocation before running inspection commands.",
+      "After loading in an allocation: abacus --info (full build options and libraries).",
+      "Source: 149723287702677dc159c5e96fb98cbc3482f445.",
+      "Selected executable: $SAI_ABACUS_PREFIX/bin/abacus."
+    ],
+    "source_sha256": "321b1ed5cc801e26913665df495fe670b675d2197198aacdc6a7b17f154c36b6"
+  },
+  {
+    "module": "apps/berkeleygw/4.0-pgi-auto",
+    "summary": "BerkeleyGW 4.0; GW and Bethe-Salpeter calculations",
+    "features": "MPI/OpenMP; OpenACC/CUDA SM70; real/complex executables; HDF5; FFTW; ScaLAPACK; ELPA",
+    "details": [
+      "Local build flags: cat /opt/apps/BerkeleyGW/4.0/arch.mk",
+      "Installed programs: ls /opt/apps/BerkeleyGW/4.0/bin",
+      "Local documentation: /opt/apps/BerkeleyGW/4.0/documentation/users/",
+      "Run print_version_info.x after loading in a compatible allocation."
+    ],
+    "source_sha256": "5f8e35ef8c4fc79afb03771ee57ee3047da7b7c910e4a5f9753c5aeb7d3d37a8"
+  },
+  {
+    "module": "apps/cp2k/2026.1-cuda12.9-sm70-auto",
+    "summary": "CP2K 2026.1; legacy AVX2/AVX512 selector",
+    "features": "MPI/OpenMP; CUDA SM70; ELPA; LibXC; FFTW; PLUMED; HDF5",
+    "details": [
+      "Load inside the matching Slurm allocation before running inspection commands.",
+      "After loading in an allocation: cp2k.psmp --version (compiler, flags and linked libraries).",
+      "Installation: $CP2K_HOME; toolchain: $CP2K_HOME/tools/toolchain/install.",
+      "This historical installation is distinct from cp2k/2026.2-auto."
+    ],
+    "source_sha256": "2fdf9835333f7682899265def2132ab1a0ce431a3038fa5808760fae83b31982"
+  },
+  {
+    "module": "apps/cp2k/2026.2-auto",
+    "summary": "CP2K 2026.2; native CPU/V100 partition selection",
+    "features": "MPI/OpenMP; DBCSR; ELPA; LibXC/Libint2; PLUMED; DFT-D4/TBLITE; HDF5; CUDA on GPU partitions",
+    "details": [
+      "Load inside the matching Slurm allocation before running inspection commands.",
+      "After loading in an allocation: cp2k.psmp --version (compiler, flags and linked libraries).",
+      "Selected installation: $SAI_CP2K_PREFIX; packaged data: $CP2K_DATA_DIR.",
+      "Run with host mpirun."
+    ],
+    "source_sha256": "48f0471fd950fa954b040e4766bd3d3f7cf5a89a1f9799cc6a43ad37b31746d9"
+  },
+  {
+    "module": "apps/exa-amd/0.2.0.lua",
+    "summary": "exa-amd 0.2.0; Python 3.12.13",
+    "features": "VASP workflow; CGCNN model; ASE; PyTorch",
+    "details": [
+      "Exact installed package versions: cat /opt/apps/conda_env/exa-amd-0.2.0/share/sai/requirements.lock",
+      "Package inventory: cat /opt/apps/conda_env/exa-amd-0.2.0/share/sai/packages.json",
+      "Selected Python: python -c 'import sys; print(sys.executable)'",
+      "Python is selected through PATH without activating Conda; unload before changing environments.",
+      "VASP is an external executable; this environment does not install VASP."
+    ],
+    "source_sha256": "7e08deec990b4307e8028269c94d3641127ee64aef86586243ba8eef52e6b52b"
+  },
+  {
+    "module": "apps/lammps/11jun2026-nep-dev-avx512",
+    "summary": "LAMMPS develop e5da37 (2026-06-11); AVX512",
+    "features": "MPI; KOKKOS CUDA SM70; PLUMED 2.9.4; DeePMD 3.1.2 plugin; USER-NEP",
+    "details": [
+      "Load inside the matching Slurm allocation before running inspection commands.",
+      "After loading in an allocation: lmp -h (full package/style list and compiler information).",
+      "Installation: $LAMMPS_HOME; bundle: $LAMMPS_BUNDLE_ROOT.",
+      "The complete lmp -h output is authoritative for packages and styles."
+    ],
+    "source_sha256": "bce6df001ee3fcc774a17e8af5e5b705d7527717f8e3db03771df00e88983248"
+  },
+  {
+    "module": "apps/lammps/11jun2026-nvhpc245gnu-ompi508-sm70-dev",
+    "summary": "LAMMPS develop e5da37 (2026-06-11); AVX2/AVX512 selector",
+    "features": "MPI; KOKKOS CUDA SM70; PLUMED 2.9.4; DeePMD 3.1.2 plugin",
+    "details": [
+      "Load inside the matching Slurm allocation before running inspection commands.",
+      "After loading in an allocation: lmp -h (full package/style list and compiler information).",
+      "Installation: $LAMMPS_HOME; bundle: $LAMMPS_BUNDLE_ROOT.",
+      "The complete lmp -h output is authoritative for packages and styles."
+    ],
+    "source_sha256": "1371709586b0e34f5664b08955f93cd5f861fcd120b263663e6be1a673b47be1"
+  },
+  {
+    "module": "apps/lammps/30Sep2026-deepmd320-auto",
+    "summary": "LAMMPS 30 Sep 2026 / DeePMD 3.2.0; V100 partition selection",
+    "features": "MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP",
+    "details": [
+      "Load inside the matching Slurm allocation before running inspection commands.",
+      "After loading in an allocation: lmp -h (full package/style list and compiler information).",
+      "Installation: $SAI_LAMMPS_PREFIX; potentials: $LAMMPS_POTENTIALS.",
+      "NEPAdapters is a separate module; it is not bundled into this LAMMPS build."
+    ],
+    "source_sha256": "6c155ab067244d0c4903af4d56c0ad184d6df606c4065b3da659ad9ff2f93c19"
+  },
+  {
+    "module": "apps/multiwfn/2026.3.18",
+    "summary": "Multiwfn 2026.3.18; wavefunction analysis",
+    "features": "CPU/OpenMP; command-line noGUI build; density/orbital/topology analysis",
+    "details": [
+      "Run Multiwfn interactively; its startup banner and menu describe this build.",
+      "Quick start: /opt/apps/Multiwfn/2026.3.18_bin_Linux_noGUI/Multiwfn quick start.pdf",
+      "Examples: /opt/apps/Multiwfn/2026.3.18_bin_Linux_noGUI/examples",
+      "OpenMP stack setting: OMP_STACKSIZE=4000M."
+    ],
+    "source_sha256": "b103acdfe729903723af734f2fad85ed83d0a40fb66c1b2302a4988087dde04a"
+  },
+  {
+    "module": "apps/nepadapters/1.0.4-lammps30Sep2026",
+    "summary": "NEPAdapters 1.0.4; addon for LAMMPS 30Sep2026",
+    "features": "nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5",
+    "details": [
+      "Source: c934e714; requires lammps/30Sep2026-deepmd320-auto.",
+      "Load inside the matching Slurm allocation before running inspection commands.",
+      "GPU: -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.",
+      "NEP3 and CUDA LAMMPS qNEP are unsupported; this plugin is not for daily beta builds.",
+      "Plugin files: ls \"$SAI_NEPADAPTERS_PREFIX/lib\".",
+      "After loading, lmp -h lists the available packages and pair styles."
+    ],
+    "source_sha256": "4ecf824343b9f81480f02026ce64dc8572d45844cc4a93795a2193eae384119e"
+  },
+  {
+    "module": "apps/nepadapters/1.0.5-lammps30Sep2026",
+    "summary": "NEPAdapters 1.0.5; addon for LAMMPS 30Sep2026",
+    "features": "nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5",
+    "details": [
+      "Source: 3ceba8f9; requires lammps/30Sep2026-deepmd320-auto.",
+      "Load inside the matching Slurm allocation before running inspection commands.",
+      "GPU: -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.",
+      "NEP3 and CUDA LAMMPS qNEP are unsupported; this plugin is not for daily beta builds.",
+      "Plugin files: ls \"$SAI_NEPADAPTERS_PREFIX/lib\".",
+      "After loading, lmp -h lists the available packages and pair styles."
+    ],
+    "source_sha256": "1503b8e6ad33e5194d149be76cf8e7b55c80a6b7023f4c6b525a364abab84ac7"
+  },
+  {
+    "module": "apps/orca/6.1.0",
+    "summary": "ORCA 6.1.0; molecular electronic structure",
+    "features": "CPU; HF/DFT and correlated wavefunction methods; external OpenMPI 4.1.6",
+    "details": [
+      "Local runtime instructions: less /opt/apps/orca-6.1.0/6.1.0/README.md",
+      "Available components: ls /opt/apps/orca-6.1.0/6.1.0/bin",
+      "Run the ORCA driver by its full path; it launches parallel workers using %pal settings.",
+      "The job output banner records the version and libraries; the bundled README has an older version heading."
+    ],
+    "source_sha256": "11a670abc955c71ee2b91bf6fed4e0936493936979cea6d9b08b2c0513431e80"
+  },
+  {
+    "module": "apps/phonopy/2.48.0.lua",
+    "summary": "phonopy 2.48.0; Python 3.12.13",
+    "features": "CPU; harmonic phonons; finite displacements; spglib; Python API",
+    "details": [
+      "CLI version/options after loading: phonopy --version; phonopy --help.",
+      "Exact installed package versions: cat /opt/apps/conda_env/phonopy-2.48.0/share/sai/requirements.lock",
+      "Package inventory: cat /opt/apps/conda_env/phonopy-2.48.0/share/sai/packages.json",
+      "Selected Python: python -c 'import sys; print(sys.executable)'",
+      "Python is selected through PATH without activating Conda; unload before changing environments."
+    ],
+    "source_sha256": "84e21b3ac4b6efd53eb15e899f900217da5d2a37c26881be1189d0bf9395bad4"
+  },
+  {
+    "module": "apps/qe/7.6-auto",
+    "summary": "Quantum ESPRESSO 7.6; native CPU/V100 partition selection",
+    "features": "MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions",
+    "details": [
+      "Load inside the matching Slurm allocation before running inspection commands.",
+      "After loading in an allocation: pw.x -h (version and parallel command options); the calculation banner lists active acceleration.",
+      "Full installed command suite: ls \"$QE_ROOT/bin\".",
+      "Source: 9f93ddec427d; NVHPC 26.3 / OpenMPI 5.0.10.",
+      "Run with host mpirun; system examples: /opt/sbatch_examples."
+    ],
+    "source_sha256": "4e1d78e85d284842ef6dd8ff3ba77fcea6742dfeb7447c64a0ffd1226ffb740c"
+  },
+  {
+    "module": "apps/sctk/1.2.1",
+    "summary": "Superconducting-toolkit 1.2.1; QE 7.4.1; CPU",
+    "features": "MPI/OpenMP; superconducting DFT; sctk.x + pw.x + ph.x",
+    "details": [
+      "Installed build identity: cat /opt/apps/sctk/1.2.1/INSTALL_METADATA.txt",
+      "Build commands: /opt/apps/sctk/1.2.1/install-scripts/",
+      "Local documentation and source: /opt/apps/sctk/1.2.1/share/sctk/src/",
+      "QE command information after module load: pw.x -h."
+    ],
+    "source_sha256": "466d0824cc563a194435b60398b91954d393ed3f159d694f4fb99a0cb5b6e280"
+  },
+  {
+    "module": "apps/sctk/1.2.1-gpu",
+    "summary": "Superconducting-toolkit 1.2.1; QE 7.4.1; GPU",
+    "features": "MPI/OpenMP; superconducting DFT; sctk.x + pw.x + ph.x; NVHPC CUDA/OpenACC",
+    "details": [
+      "Installed build identity: cat /opt/apps/sctk/1.2.1-gpu/INSTALL_METADATA.txt",
+      "Build commands: /opt/apps/sctk/1.2.1-gpu/install-scripts/",
+      "Local documentation and source: /opt/apps/sctk/1.2.1-gpu/share/sctk/src/",
+      "QE command information after module load: pw.x -h."
+    ],
+    "source_sha256": "16d3aa430557d7051eefa205f4ae9e126b33561609cdd5596b75c6ced5f4fbc4"
+  },
+  {
+    "module": "apps/sscha/1.6.0",
+    "summary": "SSCHA 1.6.0; Python environment with QE 5.1.0_elph",
+    "features": "CPU; stochastic anharmonic phonons; TD-SCHA 1.6.1; electron-phonon tools",
+    "details": [
+      "Installed identity: cat /opt/apps/sscha/1.6.0/INSTALL_METADATA.txt",
+      "QE build identity: cat /opt/apps/sscha/1.6.0/INSTALL_QE510ELPH_METADATA.txt",
+      "Python dependencies: python -m pip show python-sscha CellConstructor tdscha.",
+      "Python is selected through PATH without activating Conda; unload before changing environments."
+    ],
+    "source_sha256": "5b731c31db6143693b5dedf2c6c6f61f6854e9a1f9882cd2f6d9908b50d83ed9"
+  },
+  {
+    "module": "apps/sscha/1.6.2.lua",
+    "summary": "sscha 1.6.2; Python 3.12.13",
+    "features": "CPU/MPI; stochastic anharmonic phonons; CellConstructor; ASE; spglib",
+    "details": [
+      "Exact installed package versions: cat /opt/apps/conda_env/sscha-1.6.2/share/sai/requirements.lock",
+      "Package inventory: cat /opt/apps/conda_env/sscha-1.6.2/share/sai/packages.json",
+      "Selected Python: python -c 'import sys; print(sys.executable)'",
+      "Python is selected through PATH without activating Conda; unload before changing environments."
+    ],
+    "source_sha256": "c9d6ba7911f3cead1e810abb83660781f68e4255900761772643b4290438d644"
+  },
+  {
+    "module": "devtools/elpa/2025.06.001-2509-pgi-sm70-auto",
+    "summary": "ELPA 2025.06.001; NVHPC/OpenMPI; fixed AVX512 installation",
+    "features": "MPI; symmetric/Hermitian eigensolvers; NVIDIA CUDA; ScaLAPACK",
+    "details": [
+      "Compiled GPU options: cat /opt/devtools/elpa/elpa-2025.06.001-2509-pgi-avx512/include/elpa-2025.06.001/elpa/elpa_configured_options.h",
+      "Compiled kernels after loading: elpa2_print_kernels.",
+      "Despite the -auto name, this module points to one AVX512 prefix.",
+      "The historical elpa.pc contains the original build prefix; inspect it before using its compiler flags."
+    ],
+    "source_sha256": "0b0245dec30a4a2fe1321b4e29fe0270b795664a01246b51213ea53f1bffec01"
+  },
+  {
+    "module": "devtools/elpa/2026.02.001-2603-gnu-auto",
+    "summary": "ELPA 2026.02.001; CPU/V100 partition selection",
+    "features": "MPI/OpenMP; symmetric/Hermitian eigensolvers; AVX2/AVX512; CUDA on V100",
+    "details": [
+      "Load inside the matching Slurm allocation before running inspection commands.",
+      "Full compiled kernels: elpa2_print_kernels.",
+      "GPU options: cat \"$ELPA_ROOT/include/elpa_openmp-2026.02.001/elpa/elpa_configured_options.h\".",
+      "Library metadata: cat \"$ELPA_ROOT/lib/pkgconfig/elpa_openmp.pc\".",
+      "DSPRHBM uses the CPU build; V100 partitions use NVIDIA CUDA builds."
+    ],
+    "source_sha256": "47bb8458ee6b288302fc201cde68b816052801952d1c39090cac17b5b63146bd"
+  },
+  {
+    "module": "devtools/fuse2fs/1.47.4-sai",
+    "summary": "fuse2fs 1.47.4-sai; Apptainer 1.4.4 overlay helper",
+    "features": "FUSE ext2/3/4; upstream I/O fixes; OFD locks; explicit read-only backing files",
+    "details": [
+      "Load apptainer/1.4.4 first.",
+      "Full version/options: fuse2fs -V; fuse2fs -h.",
+      "Installed prefix remains /opt/devtools/fuse2fs/1.47.4-sai1; the public module was renamed to -sai.",
+      "Active configuration: cat \"$APPTAINER_CONFIG_FILE\".",
+      "Keep build/cache/scratch in the allocated project storage."
+    ],
+    "source_sha256": "b28e930c99d15b42ddd5781a2329027a06798e834689b079c785a5e3d7f16828"
+  },
+  {
+    "module": "devtools/openmpi/4.1.6-cuda12.4-fix",
+    "summary": "OpenMPI 4.1.6; CUDA 12.4.1 / UCX 1.15.0 / GDRCopy 2.4.1",
+    "features": "C/C++/Fortran MPI; CUDA-aware communication; UCX",
+    "details": [
+      "Full build/component information after loading: ompi_info --all.",
+      "Compiler/link flags: mpicc --showme; mpifort --showme.",
+      "Local wrapper configuration: cat /opt/devtools/openmpi/openmpi4.1.6_ucx1.15.0_gdrcopy2.4.1_cuda12.4/share/openmpi/mpicc-wrapper-data.txt"
+    ],
+    "source_sha256": "b4188bc2f8f4f36619275c3c8341d9622bfe1900c06558cded7fbffcd11e1117"
+  }
+]

@@ -1,0 +1,18 @@
+#%Module1.0#####################################################################
+# SAI module documentation. Inspection commands below are documentation only.
+module-whatis "Superconducting-toolkit 1.2.1; QE 7.4.1; CPU"
+module-whatis "Features: MPI/OpenMP; superconducting DFT; sctk.x + pw.x + ph.x"
+proc ModulesHelp {} {
+    puts stderr "Superconducting-toolkit 1.2.1; QE 7.4.1; CPU\nFeatures: MPI/OpenMP; superconducting DFT; sctk.x + pw.x + ph.x\nInstalled build identity: cat /opt/apps/sctk/1.2.1/INSTALL_METADATA.txt\nBuild commands: /opt/apps/sctk/1.2.1/install-scripts/\nLocal documentation and source: /opt/apps/sctk/1.2.1/share/sctk/src/\nQE command information after module load: pw.x -h."
+}
+if {[module-info mode help] || [module-info mode whatis]} {return}
+module load gcc/14.3.0
+module load openmpi/5.0.8-cuda12.4-classic-auto
+module load fftw/3.3.10
+module load saiblas/2603-gnu-auto
+prepend-path PATH /opt/apps/sctk/1.2.1/bin
+prepend-path LD_LIBRARY_PATH /opt/apps/sctk/1.2.1/lib
+setenv SCTK_ROOT /opt/apps/sctk/1.2.1
+setenv SCTK_VERSION 1.2.1
+setenv SCTK_QE_VERSION 7.4.1
+setenv SCTK_SOURCE_COMMIT b7afed8

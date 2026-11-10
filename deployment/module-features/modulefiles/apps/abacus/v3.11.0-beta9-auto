@@ -1,0 +1,99 @@
+#%Module1.0
+# SAI module documentation. Inspection commands below are documentation only.
+module-whatis "ABACUS 3.11.0-beta9; native CPU/V100 partition selection"
+module-whatis "Features: MPI/OpenMP; PW/LCAO; ELPA; LibXC; CUDA on GPU partitions"
+proc ModulesHelp {} {
+    puts stderr "ABACUS 3.11.0-beta9; native CPU/V100 partition selection\nFeatures: MPI/OpenMP; PW/LCAO; ELPA; LibXC; CUDA on GPU partitions\nLoad inside the matching Slurm allocation before running inspection commands.\nAfter loading in an allocation: abacus --info (full build options and libraries).\nSource: 149723287702677dc159c5e96fb98cbc3482f445.\nSelected executable: \$SAI_ABACUS_PREFIX/bin/abacus."
+}
+if {[module-info mode help] || [module-info mode whatis]} {return}
+# Native deployment adapter for the existing 2026-09-13 beta9 artifacts.
+# No container launcher, runtime-env.sh, or fallback to another partition.
+
+
+set beta_build "v3.11.0-beta9-g149723287702-r8c99e6a3106c"
+# Deployment location follows the actual site layout, not the old SIF prefix.
+set beta_base "/opt/apps/abacus/abacus-v3.11.0-beta9-nvhpc263"
+set beta_partition ""
+if {[module-info mode load]} {
+    if {![info exists env(SLURM_JOB_ID)] || ![regexp {^[1-9][0-9]*$} $env(SLURM_JOB_ID)] || ![info exists env(SLURM_JOB_PARTITION)] || $env(SLURM_JOB_PARTITION) eq ""} {
+        error "load ABACUS inside a compute-node Slurm job"
+    }
+    set beta_partition $env(SLURM_JOB_PARTITION)
+} elseif {[module-info mode remove]} {
+    if {![info exists env(SAI_ABACUS_NATIVE_PARTITION)] || $env(SAI_ABACUS_NATIVE_PARTITION) eq "" || ![info exists env(SAI_ABACUS_PREFIX)]} {
+        error "missing saved ABACUS native identity for unload"
+    }
+    set beta_partition $env(SAI_ABACUS_NATIVE_PARTITION)
+}
+
+# Help/show do not inspect installations or load dependencies.
+if {$beta_partition ne ""} {
+    switch -- $beta_partition {
+        DSPRHBM {set beta_gpu 0}
+        4V100 - 16V100 - 8V100V0 {set beta_gpu 1}
+        default {error "unsupported ABACUS partition: $beta_partition"}
+    }
+    set beta_prefix [file join $beta_base $beta_partition]
+    if {[module-info mode load]} {
+        if {[info exists env(SAI_ABACUS_NATIVE_PARTITION)] && $env(SAI_ABACUS_NATIVE_PARTITION) ne $beta_partition} {
+            error "another ABACUS native partition is already loaded"
+        }
+        if {[info exists env(SAI_ABACUS_PREFIX)] && $env(SAI_ABACUS_PREFIX) ne $beta_prefix} {
+            error "another ABACUS build is already loaded"
+        }
+        # Canonical installation directories cannot redirect to another tree.
+        set beta_checked [file join $beta_prefix bin]
+        if {![file isdirectory $beta_checked]} {
+            error "ABACUS is not deployed for $beta_partition at $beta_prefix"
+        }
+        while {$beta_checked ne "/"} {
+            if {[file type $beta_checked] eq "link"} {
+                error "ABACUS installation directories must not be symlinks"
+            }
+            set beta_checked [file dirname $beta_checked]
+        }
+        # beta9 packages bin/abacus as a relative link to its own executable.
+        set beta_command [file join $beta_prefix bin abacus]
+        if {![file isfile $beta_command] || ![file executable $beta_command]} {
+            error "missing executable $beta_command"
+        }
+        if {[file type $beta_command] eq "link"} {
+            set beta_link [file readlink $beta_command]
+            if {![regexp {^abacus_[A-Za-z0-9_]+$} $beta_link]} {
+                error "unexpected beta9 command symlink"
+            }
+            set beta_binary [file join $beta_prefix bin $beta_link]
+            if {[file type $beta_binary] ne "file"} {
+                error "beta9 executable must be a packaged regular file"
+            }
+        }
+    } elseif {$env(SAI_ABACUS_PREFIX) ne $beta_prefix} {
+        error "ABACUS unload identity differs from the loaded build"
+    }
+
+    conflict abacus
+    prepend-path MODULEPATH /opt/modules/modulefiles/devtools
+    set beta_dependencies [list \
+        fftw/3.3.10 libxc/7.0.0-auto \
+        openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto \
+        saiblas/2603-gnu-auto elpa/2026.02.001-2603-gnu \
+        cuda/12.9.1 nvhpc/26.3-gnu-cuda12-tuned]
+    if {$beta_gpu} {
+        lappend beta_dependencies nvmplibs/26.7-tmp
+    } else {
+        # CPU beta9 also used CUDA-linked site ELPA/MPI; preserve its dependencies.
+        lappend beta_dependencies gcc/13.3.0
+    }
+    foreach beta_dependency $beta_dependencies {
+        if {[llength [info commands depends-on]]} {
+            depends-on $beta_dependency
+        } else {
+            module load $beta_dependency
+        }
+    }
+    prepend-path PATH [file join $beta_prefix bin]
+    setenv ABACUS_HOME $beta_prefix
+    setenv ABACUS_COMMIT 149723287702677dc159c5e96fb98cbc3482f445
+    setenv SAI_ABACUS_PREFIX $beta_prefix
+    setenv SAI_ABACUS_NATIVE_PARTITION $beta_partition
+}

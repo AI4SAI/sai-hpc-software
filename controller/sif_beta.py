@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 import re
 
-from module_publication import tcl
+from module_publication import feature_summary, inspection_hint, tcl
 from release_contract import PARTITIONS, SOFTWARE
 from sif_modules import load_snapshot, render_module, verify_sources, write
 from sif_runtime import MPI_LAUNCHERS, PROGRAMS, digest, require
@@ -42,7 +42,27 @@ def stem(software):
 
 def render_gateway(home_module):
     # Installed once in /opt. No changing version metadata lives here.
-    return '#%Module1.0\n# Maintained by stardust; this gateway does not rotate.\nsource ' + tcl(home_module) + '\n'
+    software = Path(home_module).parent.name
+    header = ['#%Module1.0', '# Maintained by stardust; this gateway does not rotate.',
+              'source ' + tcl(home_module)]
+    if software not in SOFTWARE:
+        return '\n'.join([*header, ''])
+    features = 'Features: ' + feature_summary(software)
+    return '\n'.join([
+        *header,
+        '# Documentation fallback for immutable generations predating feature help.',
+        '# New generations supply their own build-specific documentation.',
+        'if {![info exists sai_feature_documentation]} {',
+        '    module-whatis ' + tcl(features),
+        '    if {[llength [info commands ModulesHelp]]} {',
+        '        rename ModulesHelp sai_original_beta_help',
+        '        proc ModulesHelp {} {',
+        '            global sai_beta_root sai_beta_generation',
+        '            sai_original_beta_help',
+        '            puts stderr ' + tcl(features),
+        '            puts stderr ' + tcl(inspection_hint(software)),
+        '            puts stderr "Local generation record (includes the runtime bundle path): cat [file join $sai_beta_root generations $sai_beta_generation manifest.json]"',
+        '        }', '    }', '}', ''])
 
 
 def render_version(root, software, generation):

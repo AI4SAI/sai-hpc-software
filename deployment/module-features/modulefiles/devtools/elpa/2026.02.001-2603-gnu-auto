@@ -1,0 +1,38 @@
+#%Module1.0
+# SAI module documentation. Inspection commands below are documentation only.
+module-whatis "ELPA 2026.02.001; CPU/V100 partition selection"
+module-whatis "Features: MPI/OpenMP; symmetric/Hermitian eigensolvers; AVX2/AVX512; CUDA on V100"
+proc ModulesHelp {} {
+    puts stderr "ELPA 2026.02.001; CPU/V100 partition selection\nFeatures: MPI/OpenMP; symmetric/Hermitian eigensolvers; AVX2/AVX512; CUDA on V100\nLoad inside the matching Slurm allocation before running inspection commands.\nFull compiled kernels: elpa2_print_kernels.\nGPU options: cat \"\$ELPA_ROOT/include/elpa_openmp-2026.02.001/elpa/elpa_configured_options.h\".\nLibrary metadata: cat \"\$ELPA_ROOT/lib/pkgconfig/elpa_openmp.pc\".\nDSPRHBM uses the CPU build; V100 partitions use NVIDIA CUDA builds."
+}
+if {[module-info mode help] || [module-info mode whatis]} {return}
+conflict elpa
+
+set variants [dict create 16V100 avx2/nvidia 8V100V0 avx2/nvidia \
+    4V100 avx512/nvidia DSPRHBM avx512/cpu]
+if {[module-info mode load]} {
+    if {![info exists env(SLURM_JOB_PARTITION)]} {
+        error "Load elpa/2026.02.001-2603-gnu-auto inside a Slurm job or allocation"
+    }
+    set partition $env(SLURM_JOB_PARTITION)
+    if {![dict exists $variants $partition]} {error "Unsupported ELPA partition: $partition"}
+    set prefix /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-[dict get $variants $partition]
+    if {![file isfile $prefix/lib/libelpa_openmp.so.19]} {error "ELPA installation missing: $prefix"}
+} elseif {[module-info mode remove]} {
+    if {![info exists env(ELPA_ROOT)]} {error "Missing the loaded ELPA_ROOT"}
+    set prefix $env(ELPA_ROOT)
+    # setenv in remove mode clears identities left by either previous module.
+    foreach name {SAI_ELPA_2603_PARTITION SAI_ELPA_2603_BACKEND SAI_ELPA_2603_ISA} {setenv $name {}}
+} else {
+    return
+}
+module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto saiblas/2603-gnu-auto
+setenv ELPA_ROOT $prefix
+prepend-path PATH $prefix/bin
+prepend-path LD_LIBRARY_PATH $prefix/lib
+prepend-path LD_RUN_PATH $prefix/lib
+prepend-path LIBRARY_PATH $prefix/lib
+prepend-path PKG_CONFIG_PATH $prefix/lib/pkgconfig
+prepend-path CMAKE_PREFIX_PATH $prefix
+prepend-path CPATH $prefix/include
+prepend-path CPATH $prefix/include/elpa_openmp-2026.02.001

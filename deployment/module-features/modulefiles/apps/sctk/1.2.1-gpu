@@ -1,0 +1,19 @@
+#%Module1.0#####################################################################
+# SAI module documentation. Inspection commands below are documentation only.
+module-whatis "Superconducting-toolkit 1.2.1; QE 7.4.1; GPU"
+module-whatis "Features: MPI/OpenMP; superconducting DFT; sctk.x + pw.x + ph.x; NVHPC CUDA/OpenACC"
+proc ModulesHelp {} {
+    puts stderr "Superconducting-toolkit 1.2.1; QE 7.4.1; GPU\nFeatures: MPI/OpenMP; superconducting DFT; sctk.x + pw.x + ph.x; NVHPC CUDA/OpenACC\nInstalled build identity: cat /opt/apps/sctk/1.2.1-gpu/INSTALL_METADATA.txt\nBuild commands: /opt/apps/sctk/1.2.1-gpu/install-scripts/\nLocal documentation and source: /opt/apps/sctk/1.2.1-gpu/share/sctk/src/\nQE command information after module load: pw.x -h."
+}
+if {[module-info mode help] || [module-info mode whatis]} {return}
+module load nvhpc/26.3-pgi-cuda12-tuned
+module load openmpi/5.0.10-nvhpc26.3-pgi-cuda12-auto
+module load fftw/3.3.10
+module load saiblas/2603-gnu-auto
+prepend-path PATH /opt/apps/sctk/1.2.1-gpu/bin
+prepend-path LD_LIBRARY_PATH /opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib
+prepend-path LD_LIBRARY_PATH /opt/apps/sctk/1.2.1-gpu/lib
+setenv SCTK_GPU_ROOT /opt/apps/sctk/1.2.1-gpu
+setenv SCTK_VERSION 1.2.1
+setenv SCTK_QE_VERSION 7.4.1
+setenv SCTK_SOURCE_COMMIT b7afed8

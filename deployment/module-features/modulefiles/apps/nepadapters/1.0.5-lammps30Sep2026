@@ -1,0 +1,23 @@
+#%Module1.0
+# SAI module documentation. Inspection commands below are documentation only.
+module-whatis "NEPAdapters 1.0.5; addon for LAMMPS 30Sep2026"
+module-whatis "Features: nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5"
+proc ModulesHelp {} {
+    puts stderr "NEPAdapters 1.0.5; addon for LAMMPS 30Sep2026\nFeatures: nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5\nSource: 3ceba8f9; requires lammps/30Sep2026-deepmd320-auto.\nLoad inside the matching Slurm allocation before running inspection commands.\nGPU: -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.\nNEP3 and CUDA LAMMPS qNEP are unsupported; this plugin is not for daily beta builds.\nPlugin files: ls \"\$SAI_NEPADAPTERS_PREFIX/lib\".\nAfter loading, lmp -h lists the available packages and pair styles."
+}
+if {[module-info mode help] || [module-info mode whatis]} {return}
+conflict nepadapters
+if {[llength [info commands depends-on]]} {
+    depends-on lammps/30Sep2026-deepmd320-auto
+} else {
+    prereq lammps/30Sep2026-deepmd320-auto
+}
+set prefix {/opt/apps/nepadapters/1.0.5-lammps30Sep2026}
+if {[module-info mode load]} {
+    foreach name {nepadapterscpuplugin.so nepadaptersgpuplugin.so} {
+        if {![file readable $prefix/lib/$name]} {error "Missing NEPAdapters plugin: $prefix/lib/$name"}
+    }
+    puts stderr "NEPAdapters 1.0.5; LAMMPS 30Sep2026; styles=nep/cpu,nep/gpu/kk"
+}
+prepend-path LAMMPS_PLUGIN_PATH $prefix/lib
+setenv SAI_NEPADAPTERS_PREFIX $prefix

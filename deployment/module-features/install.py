@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
-"""Update only the whatis descriptions of the four installed release modules."""
+"""Install reviewed help/whatis updates for saiuser01's public modulefiles."""
 import argparse
 from datetime import datetime
+import fcntl
 import hashlib
+import json
 import os
 from pathlib import Path
+import pwd
 import stat
 
-DEPLOYMENT = Path(__file__).resolve().parent.parent
-MODULES = (
-    ('abacus-3.11.0-beta12/3.11.0-beta12-auto', 'abacus/3.11.0-beta12-auto'),
-    ('cp2k-2026.2-shared-elpa/2026.2-auto', 'cp2k/2026.2-auto'),
-    ('lammps-30Sep2026/30Sep2026-deepmd320-auto', 'lammps/30Sep2026-deepmd320-auto'),
-    ('qe-7.6/7.6-auto', 'qe/7.6-auto'),
-)
+PACKAGE = Path(__file__).resolve().parent
 
 
 def require(condition, message):
@@ -21,9 +18,83 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def runtime_body(content):
-    return b''.join(line for line in content.splitlines(keepends=True)
-                    if not line.startswith(b'module-whatis '))
+def digest(content):
+    return hashlib.sha256(content).hexdigest()
+
+
+def regular(path):
+    require(path.resolve() == path and not path.is_symlink(), 'redirected module path: ' + str(path))
+    info = path.stat()
+    require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1,
+            'module must be a regular, single-link file: ' + str(path))
+    return info
+
+
+def preflight(package, root, manifest):
+    require(manifest['schema'] == 1, 'unsupported manifest')
+    uid = pwd.getpwnam(manifest['owner']).pw_uid
+    pending, seen = [], set()
+    for row in manifest['modules']:
+        name = Path(row['path'])
+        require(not name.is_absolute() and '..' not in name.parts
+                and len(name.parts) == 3 and name.parts[0] in ('apps', 'devtools')
+                and not name.name.startswith('.') and str(name) not in seen,
+                'unsafe/duplicate module name')
+        seen.add(str(name))
+        require(row['source'] == 'modulefiles/' + str(name), 'unexpected candidate source')
+        source, target = package / row['source'], root / name
+        regular(source)
+        desired = source.read_bytes()
+        require(digest(desired) == row['after_sha256'], 'candidate changed: ' + str(name))
+        info = regular(target)
+        require(info.st_uid == uid, 'module owner changed: ' + str(target))
+        before = target.read_bytes()
+        require(digest(before) in (row['before_sha256'], row['after_sha256']),
+                'installed module differs from both reviewed versions: ' + str(target))
+        for reference in row['readable_files']:
+            require(Path(reference).is_file() and os.access(reference, os.R_OK),
+                    'advertised local record is unreadable: ' + reference)
+        print(str(name) + (': already current' if before == desired else ': documentation update ready'))
+        if before != desired:
+            pending.append((target, before, desired, info))
+    return pending
+
+
+def install(root, pending, backup):
+    backup.mkdir(parents=True, mode=0o700)
+    # Save every original before replacing the first module. Backups stay out of /opt.
+    for target, before, desired, info in pending:
+        current = regular(target)
+        require(current.st_uid == info.st_uid and current.st_gid == info.st_gid
+                and current.st_mode == info.st_mode and target.read_bytes() == before,
+                'module changed during preflight: ' + str(target))
+        saved = backup / target.relative_to(root)
+        saved.parent.mkdir(parents=True, exist_ok=True)
+        with saved.open('xb') as output:
+            output.write(before)
+            output.flush()
+            os.fsync(output.fileno())
+    print('Original modulefiles: ' + str(backup), flush=True)
+    for target, before, desired, info in pending:
+        require(regular(target).st_uid == info.st_uid and target.read_bytes() == before,
+                'module changed during installation: ' + str(target))
+        temporary = target.with_name('.' + target.name + '.features-' + str(os.getpid()))
+        created = False
+        try:
+            with temporary.open('xb') as output:
+                created = True
+                output.write(desired)
+                # Keep site ownership even when an administrator runs as root.
+                os.fchown(output.fileno(), info.st_uid, info.st_gid)
+                os.fchmod(output.fileno(), stat.S_IMODE(info.st_mode))
+                output.flush()
+                os.fsync(output.fileno())
+            require(temporary.read_bytes() == desired, 'module copy differs')
+            os.replace(temporary, target)
+        finally:
+            if created and temporary.exists():
+                temporary.unlink()
+        print('Updated ' + str(target) + ' sha256=' + digest(desired), flush=True)
 
 
 def main():
@@ -32,45 +103,21 @@ def main():
     action.add_argument('--check', action='store_true')
     action.add_argument('--install', action='store_true')
     args = parser.parse_args()
-    pending = []
-    for source, name in MODULES:
-        desired = (DEPLOYMENT / source).read_bytes()
-        target = Path('/opt/modules/modulefiles/apps') / name
-        require(target.is_file() and not target.is_symlink(), 'missing regular module: ' + str(target))
-        before = target.read_bytes()
-        require(runtime_body(before) == runtime_body(desired),
-                'module runtime differs; refusing a description-only update: ' + str(target))
-        print(name + (': already current' if before == desired else ': descriptions only'))
-        if before != desired:
-            pending.append((target, before, desired, stat.S_IMODE(target.stat().st_mode)))
-    if not args.install or not pending:
+    manifest = json.loads((PACKAGE / 'manifest.json').read_text())
+    root = Path(manifest['root'])
+    require(root == Path('/opt/modules/modulefiles'), 'unexpected module root')
+    if not args.install:
+        preflight(PACKAGE, root, manifest)
         return
-    # Keep backups out of /opt, in the installing account's home directory.
-    backup = Path.home() / 'sai-hpc-module-backups' / (datetime.now().strftime('%Y%m%d-%H%M%S') + '-' + str(os.getpid()))
-    backup.mkdir(parents=True, mode=0o700)
-    for target, before, desired, mode in pending:
-        require(target.read_bytes() == before and not target.is_symlink(), 'module changed during preflight')
-        saved = backup / target.parent.name / target.name
-        saved.parent.mkdir(exist_ok=True)
-        with saved.open('xb') as output:
-            output.write(before)
-        temporary = target.with_name('.' + target.name + '.features-' + str(os.getpid()))
-        created = False
-        try:
-            with temporary.open('xb') as output:
-                created = True
-                output.write(desired)
-                output.flush()
-                os.fsync(output.fileno())
-            temporary.chmod(mode)
-            require(temporary.read_bytes() == desired, 'module copy differs')
-            os.replace(temporary, target)
-        finally:
-            if created and temporary.exists():
-                temporary.unlink()
-        print('Updated ' + str(target) + ' sha256=' + hashlib.sha256(desired).hexdigest())
-    print('Original modulefiles: ' + str(backup))
-    print('Inspect with module --ignore_cache whatis <module>.')
+    backups = Path.home() / 'sai-hpc-module-backups'
+    backups.mkdir(parents=True, exist_ok=True, mode=0o700)
+    with (backups / '.module-features.lock').open('a') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        pending = preflight(PACKAGE, root, manifest)
+        if pending:
+            backup = backups / (datetime.now().strftime('%Y%m%d-%H%M%S') + '-' + str(os.getpid()))
+            install(root, pending, backup)
+    print('Inspect with module --ignore_cache whatis <module> and module --ignore_cache help <module>.')
 
 
 if __name__ == '__main__':

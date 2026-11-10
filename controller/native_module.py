@@ -305,7 +305,7 @@ def render_native_fragment(entry, *, allowed_prefixes=()):
 
 def render_native_selector(identity):
     """Render modulefiles/<software>/<track>/<build_id>, shared by partitions."""
-    from module_publication import feature_summary
+    from module_publication import feature_summary, inspection_hint
     identity = validate_identity(identity)
     software, track, build_id = (identity[name] for name in ("software", "track", "build_id"))
     stem = _stem(software)
@@ -314,7 +314,8 @@ def render_native_selector(identity):
     lines = ["#%Module1.0", "module-whatis " + tcl(description),
              "module-whatis " + tcl('Features: ' + feature_summary(software)),
              "proc ModulesHelp {} {", "    puts stderr " + tcl(description),
-             "    puts stderr " + tcl('Features: ' + feature_summary(software)), "}",
+             "    puts stderr " + tcl('Features: ' + feature_summary(software)),
+             "    puts stderr " + tcl(inspection_hint(software)), "}",
              'set sai_native_partition ""',
              'if {[module-info mode load]} {',
              *('    ' + line for line in _allocation_checks()),
