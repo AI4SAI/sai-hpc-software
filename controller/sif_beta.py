@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 import re
 
-from module_publication import feature_summary, inspection_hint, tcl
+from module_publication import feature_summary, tcl
 from release_contract import PARTITIONS, SOFTWARE
 from sif_modules import load_snapshot, render_module, verify_sources, write
 from sif_runtime import MPI_LAUNCHERS, PROGRAMS, digest, require
@@ -54,13 +54,15 @@ def render_gateway(home_module):
         '# New generations supply their own build-specific documentation.',
         'if {![info exists sai_feature_documentation]} {',
         '    module-whatis ' + tcl(features),
+        '}',
+        'if {![info exists sai_static_build_info]} {',
         '    if {[llength [info commands ModulesHelp]]} {',
         '        rename ModulesHelp sai_original_beta_help',
         '        proc ModulesHelp {} {',
-        '            global sai_beta_root sai_beta_generation',
+        '            global sai_beta_root sai_beta_generation sai_feature_documentation',
         '            sai_original_beta_help',
-        '            puts stderr ' + tcl(features),
-        '            puts stderr ' + tcl(inspection_hint(software)),
+        '            if {![info exists sai_feature_documentation]} {puts stderr ' + tcl(features) + '}',
+        '            puts stderr "Full recorded build information (readable on login nodes): cat [file join $sai_beta_root build-info $sai_beta_generation ' + software + ' index.txt]"',
         '            puts stderr "Local generation record (includes the runtime bundle path): cat [file join $sai_beta_root generations $sai_beta_generation manifest.json]"',
         '        }', '    }', '}', ''])
 
@@ -204,6 +206,12 @@ def prepare(root, module_root, generation, bundle, validated_catalog, checks, so
     for name in software:
         require(resume or not (module_root / name / version_name(name, snapshot)).exists(),
                 'fixed module name already exists; preserve its generation')
+    build_info_files = {}
+    has_build_info = any('build_info' in report for report in reports.values())
+    if has_build_info:
+        from build_info import publish
+        for name in software:
+            build_info_files.update(publish(root, generation, name, snapshot, reports, sealed))
     for name in software:
         app = snapshot['applications'][name]
         identity = next(iter(app['partitions'].values()))['identity']
@@ -215,7 +223,8 @@ def prepare(root, module_root, generation, bundle, validated_catalog, checks, so
                   f"snapshot={snapshot['snapshot']}")
         sealed(destination / 'modules' / name,
               render_module(bundle, name, dict(app, version=version_name(name, snapshot)), help_text=description, notice=notice,
-                            extra_environment=extra, compute_only=True))
+                            extra_environment=extra, compute_only=True,
+                            build_info_root=(root / 'build-info' / generation / name) if has_build_info else None))
     versions = {}
     for name in software:
         version = version_name(name, snapshot)
@@ -234,6 +243,7 @@ def prepare(root, module_root, generation, bundle, validated_catalog, checks, so
         'validated_catalog': str(validated_catalog), 'validated_catalog_sha256': digest(validated_catalog),
         'checks_sha256': digest(checks), 'software': software,
         'jobs': {part: report['job'] for part, report in reports.items()}, 'files': files,
+        'build_info_files': build_info_files,
     }, indent=2, sort_keys=True) + '\n')
     for path in destination.rglob('*'):
         if path.is_dir():
@@ -252,6 +262,10 @@ def select(root, generation, software):
     for path, expected in manifest['files'].items():
         require((destination / path).resolve().is_relative_to(destination)
                 and digest(destination / path) == expected, 'changed generation file')
+    for path, expected in manifest.get('build_info_files', {}).items():
+        record = root / path
+        require(record.resolve() == record and record.is_relative_to(root / 'build-info' / generation)
+                and digest(record) == expected, 'changed static build information')
     require(manifest.get('schema') == 2, 'generation predates the versioned beta symlink layout')
     module_root = Path(manifest['module_root'])
     require(module_root.is_absolute() and module_root.resolve() == module_root, 'redirected module root')

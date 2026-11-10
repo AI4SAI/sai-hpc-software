@@ -1,7 +1,7 @@
 -- SAI module documentation. Inspection commands below are documentation only.
 whatis("sscha 1.6.2; Python 3.12.13")
 whatis("Features: CPU/MPI; stochastic anharmonic phonons; CellConstructor; ASE; spglib")
-help("sscha 1.6.2; Python 3.12.13\nFeatures: CPU/MPI; stochastic anharmonic phonons; CellConstructor; ASE; spglib\nExact installed package versions: cat /opt/apps/conda_env/sscha-1.6.2/share/sai/requirements.lock\nPackage inventory: cat /opt/apps/conda_env/sscha-1.6.2/share/sai/packages.json\nSelected Python: python -c 'import sys; print(sys.executable)'\nPython is selected through PATH without activating Conda; unload before changing environments.")
+help("sscha 1.6.2; Python 3.12.13\nFeatures: CPU/MPI; stochastic anharmonic phonons; CellConstructor; ASE; spglib\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/sscha/1.6.2/index.txt\nExact installed package versions: cat /opt/apps/conda_env/sscha-1.6.2/share/sai/requirements.lock\nPackage inventory: cat /opt/apps/conda_env/sscha-1.6.2/share/sai/packages.json\nPython is selected through PATH without activating Conda; unload before changing environments.")
 if mode() == "help" or mode() == "whatis" then return end
 family("python")
 depends_on("openmpi/5.0.8-cuda12.4-classic-auto")

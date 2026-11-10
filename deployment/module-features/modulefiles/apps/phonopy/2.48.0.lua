@@ -1,7 +1,7 @@
 -- SAI module documentation. Inspection commands below are documentation only.
 whatis("phonopy 2.48.0; Python 3.12.13")
 whatis("Features: CPU; harmonic phonons; finite displacements; spglib; Python API")
-help("phonopy 2.48.0; Python 3.12.13\nFeatures: CPU; harmonic phonons; finite displacements; spglib; Python API\nCLI version/options after loading: phonopy --version; phonopy --help.\nExact installed package versions: cat /opt/apps/conda_env/phonopy-2.48.0/share/sai/requirements.lock\nPackage inventory: cat /opt/apps/conda_env/phonopy-2.48.0/share/sai/packages.json\nSelected Python: python -c 'import sys; print(sys.executable)'\nPython is selected through PATH without activating Conda; unload before changing environments.")
+help("phonopy 2.48.0; Python 3.12.13\nFeatures: CPU; harmonic phonons; finite displacements; spglib; Python API\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/phonopy/2.48.0/index.txt\nExact installed package versions: cat /opt/apps/conda_env/phonopy-2.48.0/share/sai/requirements.lock\nPackage inventory: cat /opt/apps/conda_env/phonopy-2.48.0/share/sai/packages.json\nPython is selected through PATH without activating Conda; unload before changing environments.")
 if mode() == "help" or mode() == "whatis" then return end
 family("python")
 local root = "/opt/apps/conda_env/phonopy-2.48.0"

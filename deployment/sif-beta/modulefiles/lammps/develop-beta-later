@@ -5,13 +5,15 @@ source "/home/stardust/sai-hpc-software/modulefiles/apps/lammps/develop-beta-lat
 # New generations supply their own build-specific documentation.
 if {![info exists sai_feature_documentation]} {
     module-whatis "Features: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP"
+}
+if {![info exists sai_static_build_info]} {
     if {[llength [info commands ModulesHelp]]} {
         rename ModulesHelp sai_original_beta_help
         proc ModulesHelp {} {
-            global sai_beta_root sai_beta_generation
+            global sai_beta_root sai_beta_generation sai_feature_documentation
             sai_original_beta_help
-            puts stderr "Features: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP"
-            puts stderr "After loading in an allocation: lmp -h (full package/style list and compiler information)."
+            if {![info exists sai_feature_documentation]} {puts stderr "Features: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP"}
+            puts stderr "Full recorded build information (readable on login nodes): cat [file join $sai_beta_root build-info $sai_beta_generation lammps index.txt]"
             puts stderr "Local generation record (includes the runtime bundle path): cat [file join $sai_beta_root generations $sai_beta_generation manifest.json]"
         }
     }

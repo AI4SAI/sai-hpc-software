@@ -33,6 +33,14 @@ def regular(path):
 def preflight(package, root, manifest):
     require(manifest['schema'] == 1, 'unsupported manifest')
     uid = pwd.getpwnam(manifest['owner']).pw_uid
+    for name, expected in manifest.get('static_records', {}).items():
+        path = Path(name)
+        require(path.is_absolute() and path.is_relative_to('/home/stardust/sai-hpc-software'),
+                'unexpected static record path')
+        require(digest(path.read_bytes()) == expected, 'static build record changed: ' + name)
+        require(path.stat().st_mode & stat.S_IROTH, 'static record is not public: ' + name)
+        for parent in path.parents:
+            require(parent.stat().st_mode & stat.S_IXOTH, 'static record parent is not traversable: ' + str(parent))
     pending, seen = [], set()
     for row in manifest['modules']:
         name = Path(row['path'])
@@ -49,7 +57,7 @@ def preflight(package, root, manifest):
         info = regular(target)
         require(info.st_uid == uid, 'module owner changed: ' + str(target))
         before = target.read_bytes()
-        require(digest(before) in (row['before_sha256'], row['after_sha256']),
+        require(digest(before) in (row['before_sha256'], row['after_sha256'], *row.get('previous_sha256', [])),
                 'installed module differs from both reviewed versions: ' + str(target))
         for reference in row['readable_files']:
             require(Path(reference).is_file() and os.access(reference, os.R_OK),

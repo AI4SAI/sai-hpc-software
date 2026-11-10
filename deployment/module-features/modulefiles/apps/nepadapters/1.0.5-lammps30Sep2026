@@ -1,9 +1,9 @@
 #%Module1.0
-# SAI module documentation. Inspection commands below are documentation only.
+# SAI module documentation. Static build records are readable without loading this module.
 module-whatis "NEPAdapters 1.0.5; addon for LAMMPS 30Sep2026"
 module-whatis "Features: nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5"
 proc ModulesHelp {} {
-    puts stderr "NEPAdapters 1.0.5; addon for LAMMPS 30Sep2026\nFeatures: nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5\nSource: 3ceba8f9; requires lammps/30Sep2026-deepmd320-auto.\nLoad inside the matching Slurm allocation before running inspection commands.\nGPU: -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.\nNEP3 and CUDA LAMMPS qNEP are unsupported; this plugin is not for daily beta builds.\nPlugin files: ls \"\$SAI_NEPADAPTERS_PREFIX/lib\".\nAfter loading, lmp -h lists the available packages and pair styles."
+    puts stderr "NEPAdapters 1.0.5; addon for LAMMPS 30Sep2026\nFeatures: nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/nepadapters/1.0.5-lammps30Sep2026/index.txt\nThe record includes the base LAMMPS help plus an explicit plugin load/list and style inventory.\nSource: 3ceba8f9; requires lammps/30Sep2026-deepmd320-auto.\nGPU: -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.\nNEP3 and CUDA LAMMPS qNEP are unsupported; this plugin is not for daily beta builds.\nPlugin files: ls \"\$SAI_NEPADAPTERS_PREFIX/lib\"."
 }
 if {[module-info mode help] || [module-info mode whatis]} {return}
 conflict nepadapters

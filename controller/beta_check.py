@@ -59,6 +59,7 @@ def prepare(software, partition, bundle, output, fixtures):
         (output / name).mkdir(mode=0o700)
     shutil.copytree(fixtures / software, output / 'case', copy_function=shutil.copyfile)
     control = Path(__file__).resolve().parent
+    shutil.copyfile(control / 'build_info.py', output / 'control/build_info.py')
     if partition != 'DSPRHBM':
         shutil.copyfile(control / 'gpu_health.py', output / 'control/gpu_health.py')
     gpumd_model = prepare_gpumd_model(row, output / 'case') if software == 'gpumd' else None
@@ -86,6 +87,7 @@ def prepare(software, partition, bundle, output, fixtures):
             'printf "SAI_QE_MPI_RANK=%s\\n" "$rank" >&2\n'
             'exec manypw.x "$@"\n')
     request = dict(software=software, partition=partition, catalog=str(bundle / 'catalog.json'),
+                   build_info_required=True,
                    catalog_sha256=digest(bundle / 'catalog.json'), runtime_sha256=snapshot['runtime_sha256'],
                    reference=read(fixtures / 'references.json')[software],
                    ranks=2 if software in ('abacus', 'cp2k', 'lammps', 'qe') else 1,
@@ -144,7 +146,9 @@ def render(software, partition, bundle, output):
         # Launch from the case tree's parent so the training script's relative
         # fixture and output paths match its standalone acceptance layout.
         lines += ['cd ..', 'deepmd-python -c ' + q(runner) + ' > training/training.log 2>&1']
-    lines += ['cd ' + q(str(output)), 'python3 -B ' + q(str(Path(__file__).resolve())) + ' verify ' + q(str(output))]
+    lines += ['cd ' + q(str(output)),
+              'python3 -B control/build_info.py ' + q(str(output)),
+              'python3 -B ' + q(str(Path(__file__).resolve())) + ' verify ' + q(str(output))]
     return '\n'.join(lines) + '\n'
 
 
@@ -307,6 +311,11 @@ def verify(output):
                     for t in traces if t['program'] == 'manypw.x'), 'QE manypw launch name was not preserved')
     report = dict(passed=True, automatic_memory=True, partition=partition, job=job,
                   catalog_sha256=request['catalog_sha256'], runtime_sha256=request['runtime_sha256'], **{software: result})
+    if request.get('build_info_required'):
+        import build_info
+        path = output / 'build-info.json'
+        build_info.verify(path, row, request['catalog_sha256'], job)
+        report['build_info'] = dict(path=str(path), sha256=digest(path))
     return report
 
 

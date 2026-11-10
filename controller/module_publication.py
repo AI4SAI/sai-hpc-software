@@ -24,18 +24,6 @@ def feature_summary(software):
     }[software]
 
 
-def inspection_hint(software):
-    """Program-specific inspection commands; never run them during module discovery."""
-    return {
-        'abacus': 'After loading in an allocation: abacus --info (full build options and libraries).',
-        'cp2k': 'After loading in an allocation: cp2k.psmp --version (compiler, flags and linked libraries).',
-        'lammps': 'After loading in an allocation: lmp -h (full package/style list and compiler information).',
-        'deepmd-kit': 'After loading in an allocation: dp --version; dp --help. Use deepmd-python to inspect Python package versions.',
-        'gpumd': 'GPUMD prints its version and GPU information at the start of a normal calculation; it has no standalone --version command.',
-        'qe': 'After loading in an allocation: pw.x -h (version and parallel command options); the calculation banner lists active acceleration.',
-    }[software]
-
-
 def tcl(value):
     value = str(value)
     for old, new in (("\\", "\\\\"), ('"', '\\"'), ("$", "\\$"),
@@ -63,7 +51,7 @@ def render_selector(root, software, track, build_id, description):
              'proc ModulesHelp {} {',
              '    puts stderr ' + tcl(description),
              '    puts stderr ' + tcl('Features: ' + feature_summary(software)),
-             '    puts stderr ' + tcl(inspection_hint(software)), '}',
+             '    puts stderr ' + tcl('Local build receipts: ' + str(catalog) + '/<PARTITION>/*.json'), '}',
              f"conflict {software}", f"set sai_catalog {tcl(catalog)}",
              'set sai_target ""', 'set sai_partition ""', 'set sai_run ""',
              'if {[module-info mode remove]} {',
