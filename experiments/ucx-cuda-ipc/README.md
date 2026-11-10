@@ -1,6 +1,18 @@
 # CUDA IPC address-recycling diagnosis (2026-11-10)
 
-## Current upstream master follow-up
+## Review revision: generalized cleanup and CI
+
+Upstream [PR #12292](https://github.com/openucx/ucx/pull/12292) now has review follow-up commit [`6d92f85ea2432592c7c1e780fdeb5dd95a743306`](https://github.com/Stardust0831/ucx/commit/6d92f85ea2432592c7c1e780fdeb5dd95a743306), based on `74b413ab19d63c277ffa3fb553ed83e42bc50f6f`. Cache hits retain the fast point lookup; misses use the existing range helper to remove stale overlaps for all handle types. The redundant range-invalidation retry is removed, while the full-cache purge/retry fallback is retained. A direct IPC capability probe distinguishes unavailable prerequisites from real import errors, and the regression is now invoked by the upstream MPI CI script.
+
+Both the native reproducer and the revised in-tree regression exercised 30 lower-start overlaps on the same two V100 GPUs for both variants. Baseline tracing found 30 recovered CUDA error-208 imports per program; the candidate had none. All byte checks passed, and the regression correctly returned 1 for baseline and 0 for the candidate. The existing MPI/CUDA matrix produced **450 passes and 36 skips per variant**, with no failed cases; the skips concern unavailable Fabric combinations. All 16 expected-outcome scenarios passed the corrected verifier, including collective GPU skips, error injection, and retained recovery. The regression's 61 successful driver imports include its one direct capability probe; the native reproducer has 60.
+
+The added CI command block was exercised in job **2350615**, which completed with **0:0 in 10 seconds**. Normal execution passed; no GPU produced an explicit skip; an injected recovered import error still propagated failure through the CI gate while byte checks passed. Library paths are applied inside the MPI process, and the new CI invocation bypasses libtool's build-tree path injection. This avoids the host/build/install library mixing exposed by the prior launcher attempt. This is a test of the added command block, not a claim that the full upstream CI pipeline has completed.
+
+The [review validation record](review-validation-20261110.json) includes source hashes, all 16 scenario outcomes, 20 completed-process library-map audits, the three CI gate cases, scheduler receipts, and explanations of the preserved failed attempts. The two ranks intentionally terminated by MPI abort did not write destructor-time library maps. The five PR source files match the final revision; after the 16-scenario run only the CI shell launcher changed, so the compiled C sources are identical. This revision was rebuilt in its own prefix; unlike the earlier copied-prefix trial below, its core libraries are not claimed to be byte-identical to baseline. Raw logs and test harnesses are retained in `review-evidence.tar.gz` under `/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261110` and in the local `.work/ucx-review-20261110` copy, with a recorded SHA256.
+
+The allocator-dependent overlap trigger still skips if address reuse does not exercise the case. Fabric IPC and concurrent allocation/free behavior are not exhaustively validated. Earlier UCX 1.20 application and timing results below apply to the original legacy-only backport, not full application/performance acceptance of this generalized change.
+
+## Initial upstream master follow-up (legacy-only revision)
 
 The patch has also been ported to upstream master
 `74b413ab19d63c277ffa3fb553ed83e42bc50f6f` (reports UCX 1.24.0), as fork commit
