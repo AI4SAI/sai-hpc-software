@@ -1,0 +1,12 @@
+[Unit]
+Description=SAI daily 03:00 Asia/Shanghai trigger and five-minute recovery check
+
+[Timer]
+OnCalendar=*-*-* *:00/5:00 Asia/Shanghai
+OnStartupSec=2m
+Persistent=true
+AccuracySec=1s
+Unit=sai-hpc-scheduler.service
+
+[Install]
+WantedBy=timers.target

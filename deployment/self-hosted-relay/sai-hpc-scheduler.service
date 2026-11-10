@@ -1,0 +1,16 @@
+[Unit]
+Description=Request or recover SAI daily GitHub Actions work
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 %h/.local/lib/sai-hpc-scheduler/dispatch_daily.py
+Environment=PYTHONDONTWRITEBYTECODE=1
+UMask=0077
+NoNewPrivileges=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+MemoryMax=64M
+MemorySwapMax=0
+CPUQuota=25%
+LimitCORE=0
+TimeoutStartSec=180

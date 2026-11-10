@@ -103,10 +103,54 @@ AC sleep/hibernate must remain disabled for continuous service.
 
 ## Daily operation and recovery
 
-The daily workflow requests new work at 03:00 Asia/Shanghai. Its
-hourly `:17` trigger only resumes unfinished generations, never a new daily
-source resolution. Separate concurrency groups protect the queued nightly
-request; a filesystem lock serializes durable relay state.
+The VM can request work itself at 03:00 Asia/Shanghai using
+`sai-hpc-scheduler.timer`. It checks every five minutes and two minutes after
+the Linux user manager starts; missed triggers are caught up after restart.
+Only the latest due daily generation is requested, not every missed day.
+The timer has no resident Python process. Its short-lived service is capped
+at 64 MiB, no swap and one quarter of a CPU. GitHub still accepts the dispatch,
+supplies temporary cluster credentials and records the Actions run; cluster
+work remains in Slurm. GitHub/API or Internet downtime can still delay starts.
+
+An active or queued workflow prevents another dispatch. If Actions has ended
+while a frozen plan remains active, the timer requests `mode=resume` first.
+Otherwise it starts the current daily generation once. A manual full-matrix
+build counts for that day. Failed build/scientific deliveries remain failures
+until explicitly retried. A lost HTTP reply is reconciled with run history;
+the relay additionally checks the logical date under its state lock before
+resolving sources or submitting jobs. Partial manual builds remain available.
+
+Install the scheduler separately; this does not stop or restart the runner:
+
+```sh
+# As sai, from this directory; --prepare only installs files.
+bash install-scheduler.sh --prepare
+bash install-scheduler.sh --install
+systemctl --user list-timers sai-hpc-scheduler.timer
+journalctl --user -u sai-hpc-scheduler.service -n 20 --no-pager
+```
+
+`--install` prompts privately for a token if one is not already provisioned.
+Use a GitHub fine-grained token for `AI4SAI/sai-hpc-software` with repository
+**Actions: read and write** and the automatically included Metadata permission.
+The token is stored owner-only at
+`/home/sai/.config/sai-hpc-scheduler/token`. The scheduler's trusted code,
+service units and receipts are also **outside** `/home/sai/ci`, beyond the
+Actions job's Landlock read/write rules:
+
+```text
+/home/sai/.local/lib/sai-hpc-scheduler/dispatch_daily.py
+/home/sai/.local/state/sai-hpc-scheduler/receipt.json
+/home/sai/.config/systemd/user/sai-hpc-scheduler.{service,timer}
+```
+
+`dispatch_daily.py --mode check` tests API reads; `--mode smoke` makes a real
+manual dispatch without compute allocation. The daily YAML is dispatch-only;
+the VM timer replaces GitHub cron. Manual dispatch remains available through
+GitHub or `gh workflow run daily.yml`. Stop the local timer before restoring
+GitHub cron from Git history. Both trigger paths use the same workflow and
+acceptance gates. Separate concurrency groups protect nightly requests and
+recovery; a filesystem lock serializes durable relay state.
 
 Dispatch `daily.yml` with `mode=smoke` to validate runner identity, cluster
 credentials, project access and Slurm commands without allocating nodes.

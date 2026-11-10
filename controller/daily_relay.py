@@ -2,7 +2,7 @@
 """One bounded relay worker, concurrent Slurm deliveries, durable frozen generations."""
 import argparse
 from collections import Counter
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 import fcntl
 import hashlib
 import json
@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import sys
 import time
+from zoneinfo import ZoneInfo
 
 from daily_plan import plan
 from release_contract import SOFTWARE, TRACKS, resolve_tracks
@@ -88,6 +89,23 @@ def enqueue(root, args):
     path = root / workflow / 'plan.json'
     if path.exists():
         return path
+    schedule_date = getattr(args, 'schedule_date', '')
+    if schedule_date:
+        if date.fromisoformat(schedule_date).isoformat() != schedule_date:
+            raise ValueError('invalid local schedule date')
+        if (args.software, args.tracks, args.targets, args.retry_releases) != (
+                'all', ','.join(TRACKS), 'all', False):
+            raise ValueError('scheduled generations must select the full daily matrix')
+        # The caller owns .relay.lock. Two accepted HTTP dispatches for the
+        # same date must never resolve sources twice or duplicate Slurm jobs.
+        for previous in sorted(root.glob('*/plan.json')):
+            recorded = read(previous)
+            created = datetime.fromisoformat(recorded['created']).astimezone(ZoneInfo('Asia/Shanghai'))
+            recorded_date = recorded.get('schedule_date') or (created - timedelta(hours=3)).date().isoformat()
+            if (recorded_date == schedule_date and not recorded['retry_releases']
+                    and recorded['selection'] == dict(software='all', tracks=','.join(TRACKS), targets='all')):
+                print(f'RELAY_DAILY_REUSE {schedule_date} {recorded["workflow"]}', flush=True)
+                return previous
     directory = path.parent
     directory.mkdir(exist_ok=True)
     control = directory / 'checkout'
@@ -100,6 +118,8 @@ def enqueue(root, args):
                   user=os.environ['REMOTE_USER'], created=datetime.now(timezone.utc).isoformat(),
                   retry_releases=args.retry_releases, selection=dict(software=args.software, tracks=args.tracks, targets=args.targets),
                   pins=snapshot(control, sha), state='active')
+    if schedule_date:
+        frozen['schedule_date'] = schedule_date
     save(path, frozen)
     return path
 
@@ -227,6 +247,7 @@ def main():
     parser.add_argument('--tracks', default=','.join(TRACKS))
     parser.add_argument('--targets', default='all')
     parser.add_argument('--retry-releases', action='store_true')
+    parser.add_argument('--schedule-date', default=os.environ.get('SAI_SCHEDULE_DATE', ''))
     parser.add_argument('--budget-seconds', type=int, default=82800)
     args = parser.parse_args()
     root = Path(os.environ['SAI_RELAY_ROOT'])

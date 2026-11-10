@@ -1,0 +1,35 @@
+{
+  "checked_at": "2026-11-10T01:48:55.373802+00:00",
+  "timer": {
+    "ActiveState": "active",
+    "UnitFileState": "enabled",
+    "NextElapseUSecRealtime": "Tue 2026-11-10 09:50:00 CST",
+    "LastTriggerUSec": "Tue 2026-11-10 09:45:00 CST"
+  },
+  "service": {
+    "Result": "success",
+    "ExecMainStartTimestamp": "Tue 2026-11-10 09:45:00 CST",
+    "ExecMainExitTimestamp": "Tue 2026-11-10 09:45:03 CST",
+    "ExecMainStatus": "0",
+    "MemoryPeak": "22659072",
+    "CPUQuotaPerSecUSec": "250ms",
+    "MemoryMax": "67108864",
+    "MemorySwapMax": "0"
+  },
+  "sha256": {
+    "/home/sai/.local/lib/sai-hpc-scheduler/dispatch_daily.py": "5ecf9a3c87908168bfeeabbc77cd7160add65ee9ac5e742357a82999afeae990",
+    "/home/sai/.config/systemd/user/sai-hpc-scheduler.service": "469afa6aca0d3c62e3f9881e8e0e87cde4e0f89f47acf76e57943a478ec3c1c7",
+    "/home/sai/.config/systemd/user/sai-hpc-scheduler.timer": "49ade5309891bdd40c073921c3f245ecb45ba494dd32083dfa9cf29736c4ebf1"
+  },
+  "journal": "Nov 10 09:41:29 STARDUST-VM systemd[3621]: Starting sai-hpc-scheduler.service - Request or recover SAI daily GitHub Actions work...\nNov 10 09:41:31 STARDUST-VM python3[17911]: SCHEDULE busy\nNov 10 09:41:31 STARDUST-VM systemd[3621]: Finished sai-hpc-scheduler.service - Request or recover SAI daily GitHub Actions work.\nNov 10 09:45:00 STARDUST-VM systemd[3621]: Starting sai-hpc-scheduler.service - Request or recover SAI daily GitHub Actions work...\nNov 10 09:45:02 STARDUST-VM python3[18237]: SCHEDULE busy\nNov 10 09:45:03 STARDUST-VM systemd[3621]: Finished sai-hpc-scheduler.service - Request or recover SAI daily GitHub Actions work.\n",
+  "linger": "Linger=yes",
+  "installed_matches_source": true,
+  "smoke_request": {
+    "conclusion": null,
+    "created_at": "2026-11-10T01:39:50Z",
+    "event": "workflow_dispatch",
+    "html_url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/42737369348",
+    "id": 42737369348,
+    "status": "pending"
+  }
+}

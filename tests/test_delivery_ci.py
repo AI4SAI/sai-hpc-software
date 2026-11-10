@@ -121,17 +121,19 @@ class DailyWorkflowTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 plan(**kwargs)
 
-    def test_daily_uses_trusted_relay_and_preserves_nightly_trigger(self):
+    def test_daily_uses_trusted_relay_and_accepts_local_schedule_identity(self):
         import yaml
         data = yaml.safe_load((ROOT / '.github/workflows/daily.yml').read_text())
-        self.assertEqual({row['cron'] for row in data[True]['schedule']}, {'0 19 * * *', '17 * * * *'})
+        self.assertNotIn('schedule', data[True])
+        self.assertIn('schedule_date', data[True]['workflow_dispatch']['inputs'])
         self.assertNotIn('pull_request', data[True])
         relay = data['jobs']['relay']
         self.assertIn('sai-hpc-relay', relay['runs-on'])
         self.assertEqual(relay['environment'], 'hpc')
         self.assertIn("'recovery' || 'delivery'", data['concurrency']['group'])
         self.assertFalse(data['concurrency']['cancel-in-progress'])
-        self.assertIn("&& 'resume'", relay['env']['RELAY_MODE'])
+        self.assertIn('inputs.mode', relay['env']['RELAY_MODE'])
+        self.assertEqual(relay['env']['SAI_SCHEDULE_DATE'], '${{ inputs.schedule_date }}')
         checkout = relay['steps'][0]['run']
         self.assertIn('https://github.com/AI4SAI/sai-hpc-software.git', checkout)
         self.assertIn('--unset-all http.https://github.com/.extraheader', checkout)

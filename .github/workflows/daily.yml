@@ -1,11 +1,9 @@
 name: Daily multi-software builds
+run-name: ${{ inputs.schedule_date && format('SAI daily {0} / {1}', inputs.schedule_date, inputs.mode) || format('SAI {0} / {1}', inputs.mode || 'start', github.run_number) }}
 
 on:
-  schedule:
-    # 03:00 Asia/Shanghai (UTC+8); GitHub cron uses UTC.
-    - cron: '0 19 * * *'
-    # Reattach after an interrupted Actions/relay session; never starts a new build.
-    - cron: '17 * * * *'
+  # The VM's systemd timer dispatches at 03:00 Asia/Shanghai and recovers
+  # interrupted observations. GitHub cron is deliberately not a second timer.
   workflow_dispatch:
     inputs:
       mode:
@@ -28,19 +26,22 @@ on:
         description: Explicitly retry the selected release/prerelease versions
         type: boolean
         default: false
+      schedule_date:
+        description: Local scheduler logical date (YYYY-MM-DD); leave empty for manual builds
+        default: ''
 
 permissions:
   contents: read
 
-# Hourly recovery must not replace a queued nightly trigger (GitHub keeps one
+# Recovery must not replace a queued nightly trigger (GitHub keeps one
 # pending run per concurrency group). The relay also locks its persistent state.
 concurrency:
-  group: sai-daily-${{ github.event.schedule == '17 * * * *' && 'recovery' || 'delivery' }}
+  group: sai-daily-${{ inputs.mode == 'resume' && 'recovery' || 'delivery' }}
   cancel-in-progress: false
 
 jobs:
   relay:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch'
     runs-on: [self-hosted, Linux, X64, sai-hpc-relay]
     environment: hpc
     timeout-minutes: 1440
@@ -51,7 +52,8 @@ jobs:
       TRACKS: ${{ inputs.tracks || 'development,prerelease,release' }}
       TARGETS: ${{ inputs.targets || 'all' }}
       RETRY_RELEASES: ${{ inputs.retry_releases || false }}
-      RELAY_MODE: ${{ github.event.schedule == '17 * * * *' && 'resume' || inputs.mode || 'start' }}
+      RELAY_MODE: ${{ inputs.mode || 'start' }}
+      SAI_SCHEDULE_DATE: ${{ inputs.schedule_date }}
     steps:
       # This repository is public. Use Git directly to avoid a Node runtime
       # alongside the Listener/Worker; compilation remains in Slurm.
