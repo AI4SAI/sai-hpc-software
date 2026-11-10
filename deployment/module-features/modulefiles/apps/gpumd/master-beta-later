@@ -5,13 +5,15 @@ source "/home/stardust/sai-hpc-software/modulefiles/apps/gpumd/master-beta-later
 # New generations supply their own build-specific documentation.
 if {![info exists sai_feature_documentation]} {
     module-whatis "Features: CUDA (V100/SM70); NEP; DeePMD; PLUMED; gpumd/nep; single-process execution"
+}
+if {![info exists sai_static_build_info]} {
     if {[llength [info commands ModulesHelp]]} {
         rename ModulesHelp sai_original_beta_help
         proc ModulesHelp {} {
-            global sai_beta_root sai_beta_generation
+            global sai_beta_root sai_beta_generation sai_feature_documentation
             sai_original_beta_help
-            puts stderr "Features: CUDA (V100/SM70); NEP; DeePMD; PLUMED; gpumd/nep; single-process execution"
-            puts stderr "GPUMD prints its version and GPU information at the start of a normal calculation; it has no standalone --version command."
+            if {![info exists sai_feature_documentation]} {puts stderr "Features: CUDA (V100/SM70); NEP; DeePMD; PLUMED; gpumd/nep; single-process execution"}
+            puts stderr "Full recorded build information (readable on login nodes): cat [file join $sai_beta_root build-info $sai_beta_generation gpumd index.txt]"
             puts stderr "Local generation record (includes the runtime bundle path): cat [file join $sai_beta_root generations $sai_beta_generation manifest.json]"
         }
     }

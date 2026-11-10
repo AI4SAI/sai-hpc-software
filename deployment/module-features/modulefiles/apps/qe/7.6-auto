@@ -1,9 +1,9 @@
 #%Module1.0
-# SAI module documentation. Inspection commands below are documentation only.
+# SAI module documentation. Static build records are readable without loading this module.
 module-whatis "Quantum ESPRESSO 7.6; native CPU/V100 partition selection"
 module-whatis "Features: MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions"
 proc ModulesHelp {} {
-    puts stderr "Quantum ESPRESSO 7.6; native CPU/V100 partition selection\nFeatures: MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions\nLoad inside the matching Slurm allocation before running inspection commands.\nAfter loading in an allocation: pw.x -h (version and parallel command options); the calculation banner lists active acceleration.\nFull installed command suite: ls \"\$QE_ROOT/bin\".\nSource: 9f93ddec427d; NVHPC 26.3 / OpenMPI 5.0.10.\nRun with host mpirun; system examples: /opt/sbatch_examples."
+    puts stderr "Quantum ESPRESSO 7.6; native CPU/V100 partition selection\nFeatures: MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/qe/7.6-auto/index.txt\nRecorded CMake cache and configure command; PWSCF does not provide a standalone -h option.\nFull installed command suite: ls \"\$QE_ROOT/bin\".\nSource: 9f93ddec427d; NVHPC 26.3 / OpenMPI 5.0.10.\nRun with host mpirun; system examples: /opt/sbatch_examples."
 }
 if {[module-info mode help] || [module-info mode whatis]} {return}
 conflict qe

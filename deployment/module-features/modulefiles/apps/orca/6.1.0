@@ -1,9 +1,9 @@
 #%Module1.0
-# SAI module documentation. Inspection commands below are documentation only.
+# SAI module documentation. Static build records are readable without loading this module.
 module-whatis "ORCA 6.1.0; molecular electronic structure"
 module-whatis "Features: CPU; HF/DFT and correlated wavefunction methods; external OpenMPI 4.1.6"
 proc ModulesHelp {} {
-    puts stderr "ORCA 6.1.0; molecular electronic structure\nFeatures: CPU; HF/DFT and correlated wavefunction methods; external OpenMPI 4.1.6\nLocal runtime instructions: less /opt/apps/orca-6.1.0/6.1.0/README.md\nAvailable components: ls /opt/apps/orca-6.1.0/6.1.0/bin\nRun the ORCA driver by its full path; it launches parallel workers using %pal settings.\nThe job output banner records the version and libraries; the bundled README has an older version heading."
+    puts stderr "ORCA 6.1.0; molecular electronic structure\nFeatures: CPU; HF/DFT and correlated wavefunction methods; external OpenMPI 4.1.6\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/orca/6.1.0/index.txt\nLocal runtime instructions: less /opt/apps/orca-6.1.0/6.1.0/README.md\nAvailable components: ls /opt/apps/orca-6.1.0/6.1.0/bin\nRun the ORCA driver by its full path; it launches parallel workers using %pal settings."
 }
 if {[module-info mode help] || [module-info mode whatis]} {return}
 

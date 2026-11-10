@@ -1,9 +1,9 @@
 #%Module1.0
-# SAI module documentation. Inspection commands below are documentation only.
+# SAI module documentation. Static build records are readable without loading this module.
 module-whatis "CP2K 2026.1; legacy AVX2/AVX512 selector"
 module-whatis "Features: MPI/OpenMP; CUDA SM70; ELPA; LibXC; FFTW; PLUMED; HDF5"
 proc ModulesHelp {} {
-    puts stderr "CP2K 2026.1; legacy AVX2/AVX512 selector\nFeatures: MPI/OpenMP; CUDA SM70; ELPA; LibXC; FFTW; PLUMED; HDF5\nLoad inside the matching Slurm allocation before running inspection commands.\nAfter loading in an allocation: cp2k.psmp --version (compiler, flags and linked libraries).\nInstallation: \$CP2K_HOME; toolchain: \$CP2K_HOME/tools/toolchain/install.\nThis historical installation is distinct from cp2k/2026.2-auto."
+    puts stderr "CP2K 2026.1; legacy AVX2/AVX512 selector\nFeatures: MPI/OpenMP; CUDA SM70; ELPA; LibXC; FFTW; PLUMED; HDF5\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/cp2k/2026.1-cuda12.9-sm70-auto/index.txt\nInstallation: \$CP2K_HOME; toolchain: \$CP2K_HOME/tools/toolchain/install.\nThis historical installation is distinct from cp2k/2026.2-auto."
 }
 if {[module-info mode help] || [module-info mode whatis]} {return}
 # Determin CPU SIMD

@@ -1,0 +1,630 @@
+[
+  {
+    "module": "abacus/3.11.0-beta11-auto",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0",
+      "DSPRHBM"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "abacus",
+          "--info"
+        ]
+      }
+    ],
+    "files": [],
+    "loads": [
+      "abacus/3.11.0-beta11-auto"
+    ]
+  },
+  {
+    "module": "abacus/3.11.0-beta12-auto",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0",
+      "DSPRHBM"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "abacus",
+          "--info"
+        ]
+      }
+    ],
+    "files": [],
+    "loads": [
+      "abacus/3.11.0-beta12-auto"
+    ]
+  },
+  {
+    "module": "abacus/develop-git-079fd0c-260724-sm70-auto",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "abacus",
+          "--info"
+        ]
+      }
+    ],
+    "files": [
+      "/opt/apps/abacus/abacus-develop-git-079fd0c-260724/abacus-info.txt"
+    ],
+    "loads": [
+      "abacus/develop-git-079fd0c-260724-sm70-auto"
+    ]
+  },
+  {
+    "module": "abacus/v3.11.0-beta9-auto",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0",
+      "DSPRHBM"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "abacus",
+          "--info"
+        ]
+      }
+    ],
+    "files": [],
+    "loads": [
+      "abacus/v3.11.0-beta9-auto"
+    ]
+  },
+  {
+    "module": "berkeleygw/4.0-pgi-auto",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "print_version_info.x"
+        ]
+      }
+    ],
+    "files": [
+      "/opt/apps/BerkeleyGW/4.0/arch.mk"
+    ],
+    "loads": [
+      "berkeleygw/4.0-pgi-auto"
+    ]
+  },
+  {
+    "module": "cp2k/2026.1-cuda12.9-sm70-auto",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0",
+      "DSPRHBM"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "cp2k.psmp",
+          "--version"
+        ]
+      }
+    ],
+    "files": [],
+    "loads": [
+      "cp2k/2026.1-cuda12.9-sm70-auto"
+    ]
+  },
+  {
+    "module": "cp2k/2026.2-auto",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0",
+      "DSPRHBM"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "cp2k.psmp",
+          "--version"
+        ]
+      }
+    ],
+    "files": [],
+    "loads": [
+      "cp2k/2026.2-auto"
+    ]
+  },
+  {
+    "module": "exa-amd/0.2.0",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "-m",
+          "pip",
+          "list",
+          "--format=freeze"
+        ]
+      }
+    ],
+    "files": [
+      "/opt/apps/conda_env/exa-amd-0.2.0/share/sai/requirements.lock",
+      "/opt/apps/conda_env/exa-amd-0.2.0/share/sai/packages.json"
+    ],
+    "loads": [
+      "exa-amd/0.2.0"
+    ]
+  },
+  {
+    "module": "lammps/11jun2026-nep-dev-avx512",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "lmp",
+          "-h"
+        ]
+      }
+    ],
+    "files": [],
+    "loads": [
+      "lammps/11jun2026-nep-dev-avx512"
+    ]
+  },
+  {
+    "module": "lammps/11jun2026-nvhpc245gnu-ompi508-sm70-dev",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "lmp",
+          "-h"
+        ]
+      }
+    ],
+    "files": [],
+    "loads": [
+      "lammps/11jun2026-nvhpc245gnu-ompi508-sm70-dev"
+    ]
+  },
+  {
+    "module": "lammps/30Sep2026-deepmd320-auto",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "lmp",
+          "-h"
+        ]
+      }
+    ],
+    "files": [],
+    "loads": [
+      "lammps/30Sep2026-deepmd320-auto"
+    ]
+  },
+  {
+    "module": "multiwfn/2026.3.18",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "Multiwfn"
+        ],
+        "stdin": "-1\n"
+      }
+    ],
+    "files": [],
+    "loads": [
+      "multiwfn/2026.3.18"
+    ]
+  },
+  {
+    "module": "nepadapters/1.0.4-lammps30Sep2026",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "lmp",
+          "-h"
+        ]
+      }
+    ],
+    "files": [],
+    "loads": [
+      "lammps/30Sep2026-deepmd320-auto",
+      "nepadapters/1.0.4-lammps30Sep2026"
+    ]
+  },
+  {
+    "module": "nepadapters/1.0.5-lammps30Sep2026",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "lmp",
+          "-h"
+        ]
+      }
+    ],
+    "files": [],
+    "loads": [
+      "lammps/30Sep2026-deepmd320-auto",
+      "nepadapters/1.0.5-lammps30Sep2026"
+    ]
+  },
+  {
+    "module": "orca/6.1.0",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "/opt/apps/orca-6.1.0/6.1.0/bin/orca"
+        ]
+      }
+    ],
+    "files": [],
+    "loads": [
+      "orca/6.1.0"
+    ]
+  },
+  {
+    "module": "phonopy/2.48.0",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "phonopy",
+          "--version"
+        ]
+      },
+      {
+        "argv": [
+          "phonopy",
+          "--help"
+        ]
+      }
+    ],
+    "files": [
+      "/opt/apps/conda_env/phonopy-2.48.0/share/sai/requirements.lock",
+      "/opt/apps/conda_env/phonopy-2.48.0/share/sai/packages.json"
+    ],
+    "loads": [
+      "phonopy/2.48.0"
+    ]
+  },
+  {
+    "module": "qe/7.6-auto",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0",
+      "DSPRHBM"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "pw.x",
+          "-h"
+        ]
+      }
+    ],
+    "files": [],
+    "loads": [
+      "qe/7.6-auto"
+    ]
+  },
+  {
+    "module": "sctk/1.2.1",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "pw.x",
+          "-h"
+        ]
+      }
+    ],
+    "files": [
+      "/opt/apps/sctk/1.2.1/INSTALL_METADATA.txt"
+    ],
+    "loads": [
+      "sctk/1.2.1"
+    ]
+  },
+  {
+    "module": "sctk/1.2.1-gpu",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "pw.x",
+          "-h"
+        ]
+      }
+    ],
+    "files": [
+      "/opt/apps/sctk/1.2.1-gpu/INSTALL_METADATA.txt"
+    ],
+    "loads": [
+      "sctk/1.2.1-gpu"
+    ]
+  },
+  {
+    "module": "sscha/1.6.0",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "-m",
+          "pip",
+          "list",
+          "--format=freeze"
+        ]
+      }
+    ],
+    "files": [
+      "/opt/apps/sscha/1.6.0/INSTALL_METADATA.txt",
+      "/opt/apps/sscha/1.6.0/INSTALL_QE510ELPH_METADATA.txt"
+    ],
+    "loads": [
+      "sscha/1.6.0"
+    ]
+  },
+  {
+    "module": "sscha/1.6.2",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "python",
+          "-m",
+          "pip",
+          "list",
+          "--format=freeze"
+        ]
+      }
+    ],
+    "files": [
+      "/opt/apps/conda_env/sscha-1.6.2/share/sai/requirements.lock",
+      "/opt/apps/conda_env/sscha-1.6.2/share/sai/packages.json"
+    ],
+    "loads": [
+      "sscha/1.6.2"
+    ]
+  },
+  {
+    "module": "elpa/2025.06.001-2509-pgi-sm70-auto",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "elpa2_print_kernels"
+        ]
+      }
+    ],
+    "files": [
+      "/opt/devtools/elpa/elpa-2025.06.001-2509-pgi-avx512/include/elpa-2025.06.001/elpa/elpa_configured_options.h"
+    ],
+    "loads": [
+      "elpa/2025.06.001-2509-pgi-sm70-auto"
+    ]
+  },
+  {
+    "module": "elpa/2026.02.001-2603-gnu-auto",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0",
+      "DSPRHBM"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "elpa2_print_kernels"
+        ]
+      }
+    ],
+    "files": [
+      "$ELPA_ROOT/include/elpa_openmp-2026.02.001/elpa/elpa_configured_options.h",
+      "$ELPA_ROOT/lib/pkgconfig/elpa_openmp.pc"
+    ],
+    "loads": [
+      "elpa/2026.02.001-2603-gnu-auto"
+    ]
+  },
+  {
+    "module": "fuse2fs/1.47.4-sai",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "fuse2fs",
+          "-V"
+        ]
+      },
+      {
+        "argv": [
+          "fuse2fs",
+          "-h"
+        ]
+      }
+    ],
+    "files": [],
+    "loads": [
+      "apptainer/1.4.4",
+      "fuse2fs/1.47.4-sai"
+    ]
+  },
+  {
+    "module": "openmpi/4.1.6-cuda12.4-fix",
+    "partitions": [
+      "4V100"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "ompi_info",
+          "--all"
+        ]
+      },
+      {
+        "argv": [
+          "mpicc",
+          "--showme"
+        ]
+      },
+      {
+        "argv": [
+          "mpifort",
+          "--showme"
+        ]
+      }
+    ],
+    "files": [
+      "/opt/devtools/openmpi/openmpi4.1.6_ucx1.15.0_gdrcopy2.4.1_cuda12.4/share/openmpi/mpicc-wrapper-data.txt"
+    ],
+    "loads": [
+      "openmpi/4.1.6-cuda12.4-fix"
+    ]
+  },
+  {
+    "module": "abacus/develop-beta-later",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0",
+      "DSPRHBM"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "abacus",
+          "--info"
+        ]
+      }
+    ],
+    "files": []
+  },
+  {
+    "module": "cp2k/master-beta-later",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0",
+      "DSPRHBM"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "cp2k.psmp",
+          "--version"
+        ]
+      }
+    ],
+    "files": []
+  },
+  {
+    "module": "lammps/develop-beta-later",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "lmp",
+          "-h"
+        ]
+      }
+    ],
+    "files": []
+  },
+  {
+    "module": "qe/develop-beta-later",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0",
+      "DSPRHBM"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "pw.x",
+          "-h"
+        ]
+      }
+    ],
+    "files": []
+  },
+  {
+    "module": "deepmd-kit/master-beta-later",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0"
+    ],
+    "commands": [
+      {
+        "argv": [
+          "dp",
+          "--version"
+        ]
+      },
+      {
+        "argv": [
+          "dp",
+          "--help"
+        ]
+      }
+    ],
+    "files": []
+  }
+]

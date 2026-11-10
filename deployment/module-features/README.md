@@ -2,31 +2,31 @@
 
 `module whatis` describes the installed configuration in two short lines:
 program/version, then `Features:` with its main capabilities and CPU/GPU backend.
-`module help` gives the program-specific inspection command, readable local
-build record, and relevant limits. This documentation does not run `--version`,
-import scientific Python packages, or start the application during discovery.
+`module help` gives a concrete path to a **static text record**. Users can read
+it on a login node without loading a module, starting a container, or running the
+program. The short `Features:` description remains in `module whatis`.
 
-Example after this update:
-
-```text
-lammps/30Sep2026-deepmd320-auto : LAMMPS 30 Sep 2026 / DeePMD 3.2.0; V100 partition selection
-lammps/30Sep2026-deepmd320-auto : Features: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP
-```
-
-After loading the corresponding application module in an allocation:
+For example, the installed LAMMPS release's complete recorded help is available now:
 
 ```bash
-lmp -h                         # full compiled package/style inventory
-cp2k.psmp --version             # CP2K build, compiler and library information
-abacus --info                   # ABACUS enabled/disabled build options
-ompi_info --all                 # OpenMPI configuration/components
+cat /home/stardust/sai-hpc-software/module-info/20261111/lammps/30Sep2026-deepmd320-auto/index.txt
+cat /home/stardust/sai-hpc-software/module-info/20261111/lammps/30Sep2026-deepmd320-auto/4V100.txt
 ```
 
-Some programs have no standalone version option. For GPUMD, use its normal job
-banner and the source/image catalog shown in beta help. For installed BerkeleyGW,
-`cat /opt/apps/BerkeleyGW/4.0/arch.mk` shows local build flags. Python environments
-point to their public `share/sai/requirements.lock` and `packages.json`, rather
-than restricted provenance records.
+The index lists the exact file for every captured partition. Records contain the
+unabridged standard program output, command, capture job/node/time, module hashes,
+and saved configuration files where appropriate. NEPAdapters also includes an
+explicit plugin load/list and style inventory: LAMMPS help by itself does not
+initialize these plugins. QE has no standalone `-h` option; its record contains
+the original configure command and full CMake cache. Beta QE and GPUMD also
+include output from their successful accepted calculations.
+
+The 31 public module entries have 100 static text files, about 10.4 MiB total.
+These are documentation only, outside the application prefixes and SIFs. No
+scientific installation is expanded or changed. ORCA's standard banner was
+captured during a small successful serial H2 run. The historical Multiwfn startup
+capture includes its EOF diagnostic; it identifies version 2026.3.11, released on
+2026-03-18. The module name retains the installation's release-date label.
 
 ## Coverage and installation
 
@@ -36,7 +36,9 @@ backups**. This package updates all 31 entries (27 apps and 4 devtools), includi
 six beta gateways. The backups remain unchanged. `manifest.json` binds every
 candidate to the exact original and resulting file hashes. `descriptions.json`
 reviews the 25 fixed application/library descriptions; six beta gateways inherit
-rotating source/version/acceptance details.
+rotating source/version/acceptance details. The manifest also pins every prepared
+static record by SHA256. Both the original modulefiles and the preceding feature
+documentation update are valid upgrade inputs.
 
 One directory, `/opt/modules/modulefiles/apps/pwmat`, is owned by `entropy` and
 is inaccessible to `stardust`. Its contents and file owners could not be audited.
@@ -79,16 +81,29 @@ alter the site's shared Lmod cache configuration.
 
 ## Subsequent publications
 
-SIF/beta and native generators share `feature_summary` and `inspection_hint` in
-`controller/module_publication.py`. Maintain these alongside the configured
-recipes and accepted inventories. Describe each specific build, not upstream
-defaults or another installed version's capabilities.
+Daily beta acceptance captures the program's complete build output on its
+allocated compute node using `controller/build_info.py`. Publication verifies
+that each record belongs to the accepted source, SIF hash, catalog and allocation.
+The publisher copies only text to:
 
-Fixed beta gateways supply missing descriptions for existing immutable
-generations. New generations identify their own documentation and bypass this
-fallback, so future feature changes need no further `/opt` edit. Beta help includes
-a local catalog/manifest path, source commit and inspection command. SIFs, current
-beta links and sealed generation files are not edited by this updater.
+```text
+/home/stardust/sai-hpc-software/sif-beta/build-info/<generation>/<software>/index.txt
+/home/stardust/sai-hpc-software/sif-beta/build-info/<generation>/<software>/<PARTITION>.txt
+```
+
+The generation manifest hashes those files, and selection checks them before
+rotating the beta link. A missing record in a new acceptance job prevents its
+publication. Historical accepted generations remain unchanged: their complete
+records were prepared separately, and the fixed `/opt` gateway displays the
+corresponding path. New generation modules provide their own path, with no second
+`/opt` update needed. Generic staging selectors expose their existing manifests or
+receipts; they do not ask users to execute an inspection command.
+
+`capture.py` and `capture.json` describe the one-time owner audit. Captures live in
+project storage; only reviewed text is published by `prepare_records.py`. The
+administrator installer verifies public read/traverse permissions as well as all
+record hashes before updating modules. `check.py` exercises real login-node Lmod
+and checks that every help output points to a public static index.
 
 Observed differences reflected in the descriptions:
 

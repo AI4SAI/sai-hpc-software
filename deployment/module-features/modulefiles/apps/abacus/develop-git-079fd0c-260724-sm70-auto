@@ -1,9 +1,9 @@
 #%Module1.0
-# SAI module documentation. Inspection commands below are documentation only.
+# SAI module documentation. Static build records are readable without loading this module.
 module-whatis "ABACUS develop 079fd0c (2026-07-24); x86-64-v3 / V100"
 module-whatis "Features: MPI/OpenMP; PW/LCAO; CUDA; cuSOLVERMp; ELPA; LibXC"
 proc ModulesHelp {} {
-    puts stderr "ABACUS develop 079fd0c (2026-07-24); x86-64-v3 / V100\nFeatures: MPI/OpenMP; PW/LCAO; CUDA; cuSOLVERMp; ELPA; LibXC\nFull recorded build options: cat /opt/apps/abacus/abacus-develop-git-079fd0c-260724/abacus-info.txt\nAfter loading in an allocation: abacus --info (full build options and libraries).\nThis build has LibRI, LibTorch/DeePKS and NEP disabled."
+    puts stderr "ABACUS develop 079fd0c (2026-07-24); x86-64-v3 / V100\nFeatures: MPI/OpenMP; PW/LCAO; CUDA; cuSOLVERMp; ELPA; LibXC\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/abacus/develop-git-079fd0c-260724-sm70-auto/index.txt\nFull recorded build options: cat /opt/apps/abacus/abacus-develop-git-079fd0c-260724/abacus-info.txt\nThis build has LibRI, LibTorch/DeePKS and NEP disabled."
 }
 if {[module-info mode help] || [module-info mode whatis]} {return}
 set abacus_ver "develop-git-079fd0c-260724"

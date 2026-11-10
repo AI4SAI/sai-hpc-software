@@ -1,9 +1,9 @@
 #%Module1.0
-# SAI module documentation. Inspection commands below are documentation only.
+# SAI module documentation. Static build records are readable without loading this module.
 module-whatis "fuse2fs 1.47.4-sai; Apptainer 1.4.4 overlay helper"
 module-whatis "Features: FUSE ext2/3/4; upstream I/O fixes; OFD locks; explicit read-only backing files"
 proc ModulesHelp {} {
-    puts stderr "fuse2fs 1.47.4-sai; Apptainer 1.4.4 overlay helper\nFeatures: FUSE ext2/3/4; upstream I/O fixes; OFD locks; explicit read-only backing files\nLoad apptainer/1.4.4 first.\nFull version/options: fuse2fs -V; fuse2fs -h.\nInstalled prefix remains /opt/devtools/fuse2fs/1.47.4-sai1; the public module was renamed to -sai.\nActive configuration: cat \"\$APPTAINER_CONFIG_FILE\".\nKeep build/cache/scratch in the allocated project storage."
+    puts stderr "fuse2fs 1.47.4-sai; Apptainer 1.4.4 overlay helper\nFeatures: FUSE ext2/3/4; upstream I/O fixes; OFD locks; explicit read-only backing files\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/fuse2fs/1.47.4-sai/index.txt\nLoad apptainer/1.4.4 first.\nInstalled prefix remains /opt/devtools/fuse2fs/1.47.4-sai1; the public module was renamed to -sai.\nActive configuration: cat \"\$APPTAINER_CONFIG_FILE\".\nKeep build/cache/scratch in the allocated project storage."
 }
 if {[module-info mode help] || [module-info mode whatis]} {return}
 conflict fuse2fs

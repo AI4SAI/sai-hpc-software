@@ -1,9 +1,9 @@
 #%Module1.0#####################################################################
-# SAI module documentation. Inspection commands below are documentation only.
+# SAI module documentation. Static build records are readable without loading this module.
 module-whatis "Superconducting-toolkit 1.2.1; QE 7.4.1; CPU"
 module-whatis "Features: MPI/OpenMP; superconducting DFT; sctk.x + pw.x + ph.x"
 proc ModulesHelp {} {
-    puts stderr "Superconducting-toolkit 1.2.1; QE 7.4.1; CPU\nFeatures: MPI/OpenMP; superconducting DFT; sctk.x + pw.x + ph.x\nInstalled build identity: cat /opt/apps/sctk/1.2.1/INSTALL_METADATA.txt\nBuild commands: /opt/apps/sctk/1.2.1/install-scripts/\nLocal documentation and source: /opt/apps/sctk/1.2.1/share/sctk/src/\nQE command information after module load: pw.x -h."
+    puts stderr "Superconducting-toolkit 1.2.1; QE 7.4.1; CPU\nFeatures: MPI/OpenMP; superconducting DFT; sctk.x + pw.x + ph.x\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/sctk/1.2.1/index.txt\nInstalled build identity: cat /opt/apps/sctk/1.2.1/INSTALL_METADATA.txt\nBuild commands: /opt/apps/sctk/1.2.1/install-scripts/\nLocal documentation and source: /opt/apps/sctk/1.2.1/share/sctk/src/"
 }
 if {[module-info mode help] || [module-info mode whatis]} {return}
 module load gcc/14.3.0

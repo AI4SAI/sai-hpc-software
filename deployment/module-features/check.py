@@ -4,6 +4,8 @@ import argparse
 import json
 import os
 from pathlib import Path
+import re
+import stat
 import subprocess
 
 PACKAGE = Path(__file__).resolve().parent
@@ -34,12 +36,19 @@ def main():
                                     env=env, text=True, capture_output=True, timeout=30)
             item = dict(module=module, mode=action, code=result.returncode,
                         output=result.stderr, features=result.stderr.count('Features:'))
+            if action == 'help':
+                records = re.findall(r'cat (/[^\s]+/index\.txt)', result.stderr)
+                item['static_records'] = records
+                item['records_readable'] = bool(records) and all(
+                    Path(p).is_file() and Path(p).stat().st_mode & stat.S_IROTH
+                    and all(parent.stat().st_mode & stat.S_IXOTH for parent in Path(p).parents)
+                    for p in records)
             results.append(item)
-            if item['code'] or not item['features']:
+            if item['code'] or not item['features'] or item.get('records_readable') is False:
                 print(f'FAIL {module} {action}: {result.stderr}')
     if args.output:
         args.output.write_text(json.dumps(results, indent=2) + '\n')
-    failures = sum(bool(row['code'] or not row['features']) for row in results)
+    failures = sum(bool(row['code'] or not row['features'] or row.get('records_readable') is False) for row in results)
     print(f'{len(results)} Lmod checks; {failures} failures; '
           + ('installed modules' if args.installed else 'candidate preview'))
     raise SystemExit(bool(failures))
