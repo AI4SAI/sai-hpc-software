@@ -583,7 +583,10 @@ def main():
                                    "--artifact", artifact, "--launcher", f"{control}/abacus",
                                    "--system-module", "abacus/v3.9.0.26-sm70-auto", "--packaged-case", case,
                                    "--allow-cpu-case-on-gpu",
-                                   *(['--minutes', '20'] if target == 'dsprhbm' else []))
+                                   # HSE runs both versions eight times; the CPU allocation
+                                   # reached 20m02s on 2026-11-10, including normal cleanup.
+                                   *(['--minutes', '45' if case == 'hse' else '20']
+                                     if target == 'dsprhbm' else []))
                             python("abacus_benchmark.py", "submit", benchmark_run)
                         python("abacus_benchmark.py", "monitor", benchmark_run)
                 if software == "cp2k":
