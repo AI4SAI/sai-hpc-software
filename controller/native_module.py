@@ -252,6 +252,7 @@ def _allocation_checks():
 
 def render_native_fragment(entry, *, allowed_prefixes=()):
     """Render share/sai/native-module.tcl for the entry's true /opt prefix."""
+    from module_publication import feature_summary
     entry = validate_native_entry(entry, allowed_prefixes=allowed_prefixes)
     identity, runtime = entry["identity"], entry["runtime"]
     prefix, partition = identity["install_prefix"], identity["partition"]
@@ -259,6 +260,7 @@ def render_native_fragment(entry, *, allowed_prefixes=()):
     lines = ["#%Module1.0", "# Native installation; site modules/dependencies remain external.",
              "# Staging is not relocation: deploy at the exact expected prefix below.",
              "module-whatis " + tcl(f'{identity["software"]} {identity["track"]} {identity["build_id"]}; native {partition}; expected prefix {prefix}; external site dependencies'),
+             "module-whatis " + tcl('Features: ' + feature_summary(identity['software'])),
              'if {[module-info mode load] || [module-info mode remove]} {',
              '    if {[module-info mode load]} {',
              *('        ' + line for line in _allocation_checks()),
@@ -303,13 +305,17 @@ def render_native_fragment(entry, *, allowed_prefixes=()):
 
 def render_native_selector(identity):
     """Render modulefiles/<software>/<track>/<build_id>, shared by partitions."""
+    from module_publication import feature_summary, inspection_hint
     identity = validate_identity(identity)
     software, track, build_id = (identity[name] for name in ("software", "track", "build_id"))
     stem = _stem(software)
     prefix_base = str(PurePosixPath(identity["install_prefix"]).parent)
     description = f"{software} {track} {build_id}: native Slurm-partition selection; expected prefix {prefix_base}/<PARTITION>; dependencies external; staging is not relocation"
     lines = ["#%Module1.0", "module-whatis " + tcl(description),
-             "proc ModulesHelp {} {", "    puts stderr " + tcl(description), "}",
+             "module-whatis " + tcl('Features: ' + feature_summary(software)),
+             "proc ModulesHelp {} {", "    puts stderr " + tcl(description),
+             "    puts stderr " + tcl('Features: ' + feature_summary(software)),
+             "    puts stderr " + tcl(inspection_hint(software)), "}",
              'set sai_native_partition ""',
              'if {[module-info mode load]} {',
              *('    ' + line for line in _allocation_checks()),

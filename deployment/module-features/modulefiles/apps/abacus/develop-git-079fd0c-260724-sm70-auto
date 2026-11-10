@@ -1,0 +1,20 @@
+#%Module1.0
+# SAI module documentation. Inspection commands below are documentation only.
+module-whatis "ABACUS develop 079fd0c (2026-07-24); x86-64-v3 / V100"
+module-whatis "Features: MPI/OpenMP; PW/LCAO; CUDA; cuSOLVERMp; ELPA; LibXC"
+proc ModulesHelp {} {
+    puts stderr "ABACUS develop 079fd0c (2026-07-24); x86-64-v3 / V100\nFeatures: MPI/OpenMP; PW/LCAO; CUDA; cuSOLVERMp; ELPA; LibXC\nFull recorded build options: cat /opt/apps/abacus/abacus-develop-git-079fd0c-260724/abacus-info.txt\nAfter loading in an allocation: abacus --info (full build options and libraries).\nThis build has LibRI, LibTorch/DeePKS and NEP disabled."
+}
+if {[module-info mode help] || [module-info mode whatis]} {return}
+set abacus_ver "develop-git-079fd0c-260724"
+set gpu_flag "sm70"
+
+
+module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto fftw/3.3.10 libxc/7.0.0-auto saiblas/2603-gnu-auto elpa/2026.02.001-2603-gnu
+module load nvmplibs/26.7-tmp
+
+set app_home /opt/apps/abacus/abacus-develop-git-079fd0c-260724
+
+setenv ABACUS_HOME $app_home
+setenv ABACUS_COMMIT 079fd0cff4e91abc25b6e2809114cfbeac94720e
+prepend-path PATH $app_home/bin

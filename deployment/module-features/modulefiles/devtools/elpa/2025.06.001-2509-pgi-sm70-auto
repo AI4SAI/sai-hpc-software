@@ -1,0 +1,41 @@
+#%Module1.0
+# SAI module documentation. Inspection commands below are documentation only.
+module-whatis "ELPA 2025.06.001; NVHPC/OpenMPI; fixed AVX512 installation"
+module-whatis "Features: MPI; symmetric/Hermitian eigensolvers; NVIDIA CUDA; ScaLAPACK"
+proc ModulesHelp {} {
+    puts stderr "ELPA 2025.06.001; NVHPC/OpenMPI; fixed AVX512 installation\nFeatures: MPI; symmetric/Hermitian eigensolvers; NVIDIA CUDA; ScaLAPACK\nCompiled GPU options: cat /opt/devtools/elpa/elpa-2025.06.001-2509-pgi-avx512/include/elpa-2025.06.001/elpa/elpa_configured_options.h\nCompiled kernels after loading: elpa2_print_kernels.\nDespite the -auto name, this module points to one AVX512 prefix.\nThe historical elpa.pc contains the original build prefix; inspect it before using its compiler flags."
+}
+if {[module-info mode help] || [module-info mode whatis]} {return}
+#####################################################################
+## ELPA (Eigenvalue Solvers for Petaflop-Applications) Modulefile
+#####################################################################
+
+
+# 定义基础路径
+set topdir "/opt/devtools/elpa/elpa-2025.06.001-2509-pgi-avx512"
+
+# 设置环境变量 ELPA_ROOT
+setenv ELPA_ROOT $topdir
+
+module load openmpi/5.0.8-nvhpc25.7-pgi-auto
+# 对应 export PATH=$ELPA_ROOT/bin:$PATH
+prepend-path    PATH                $topdir/bin
+
+# 对应 export LD_LIBRARY_PATH=$ELPA_ROOT/lib:$LD_LIBRARY_PATH
+prepend-path    LD_LIBRARY_PATH     $topdir/lib
+
+# 对应 export LIBRARY_PATH=$ELPA_ROOT/lib:$LIBRARY_PATH
+prepend-path    LIBRARY_PATH        $topdir/lib
+
+# 对应 export LD_RUN_PATH=$ELPA_ROOT/lib:$LD_RUN_PATH
+prepend-path    LD_RUN_PATH         $topdir/lib
+
+# 对应 export CPATH=$ELPA_ROOT/include:$CPATH
+# 注意：有些系统也习惯用 INCLUDE 变量
+prepend-path    CPATH               $topdir/include
+
+# 对应 export PKG_CONFIG_PATH=$ELPA_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
+prepend-path    PKG_CONFIG_PATH     $topdir/lib/pkgconfig
+
+# 对应 export CMAKE_PREFIX_PATH=$ELPA_ROOT:$CMAKE_PREFIX_PATH
+prepend-path    CMAKE_PREFIX_PATH   $topdir

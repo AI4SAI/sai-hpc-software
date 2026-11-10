@@ -1,3 +1,18 @@
 #%Module1.0
 # Maintained by stardust; this gateway does not rotate.
 source "/home/stardust/sai-hpc-software/modulefiles/apps/gpumd/master-beta-later"
+# Documentation fallback for immutable generations predating feature help.
+# New generations supply their own build-specific documentation.
+if {![info exists sai_feature_documentation]} {
+    module-whatis "Features: CUDA (V100/SM70); NEP; DeePMD; PLUMED; gpumd/nep; single-process execution"
+    if {[llength [info commands ModulesHelp]]} {
+        rename ModulesHelp sai_original_beta_help
+        proc ModulesHelp {} {
+            global sai_beta_root sai_beta_generation
+            sai_original_beta_help
+            puts stderr "Features: CUDA (V100/SM70); NEP; DeePMD; PLUMED; gpumd/nep; single-process execution"
+            puts stderr "GPUMD prints its version and GPU information at the start of a normal calculation; it has no standalone --version command."
+            puts stderr "Local generation record (includes the runtime bundle path): cat [file join $sai_beta_root generations $sai_beta_generation manifest.json]"
+        }
+    }
+}

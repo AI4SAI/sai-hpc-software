@@ -1,0 +1,38 @@
+#%Module1.0
+# SAI module documentation. Inspection commands below are documentation only.
+module-whatis "CP2K 2026.1; legacy AVX2/AVX512 selector"
+module-whatis "Features: MPI/OpenMP; CUDA SM70; ELPA; LibXC; FFTW; PLUMED; HDF5"
+proc ModulesHelp {} {
+    puts stderr "CP2K 2026.1; legacy AVX2/AVX512 selector\nFeatures: MPI/OpenMP; CUDA SM70; ELPA; LibXC; FFTW; PLUMED; HDF5\nLoad inside the matching Slurm allocation before running inspection commands.\nAfter loading in an allocation: cp2k.psmp --version (compiler, flags and linked libraries).\nInstallation: \$CP2K_HOME; toolchain: \$CP2K_HOME/tools/toolchain/install.\nThis historical installation is distinct from cp2k/2026.2-auto."
+}
+if {[module-info mode help] || [module-info mode whatis]} {return}
+# Determin CPU SIMD
+set cpu_flags [exec lscpu | grep "avx"]
+if {[regexp "avx512_vnni" $cpu_flags]} {
+    set avx_flag avx512
+    system echo "AVX512 detected, utilizing the corresponding version..."
+} elseif {[regexp "avx2" $cpu_flags]} {
+    set avx_flag avx2
+    system echo "No AVX512, but AVX2 detected, utilizing the corresponding version..."
+} else {
+    system echo "CAN NOT determin CPU SIMD, please contact the HPC Admin for help, Nya~~"
+}
+set cp2k_ver "2026.1"
+
+#set DP_HOME /opt/apps/conda_env/deepmd-kit-3.1.2
+#prepend-path LD_LIBRARY_PATH $DP_HOME/lib
+
+#module load fftw/3.3.10 elpa/2026.02.001-2603-gnu saiblas/2603-gnu-auto libxc/7.0.0-auto
+module load fftw/3.3.10 openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto saiblas/2603-gnu-auto  libxc/7.0.0-auto  elpa/2026.02.001-2603-gnu
+
+set app_home /opt/apps/cp2k/cp2k-${cp2k_ver}-${avx_flag}
+set cp2k_toolchain $app_home/tools/toolchain/install
+
+prepend-path LD_LIBRARY_PATH $cp2k_toolchain/hdf5-1.14.6/lib
+prepend-path LD_LIBRARY_PATH $cp2k_toolchain/elpa-2024.05.001/nvidia/lib
+prepend-path LD_LIBRARY_PATH $cp2k_toolchain/libxsmm-e0c4a2389afba36c453233ad7de07bd92c715bec/lib
+prepend-path LD_LIBRARY_PATH $cp2k_toolchain/plumed-2.9.3/lib
+#source-sh bash /opt/apps/cp2k/cp2k-2026.1/tools/toolchain/install/setup
+setenv CP2K_HOME $app_home
+prepend-path PATH $app_home/exe/bin
+prepend-path LD_LIBRARY_PATH $app_home/exe/lib

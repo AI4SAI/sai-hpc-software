@@ -1,0 +1,24 @@
+#%Module1.0
+# SAI module documentation. Inspection commands below are documentation only.
+module-whatis "fuse2fs 1.47.4-sai; Apptainer 1.4.4 overlay helper"
+module-whatis "Features: FUSE ext2/3/4; upstream I/O fixes; OFD locks; explicit read-only backing files"
+proc ModulesHelp {} {
+    puts stderr "fuse2fs 1.47.4-sai; Apptainer 1.4.4 overlay helper\nFeatures: FUSE ext2/3/4; upstream I/O fixes; OFD locks; explicit read-only backing files\nLoad apptainer/1.4.4 first.\nFull version/options: fuse2fs -V; fuse2fs -h.\nInstalled prefix remains /opt/devtools/fuse2fs/1.47.4-sai1; the public module was renamed to -sai.\nActive configuration: cat \"\$APPTAINER_CONFIG_FILE\".\nKeep build/cache/scratch in the allocated project storage."
+}
+if {[module-info mode help] || [module-info mode whatis]} {return}
+conflict fuse2fs
+prereq apptainer/1.4.4
+set prefix {/opt/devtools/fuse2fs/1.47.4-sai1}
+if {[module-info mode load]} {
+    foreach {path expected} [list "$prefix/bin/fuse2fs" {46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10} \
+        /opt/devtools/apptainer/1.4.4/etc/apptainer/apptainer.conf {20c9083879d32024107e11689d80d4fe62f06d70e827a870d1007710fad89625} \
+        "$prefix/etc/apptainer.conf" {855b18a88f8b7bc95bfd83a051a9167901f784df22cfd66e8acd821c6b362ad0}] {
+        if {![file isfile $path] || [lindex [exec /usr/bin/sha256sum -- $path] 0] ne $expected} {
+            error "fuse2fs payload or site configuration changed: $path; revalidate this module"
+        }
+    }
+}
+prepend-path PATH "$prefix/bin"
+prepend-path MANPATH "$prefix/share/man"
+pushenv FUSE2FS_ROOT $prefix
+pushenv APPTAINER_CONFIG_FILE "$prefix/etc/apptainer.conf"

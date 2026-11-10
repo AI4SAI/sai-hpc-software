@@ -1,0 +1,60 @@
+#%Module1.0
+# SAI module documentation. Inspection commands below are documentation only.
+module-whatis "LAMMPS develop e5da37 (2026-06-11); AVX2/AVX512 selector"
+module-whatis "Features: MPI; KOKKOS CUDA SM70; PLUMED 2.9.4; DeePMD 3.1.2 plugin"
+proc ModulesHelp {} {
+    puts stderr "LAMMPS develop e5da37 (2026-06-11); AVX2/AVX512 selector\nFeatures: MPI; KOKKOS CUDA SM70; PLUMED 2.9.4; DeePMD 3.1.2 plugin\nLoad inside the matching Slurm allocation before running inspection commands.\nAfter loading in an allocation: lmp -h (full package/style list and compiler information).\nInstallation: \$LAMMPS_HOME; bundle: \$LAMMPS_BUNDLE_ROOT.\nThe complete lmp -h output is authoritative for packages and styles."
+}
+if {[module-info mode help] || [module-info mode whatis]} {return}
+## Determin CPU SIMD
+set cpu_flags [exec lscpu | grep "avx"]
+if {[regexp "avx512_vnni" $cpu_flags]} {
+    set avx_flag avx512
+    system echo "AVX512 detected, utilizing the corresponding version..."
+} elseif {[regexp "avx2" $cpu_flags]} {
+    set avx_flag avx2
+    system echo "No AVX512, but AVX2 detected, utilizing the corresponding version..."
+} else {
+    system echo "CAN NOT determin CPU SIMD, please contact the HPC Admin for help, Nya~~"
+}
+
+set base /opt/apps/lammps/lmp-dev-11Jun2026-e5da37cb6fa6f068ebd87f19c801203cb6f2006d_${avx_flag}-full
+
+
+module load aocl/5.0.0-gcc fftw/3.3.10 openmpi/5.0.8-nvhpc24.5-gnu-auto
+
+set lmp_home      $base/lammps
+set plumed_home   $base/third_party/plumed-mpi-2.9.4
+set deepmd_home   $base/third_party/deepmd-3.1.2-pt-syscuda-lmpstd20-v6
+
+# External read-only runtime dependencies intentionally not copied into this bundle.
+set deepmd_env    /opt/apps/conda_env/deepmd-kit-3.1.2
+set mace_env      /opt/apps/conda_env/mace-main
+set aocl_home     /opt/devtools/amd/aocl/5.0.0/gcc
+set torch_lib     $deepmd_env/lib/python3.12/site-packages/torch/lib
+
+prepend-path PATH               $lmp_home/bin
+prepend-path PATH               $plumed_home/bin
+prepend-path PATH               $deepmd_home/bin
+
+append-path LD_LIBRARY_PATH    $deepmd_env/lib
+append-path LD_LIBRARY_PATH    $aocl_home/lib
+append-path LD_LIBRARY_PATH    $mace_env/lib
+append-path LD_LIBRARY_PATH    $torch_lib
+prepend-path LD_LIBRARY_PATH    $deepmd_home/lib
+prepend-path LD_LIBRARY_PATH    $plumed_home/lib
+prepend-path LD_LIBRARY_PATH    $lmp_home/lib
+
+# Match the NCCL version required by the reused system CUDA PyTorch runtime.
+prepend-path LD_PRELOAD         $deepmd_env/lib/libnccl.so.2
+
+prepend-path LAMMPS_PLUGIN_PATH $deepmd_home/lib/deepmd_lmp
+prepend-path PKG_CONFIG_PATH    $plumed_home/lib/pkgconfig
+prepend-path MANPATH            $lmp_home/share/man
+
+setenv LAMMPS_HOME              $lmp_home
+setenv LAMMPS_POTENTIALS        $lmp_home/share/lammps/potentials
+setenv DEEPMD_ROOT              $deepmd_home
+setenv PLUMED_ROOT              $plumed_home
+setenv PLUMED_KERNEL            $plumed_home/lib/libplumedKernel.so
+setenv LAMMPS_BUNDLE_ROOT       $base

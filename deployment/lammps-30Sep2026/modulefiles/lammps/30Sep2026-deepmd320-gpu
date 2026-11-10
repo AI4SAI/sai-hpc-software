@@ -1,5 +1,6 @@
 #%Module1.0
 module-whatis "LAMMPS 30 Sep 2026 / DeePMD 3.2.0; V100 partition selection"
+module-whatis "Features: MPI/OpenMP; GPU package + KOKKOS CUDA (SM70); PLUMED 2.10.1; Python; REAXFF; ML-IAP/ML-SNAP"
 conflict lammps
 if {[module-info mode load]} {
     if {![info exists env(SLURM_JOB_PARTITION)]} {error "Load this module inside a Slurm allocation"}

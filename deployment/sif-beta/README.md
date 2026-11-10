@@ -24,6 +24,12 @@
 新入口保留完整源提交、分区、固定版本、系统模板路径和启动命令的帮助；登录节点 `module load`
 会先输出帮助，再返回未加载状态。计算节点实际加载时打印版本。
 
+`module whatis` 同时列出实际编译配置的 `Features:` 摘要，包括并行方式、
+GPU 后端及主要可选功能；`module help` 保留启动方法和验收范围。
+DeePMD 必须分别标明 PyTorch CUDA 与 TensorFlow/JAX CPU，不能笼统写成
+三个后端均支持 CUDA。功能摘要须随编译配方一起维护，外部插件不视为已内置。
+参见 [module 描述规范及已有 release 的更新脚本](../module-features/README.md)。
+
 ## 作业启动
 
 系统模板 `/opt/sbatch_examples` 实际指向 `/opt/sai/examples`。

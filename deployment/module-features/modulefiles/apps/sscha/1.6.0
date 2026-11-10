@@ -1,0 +1,38 @@
+#%Module1.0
+# SAI module documentation. Inspection commands below are documentation only.
+module-whatis "SSCHA 1.6.0; Python environment with QE 5.1.0_elph"
+module-whatis "Features: CPU; stochastic anharmonic phonons; TD-SCHA 1.6.1; electron-phonon tools"
+proc ModulesHelp {} {
+    puts stderr "SSCHA 1.6.0; Python environment with QE 5.1.0_elph\nFeatures: CPU; stochastic anharmonic phonons; TD-SCHA 1.6.1; electron-phonon tools\nInstalled identity: cat /opt/apps/sscha/1.6.0/INSTALL_METADATA.txt\nQE build identity: cat /opt/apps/sscha/1.6.0/INSTALL_QE510ELPH_METADATA.txt\nPython dependencies: python -m pip show python-sscha CellConstructor tdscha.\nPython is selected through PATH without activating Conda; unload before changing environments."
+}
+if {[module-info mode help] || [module-info mode whatis]} {return}
+set app_ver "1.6.0"
+
+# Preserve the legacy scientific dependencies and QE tools. Conda itself is
+# not needed at runtime: this prefix has no activation hooks or env_vars.
+family python
+depends-on gcc/14.3.0
+depends-on openmpi/5.0.8-cuda12.4-classic-auto
+depends-on fftw/3.3.10
+depends-on saiblas/2603-gnu-auto
+
+set sscha_home "/opt/apps/sscha/1.6.0"
+set sscha_env "/opt/apps/sscha/conda-envs/1.6.0"
+set qe_home "/opt/apps/sscha/1.6.0/qe-5.1.0_elph"
+
+prepend-path PATH "$qe_home/bin"
+prepend-path PATH "$sscha_env/bin"
+# Empty PYTHONPATH/PYTHONHOME are ignored by Python. pushenv restores the
+# original values (including unset) on unload.
+pushenv PYTHONPATH ""
+pushenv PYTHONHOME ""
+pushenv PYTHONNOUSERSITE "1"
+pushenv PYTHONDONTWRITEBYTECODE "1"
+setenv SAI_PYTHON_ENV "$sscha_env"
+setenv SSCHA_ROOT "$sscha_home"
+setenv SSCHA_ENV "$sscha_env"
+setenv SSCHA_CONDA_ENV "$sscha_env"
+setenv SSCHA_VERSION "$app_ver"
+setenv QE510ELPH_ROOT "$qe_home"
+setenv QE510ELPH_BIN "$qe_home/bin"
+setenv QE510ELPH_VERSION "qe-5.1.0_elph"

@@ -1,0 +1,19 @@
+#%Module1.0
+# SAI module documentation. Inspection commands below are documentation only.
+module-whatis "ORCA 6.1.0; molecular electronic structure"
+module-whatis "Features: CPU; HF/DFT and correlated wavefunction methods; external OpenMPI 4.1.6"
+proc ModulesHelp {} {
+    puts stderr "ORCA 6.1.0; molecular electronic structure\nFeatures: CPU; HF/DFT and correlated wavefunction methods; external OpenMPI 4.1.6\nLocal runtime instructions: less /opt/apps/orca-6.1.0/6.1.0/README.md\nAvailable components: ls /opt/apps/orca-6.1.0/6.1.0/bin\nRun the ORCA driver by its full path; it launches parallel workers using %pal settings.\nThe job output banner records the version and libraries; the bundled README has an older version heading."
+}
+if {[module-info mode help] || [module-info mode whatis]} {return}
+
+
+module load openmpi/4.1.6-cuda12.4-fix
+
+set app_home /opt/apps/orca-6.1.0/6.1.0
+
+prepend-path PATH            $app_home/bin
+
+prepend-path LD_LIBRARY_PATH $app_home/lib
+
+set-alias orca $app_home/bin/orca
