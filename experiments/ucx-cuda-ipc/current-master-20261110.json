@@ -1,0 +1,265 @@
+{
+  "source_file_sha256": {
+    "source/src/uct/cuda/cuda_ipc/cuda_ipc_cache.c": "2f4c17fe71403dd4e8c7649d315e4a2f6a887bae4d11623b9c654ecd597696ba",
+    "source/test/mpi/test_cuda_ipc_overlap.c": "86817a8539f48867fb853da36508a9c6fa532ef08b7e4fefc38797f4c9c3e023",
+    "source/test/mpi/Makefile.am": "040cc6e18438093b630411bdf41bb8265daa87618aeba127518ef3c2e5dc40fc",
+    "install/baseline/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0": "18cff4fca0afdb2c632e0263ad8407d197567baaf49d1675fc945b45a7e8aa91"
+  },
+  "accounting_psv": "2347232|FAILED|1:0|00:00:00|16v100n16\n2347232.batch|FAILED|1:0|00:00:00|16v100n16\n2347232.extern|COMPLETED|0:0|00:00:00|16v100n16\n2347271|FAILED|2:0|00:01:02|16v100n11\n2347271.batch|FAILED|2:0|00:01:02|16v100n11\n2347271.extern|COMPLETED|0:0|00:01:02|16v100n11\n2347370|FAILED|2:0|00:01:56|16v100n16\n2347370.batch|FAILED|2:0|00:01:56|16v100n16\n2347370.extern|COMPLETED|0:0|00:01:56|16v100n16\n2347503|CANCELLED by 0|0:0|00:00:01|16v100n50\n2347503.batch|CANCELLED||00:00:01|16v100n50\n2347503.extern|COMPLETED|0:0|00:00:01|16v100n50\n2347564|FAILED|2:0|00:00:10|16v100n54\n2347564.batch|FAILED|2:0|00:00:10|16v100n54\n2347564.extern|COMPLETED|0:0|00:00:10|16v100n54\n2347600|FAILED|2:0|00:00:04|16v100n44\n2347600.batch|FAILED|2:0|00:00:04|16v100n44\n2347600.extern|COMPLETED|0:0|00:00:04|16v100n44\n2347639|FAILED|134:0|00:00:52|16v100n44\n2347639.batch|FAILED|134:0|00:00:52|16v100n44\n2347639.extern|COMPLETED|0:0|00:00:52|16v100n44\n2347716|COMPLETED|0:0|00:00:15|16v100n54\n2347716.batch|COMPLETED|0:0|00:00:15|16v100n54\n2347716.extern|COMPLETED|0:0|00:00:15|16v100n54\n",
+  "results": {
+    "source": {
+      "upstream_base": "74b413ab19d63c277ffa3fb553ed83e42bc50f6f",
+      "patch_sha256": "f3417aa065001c7a3a4e0249d367cbc7eea61e5ff779169214f0f465fe215cbf"
+    },
+    "variants": {
+      "baseline": {
+        "status": "PASS",
+        "overlaps": 30,
+        "driver_open_results": {
+          "0": 60,
+          "208": 30
+        },
+        "exact_data": "PASS",
+        "ranks": [
+          {
+            "gpu_uuid": "GPU-7a73edf1-4124-d794-adea-7e7ad80e6d5e",
+            "variant": "baseline",
+            "host": "16v100n54.mr-sai.ai"
+          },
+          {
+            "gpu_uuid": "GPU-58471807-7f6e-ad0e-74ec-d475e5848485",
+            "variant": "baseline",
+            "host": "16v100n54.mr-sai.ai"
+          }
+        ],
+        "cuda_module_sha256": "8eaf62bd9fa4cfebcab3c18d231166e680e5e1db6e7a7f080a29550bcbd03d87",
+        "regression": {
+          "exit_code": 1,
+          "output": "FAIL: lower overlaps=30, IPC import errors=30, regions=60; data checks passed",
+          "driver_open_results": {
+            "0": 60,
+            "208": 30
+          }
+        }
+      },
+      "candidate": {
+        "status": "PASS",
+        "overlaps": 30,
+        "driver_open_results": {
+          "0": 60
+        },
+        "exact_data": "PASS",
+        "ranks": [
+          {
+            "gpu_uuid": "GPU-7a73edf1-4124-d794-adea-7e7ad80e6d5e",
+            "variant": "candidate",
+            "host": "16v100n54.mr-sai.ai"
+          },
+          {
+            "gpu_uuid": "GPU-58471807-7f6e-ad0e-74ec-d475e5848485",
+            "variant": "candidate",
+            "host": "16v100n54.mr-sai.ai"
+          }
+        ],
+        "cuda_module_sha256": "ff3ad0095fc73bdce13a67119e17c343885864ba2ea3c8f7dbdeddf0cc72f593",
+        "regression": {
+          "exit_code": 0,
+          "output": "PASS: lower overlaps=30, IPC import errors=0, regions=60; data checks passed",
+          "driver_open_results": {
+            "0": 60
+          }
+        }
+      }
+    },
+    "core_libraries_identical": true
+  },
+  "gpunetio_commit": "f44728fb023ba61911b705dba289b1650ce2eb28",
+  "tested_commit": "0cd50f47523d07ca1113b9a3938bdecd0ecba9e9",
+  "project_directory": "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110",
+  "control_status_note": "Baseline PASS denotes the expected reproduction: native data checks pass, but the added regression intentionally exits 1 on 30 recoverable import errors.",
+  "raw_archive": {
+    "name": "master-evidence.tar.gz",
+    "sha256": "89177b1fc60267d73d6c0b8c067029ac57278b16568cb012fdfab4abc946234a",
+    "bytes": 500788
+  },
+  "attempt_notes": {
+    "2347232": "Lmod startup failed because NIL export omitted LOGNAME and the batch shell used nounset.",
+    "2347271": "Source archive initially omitted the upstream gpunetio submodule; exact recorded submodule commit was supplied.",
+    "2347370": "NIL export omitted the user home environment required by the host MPI compiler wrapper.",
+    "2347503": "Slurm reports CANCELLED by 0 after 1 second; no batch log, exact cancellation cause unconfirmed.",
+    "2347564": "New test initially used a 64 KiB stack buffer, rejected by the upstream stack-size warning; buffer moved to heap.",
+    "2347600": "MPI test linking mixed the system UCX dependency with in-tree libucs; fixed by pointing linker rpath-link at all in-tree UCX libraries.",
+    "2347639": "Candidate run loaded both baseline and candidate libuct_cuda through copied GDA RUNPATH. Tracer showed both paths and the process aborted. Not a valid isolated candidate test. Both lib and lib/ucx are now selected with LD_LIBRARY_PATH.",
+    "2347716": "Complete same-allocation native and added regression baseline/candidate comparison; job COMPLETED 0:0 in 15 s."
+  },
+  "loaded_library_audit": [
+    {
+      "trace": "runs/baseline/trace/ipc-r0-p593294.log",
+      "variant": "baseline",
+      "ucx_library_paths": [
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libucm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libucp.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libucs.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libuct.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libucm_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_cma.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib_efa.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_knem.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_rdmacm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_xpmem.so.0.0.0"
+      ]
+    },
+    {
+      "trace": "runs/baseline/trace/ipc-r1-p593295.log",
+      "variant": "baseline",
+      "ucx_library_paths": [
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libucm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libucp.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libucs.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libuct.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libucm_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_cma.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib_efa.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_knem.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_rdmacm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_xpmem.so.0.0.0"
+      ]
+    },
+    {
+      "trace": "runs/candidate/trace/ipc-r0-p593441.log",
+      "variant": "candidate",
+      "ucx_library_paths": [
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libucm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libucp.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libucs.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libuct.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libucm_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+      ]
+    },
+    {
+      "trace": "runs/candidate/trace/ipc-r1-p593442.log",
+      "variant": "candidate",
+      "ucx_library_paths": [
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libucm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libucp.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libucs.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libuct.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libucm_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+      ]
+    },
+    {
+      "trace": "runs/regression/baseline/trace/ipc-r0-p593370.log",
+      "variant": "baseline",
+      "ucx_library_paths": [
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libucm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libucp.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libucs.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libuct.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libucm_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_cma.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib_efa.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_knem.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_rdmacm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_xpmem.so.0.0.0"
+      ]
+    },
+    {
+      "trace": "runs/regression/baseline/trace/ipc-r1-p593371.log",
+      "variant": "baseline",
+      "ucx_library_paths": [
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libucm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libucp.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libucs.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/libuct.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libucm_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_cma.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib_efa.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_knem.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_rdmacm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/baseline/lib/ucx/libuct_xpmem.so.0.0.0"
+      ]
+    },
+    {
+      "trace": "runs/regression/candidate/trace/ipc-r0-p593516.log",
+      "variant": "candidate",
+      "ucx_library_paths": [
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libucm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libucp.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libucs.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libuct.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libucm_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+      ]
+    },
+    {
+      "trace": "runs/regression/candidate/trace/ipc-r1-p593517.log",
+      "variant": "candidate",
+      "ucx_library_paths": [
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libucm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libucp.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libucs.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/libuct.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libucm_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+      ]
+    }
+  ]
+}

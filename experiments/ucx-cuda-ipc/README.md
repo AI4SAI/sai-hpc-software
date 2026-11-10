@@ -1,5 +1,46 @@
 # CUDA IPC address-recycling diagnosis (2026-11-10)
 
+## Current upstream master follow-up
+
+The patch has also been ported to upstream master
+`74b413ab19d63c277ffa3fb553ed83e42bc50f6f` (reports UCX 1.24.0), as fork commit
+[`0cd50f47523d07ca1113b9a3938bdecd0ecba9e9`](https://github.com/Stardust0831/ucx/commit/0cd50f47523d07ca1113b9a3938bdecd0ecba9e9).
+It adds a two-rank MPI/CUDA regression under `test/mpi` alongside the 10-line
+runtime change. The three PR source files match the cluster build byte for byte.
+
+Slurm job `2347716` completed with `0:0` in 15 seconds on `16v100n54`, using the
+same two distinct V100s for both variants. The original native reproducer and
+the new in-tree regression each exercised 30 lower-start overlapping
+reallocations. In **each** program, baseline tracing recorded 60 successful
+imports and 30 recovered error-208 imports; the patch recorded 60 successful
+imports and no failed imports. Both variants passed all byte comparisons.
+The in-tree regression correctly exits 1 on baseline and 0 on the patch. It
+requires trace logging and checks that CUDA IPC activity and address recycling
+actually occurred; an unexercised path is skipped rather than accepted.
+
+All eight rank traces were audited: every mapped UCX library came from the
+selected variant's prefix. Core libraries are byte-identical between variants.
+Full provenance, source hashes, and scheduler receipts are in
+[`current-master-20261110.json`](current-master-20261110.json); the raw archive
+is `master-evidence.tar.gz` under `.work/ucx-master-native-20261110` locally.
+The remote experiment directory is
+`/org/org-open-sai/proj-sai-hpc-software/ucx-master-native-20261110`.
+
+The current source includes the `gpunetio` submodule, which must be populated.
+When using an MPI already linked against another UCX, linking the MPI tests
+also needs the in-tree UCX libraries in the linker search path. At runtime,
+select **both** `prefix/lib` and `prefix/lib/ucx` in `LD_LIBRARY_PATH`, as well
+as `UCX_MODULE_DIR=prefix/lib/ucx`. An initial copied-prefix run loaded both
+baseline and candidate CUDA modules through GDA's embedded RUNPATH and aborted;
+that mixed-library run is preserved as job `2347639`, not accepted as a patch
+test. The corrected run verifies library isolation explicitly. All failed
+build/setup receipts are retained and described in the JSON.
+
+The application and performance measurements below concern the UCX 1.20
+backport, not an application/performance acceptance of current master.
+
+## UCX 1.20 diagnosis
+
 The observed `cuIpcOpenMemHandle() failed: resource already mapped` comes from
 a stale remote mapping whose address range overlaps a new CUDA allocation.
 UCX 1.20 checks the new allocation's **starting address** in its cache. When the
@@ -167,8 +208,18 @@ when `ucx_info` picked up the host `libucs`; the follow-up explicitly selects
 the rebuilt library path. That failed receipt and the unforced native attempt
 `2344321` are preserved.
 
-One-node 16-GPU and two-node 32-GPU checks are queued as job `2344442` at report
-creation. They are not included in the completed acceptance claims above.
+Job `2344442` subsequently completed the one-node 16-GPU and two-node 32-GPU
+SNAP numerical/trace checks: all 48 ranks used distinct GPUs within each run,
+with 128 and 320 successful imports respectively and no failed imports.
+The one-node 16-GPU SPC/E process also completed and its saved force/thermo
+outputs passed the same numerical gate on post-run audit. Its traces contain
+832 successful imports, no error 208, and 59 error 711
+(`CUDA_ERROR_TOO_MANY_PEERS`) results during reachability checks. CUDA defines
+711 as exhausted peer-access resources. The strict assertion that rejected
+**any** failed import terminated the batch script (Slurm `FAILED`, `1:0`, 52 s),
+so the two-node 32-GPU SPC/E case was not reached. This is a separate limitation;
+the whole 16/32-GPU suite is not accepted. Raw evidence is retained in
+`validate32-evidence.tar.gz`.
 No public `/opt` library, module, accepted SIF, or scheduled tester setting was
 changed. The currently scheduled tester still uses `UCX_TLS=^cuda_ipc` until
 the replacement library is separately accepted and deployed.

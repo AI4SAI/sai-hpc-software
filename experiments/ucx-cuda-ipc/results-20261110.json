@@ -909,9 +909,11 @@
     },
     {
       "job": "2344442",
-      "state": "PENDING",
+      "state": "FAILED",
       "gpus": 32,
-      "notes": "One-node 16-GPU and two-node 32-GPU numerical follow-up; pending at report creation."
+      "notes": "SNAP 1x16 and 2x16 passed numerical/trace gates. SPC/E 1x16 completed and later passed numerical comparisons, but the strict any-failed-import assertion rejected 59 CUDA_ERROR_TOO_MANY_PEERS (711) reachability probes. No 208 imports; SPC/E 2x16 was not reached.",
+      "exit": "1:0",
+      "seconds": 52
     }
   ],
   "raw_archives": {
@@ -942,6 +944,10 @@
     "preinvalidate-evidence.tar.gz": {
       "sha256": "04ffb12034854b4a627254cfc59205d76c248e326e608f969ced90e53671b9ae",
       "bytes": 3508821
+    },
+    "validate32-evidence.tar.gz": {
+      "sha256": "7861017d3af49ca04b5bbf7848b2b88f0fe5ce88c5a0ee686dd53fcd1a7e611e",
+      "bytes": 2877461
     }
   },
   "cuda_module_hashes": [
@@ -949,5 +955,67 @@
     "799e9d8f3a8deef46fb9308113ca7a190971db9aec168ae3834fc31b3a12a189  install/pr11216/lib/ucx/libuct_cuda.so.0.0.0",
     "bdde6b9be4de58f9150f5129344457087f00abdca4aed839dbf4b83ab090a4a2  install/preinvalidate/lib/ucx/libuct_cuda.so.0.0.0"
   ],
-  "patch_sha256": "58f0e836ee4c90cef1e8310a041682d691a8db9d8907e6928261a9d308d28521"
+  "patch_sha256": "58f0e836ee4c90cef1e8310a041682d691a8db9d8907e6928261a9d308d28521",
+  "multinode32_followup": {
+    "job": "2344442",
+    "nodes": [
+      "16v100n65",
+      "16v100n66"
+    ],
+    "scheduler_state": "FAILED",
+    "scheduler_exit": "1:0",
+    "cases": [
+      {
+        "name": "snap-1x16-kokkos",
+        "numerical_gate": "PASS",
+        "ranks": 16,
+        "distinct_gpus": 16,
+        "driver_open_results": {
+          "0": 128
+        },
+        "differences": {
+          "initial_thermo_max": 4.4810803956352174e-09,
+          "final_thermo_max": 4.170942702330649e-09,
+          "initial_force_max": 4.2282150003458696e-14,
+          "final_force_max": 6.342149028171207e-14
+        }
+      },
+      {
+        "name": "snap-2x16-kokkos",
+        "numerical_gate": "PASS",
+        "ranks": 32,
+        "distinct_gpus": 32,
+        "driver_open_results": {
+          "0": 320
+        },
+        "differences": {
+          "initial_thermo_max": 4.49108483735472e-09,
+          "final_thermo_max": 3.983586793765426e-09,
+          "initial_force_max": 3.7511660444522477e-14,
+          "final_force_max": 6.235290062051035e-14
+        }
+      },
+      {
+        "name": "spce-1x16-kokkos",
+        "numerical_gate": "PASS on post-run audit",
+        "ranks": 16,
+        "distinct_gpus": 16,
+        "driver_open_results": {
+          "0": 832,
+          "711": 59
+        },
+        "differences": {
+          "initial_thermo_max": 1.120952219935134e-10,
+          "final_thermo_max": 2.935962584160734e-10,
+          "initial_force_max": 1.4477308241112041e-11,
+          "final_force_max": 2.6080471116074477e-10
+        }
+      },
+      {
+        "name": "spce-2x16-kokkos",
+        "status": "NOT_RUN"
+      }
+    ],
+    "interpretation": "711 denotes peer-access resource exhaustion. Observed stacks go through uct_cuda_ipc_rkey_unpack reachability checking. The LAMMPS process completed; the test assertion failed. This does not establish complete 32-GPU SPC/E acceptance."
+  }
 }
