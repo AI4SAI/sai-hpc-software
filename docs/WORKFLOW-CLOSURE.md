@@ -1,4 +1,25 @@
-# Workflow closure — 2026-11-09
+# Workflow closure — 2026-11-10
+
+## CPU QE HDF5 reuse and build storage
+
+CPU QE now verifies and statically links the accepted HDF5 1.14.6 NVHPC/F90
+provider installed under `/opt/apps/qe/dependencies`. No new administrator
+installation or user module change is required. Build 2339519 completed in
+13m37s; the 67 executable loader checks and one/two-rank SCF, force, phonon and
+density acceptance (2339831) passed. This is a dependency-reuse qualification,
+not a new beta publication; its independent controller path was rejected by
+the publication path guard. The existing beta remains selected.
+
+Successful standalone LAMMPS/DeePMD jobs now remove their own build overlay and
+duplicate Squashfs after verification, while preserving SIFs, scientific proof
+and useful compiler caches. A reviewed manual cleanup package selects 24 older
+scratch files / 143.60 GiB; no historical files were deleted. Beta alias rotation
+still does not automatically retire old SIFs. The planner proposes at least
+three distinct source/recipe versions and seven days, with current/release/pinned
+versions protected; old SIF removal requires separate reference review.
+
+See [qualification and accounting](evidence/qe-hdf5-reuse-storage-20261110/README.md)
+and [storage policy and manual commands](STORAGE-RETENTION.md).
 
 ## LAMMPS compiler cache
 
@@ -56,10 +77,11 @@ after selection. See the [completed qualification and publication evidence](evid
 
 ## Daily builds at 03:00 Asia/Shanghai
 
-The single daily entry now schedules all six applications at 03:00 Asia/Shanghai
-(`0 19 * * *` in GitHub's UTC cron), moving the planned start out of daytime
-cluster demand. GitHub scheduling and Slurm resource availability can delay
-actual execution. The earlier 02:23 UTC schedule below describes historical runs.
+The VM's systemd timer dispatches the single daily entry for all six applications
+at 03:00 Asia/Shanghai and resumes interrupted observations. The self-hosted
+runner orchestrates cluster jobs; GitHub cron is no longer a second timer.
+Slurm resource availability can still delay actual compilation. The earlier
+GitHub cron schedules below describe historical runs.
 
 ## CP2K auxiliary dependency cache
 
