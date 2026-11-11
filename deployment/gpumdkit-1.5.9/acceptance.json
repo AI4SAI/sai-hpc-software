@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "prefix": "/opt/apps/GPUMDkit/1.5.9",
+  "python": "3.12.13 | packaged by Anaconda, Inc. | (main, Mar 19 2026, 20:20:58) [GCC 14.3.0]",
+  "checks": {
+    "poscar_conversion": true,
+    "periodic_distance_angstrom": 0.2,
+    "compressed_lammps_data_conversion": true,
+    "nep_prediction": {
+      "frames": 3,
+      "workers": 2,
+      "energy_max_error": 0.0,
+      "force_max_error": 8.326672684688674e-16,
+      "virial_max_error": 4.996003610813204e-16
+    },
+    "prediction_plot_bytes": 339531,
+    "dependencies": true
+  },
+  "route": "sif",
+  "job": "2375499",
+  "image_sha256": "1c0424c49a39c3b3e7928ba8b5863ec32c87a3d92dde3e8d3886d1c3ab137df2",
+  "files": {
+    "prediction-plot.log": "830705f1cd534ed1f9489053998a9c09f20e2e788f514d0e9b0401c57f870575",
+    "doctor.log": "4e99ef270a04e50111d5f3ee196d2f564da8afac2f2d9a98d6d5c58ceed98b88",
+    "periodic-distance.log": "3377bfdd3bc33d2e51f900c5ebad3e30afa1bab829374718123d6cf9e406916f",
+    "poscar-to-xyz.log": "6978579b769b2d0af3e1c38db0fdd7a34b9c6d15c8dc5dcf4318eb23586c01e6",
+    "compressed-lammps-data.log": "77fd6a372a2aa074e449b32676fa6d659e5272ff2d9744ef918e6e710e6586df",
+    "nep-prediction.log": "4f89bb39ea50837f47c640028eafb3e09f17f18edaede06c9958993de3914fc3",
+    "conversion/POSCAR": "58b3e7aa397048b54c6e4d01e9de34eed212a95acb59cde2de5a3d1426d97fe2",
+    "conversion/structure.data": "63d9f4cf78c5f3f43dc26bd0d2f3eca4cbbfb6a9c41af6a8722902960a031406",
+    "conversion/converted.xyz": "6957f40d55d8e224f29d3fe879acc52ce48634b74a499d7d354863f3800df5d7",
+    "conversion/dump.xyz": "97a4425439b99e896033694e5dd01a574f0698c4cd9bef543120e8e364d60caa",
+    "conversion/structure.data.gz": "537d47f5ec4a617143965bd328792edd6e9ef7678db9abc64f263f9dec1c2e52",
+    "prediction/nep.txt": "c772e70b32e5a085936f04e5f5382c7af88a03cb68765510ac82f71ae97eab2c",
+    "prediction/stress_train.out": "5b3e2e84724b59bb90c71d85efe73b8c5f37dd03baf7a0e8e1728cc77913ee3c",
+    "prediction/virial_train.out": "8dc4a4ae05a40be71082d15e72a4fe67ca508f67e4ea5589971bc3f8b57219a2",
+    "prediction/prediction.png": "c72801131f156e7cb5863dbb823a70a93a96c59d4faf29755eac314adae14115",
+    "prediction/train.xyz": "9dcf0778f416b0f7024a9f476e0a2173f7fedbb1573cf80930ebd643d2db3285",
+    "prediction/force_train.out": "a2f32dfeb13df156bddc555cbf92b117e65e414d4d9a32d531ab3e5ee5c105db",
+    "prediction/energy_train.out": "8390af6b2c421b56ed5fdb049ce230054c10da5e5c49245b89008514db5c742d"
+  }
+}
