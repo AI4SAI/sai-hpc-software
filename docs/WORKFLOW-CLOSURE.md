@@ -27,8 +27,8 @@ The remaining priorities are:
    cleanup plan still exist. Current alias rotation does not remove old images.
 3. Install the prepared LAMMPS `stable_30Sep2026_update1` native administrator
    handoff and complete physical installed acceptance. All three SIF scientific
-   receipts and trial extraction passed; the 16V100 native trial passed all 14
-   cases, while 4V100/8V100V0 native trials remain queued. The public module still
+   receipts and trial extraction passed; 16V100 and 4V100 native trials passed
+   all 14 cases each, while the 8V100V0 native trial remains queued. The public module still
    selects the original 30Sep2026 build until the administrator installs update1.
 4. Align beta snapshot labels with the local scheduler date to avoid confusing
    UTC dates with stale builds. This is a display improvement.

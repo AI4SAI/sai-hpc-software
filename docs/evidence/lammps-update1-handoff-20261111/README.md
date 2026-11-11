@@ -44,11 +44,12 @@ inventory, verifies native binary and loader paths, and checks module unloading.
 | Partition | Native trial job | State at handoff preparation |
 | --- | --- | --- |
 | 16V100 | 2372848 | COMPLETED 0:0 in 1m25s; all 14 cases passed |
-| 4V100 | 2372847 | Queued; not yet native-execution-qualified |
+| 4V100 | 2372847 | COMPLETED 0:0 in 1m25s; all 14 cases passed |
 | 8V100V0 | 2372849 | Queued; not yet native-execution-qualified |
 
-The [16V100 verification](native-16V100.json) recomputes the native result from
-raw output and checks completed Slurm accounting. Its route is `staged-native`,
+The [16V100 verification](native-16V100.json) and
+[4V100 verification](native-4V100.json) recompute the native results from raw
+output and check completed Slurm accounting. Their route is `staged-native`,
 not `physical-opt`. The frozen requests and raw outputs are under:
 
 ```text
@@ -64,8 +65,9 @@ was changed to resolve this test-harness failure.
 Five focused tests cover actual Squashfs extraction, rejection of corrupt
 payloads, preservation of an existing different installation, rejection of
 symlink ancestors, and rejection of retained links into omitted workflow files.
-Python/shell syntax checks passed. Full repository checks are reported on
-[PR #90](https://github.com/AI4SAI/sai-hpc-software/pull/90).
+Python/shell syntax checks and the full repository suite passed in
+[CI run 43004870376](https://github.com/AI4SAI/sai-hpc-software/actions/runs/43004870376)
+on [PR #90](https://github.com/AI4SAI/sai-hpc-software/pull/90).
 
 ## Publication boundaries
 
