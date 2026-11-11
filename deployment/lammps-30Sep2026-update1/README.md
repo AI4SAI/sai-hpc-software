@@ -72,12 +72,15 @@ cat /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026-update1/build-in
 `module-whatis` 只有一条，包含 Features；登录节点加载被拒绝，但 help/whatis 可用。
 
 原 `lammps/30Sep2026-deepmd320-auto` 继续保留。
-现有 NEPAdapters 1.0.4/1.0.5 module 明确依赖原版 LAMMPS，
-与 update1 的组合尚未验收，请继续通过原有 NEPAdapters module 使用。
+现有带 `lammps30Sep2026` 名称的 NEPAdapters 1.0.4/1.0.5 module 明确依赖原版 LAMMPS。
+update1 组合的验收进度、适用范围及默认版本发布步骤见
+[update1 默认版本交付说明](../lammps-update1-default/README.md)。
 
 ## 安装后的原生验收
 
-文件校验不替代计算验收。管理员安装完成后，由 stardust 在项目账号提交：
+文件校验不替代计算验收。实际安装和已完成验收状态见
+[update1 默认版本交付说明](../lammps-update1-default/README.md)；
+如需对安装重新验收，由 stardust 在项目账号提交：
 
 ```bash
 python3 -B /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026-update1/native_checks.py submit

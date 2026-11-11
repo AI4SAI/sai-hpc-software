@@ -66,7 +66,17 @@ def module_text(root=Path('/')):
     return text
 
 
-def preflight(release, root=Path('/'), *, installed=False):
+def previous_module(release, module, root):
+    """Allow only the reviewed help transition, with an identical runtime body."""
+    if root != Path('/') or digest(module) not in release.get('previous_module_sha256', []):
+        return False
+    marker = 'if {[module-info mode help] || [module-info mode whatis]} {return}\n'
+    current, desired = module.read_text(), module_text(root)
+    return (current.count(marker) == desired.count(marker) == 1
+            and current.split(marker, 1)[1] == desired.split(marker, 1)[1])
+
+
+def preflight(release, root=Path('/'), *, installed=False, allow_previous_module=False):
     plain(root)
     for row in release['deliveries']:
         part = row['partition']
@@ -100,7 +110,9 @@ def preflight(release, root=Path('/'), *, installed=False):
     plain(module)
     if installed or module.exists():
         require(module.is_file() and stat.S_IMODE(module.stat().st_mode) == 0o644
-                and module.read_text() == module_text(root), 'existing module differs')
+                and (module.read_text() == module_text(root)
+                     or allow_previous_module and previous_module(release, module, root)),
+                'existing module differs')
 
 
 def image_offset(image):
@@ -150,7 +162,7 @@ def extract(row, destination):
 
 
 def install(release, root=Path('/')):
-    preflight(release, root)
+    preflight(release, root, allow_previous_module=True)
     app_root = root / 'opt/apps/lammps'
     directories(app_root)
     descriptor = os.open(app_root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
@@ -172,13 +184,22 @@ def install(release, root=Path('/')):
             print('Installed ' + str(target), flush=True)
         module = root / MODULE.relative_to('/')
         directories(module.parent)
-        if not module.exists():
+        if not module.exists() or module.read_text() != module_text(root):
+            before = None
+            if module.exists():
+                require(previous_module(release, module, root), 'module changed before help update')
+                before = module.stat(), digest(module)
             stage = module.with_name('.' + module.name + '.incoming-' + str(os.getpid()))
             with stage.open('x') as stream:
                 stream.write(module_text(root)); stream.flush(); os.fsync(stream.fileno())
             stage.chmod(0o644)
-            os.link(stage, module)
-            stage.unlink()
+            if before is None:
+                os.link(stage, module)
+                stage.unlink()
+            else:
+                require(digest(module) == before[1], 'module changed during help update')
+                os.chown(stage, before[0].st_uid, before[0].st_gid)
+                os.replace(stage, module)
         preflight(release, root, installed=True)
     finally:
         os.close(descriptor)
@@ -200,7 +221,7 @@ def main():
     if args.install:
         install(release, root)
     else:
-        preflight(release, root, installed=args.verify)
+        preflight(release, root, installed=args.verify, allow_previous_module=not args.verify)
     print('LAMMPS_UPDATE1_' + ('INSTALLED' if args.install else 'VERIFIED' if args.verify else 'PREFLIGHT_PASSED'))
 
 
