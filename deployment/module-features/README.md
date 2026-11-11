@@ -1,10 +1,10 @@
 # Module descriptions and local build information
 
-`module whatis` describes the installed configuration in two short lines:
-program/version, then `Features:` with its main capabilities and CPU/GPU backend.
+`module whatis` uses one entry per module: program/version followed by
+`Features:` with its main capabilities and CPU/GPU backend.
 `module help` gives a concrete path to a **static text record**. Users can read
 it on a login node without loading a module, starting a container, or running the
-program. The short `Features:` description remains in `module whatis`.
+program. The `Features:` description is included in the same `module whatis` entry.
 
 For example, the installed LAMMPS release's complete recorded help is available now:
 
@@ -52,9 +52,9 @@ python3 audit.py > "$HOME/sai-module-audit.json"
 With the account allowed to update these `/opt` modulefiles:
 
 ```bash
-bash install.sh --check
-bash install.sh --install
-python3 check.py --installed
+bash /home/stardust/sai-hpc-software/deployment/module-features/install.sh --check
+bash /home/stardust/sai-hpc-software/deployment/module-features/install.sh --install &&
+python3 /home/stardust/sai-hpc-software/deployment/module-features/check.py --installed
 module --ignore_cache whatis lammps/30Sep2026-deepmd320-auto
 module --ignore_cache help abacus/develop-git-079fd0c-260724-sm70-auto
 ```
@@ -103,7 +103,9 @@ receipts; they do not ask users to execute an inspection command.
 project storage; only reviewed text is published by `prepare_records.py`. The
 administrator installer verifies public read/traverse permissions as well as all
 record hashes before updating modules. `check.py` exercises real login-node Lmod
-and checks that every help output points to a public static index.
+and checks that every help output points to a public static index and every
+whatis output contains exactly one entry. Beta gateways combine descriptions
+from historical sealed generations without rewriting their files.
 
 Observed differences reflected in the descriptions:
 

@@ -1,7 +1,6 @@
 #%Module1.0
 # SAI module documentation. Static build records are readable without loading this module.
-module-whatis "LAMMPS 30 Sep 2026 / DeePMD 3.2.0; V100 partition selection"
-module-whatis "Features: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP"
+module-whatis "LAMMPS 30 Sep 2026 / DeePMD 3.2.0; V100 partition selection; Features: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP"
 proc ModulesHelp {} {
     puts stderr "LAMMPS 30 Sep 2026 / DeePMD 3.2.0; V100 partition selection\nFeatures: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/lammps/30Sep2026-deepmd320-auto/index.txt\nInstallation: \$SAI_LAMMPS_PREFIX; potentials: \$LAMMPS_POTENTIALS.\nNEPAdapters is a separate module; it is not bundled into this LAMMPS build."
 }

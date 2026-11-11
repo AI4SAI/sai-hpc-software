@@ -36,6 +36,8 @@ def main():
                                     env=env, text=True, capture_output=True, timeout=30)
             item = dict(module=module, mode=action, code=result.returncode,
                         output=result.stderr, features=result.stderr.count('Features:'))
+            if action == 'whatis':
+                item['whatis_entries'] = len(re.findall(r'^' + re.escape(module) + r'\s*:', result.stderr, re.M))
             if action == 'help':
                 records = re.findall(r'cat (/[^\s]+/index\.txt)', result.stderr)
                 item['static_records'] = records
@@ -44,11 +46,13 @@ def main():
                     and all(parent.stat().st_mode & stat.S_IXOTH for parent in Path(p).parents)
                     for p in records)
             results.append(item)
-            if item['code'] or not item['features'] or item.get('records_readable') is False:
+            if (item['code'] or not item['features'] or item.get('records_readable') is False
+                    or item.get('whatis_entries', 1) != 1):
                 print(f'FAIL {module} {action}: {result.stderr}')
     if args.output:
         args.output.write_text(json.dumps(results, indent=2) + '\n')
-    failures = sum(bool(row['code'] or not row['features'] or row.get('records_readable') is False) for row in results)
+    failures = sum(bool(row['code'] or not row['features'] or row.get('records_readable') is False
+                        or row.get('whatis_entries', 1) != 1) for row in results)
     print(f'{len(results)} Lmod checks; {failures} failures; '
           + ('installed modules' if args.installed else 'candidate preview'))
     raise SystemExit(bool(failures))

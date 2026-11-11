@@ -1,11 +1,27 @@
 #%Module1.0
 # Maintained by stardust; this gateway does not rotate.
-source "/home/stardust/sai-hpc-software/modulefiles/apps/qe/develop-beta-later"
+# Join the selected generation metadata into one public whatis entry.
+# Sealed generations may contain either one or two older entries.
+set sai_beta_descriptions {}
+rename module-whatis sai_beta_original_whatis
+proc module-whatis {args} {
+    global sai_beta_descriptions
+    lappend sai_beta_descriptions [join $args " "]
+}
+set sai_beta_source_status [catch {
+    source "/home/stardust/sai-hpc-software/modulefiles/apps/qe/develop-beta-later"
+} sai_beta_source_result sai_beta_source_options]
+rename module-whatis {}
+rename sai_beta_original_whatis module-whatis
+if {$sai_beta_source_status != 0} {
+    return -options $sai_beta_source_options $sai_beta_source_result
+}
 # Documentation fallback for immutable generations predating feature help.
 # New generations supply their own build-specific documentation.
 if {![info exists sai_feature_documentation]} {
-    module-whatis "Features: MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions"
+    lappend sai_beta_descriptions "Features: MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions"
 }
+module-whatis [join $sai_beta_descriptions "; "]
 if {![info exists sai_static_build_info]} {
     if {[llength [info commands ModulesHelp]]} {
         rename ModulesHelp sai_original_beta_help

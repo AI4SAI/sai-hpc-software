@@ -1,7 +1,6 @@
 #%Module1.0
 # SAI module documentation. Static build records are readable without loading this module.
-module-whatis "ELPA 2026.02.001; CPU/V100 partition selection"
-module-whatis "Features: MPI/OpenMP; symmetric/Hermitian eigensolvers; AVX2/AVX512; CUDA on V100"
+module-whatis "ELPA 2026.02.001; CPU/V100 partition selection; Features: MPI/OpenMP; symmetric/Hermitian eigensolvers; AVX2/AVX512; CUDA on V100"
 proc ModulesHelp {} {
     puts stderr "ELPA 2026.02.001; CPU/V100 partition selection\nFeatures: MPI/OpenMP; symmetric/Hermitian eigensolvers; AVX2/AVX512; CUDA on V100\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/elpa/2026.02.001-2603-gnu-auto/index.txt\nGPU options: cat \"\$ELPA_ROOT/include/elpa_openmp-2026.02.001/elpa/elpa_configured_options.h\".\nLibrary metadata: cat \"\$ELPA_ROOT/lib/pkgconfig/elpa_openmp.pc\".\nDSPRHBM uses the CPU build; V100 partitions use NVIDIA CUDA builds."
 }

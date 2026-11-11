@@ -46,8 +46,7 @@ def render_selector(root, software, track, build_id, description):
     catalog = root / "containers/software" / software / track / build_id
     targets = SOFTWARE[software]["targets"]
     lines = ["#%Module1.0",
-             "module-whatis " + tcl(f"{description} {track}/{build_id}: partition-native, accepted SIF and launcher"),
-             "module-whatis " + tcl('Features: ' + feature_summary(software)),
+             "module-whatis " + tcl(f"{description} {track}/{build_id}: partition-native, accepted SIF and launcher; Features: " + feature_summary(software)),
              'proc ModulesHelp {} {',
              '    puts stderr ' + tcl(description),
              '    puts stderr ' + tcl('Features: ' + feature_summary(software)),

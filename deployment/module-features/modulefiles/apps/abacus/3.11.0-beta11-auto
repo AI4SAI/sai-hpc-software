@@ -1,7 +1,6 @@
 #%Module1.0
 # SAI module documentation. Static build records are readable without loading this module.
-module-whatis "ABACUS 3.11.0-beta11; native CPU/V100 partition selection"
-module-whatis "Features: MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions"
+module-whatis "ABACUS 3.11.0-beta11; native CPU/V100 partition selection; Features: MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions"
 proc ModulesHelp {} {
     puts stderr "ABACUS 3.11.0-beta11; native CPU/V100 partition selection\nFeatures: MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/abacus/3.11.0-beta11-auto/index.txt\nRun with host mpirun; system examples: /opt/sbatch_examples.\nSelected executable and libraries: \$SAI_ABACUS_PREFIX."
 }

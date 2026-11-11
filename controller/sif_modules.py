@@ -63,8 +63,7 @@ def render_module(root, software, app, *, help_text=None, notice=None,
     features = 'Features: ' + feature_summary(software)
     lines = ['#%Module1.0', 'set sai_feature_documentation 1',
              *(['set sai_static_build_info 1'] if build_info_root is not None else []),
-             'module-whatis ' + tcl(description),
-             'module-whatis ' + tcl(features),
+             'module-whatis ' + tcl(description + '; ' + features),
              'proc ModulesHelp {} {',
              '    puts stderr ' + tcl(features),
              '    puts stderr ' + tcl(help_text or description + '\nLoad inside the allocation. Runtime temporary files use private node memory automatically. '

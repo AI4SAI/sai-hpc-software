@@ -1,7 +1,6 @@
 #%Module1.0
 # SAI module documentation. Static build records are readable without loading this module.
-module-whatis "ELPA 2025.06.001; NVHPC/OpenMPI; fixed AVX512 installation"
-module-whatis "Features: MPI; symmetric/Hermitian eigensolvers; NVIDIA CUDA; ScaLAPACK"
+module-whatis "ELPA 2025.06.001; NVHPC/OpenMPI; fixed AVX512 installation; Features: MPI; symmetric/Hermitian eigensolvers; NVIDIA CUDA; ScaLAPACK"
 proc ModulesHelp {} {
     puts stderr "ELPA 2025.06.001; NVHPC/OpenMPI; fixed AVX512 installation\nFeatures: MPI; symmetric/Hermitian eigensolvers; NVIDIA CUDA; ScaLAPACK\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/elpa/2025.06.001-2509-pgi-sm70-auto/index.txt\nCompiled GPU options: cat /opt/devtools/elpa/elpa-2025.06.001-2509-pgi-avx512/include/elpa-2025.06.001/elpa/elpa_configured_options.h\nDespite the -auto name, this module points to one AVX512 prefix.\nThe historical elpa.pc contains the original build prefix; inspect it before using its compiler flags."
 }

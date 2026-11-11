@@ -1,0 +1,591 @@
+[
+  {
+    "module": "abacus/3.11.0-beta11-auto",
+    "mode": "whatis",
+    "code": 0,
+    "output": "abacus/3.11.0-beta11-auto                           : ABACUS 3.11.0-beta11; native CPU/V100 partition selection; Features: MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "abacus/3.11.0-beta11-auto",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------ Module Specific Help for \"abacus/3.11.0-beta11-auto\" -------------\nABACUS 3.11.0-beta11; native CPU/V100 partition selection\nFeatures: MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/abacus/3.11.0-beta11-auto/index.txt\nRun with host mpirun; system examples: /opt/sbatch_examples.\nSelected executable and libraries: $SAI_ABACUS_PREFIX.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/abacus/3.11.0-beta11-auto/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "abacus/3.11.0-beta12-auto",
+    "mode": "whatis",
+    "code": 0,
+    "output": "abacus/3.11.0-beta12-auto                           : ABACUS 3.11.0-beta12; native CPU/V100 partition selection; Features: MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "abacus/3.11.0-beta12-auto",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------ Module Specific Help for \"abacus/3.11.0-beta12-auto\" -------------\nABACUS 3.11.0-beta12; native CPU/V100 partition selection\nFeatures: MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/abacus/3.11.0-beta12-auto/index.txt\nRun with host mpirun; system examples: /opt/sbatch_examples.\nSelected executable and libraries: $SAI_ABACUS_PREFIX.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/abacus/3.11.0-beta12-auto/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "abacus/develop-beta-later",
+    "mode": "whatis",
+    "code": 0,
+    "output": "abacus/develop-beta-later                           : abacus develop-beta-20261110-5664ee7818f8-rf678a701a42f-b314ecb6adffc; accepted SIF; partitions: 16V100 4V100 8V100V0 DSPRHBM; source: 5664ee7818f8da6c8dfe3c16e4bf0eb84d72967e; Features: MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "abacus/develop-beta-later",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------ Module Specific Help for \"abacus/develop-beta-later\" -------------\nFeatures: MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions\n[SAI beta] abacus / develop\nSource version: develop-2026-11-10\nCommit: 5664ee7818f8da6c8dfe3c16e4bf0eb84d72967e\nAccepted snapshot: 20261110 (latest accepted, not necessarily upstream HEAD)\nPartitions: 16V100, 4V100, 8V100V0, DSPRHBM\nFixed module: abacus/develop-beta-20261110-5664ee7818f8-rf678a701a42f-b314ecb6adffc\nSystem sbatch examples: /opt/sbatch_examples\n\nLoad on a compute node inside your existing sbatch job or srun shell:\n  module load abacus/develop-beta-later\nCommand: abacus > abacus.out\nUse host mpirun with the resource and mapping settings in your existing job script.\nCommands enter the read-only SIF automatically; no extraction is needed.\nHost /home and /org paths are available with your normal file permissions.\nRuntime temporary files use private node memory automatically; no TMPDIR setup is needed.\nFor a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load abacus/develop-beta-20261110-5664ee7818f8-rf678a701a42f-b314ecb6adffc\n\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/sif-beta/build-info/daily-20261110-42880817991-1-abacus/abacus/index.txt\nLocal source/image identities and acceptance paths: cat /home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42880817991-1-abacus/catalog.json\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/sif-beta/build-info/daily-20261110-42880817991-1-abacus/abacus/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "abacus/develop-git-079fd0c-260724-sm70-auto",
+    "mode": "whatis",
+    "code": 0,
+    "output": "abacus/develop-git-079fd0c-260724-sm70-auto                                             : ABACUS develop 079fd0c (2026-07-24); x86-64-v3 / V100; Features: MPI/OpenMP; PW/LCAO; CUDA; cuSOLVERMp; ELPA; LibXC\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "abacus/develop-git-079fd0c-260724-sm70-auto",
+    "mode": "help",
+    "code": 0,
+    "output": "\n---- Module Specific Help for \"abacus/develop-git-079fd0c-260724-sm70-auto\" ----\nABACUS develop 079fd0c (2026-07-24); x86-64-v3 / V100\nFeatures: MPI/OpenMP; PW/LCAO; CUDA; cuSOLVERMp; ELPA; LibXC\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/abacus/develop-git-079fd0c-260724-sm70-auto/index.txt\nFull recorded build options: cat /opt/apps/abacus/abacus-develop-git-079fd0c-260724/abacus-info.txt\nThis build has LibRI, LibTorch/DeePKS and NEP disabled.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/abacus/develop-git-079fd0c-260724-sm70-auto/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "abacus/v3.11.0-beta9-auto",
+    "mode": "whatis",
+    "code": 0,
+    "output": "abacus/v3.11.0-beta9-auto                           : ABACUS 3.11.0-beta9; native CPU/V100 partition selection; Features: MPI/OpenMP; PW/LCAO; ELPA; LibXC; CUDA on GPU partitions\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "abacus/v3.11.0-beta9-auto",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------ Module Specific Help for \"abacus/v3.11.0-beta9-auto\" -------------\nABACUS 3.11.0-beta9; native CPU/V100 partition selection\nFeatures: MPI/OpenMP; PW/LCAO; ELPA; LibXC; CUDA on GPU partitions\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/abacus/v3.11.0-beta9-auto/index.txt\nSource: 149723287702677dc159c5e96fb98cbc3482f445.\nSelected executable: $SAI_ABACUS_PREFIX/bin/abacus.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/abacus/v3.11.0-beta9-auto/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "berkeleygw/4.0-pgi-auto",
+    "mode": "whatis",
+    "code": 0,
+    "output": "berkeleygw/4.0-pgi-auto                         : BerkeleyGW 4.0; GW and Bethe-Salpeter calculations; Features: MPI/OpenMP; OpenACC/CUDA SM70; real/complex executables; HDF5; FFTW; ScaLAPACK; ELPA\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "berkeleygw/4.0-pgi-auto",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------- Module Specific Help for \"berkeleygw/4.0-pgi-auto\" --------------\nBerkeleyGW 4.0; GW and Bethe-Salpeter calculations\nFeatures: MPI/OpenMP; OpenACC/CUDA SM70; real/complex executables; HDF5; FFTW; ScaLAPACK; ELPA\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/berkeleygw/4.0-pgi-auto/index.txt\nLocal build flags: cat /opt/apps/BerkeleyGW/4.0/arch.mk\nInstalled programs: ls /opt/apps/BerkeleyGW/4.0/bin\nLocal documentation: /opt/apps/BerkeleyGW/4.0/documentation/users/\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/berkeleygw/4.0-pgi-auto/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "cp2k/2026.1-cuda12.9-sm70-auto",
+    "mode": "whatis",
+    "code": 0,
+    "output": "cp2k/2026.1-cuda12.9-sm70-auto                                : CP2K 2026.1; legacy AVX2/AVX512 selector; Features: MPI/OpenMP; CUDA SM70; ELPA; LibXC; FFTW; PLUMED; HDF5\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "cp2k/2026.1-cuda12.9-sm70-auto",
+    "mode": "help",
+    "code": 0,
+    "output": "\n---------- Module Specific Help for \"cp2k/2026.1-cuda12.9-sm70-auto\" ----------\nCP2K 2026.1; legacy AVX2/AVX512 selector\nFeatures: MPI/OpenMP; CUDA SM70; ELPA; LibXC; FFTW; PLUMED; HDF5\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/cp2k/2026.1-cuda12.9-sm70-auto/index.txt\nInstallation: $CP2K_HOME; toolchain: $CP2K_HOME/tools/toolchain/install.\nThis historical installation is distinct from cp2k/2026.2-auto.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/cp2k/2026.1-cuda12.9-sm70-auto/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "cp2k/2026.2-auto",
+    "mode": "whatis",
+    "code": 0,
+    "output": "cp2k/2026.2-auto    : CP2K 2026.2; native CPU/V100 partition selection; Features: MPI/OpenMP; DBCSR; ELPA; LibXC/Libint2; PLUMED; DFT-D4/TBLITE; HDF5; CUDA on GPU partitions\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "cp2k/2026.2-auto",
+    "mode": "help",
+    "code": 0,
+    "output": "\n----------------- Module Specific Help for \"cp2k/2026.2-auto\" -----------------\nCP2K 2026.2; native CPU/V100 partition selection\nFeatures: MPI/OpenMP; DBCSR; ELPA; LibXC/Libint2; PLUMED; DFT-D4/TBLITE; HDF5; CUDA on GPU partitions\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/cp2k/2026.2-auto/index.txt\nSelected installation: $SAI_CP2K_PREFIX; packaged data: $CP2K_DATA_DIR.\nRun with host mpirun.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/cp2k/2026.2-auto/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "cp2k/master-beta-later",
+    "mode": "whatis",
+    "code": 0,
+    "output": "cp2k/master-beta-later                        : cp2k master-beta-20261110-c6417739960d-rf678a701a42f-b46a3576a63f9; accepted SIF; partitions: 16V100 4V100 8V100V0 DSPRHBM; source: c6417739960d602b4710ac5e6b229be39f59cb58; Features: MPI/OpenMP; DBCSR; ELPA; LibXC/Libint2; PLUMED; DFT-D4/TBLITE; HDF5; CUDA on GPU partitions\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "cp2k/master-beta-later",
+    "mode": "help",
+    "code": 0,
+    "output": "\n-------------- Module Specific Help for \"cp2k/master-beta-later\" --------------\nFeatures: MPI/OpenMP; DBCSR; ELPA; LibXC/Libint2; PLUMED; DFT-D4/TBLITE; HDF5; CUDA on GPU partitions\n[SAI beta] cp2k / master\nSource version: master-2026-11-10\nCommit: c6417739960d602b4710ac5e6b229be39f59cb58\nAccepted snapshot: 20261110 (latest accepted, not necessarily upstream HEAD)\nPartitions: 16V100, 4V100, 8V100V0, DSPRHBM\nFixed module: cp2k/master-beta-20261110-c6417739960d-rf678a701a42f-b46a3576a63f9\nSystem sbatch examples: /opt/sbatch_examples\n\nLoad on a compute node inside your existing sbatch job or srun shell:\n  module load cp2k/master-beta-later\nCommand: cp2k.psmp -i input.inp -o output.out\nUse host mpirun with the resource and mapping settings in your existing job script.\nCommands enter the read-only SIF automatically; no extraction is needed.\nHost /home and /org paths are available with your normal file permissions.\nRuntime temporary files use private node memory automatically; no TMPDIR setup is needed.\nFor a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load cp2k/master-beta-20261110-c6417739960d-rf678a701a42f-b46a3576a63f9\n\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/sif-beta/build-info/daily-20261110-42880817991-1-cp2k/cp2k/index.txt\nLocal source/image identities and acceptance paths: cat /home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42880817991-1-cp2k/catalog.json\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/sif-beta/build-info/daily-20261110-42880817991-1-cp2k/cp2k/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "deepmd-kit/master-beta-later",
+    "mode": "whatis",
+    "code": 0,
+    "output": "deepmd-kit/master-beta-later                              : deepmd-kit master-beta-20261110-3b2555c46ecd-rf678a701a42f-b317921328382; accepted SIF; partitions: 16V100 4V100 8V100V0; source: 3b2555c46ecdbd2fcc8ddc029d09195a4e3c0f3a; Features: PyTorch CUDA; TensorFlow/JAX CPU; Python/C++ interfaces; i-PI\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "deepmd-kit/master-beta-later",
+    "mode": "help",
+    "code": 0,
+    "output": "\n----------- Module Specific Help for \"deepmd-kit/master-beta-later\" -----------\n[SAI beta] deepmd-kit / master\nSource version: master-2026-11-09\nCommit: 3b2555c46ecdbd2fcc8ddc029d09195a4e3c0f3a\nAccepted snapshot: 20261110 (latest accepted, not necessarily upstream HEAD)\nPartitions: 16V100, 4V100, 8V100V0\nFixed module: deepmd-kit/master-beta-20261110-3b2555c46ecd-rf678a701a42f-b317921328382\nSystem sbatch examples: /opt/sbatch_examples\n\nLoad on a compute node inside your existing sbatch job or srun shell:\n  module load deepmd-kit/master-beta-later\nCommand: dp --pt train input.json\nRun directly in the case directory.\nPyTorch training and restart accepted on one node with two GPUs for se_e2_a and DPA2 on all listed partitions.\nFor two allocated GPUs: deepmd-python -m torch.distributed.run --standalone --nproc_per_node=2 -m deepmd --pt train input.json\nMulti-node training and more than two GPUs have not been accepted. TensorFlow/JAX are CPU-only.\nUse deepmd-python for the SIF Python environment.\nCommands enter the read-only SIF automatically; no extraction is needed.\nHost /home and /org paths are available with your normal file permissions.\nRuntime temporary files use private node memory automatically; no TMPDIR setup is needed.\nFor a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load deepmd-kit/master-beta-20261110-3b2555c46ecd-rf678a701a42f-b317921328382\n\nFeatures: PyTorch CUDA; TensorFlow/JAX CPU; Python/C++ interfaces; i-PI\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/sif-beta/build-info/deepmd-host-data-20261110-r1/deepmd-kit/index.txt\nLocal generation record (includes the runtime bundle path): cat /home/stardust/sai-hpc-software/sif-beta/generations/deepmd-host-data-20261110-r1/manifest.json\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/sif-beta/build-info/deepmd-host-data-20261110-r1/deepmd-kit/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "exa-amd/0.2.0",
+    "mode": "whatis",
+    "code": 0,
+    "output": "exa-amd/0.2.0       : exa-amd 0.2.0; Python 3.12.13; Features: VASP workflow; CGCNN model; ASE; PyTorch\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "exa-amd/0.2.0",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------------ Module Specific Help for \"exa-amd/0.2.0\" -------------------\nexa-amd 0.2.0; Python 3.12.13\nFeatures: VASP workflow; CGCNN model; ASE; PyTorch\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/exa-amd/0.2.0/index.txt\nExact installed package versions: cat /opt/apps/conda_env/exa-amd-0.2.0/share/sai/requirements.lock\nPackage inventory: cat /opt/apps/conda_env/exa-amd-0.2.0/share/sai/packages.json\nPython is selected through PATH without activating Conda; unload before changing environments.\nVASP is an external executable; this environment does not install VASP.\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/exa-amd/0.2.0/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "gpumd/master-beta-later",
+    "mode": "whatis",
+    "code": 0,
+    "output": "gpumd/master-beta-later                         : gpumd master-beta-20261110-92c2d5ce7bec-rf678a701a42f-b30a631f6ab31; accepted SIF; partitions: 16V100 4V100 8V100V0; source: 92c2d5ce7bec17218854332cc1c6bd0fd1c9e62a; Features: CUDA (V100/SM70); NEP; DeePMD; PLUMED; gpumd/nep; single-process execution\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "gpumd/master-beta-later",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------- Module Specific Help for \"gpumd/master-beta-later\" --------------\nFeatures: CUDA (V100/SM70); NEP; DeePMD; PLUMED; gpumd/nep; single-process execution\n[SAI beta] gpumd / master\nSource version: master-2026-11-10\nCommit: 92c2d5ce7bec17218854332cc1c6bd0fd1c9e62a\nAccepted snapshot: 20261110 (latest accepted, not necessarily upstream HEAD)\nPartitions: 16V100, 4V100, 8V100V0\nFixed module: gpumd/master-beta-20261110-92c2d5ce7bec-rf678a701a42f-b30a631f6ab31\nSystem sbatch examples: /opt/sbatch_examples\n\nLoad on a compute node inside your existing sbatch job or srun shell:\n  module load gpumd/master-beta-later\nCommand: gpumd > gpumd.out\nRun directly in the case directory.\nCommands enter the read-only SIF automatically; no extraction is needed.\nHost /home and /org paths are available with your normal file permissions.\nRuntime temporary files use private node memory automatically; no TMPDIR setup is needed.\nFor a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load gpumd/master-beta-20261110-92c2d5ce7bec-rf678a701a42f-b30a631f6ab31\n\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/sif-beta/build-info/daily-20261110-42880817991-1-gpumd/gpumd/index.txt\nLocal source/image identities and acceptance paths: cat /home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42880817991-1-gpumd/catalog.json\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/sif-beta/build-info/daily-20261110-42880817991-1-gpumd/gpumd/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "lammps/11jun2026-nep-dev-avx512",
+    "mode": "whatis",
+    "code": 0,
+    "output": "lammps/11jun2026-nep-dev-avx512                                 : LAMMPS develop e5da37 (2026-06-11); AVX512; Features: MPI; KOKKOS CUDA SM70; PLUMED 2.9.4; DeePMD 3.1.2 plugin; USER-NEP\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "lammps/11jun2026-nep-dev-avx512",
+    "mode": "help",
+    "code": 0,
+    "output": "\n--------- Module Specific Help for \"lammps/11jun2026-nep-dev-avx512\" ----------\nLAMMPS develop e5da37 (2026-06-11); AVX512\nFeatures: MPI; KOKKOS CUDA SM70; PLUMED 2.9.4; DeePMD 3.1.2 plugin; USER-NEP\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/lammps/11jun2026-nep-dev-avx512/index.txt\nInstallation: $LAMMPS_HOME; bundle: $LAMMPS_BUNDLE_ROOT.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/lammps/11jun2026-nep-dev-avx512/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "lammps/11jun2026-nvhpc245gnu-ompi508-sm70-dev",
+    "mode": "whatis",
+    "code": 0,
+    "output": "lammps/11jun2026-nvhpc245gnu-ompi508-sm70-dev                                               : LAMMPS develop e5da37 (2026-06-11); AVX2/AVX512 selector; Features: MPI; KOKKOS CUDA SM70; PLUMED 2.9.4; DeePMD 3.1.2 plugin\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "lammps/11jun2026-nvhpc245gnu-ompi508-sm70-dev",
+    "mode": "help",
+    "code": 0,
+    "output": "\n---- Module Specific Help for \"lammps/11jun2026-nvhpc245gnu-ompi508-sm70-dev\" ----\nLAMMPS develop e5da37 (2026-06-11); AVX2/AVX512 selector\nFeatures: MPI; KOKKOS CUDA SM70; PLUMED 2.9.4; DeePMD 3.1.2 plugin\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/lammps/11jun2026-nvhpc245gnu-ompi508-sm70-dev/index.txt\nInstallation: $LAMMPS_HOME; bundle: $LAMMPS_BUNDLE_ROOT.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/lammps/11jun2026-nvhpc245gnu-ompi508-sm70-dev/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "lammps/30Sep2026-deepmd320-auto",
+    "mode": "whatis",
+    "code": 0,
+    "output": "lammps/30Sep2026-deepmd320-auto                                 : LAMMPS 30 Sep 2026 / DeePMD 3.2.0; V100 partition selection; Features: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "lammps/30Sep2026-deepmd320-auto",
+    "mode": "help",
+    "code": 0,
+    "output": "\n--------- Module Specific Help for \"lammps/30Sep2026-deepmd320-auto\" ----------\nLAMMPS 30 Sep 2026 / DeePMD 3.2.0; V100 partition selection\nFeatures: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/lammps/30Sep2026-deepmd320-auto/index.txt\nInstallation: $SAI_LAMMPS_PREFIX; potentials: $LAMMPS_POTENTIALS.\nNEPAdapters is a separate module; it is not bundled into this LAMMPS build.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/lammps/30Sep2026-deepmd320-auto/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "lammps/develop-beta-later",
+    "mode": "whatis",
+    "code": 0,
+    "output": "lammps/develop-beta-later                           : lammps develop-beta-20261110-e42e0bb7fc33-rf678a701a42f-b923c9ebdbad9; accepted SIF; partitions: 16V100 4V100 8V100V0; source: e42e0bb7fc33bf009e8e1c846dedcab5f0f887ca; Features: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "lammps/develop-beta-later",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------ Module Specific Help for \"lammps/develop-beta-later\" -------------\nFeatures: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP\n[SAI beta] lammps / develop\nSource version: develop-2026-11-10\nCommit: e42e0bb7fc33bf009e8e1c846dedcab5f0f887ca\nAccepted snapshot: 20261110 (latest accepted, not necessarily upstream HEAD)\nPartitions: 16V100, 4V100, 8V100V0\nFixed module: lammps/develop-beta-20261110-e42e0bb7fc33-rf678a701a42f-b923c9ebdbad9\nSystem sbatch examples: /opt/sbatch_examples\n\nLoad on a compute node inside your existing sbatch job or srun shell:\n  module load lammps/develop-beta-later\nCommand: lmp -pk gpu $SLURM_GPUS_ON_NODE split 1.0 -in in.lmp -log log.lammps\nUse host mpirun with the resource and mapping settings in your existing job script.\nThe input must select GPU styles, such as lj/cut/gpu.\nCommands enter the read-only SIF automatically; no extraction is needed.\nHost /home and /org paths are available with your normal file permissions.\nRuntime temporary files use private node memory automatically; no TMPDIR setup is needed.\nFor a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load lammps/develop-beta-20261110-e42e0bb7fc33-rf678a701a42f-b923c9ebdbad9\n\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/sif-beta/build-info/daily-20261110-42880817991-1-lammps/lammps/index.txt\nLocal source/image identities and acceptance paths: cat /home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42880817991-1-lammps/catalog.json\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/sif-beta/build-info/daily-20261110-42880817991-1-lammps/lammps/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "multiwfn/2026.3.18",
+    "mode": "whatis",
+    "code": 0,
+    "output": "multiwfn/2026.3.18  : Multiwfn 2026.3.11 (released 2026-03-18); wavefunction analysis; Features: CPU/OpenMP; command-line noGUI build; density/orbital/topology analysis\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "multiwfn/2026.3.18",
+    "mode": "help",
+    "code": 0,
+    "output": "\n---------------- Module Specific Help for \"multiwfn/2026.3.18\" ----------------\nMultiwfn 2026.3.11 (released 2026-03-18); wavefunction analysis\nFeatures: CPU/OpenMP; command-line noGUI build; density/orbital/topology analysis\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/multiwfn/2026.3.18/index.txt\nQuick start: /opt/apps/Multiwfn/2026.3.18_bin_Linux_noGUI/Multiwfn quick start.pdf\nExamples: /opt/apps/Multiwfn/2026.3.18_bin_Linux_noGUI/examples\nOpenMP stack setting: OMP_STACKSIZE=4000M.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/multiwfn/2026.3.18/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "nepadapters/1.0.4-lammps30Sep2026",
+    "mode": "whatis",
+    "code": 0,
+    "output": "nepadapters/1.0.4-lammps30Sep2026                                   : NEPAdapters 1.0.4; addon for LAMMPS 30Sep2026; Features: nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "nepadapters/1.0.4-lammps30Sep2026",
+    "mode": "help",
+    "code": 0,
+    "output": "\n-------- Module Specific Help for \"nepadapters/1.0.4-lammps30Sep2026\" ---------\nNEPAdapters 1.0.4; addon for LAMMPS 30Sep2026\nFeatures: nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/nepadapters/1.0.4-lammps30Sep2026/index.txt\nThe record includes the base LAMMPS help plus an explicit plugin load/list and style inventory.\nSource: c934e714; requires lammps/30Sep2026-deepmd320-auto.\nGPU: -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.\nNEP3 and CUDA LAMMPS qNEP are unsupported; this plugin is not for daily beta builds.\nPlugin files: ls \"$SAI_NEPADAPTERS_PREFIX/lib\".\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/nepadapters/1.0.4-lammps30Sep2026/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "nepadapters/1.0.5-lammps30Sep2026",
+    "mode": "whatis",
+    "code": 0,
+    "output": "nepadapters/1.0.5-lammps30Sep2026                                   : NEPAdapters 1.0.5; addon for LAMMPS 30Sep2026; Features: nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "nepadapters/1.0.5-lammps30Sep2026",
+    "mode": "help",
+    "code": 0,
+    "output": "\n-------- Module Specific Help for \"nepadapters/1.0.5-lammps30Sep2026\" ---------\nNEPAdapters 1.0.5; addon for LAMMPS 30Sep2026\nFeatures: nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/nepadapters/1.0.5-lammps30Sep2026/index.txt\nThe record includes the base LAMMPS help plus an explicit plugin load/list and style inventory.\nSource: 3ceba8f9; requires lammps/30Sep2026-deepmd320-auto.\nGPU: -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.\nNEP3 and CUDA LAMMPS qNEP are unsupported; this plugin is not for daily beta builds.\nPlugin files: ls \"$SAI_NEPADAPTERS_PREFIX/lib\".\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/nepadapters/1.0.5-lammps30Sep2026/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "orca/6.1.0",
+    "mode": "whatis",
+    "code": 0,
+    "output": "orca/6.1.0          : ORCA 6.1.0; molecular electronic structure; Features: CPU; HF/DFT and correlated wavefunction methods; external OpenMPI 4.1.6\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "orca/6.1.0",
+    "mode": "help",
+    "code": 0,
+    "output": "\n-------------------- Module Specific Help for \"orca/6.1.0\" --------------------\nORCA 6.1.0; molecular electronic structure\nFeatures: CPU; HF/DFT and correlated wavefunction methods; external OpenMPI 4.1.6\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/orca/6.1.0/index.txt\nLocal runtime instructions: less /opt/apps/orca-6.1.0/6.1.0/README.md\nAvailable components: ls /opt/apps/orca-6.1.0/6.1.0/bin\nRun the ORCA driver by its full path; it launches parallel workers using %pal settings.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/orca/6.1.0/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "phonopy/2.48.0",
+    "mode": "whatis",
+    "code": 0,
+    "output": "phonopy/2.48.0      : phonopy 2.48.0; Python 3.12.13; Features: CPU; harmonic phonons; finite displacements; spglib; Python API\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "phonopy/2.48.0",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------------ Module Specific Help for \"phonopy/2.48.0\" ------------------\nphonopy 2.48.0; Python 3.12.13\nFeatures: CPU; harmonic phonons; finite displacements; spglib; Python API\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/phonopy/2.48.0/index.txt\nExact installed package versions: cat /opt/apps/conda_env/phonopy-2.48.0/share/sai/requirements.lock\nPackage inventory: cat /opt/apps/conda_env/phonopy-2.48.0/share/sai/packages.json\nPython is selected through PATH without activating Conda; unload before changing environments.\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/phonopy/2.48.0/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "qe/7.6-auto",
+    "mode": "whatis",
+    "code": 0,
+    "output": "qe/7.6-auto         : Quantum ESPRESSO 7.6; native CPU/V100 partition selection; Features: MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "qe/7.6-auto",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------------- Module Specific Help for \"qe/7.6-auto\" --------------------\nQuantum ESPRESSO 7.6; native CPU/V100 partition selection\nFeatures: MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/qe/7.6-auto/index.txt\nRecorded CMake cache and configure command; PWSCF does not provide a standalone -h option.\nFull installed command suite: ls \"$QE_ROOT/bin\".\nSource: 9f93ddec427d; NVHPC 26.3 / OpenMPI 5.0.10.\nRun with host mpirun; system examples: /opt/sbatch_examples.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/qe/7.6-auto/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "qe/develop-beta-later",
+    "mode": "whatis",
+    "code": 0,
+    "output": "qe/develop-beta-later                       : qe develop-beta-20261110-61569eb48023-rf678a701a42f-b69766931bc01; accepted SIF; partitions: 16V100 4V100 8V100V0 DSPRHBM; source: 61569eb480231b649c47f631df9c5c83537df461; Features: MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "qe/develop-beta-later",
+    "mode": "help",
+    "code": 0,
+    "output": "\n-------------- Module Specific Help for \"qe/develop-beta-later\" ---------------\nFeatures: MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions\n[SAI beta] qe / develop\nSource version: develop-2026-07-09\nCommit: 61569eb480231b649c47f631df9c5c83537df461\nAccepted snapshot: 20261110 (latest accepted, not necessarily upstream HEAD)\nPartitions: 16V100, 4V100, 8V100V0, DSPRHBM\nFixed module: qe/develop-beta-20261110-61569eb48023-rf678a701a42f-b69766931bc01\nSystem sbatch examples: /opt/sbatch_examples\n\nLoad on a compute node inside your existing sbatch job or srun shell:\n  module load qe/develop-beta-later\nCommand: pw.x -in input.in > pw.out\nUse host mpirun with the resource and mapping settings in your existing job script.\nCommands enter the read-only SIF automatically; no extraction is needed.\nHost /home and /org paths are available with your normal file permissions.\nRuntime temporary files use private node memory automatically; no TMPDIR setup is needed.\nFor a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load qe/develop-beta-20261110-61569eb48023-rf678a701a42f-b69766931bc01\n\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/sif-beta/build-info/daily-20261110-42880817991-1-qe/qe/index.txt\nLocal source/image identities and acceptance paths: cat /home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42880817991-1-qe/catalog.json\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/sif-beta/build-info/daily-20261110-42880817991-1-qe/qe/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "sctk/1.2.1",
+    "mode": "whatis",
+    "code": 0,
+    "output": "sctk/1.2.1          : Superconducting-toolkit 1.2.1; QE 7.4.1; CPU; Features: MPI/OpenMP; superconducting DFT; sctk.x + pw.x + ph.x\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "sctk/1.2.1",
+    "mode": "help",
+    "code": 0,
+    "output": "\n-------------------- Module Specific Help for \"sctk/1.2.1\" --------------------\nSuperconducting-toolkit 1.2.1; QE 7.4.1; CPU\nFeatures: MPI/OpenMP; superconducting DFT; sctk.x + pw.x + ph.x\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/sctk/1.2.1/index.txt\nInstalled build identity: cat /opt/apps/sctk/1.2.1/INSTALL_METADATA.txt\nBuild commands: /opt/apps/sctk/1.2.1/install-scripts/\nLocal documentation and source: /opt/apps/sctk/1.2.1/share/sctk/src/\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/sctk/1.2.1/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "sctk/1.2.1-gpu",
+    "mode": "whatis",
+    "code": 0,
+    "output": "sctk/1.2.1-gpu      : Superconducting-toolkit 1.2.1; QE 7.4.1; GPU; Features: MPI/OpenMP; superconducting DFT; sctk.x + pw.x + ph.x; NVHPC CUDA/OpenACC\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "sctk/1.2.1-gpu",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------------ Module Specific Help for \"sctk/1.2.1-gpu\" ------------------\nSuperconducting-toolkit 1.2.1; QE 7.4.1; GPU\nFeatures: MPI/OpenMP; superconducting DFT; sctk.x + pw.x + ph.x; NVHPC CUDA/OpenACC\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/sctk/1.2.1-gpu/index.txt\nInstalled build identity: cat /opt/apps/sctk/1.2.1-gpu/INSTALL_METADATA.txt\nBuild commands: /opt/apps/sctk/1.2.1-gpu/install-scripts/\nLocal documentation and source: /opt/apps/sctk/1.2.1-gpu/share/sctk/src/\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/sctk/1.2.1-gpu/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "sscha/1.6.0",
+    "mode": "whatis",
+    "code": 0,
+    "output": "sscha/1.6.0         : SSCHA 1.6.0; Python environment with QE 5.1.0_elph; Features: CPU; stochastic anharmonic phonons; TD-SCHA 1.6.1; electron-phonon tools\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "sscha/1.6.0",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------------- Module Specific Help for \"sscha/1.6.0\" --------------------\nSSCHA 1.6.0; Python environment with QE 5.1.0_elph\nFeatures: CPU; stochastic anharmonic phonons; TD-SCHA 1.6.1; electron-phonon tools\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/sscha/1.6.0/index.txt\nInstalled identity: cat /opt/apps/sscha/1.6.0/INSTALL_METADATA.txt\nQE build identity: cat /opt/apps/sscha/1.6.0/INSTALL_QE510ELPH_METADATA.txt\nPython is selected through PATH without activating Conda; unload before changing environments.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/sscha/1.6.0/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "sscha/1.6.2",
+    "mode": "whatis",
+    "code": 0,
+    "output": "sscha/1.6.2         : sscha 1.6.2; Python 3.12.13; Features: CPU/MPI; stochastic anharmonic phonons; CellConstructor; ASE; spglib\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "sscha/1.6.2",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------------- Module Specific Help for \"sscha/1.6.2\" --------------------\nsscha 1.6.2; Python 3.12.13\nFeatures: CPU/MPI; stochastic anharmonic phonons; CellConstructor; ASE; spglib\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/sscha/1.6.2/index.txt\nExact installed package versions: cat /opt/apps/conda_env/sscha-1.6.2/share/sai/requirements.lock\nPackage inventory: cat /opt/apps/conda_env/sscha-1.6.2/share/sai/packages.json\nPython is selected through PATH without activating Conda; unload before changing environments.\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/sscha/1.6.2/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "elpa/2025.06.001-2509-pgi-sm70-auto",
+    "mode": "whatis",
+    "code": 0,
+    "output": "elpa/2025.06.001-2509-pgi-sm70-auto                                     : ELPA 2025.06.001; NVHPC/OpenMPI; fixed AVX512 installation; Features: MPI; symmetric/Hermitian eigensolvers; NVIDIA CUDA; ScaLAPACK\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "elpa/2025.06.001-2509-pgi-sm70-auto",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------- Module Specific Help for \"elpa/2025.06.001-2509-pgi-sm70-auto\" --------\nELPA 2025.06.001; NVHPC/OpenMPI; fixed AVX512 installation\nFeatures: MPI; symmetric/Hermitian eigensolvers; NVIDIA CUDA; ScaLAPACK\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/elpa/2025.06.001-2509-pgi-sm70-auto/index.txt\nCompiled GPU options: cat /opt/devtools/elpa/elpa-2025.06.001-2509-pgi-avx512/include/elpa-2025.06.001/elpa/elpa_configured_options.h\nDespite the -auto name, this module points to one AVX512 prefix.\nThe historical elpa.pc contains the original build prefix; inspect it before using its compiler flags.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/elpa/2025.06.001-2509-pgi-sm70-auto/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "elpa/2026.02.001-2603-gnu-auto",
+    "mode": "whatis",
+    "code": 0,
+    "output": "elpa/2026.02.001-2603-gnu-auto                                : ELPA 2026.02.001; CPU/V100 partition selection; Features: MPI/OpenMP; symmetric/Hermitian eigensolvers; AVX2/AVX512; CUDA on V100\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "elpa/2026.02.001-2603-gnu-auto",
+    "mode": "help",
+    "code": 0,
+    "output": "\n---------- Module Specific Help for \"elpa/2026.02.001-2603-gnu-auto\" ----------\nELPA 2026.02.001; CPU/V100 partition selection\nFeatures: MPI/OpenMP; symmetric/Hermitian eigensolvers; AVX2/AVX512; CUDA on V100\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/elpa/2026.02.001-2603-gnu-auto/index.txt\nGPU options: cat \"$ELPA_ROOT/include/elpa_openmp-2026.02.001/elpa/elpa_configured_options.h\".\nLibrary metadata: cat \"$ELPA_ROOT/lib/pkgconfig/elpa_openmp.pc\".\nDSPRHBM uses the CPU build; V100 partitions use NVIDIA CUDA builds.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/elpa/2026.02.001-2603-gnu-auto/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "fuse2fs/1.47.4-sai",
+    "mode": "whatis",
+    "code": 0,
+    "output": "fuse2fs/1.47.4-sai  : fuse2fs 1.47.4-sai; Apptainer 1.4.4 overlay helper; Features: FUSE ext2/3/4; upstream I/O fixes; OFD locks; explicit read-only backing files\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "fuse2fs/1.47.4-sai",
+    "mode": "help",
+    "code": 0,
+    "output": "\n---------------- Module Specific Help for \"fuse2fs/1.47.4-sai\" ----------------\nfuse2fs 1.47.4-sai; Apptainer 1.4.4 overlay helper\nFeatures: FUSE ext2/3/4; upstream I/O fixes; OFD locks; explicit read-only backing files\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/fuse2fs/1.47.4-sai/index.txt\nLoad apptainer/1.4.4 first.\nInstalled prefix remains /opt/devtools/fuse2fs/1.47.4-sai1; the public module was renamed to -sai.\nActive configuration: cat \"$APPTAINER_CONFIG_FILE\".\nKeep build/cache/scratch in the allocated project storage.\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/fuse2fs/1.47.4-sai/index.txt"
+    ],
+    "records_readable": true
+  },
+  {
+    "module": "openmpi/4.1.6-cuda12.4-fix",
+    "mode": "whatis",
+    "code": 0,
+    "output": "openmpi/4.1.6-cuda12.4-fix                            : OpenMPI 4.1.6; CUDA 12.4.1 / UCX 1.15.0 / GDRCopy 2.4.1; Features: C/C++/Fortran MPI; CUDA-aware communication; UCX\n\n",
+    "features": 1,
+    "whatis_entries": 1
+  },
+  {
+    "module": "openmpi/4.1.6-cuda12.4-fix",
+    "mode": "help",
+    "code": 0,
+    "output": "\n------------ Module Specific Help for \"openmpi/4.1.6-cuda12.4-fix\" ------------\nOpenMPI 4.1.6; CUDA 12.4.1 / UCX 1.15.0 / GDRCopy 2.4.1\nFeatures: C/C++/Fortran MPI; CUDA-aware communication; UCX\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/openmpi/4.1.6-cuda12.4-fix/index.txt\nCompiler/link flags: mpicc --showme; mpifort --showme.\nLocal wrapper configuration: cat /opt/devtools/openmpi/openmpi4.1.6_ucx1.15.0_gdrcopy2.4.1_cuda12.4/share/openmpi/mpicc-wrapper-data.txt\n\n\n",
+    "features": 1,
+    "static_records": [
+      "/home/stardust/sai-hpc-software/module-info/20261111/openmpi/4.1.6-cuda12.4-fix/index.txt"
+    ],
+    "records_readable": true
+  }
+]
