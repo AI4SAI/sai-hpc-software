@@ -1,0 +1,147 @@
+{
+  "files": {
+    "build-info/index.txt": "b8fbb9a2a8a306223a6df33cc98c347a45e5e6f2ad22d9d81ef283c2514a163e",
+    "evidence/abi-review.json": "960de202e96d936dacfcb4aefd8df32926e3b7e21df85f380ce902486f6f09da",
+    "evidence/default-preview.txt": "7fe0e35b1a3019c5a733be4a9b107e988675a449015435369bfc3b47e0a01c8f",
+    "evidence/lammps-16V100-request.json": "e4d47bda1ba86f78002cf8614d6363aa45340da2f44996fcf0a99ebfc6cb45ff",
+    "evidence/lammps-16V100.json": "c3ab0ee924420cb56e8b28603200e5aee377e41495c31446826d0c54fff46338",
+    "evidence/lammps-4V100-request.json": "cd5be7ec875c47454cd4a556c8ab6beec915c332b9e5ef37bb27811f71175a75",
+    "evidence/lammps-4V100.json": "95ce8999019af01ca0e29386a6a376058515776f3c88008bbfaccd1000bbebfa",
+    "evidence/lammps-8V100V0-request.json": "03e03274f6639e881943ea87337db43fb93fcba141cfc8b3c64c93f23fa3bae2",
+    "evidence/lammps-8V100V0.json": "f8334024052d7f1f9f08300506911ad4a335f7d1cb42c87a8604d953a4995cfe",
+    "evidence/lammps-verification.json": "e662fba97c8a6baa27f31aade6817403a85c6e4b181ea17414367532a2f1be63",
+    "evidence/nepadapters-16V100-request.json": "d2522e1d8594e2df0568ee7619b411e0d233096becb5600348c25dc339e56e46",
+    "evidence/nepadapters-16V100.json": "99bb8425ff6862c38eea3499ef3c8045bd8368d737ff2f7038e0766883ac0319",
+    "evidence/nepadapters-4V100-request.json": "c647bbb0fc7c4a2eab893ad2e8e211149d252408a1a9c5bc66214ecb10072993",
+    "evidence/nepadapters-4V100.json": "7183b9db9f47f4b0349c6ec8294e0e5ee52c9e554146b8707c8bc2a479a1b1a7",
+    "evidence/nepadapters-8V100V0-request.json": "368e623400b5c88776d9edc19078a83ef7683fd03146d601a06bc731a59bb25b",
+    "evidence/nepadapters-8V100V0.json": "4c8332dddae54e6b60f5a016627b1ebc0493d2906b8ce9af501d0c064ffb67cc",
+    "modulefiles/lammps/.modulerc.lua": "b59c0c0966b0c6fa60a082dae1adec280cd9f5c121dd7bc217a010cd5e406d64",
+    "modulefiles/nepadapters/.modulerc.lua": "825450981d3c4f79887eab5f51d95e6b7556464a2069ad45e4040e64014f2f82",
+    "modulefiles/nepadapters/1.0.5-lammps30Sep2026_update1": "5b81f84e77762d169b0415619a39c7f428c3de26cc9142e14c8af61d65b3e250"
+  },
+  "modules": {
+    "lammps/.modulerc.lua": {
+      "sha256": "b59c0c0966b0c6fa60a082dae1adec280cd9f5c121dd7bc217a010cd5e406d64"
+    },
+    "lammps/30Sep2026_update1-deepmd320-auto": {
+      "previous_sha256": [
+        "282c445ed7a535455839ddf5ad8c4b71e0e89a3d12fef1821f789ced73f1ce9c"
+      ],
+      "sha256": "c9bf34e06025104dc46e9d41ff2b8b9e0960a7cc60c60bb860ae3ac7b87ec17e"
+    },
+    "nepadapters/.modulerc.lua": {
+      "sha256": "825450981d3c4f79887eab5f51d95e6b7556464a2069ad45e4040e64014f2f82"
+    },
+    "nepadapters/1.0.5-lammps30Sep2026_update1": {
+      "sha256": "5b81f84e77762d169b0415619a39c7f428c3de26cc9142e14c8af61d65b3e250"
+    }
+  },
+  "native_work": "/org/org-open-sai/proj-sai-hpc-software/operations/lammps-update1-native-20261111-201352-476274",
+  "nepadapters_accounting": {
+    "16V100": {
+      "distributed": [
+        "2374894",
+        "COMPLETED",
+        "0:0",
+        "16V100",
+        "proj-sai-hpc-software",
+        "/org/org-open-sai/proj-sai-hpc-software/operations/nepadapters-update1-20261111-202034/16V100"
+      ],
+      "local": [
+        "2374893",
+        "COMPLETED",
+        "0:0",
+        "16V100",
+        "proj-sai-hpc-software",
+        "/org/org-open-sai/proj-sai-hpc-software/operations/nepadapters-update1-20261111-202034/16V100"
+      ]
+    },
+    "4V100": {
+      "distributed": [
+        "2374890",
+        "COMPLETED",
+        "0:0",
+        "4V100",
+        "proj-sai-hpc-software",
+        "/org/org-open-sai/proj-sai-hpc-software/operations/nepadapters-update1-20261111-202034/4V100"
+      ],
+      "local": [
+        "2374889",
+        "COMPLETED",
+        "0:0",
+        "4V100",
+        "proj-sai-hpc-software",
+        "/org/org-open-sai/proj-sai-hpc-software/operations/nepadapters-update1-20261111-202034/4V100"
+      ]
+    },
+    "8V100V0": {
+      "distributed": [
+        "2374898",
+        "COMPLETED",
+        "0:0",
+        "8V100V0",
+        "proj-sai-hpc-software",
+        "/org/org-open-sai/proj-sai-hpc-software/operations/nepadapters-update1-20261111-202034/8V100V0"
+      ],
+      "local": [
+        "2374897",
+        "COMPLETED",
+        "0:0",
+        "8V100V0",
+        "proj-sai-hpc-software",
+        "/org/org-open-sai/proj-sai-hpc-software/operations/nepadapters-update1-20261111-202034/8V100V0"
+      ]
+    }
+  },
+  "nepadapters_work": "/org/org-open-sai/proj-sai-hpc-software/operations/nepadapters-update1-20261111-202034",
+  "partitions": [
+    "16V100",
+    "4V100",
+    "8V100V0"
+  ],
+  "plugin": {
+    "files": {
+      "lib/nepadapterscpuplugin.so": {
+        "mode": 420,
+        "sha256": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f",
+        "size": 1945992
+      },
+      "lib/nepadaptersgpuplugin.so": {
+        "mode": 420,
+        "sha256": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271",
+        "size": 30360104
+      },
+      "share/licenses/nepadapters/LICENSE.NEP_CPU": {
+        "mode": 420,
+        "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+        "size": 35149
+      }
+    },
+    "prefix": "/opt/apps/nepadapters/1.0.5-lammps30Sep2026"
+  },
+  "ready": true,
+  "schema": 1,
+  "update1_package_files": {
+    "30Sep2026_update1-deepmd320-auto": "c9bf34e06025104dc46e9d41ff2b8b9e0960a7cc60c60bb860ae3ac7b87ec17e",
+    "build-info/16V100.txt": "133bd5938721e33f960a026b36a46787c64593904c05b84a7740ee7375eba9a0",
+    "build-info/4V100.txt": "abd729f4dfcfbbbb07678982c29300d8898fe40c7d6ac2e529174983c8962b65",
+    "build-info/8V100V0.txt": "921f7f0ee0f6ecc44e511e1a0c329630314d9da072d210e75abfdc78d8b9067a",
+    "build-info/index.txt": "446bfc35af6e9c533346e8638636aff84253a5b5d16108d025200e55d742790c",
+    "evidence/16V100-acceptance.json": "0ef681959f54d692830f0674500f226ef3e11088c32b5a53949b970a7725b7e3",
+    "evidence/16V100-deepmd.json": "c9875e04197f1ee677fca01623cf3ad5be726f430b15ee81f563c5423ae97cfb",
+    "evidence/16V100-manifest.json": "958633667638f35f942655a45df7e20e62afe118f234c8d1ab3c3d7954d36ff4",
+    "evidence/16V100-verification.json": "f33ab078be01a5c46c80d8b2aaacd1b94481cbbf43867734e0de4cb52268ed09",
+    "evidence/4V100-acceptance.json": "2f99db50b71c0d0b0ea7c2bd57b2bf991dbc658e918efc0708a62320d7ef04ea",
+    "evidence/4V100-deepmd.json": "e062c8e8b7210cf67508121b3bafa253b8e271f43960af0d0bd760e29911f538",
+    "evidence/4V100-manifest.json": "7bc0ae96ad529fd01c505dbc6565ec1f6affce435fa7ff3d37957c254357869c",
+    "evidence/4V100-verification.json": "4ac36b2b1ce7719666e743282529cde347e155873d2ccda9718523dc59ef3780",
+    "evidence/8V100V0-acceptance.json": "c710559706eb9b45fde85c60a1ac177337f6983ea1bab6368584f5c3dd0682a5",
+    "evidence/8V100V0-deepmd.json": "93eb16e30e003d5a22cda305965733b81307ab0b94c76a011d57d73ad57434a3",
+    "evidence/8V100V0-manifest.json": "d6097f584cee25d9018b30fc9a7a001ccdf0a0d621aff31b2b4f37e72e746a8f",
+    "evidence/8V100V0-verification.json": "cd35c5d934a716db5541ab238439f3cbb40e035a147a31be847a66d8d5a116ef",
+    "install.py": "accbebdf2527740c7e0d7f53c2db75ab0c484a6cac124140421256fee55123c5",
+    "release.json": "4cf9e6ba97811c40b04020989bf611b071af9d5c5037db4408b3aeabb27f9181",
+    "runtime_files.py": "47e6c6a6c09d6340be3ec2539fcd6c3b4a403fd19f7c0524cb095dde15f15ef6"
+  }
+}

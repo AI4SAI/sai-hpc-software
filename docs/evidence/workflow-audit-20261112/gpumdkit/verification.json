@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "route": "physical-opt",
+  "job": "2380728",
+  "accounting": [
+    "2380728",
+    "COMPLETED",
+    "0:0",
+    "00:00:18",
+    "16V100",
+    "proj-sai-hpc-software",
+    "/org/org-open-sai/proj-sai-hpc-software/operations/gpumdkit-physical-20261112-005230",
+    "16v100n09"
+  ],
+  "prefix": "/opt/apps/GPUMDkit/1.5.9",
+  "module": "/opt/modules/modulefiles/apps/gpumdkit/1.5.9",
+  "module_sha256": "3e353ad4485fe2e4d51d2e92b71dbf07e95b2a1a1d4f84e5ae36c0d626cf5766",
+  "image_sha256": "1c0424c49a39c3b3e7928ba8b5863ec32c87a3d92dde3e8d3886d1c3ab137df2",
+  "checks": {
+    "poscar_conversion": true,
+    "periodic_distance_angstrom": 0.2,
+    "compressed_lammps_data_conversion": true,
+    "nep_prediction": {
+      "frames": 3,
+      "workers": 2,
+      "energy_max_error": 0.0,
+      "force_max_error": 8.326672684688674e-16,
+      "virial_max_error": 4.996003610813204e-16
+    },
+    "prediction_plot_bytes": 339531,
+    "dependencies": true
+  },
+  "raw_numeric_errors": {
+    "energy": 0.0,
+    "force": 8.326672684688674e-16,
+    "virial": 4.996003610813204e-16
+  },
+  "module_unload_and_python_environment_restore": true,
+  "request_sha256": "55be927fd2fbeebb6d61b09072fc53f85597fb7f58af194c668f1b08bef98224",
+  "acceptance_sha256": "be832526905b8d981d1c8c3a11d76a09880be2ad1b98dc89c7b5cb0e4ce43e76",
+  "log_sha256": "9c3bfca33dbb770295159104cf4d98a3526f0d8fbe77c464026f70e7632f9485",
+  "help_sha256": "81c3d2ef51742e12c78ed1a227fe9f7421c2099bdf7a56c7f306fbe69c3f859f"
+}

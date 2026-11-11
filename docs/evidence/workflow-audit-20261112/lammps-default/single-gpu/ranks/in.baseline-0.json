@@ -1,0 +1,29 @@
+{
+  "rank": 0,
+  "local_rank": 0,
+  "host": "16v100n13",
+  "gpu_uuid": "GPU-09d44fe9-29d0-3238-1087-17ea5ffe6746",
+  "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026_update1-g098ffdefa525-rb6a6aadddb8b/16V100/bin/lmp",
+  "binary_sha256": "1ff9c4424c1ed6873af24abfcaea998cb6dbaeaaf81d872a6a63549ec4b8446f",
+  "pid": 702544,
+  "cuda_visible_devices": "0",
+  "sm": 70,
+  "argv": [
+    "-k",
+    "on",
+    "g",
+    "1",
+    "-pk",
+    "kokkos",
+    "neigh",
+    "full",
+    "comm",
+    "device",
+    "gpu/aware",
+    "on",
+    "-in",
+    "in.baseline",
+    "-log",
+    "log.lammps"
+  ]
+}

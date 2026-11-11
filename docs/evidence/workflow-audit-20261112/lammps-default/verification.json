@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "job": "2381151",
+  "accounting": [
+    "2381151",
+    "COMPLETED",
+    "0:0",
+    "16V100",
+    "proj-sai-hpc-software",
+    "/org/org-open-sai/proj-sai-hpc-software/operations/lammps-default-load-20261112-retry1",
+    "16v100n13",
+    "00:02:07"
+  ],
+  "route": "normal-default-module-load",
+  "defaults": {
+    "lammps": "lammps/30Sep2026_update1-deepmd320-auto",
+    "nepadapters": "nepadapters/1.0.5-lammps30Sep2026_update1"
+  },
+  "global_cache_unchanged": true,
+  "ignore_cache": false,
+  "cached_loads": false,
+  "binary_sha256": "1ff9c4424c1ed6873af24abfcaea998cb6dbaeaaf81d872a6a63549ec4b8446f",
+  "plugin_sha256": {
+    "nepadapterscpuplugin.so": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f",
+    "nepadaptersgpuplugin.so": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271"
+  },
+  "comparison": {
+    "energy_diff": 1.9068693646318025e-07,
+    "eatom_sum_diff": 1.9068693646318025e-07,
+    "max_force_component_diff": 2.7583344880399707e-07,
+    "max_virial_component_diff": 1.4292419705519421e-06,
+    "lammps_virial6_from_stress_atom": [
+      -11.418136927874336,
+      -3.7977101314322437,
+      -2.3529832079155777,
+      -0.7985691980923803,
+      -0.02072880633347681,
+      -0.0011773844293151432
+    ],
+    "reference_virial6": [
+      -11.418138312965704,
+      -3.7977115606742142,
+      -2.3529844884631097,
+      -0.7985692844272931,
+      -0.02072881963605297,
+      -0.001177625249544784
+    ]
+  },
+  "scope": "one GPU Pb/Te NEP4 numerical validation through default modules; prior full three-partition matrix retained",
+  "request_sha256": "35cf008ecd4a5c300774db2e2b785abe4eb59a2eaa1e1dfdf66c7a7536521f3b",
+  "acceptance_sha256": "8e17e43ca6d3b34f4530ccfd650ab52f53e5968d256b2078eb8ea5a3fdaa3920",
+  "files": {
+    "lmod-config.txt": "87960e49ba7cfdf475d5057de1222801bad22a277363bc6c1f3c52fee582b148",
+    "lammps-module-list.txt": "0419612a7f705c0f79eae2bc054a8aea0adadf4106388fda281116286b34ac8e",
+    "nepadapters-module-list.txt": "16dd224529cb17ec44deb85e8c739b3cbc48799745ec6124b244068923e2c049",
+    "lammps-selection.txt": "7d373ae5783409ac4579edc9ddd67e910266a73858df7e7f895ea5c9e58465a4",
+    "nepadapters-selection.txt": "c161ee7312e24c703ee5f11c2391a84a1ce79c96df497bdec38b849ae6f8a39b",
+    "global-cache-before.json": "474ffbc17a087308bc2a3f5317de17ce0a4c4a73700d6cc7baf50c22575eaa0a",
+    "single-gpu/screen.out": "76dbaf0fc4ae041478803a971c89ae7705e90cce98c1bd17ac59b5e17f6240ce",
+    "single-gpu/log.lammps": "ab3993877cd5dc8da6638589f291dc7b3716436bfed6a91808c509d83bfbcf69",
+    "single-gpu/dump.out": "786c890c6f79244f0599c7363229a12731161fb13e433062323252db5070e758",
+    "single-gpu/ranks/in.baseline-0.json": "092ef1aaa1a614504d885b3ae02b758e7abb7ce6ea4e09f535bf0ba2a0289cae"
+  }
+}
