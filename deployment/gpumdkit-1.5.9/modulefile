@@ -1,9 +1,10 @@
 #%Module1.0
-module-whatis "GPUMDkit 1.5.9; Features: format conversion; dataset filtering/sampling; NEP CPU prediction (Calorine/NepTrain); structure/transport analysis; plotting"
+module-whatis "GPUMDkit 1.5.9; Python 3.12.13; Features: format conversion; dataset filtering/sampling; NEP CPU prediction (Calorine/NepTrain); structure/transport analysis; plotting"
 proc ModulesHelp {} {
-    puts stderr "GPUMDkit v1.5.9 (073371a45c9f); one generic x86_64 installation.\nFeatures: format conversion; dataset filtering/sampling; NEP CPU prediction (Calorine/NepTrain); structure/transport analysis; plotting.\nInstallation: /opt/apps/GPUMDkit/1.5.9\nComplete recorded help, dependencies and validation: cat /home/stardust/sai-hpc-software/deployment/gpumdkit-1.5.9/build-info/index.txt\nCommands: gpumdkit or gpumdkit.sh; gpumdkit -h lists subcommands.\nThis toolkit prepares and analyses data. GPUMD/NEP executables are loaded separately when a workflow needs them.\nOVITO, DeepMD prediction, deprecated PyNEP, ferrodispcalc and NepTrainKit GUI functions need their separate optional packages.\nUpstream v1.5.9 still prints 1.5.8 in its CLI banner; the tag and source SHA above identify this installation."
+    puts stderr "GPUMDkit 1.5.9 (073371a45c9f); Python 3.12.13; one generic x86_64 installation.\nFeatures: format conversion; dataset filtering/sampling; NEP CPU prediction (Calorine/NepTrain); structure/transport analysis; plotting.\nInstallation: /opt/apps/GPUMDkit/1.5.9\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/deployment/gpumdkit-1.5.9/build-info/index.txt\nComplete recorded command help: cat /home/stardust/sai-hpc-software/deployment/gpumdkit-1.5.9/build-info/help.txt\nExact installed package versions: cat /home/stardust/sai-hpc-software/deployment/gpumdkit-1.5.9/build-info/requirements.lock\nPython is selected through PATH without activating Conda; unload before changing environments.\nCommands: gpumdkit or gpumdkit.sh; gpumdkit -h lists subcommands.\nThis toolkit prepares and analyses data. GPUMD/NEP executables are loaded separately when a workflow needs them.\nOVITO, DeepMD prediction, deprecated PyNEP, ferrodispcalc and NepTrainKit GUI functions need their separate optional packages.\nUpstream v1.5.9 still prints 1.5.8 in its CLI banner; the tag and source SHA above identify this installation."
 }
 if {[module-info mode help] || [module-info mode whatis]} {return}
+family python
 conflict gpumdkit
 set prefix /opt/apps/GPUMDkit/1.5.9
 if {[module-info mode load] && ![file executable $prefix/bin/gpumdkit]} {
@@ -11,5 +12,9 @@ if {[module-info mode load] && ![file executable $prefix/bin/gpumdkit]} {
 }
 prepend-path PATH $prefix/bin
 setenv GPUMDkit_path $prefix/share/gpumdkit
-setenv PYTHONNOUSERSITE 1
-setenv PYTHONDONTWRITEBYTECODE 1
+# Match the existing Python environments: isolate imports and restore user settings on unload.
+pushenv PYTHONPATH ""
+pushenv PYTHONHOME ""
+pushenv PYTHONNOUSERSITE 1
+pushenv PYTHONDONTWRITEBYTECODE 1
+setenv SAI_PYTHON_ENV $prefix

@@ -88,6 +88,11 @@ login-readable help. The public native destination is
 `/opt/apps/neptrainkit/3.1.5` with module `neptrainkit/3.1.5`.
 Administrator installation is still manual; no public `/opt` files were written.
 
+The module was subsequently aligned with the site's existing Python environment
+family and import isolation policy. See the separate
+[module consistency checks](../python-toolkit-modules-20261111/README.md) for the
+revised module; the scientific job records above retain their original inputs.
+
 Three focused installer tests cover umask 077, preserving required data and
 library links while pruning tests/cache, and rejecting a retained link into an
 omitted test tree. Python/shell syntax checks passed. All preparation code,
