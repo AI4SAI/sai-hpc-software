@@ -25,9 +25,11 @@ The remaining priorities are:
 2. Complete manual scratch cleanup and implement a reviewed retirement mechanism
    for obsolete SIF generations. All 24 files / 143.60 GiB in the November 10
    cleanup plan still exist. Current alias rotation does not remove old images.
-3. Prepare the LAMMPS `stable_30Sep2026_update1` native administrator handoff and
-   installed acceptance. Its accepted three-partition SIF evidence exists; the
-   physical public module still selects the original 30Sep2026 build.
+3. Install the prepared LAMMPS `stable_30Sep2026_update1` native administrator
+   handoff and complete physical installed acceptance. All three SIF scientific
+   receipts and trial extraction passed; 16V100 and 4V100 native trials passed
+   all 14 cases each, while the 8V100V0 native trial remains queued. The public module still
+   selects the original 30Sep2026 build until the administrator installs update1.
 4. Align beta snapshot labels with the local scheduler date to avoid confusing
    UTC dates with stale builds. This is a display improvement.
 
@@ -43,6 +45,13 @@ A follow-up administrator package replaces unusable installation variables in
 real Lmod checks passed; application and module runtime bodies are unchanged.
 See [the module path validation](evidence/module-help-paths-20261111/README.md)
 and [the current workflow audit](evidence/workflow-audit-20261111/README.md).
+
+The LAMMPS update1 handoff is available at
+`/home/stardust/sai-hpc-software/deployment/lammps-30Sep2026-update1/install.sh`.
+It reuses installed DeePMD 3.2.0 and exports only standard LAMMPS files (2.81 GiB
+across three partitions). The new module is
+`lammps/30Sep2026_update1-deepmd320-auto`; existing NEPAdapters modules retain their
+original LAMMPS dependency. See [the handoff evidence and pending native trials](evidence/lammps-update1-handoff-20261111/README.md).
 
 ## CPU QE HDF5 reuse and build storage
 
