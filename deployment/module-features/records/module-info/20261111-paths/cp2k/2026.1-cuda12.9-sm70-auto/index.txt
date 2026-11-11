@@ -1,0 +1,18 @@
+CP2K 2026.1; legacy AVX2/AVX512 selector
+Read these files directly on login nodes; no module load is required.
+
+Installation and data paths:
+
+avx2:
+  installation: /opt/apps/cp2k/cp2k-2026.1-avx2
+  toolchain: /opt/apps/cp2k/cp2k-2026.1-avx2/tools/toolchain/install
+
+avx512:
+  installation: /opt/apps/cp2k/cp2k-2026.1-avx512
+  toolchain: /opt/apps/cp2k/cp2k-2026.1-avx512/tools/toolchain/install
+
+Recorded build output (captured from the installed modules):
+
+4V100: cat /home/stardust/sai-hpc-software/module-info/20261111/cp2k/2026.1-cuda12.9-sm70-auto/4V100.txt
+16V100: cat /home/stardust/sai-hpc-software/module-info/20261111/cp2k/2026.1-cuda12.9-sm70-auto/16V100.txt
+8V100V0: cat /home/stardust/sai-hpc-software/module-info/20261111/cp2k/2026.1-cuda12.9-sm70-auto/8V100V0.txt

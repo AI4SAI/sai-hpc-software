@@ -1,0 +1,260 @@
+{
+  "checked_at": "2026-11-11T08:51:33.961916+00:00",
+  "workflow": "42880817991",
+  "applications": {
+    "abacus": {
+      "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-abacus-e46af835ddef",
+      "status": {
+        "after": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42880817991-1-abacus",
+          "fixed": "develop-beta-20261110-5664ee7818f8-rf678a701a42f-b314ecb6adffc",
+          "generation": "daily-20261110-42880817991-1-abacus"
+        },
+        "attempt": "1",
+        "before": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42729730793-1-abacus",
+          "fixed": "develop-beta-20261110-5664ee7818f8-r4d85319d4295-bf8947282f278",
+          "generation": "daily-20261110-42729730793-1-abacus"
+        },
+        "catalog_sha256": "35a577dde53f583371ad80e6346daad5c4561b3ffeee699682a88673e3422671",
+        "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-abacus-e46af835ddef/validation.json",
+        "fixed": "develop-beta-20261110-5664ee7818f8-rf678a701a42f-b314ecb6adffc",
+        "generation": "daily-20261110-42880817991-1-abacus",
+        "software": "abacus",
+        "source_sha": "5664ee7818f8da6c8dfe3c16e4bf0eb84d72967e",
+        "status": "published",
+        "workflow": "42880817991"
+      }
+    },
+    "cp2k": {
+      "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-cp2k-e46af835ddef",
+      "status": {
+        "after": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42880817991-1-cp2k",
+          "fixed": "master-beta-20261110-c6417739960d-rf678a701a42f-b46a3576a63f9",
+          "generation": "daily-20261110-42880817991-1-cp2k"
+        },
+        "attempt": "1",
+        "before": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42729730793-1-cp2k",
+          "fixed": "master-beta-20261110-db0abe27bef8-r4d85319d4295-b6babddfd81c1",
+          "generation": "daily-20261110-42729730793-1-cp2k"
+        },
+        "catalog_sha256": "14661ce7379d5a0ba08fdb4fd3057981c50be442360fca382edc531b811fff62",
+        "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-cp2k-e46af835ddef/validation.json",
+        "fixed": "master-beta-20261110-c6417739960d-rf678a701a42f-b46a3576a63f9",
+        "generation": "daily-20261110-42880817991-1-cp2k",
+        "software": "cp2k",
+        "source_sha": "c6417739960d602b4710ac5e6b229be39f59cb58",
+        "status": "published",
+        "workflow": "42880817991"
+      }
+    },
+    "deepmd-kit": {
+      "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-deepmd-kit-e46af835ddef",
+      "status": {
+        "attempt": "1",
+        "error": "SIF route failed; previous beta retained: {\"16V100\": {\"job\": \"2359111\", \"state\": \"FAILED\", \"exit_code\": \"1:0\", \"log\": \"/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-deepmd-kit-e46af835ddef/16V100\"}}",
+        "retained": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/deepmd-host-data-20261110-r1",
+          "fixed": "master-beta-20261110-3b2555c46ecd-rf678a701a42f-b317921328382",
+          "generation": "deepmd-host-data-20261110-r1"
+        },
+        "software": "deepmd-kit",
+        "status": "failed",
+        "workflow": "42880817991"
+      },
+      "training": {
+        "4V100": {
+          "job": "2359113",
+          "passed": true,
+          "cases": {
+            "se_e2_a": {
+              "passed": true,
+              "training_exit": 0,
+              "restart_exit": 0
+            },
+            "dpa2": {
+              "passed": true,
+              "training_exit": 0,
+              "restart_exit": 0
+            }
+          },
+          "source": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-deepmd-kit-e46af835ddef/4V100/training/summary.json",
+          "sha256": "160593e784eaed8e276c3f7e1b4d0e01e952d8f6723545ee3b740f0f516cf905"
+        },
+        "16V100": {
+          "job": "2359111",
+          "passed": false,
+          "cases": {
+            "se_e2_a": {
+              "passed": false,
+              "training_exit": 1,
+              "restart_exit": null
+            },
+            "dpa2": {
+              "passed": false,
+              "training_exit": 1,
+              "restart_exit": null
+            }
+          },
+          "source": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-deepmd-kit-e46af835ddef/16V100/training/summary.json",
+          "sha256": "738796b061f78b319fd3a2041700ba15b6addac5a9a508743cf240336a51672e"
+        },
+        "8V100V0": {
+          "job": "2359115",
+          "passed": true,
+          "cases": {
+            "se_e2_a": {
+              "passed": true,
+              "training_exit": 0,
+              "restart_exit": 0
+            },
+            "dpa2": {
+              "passed": true,
+              "training_exit": 0,
+              "restart_exit": 0
+            }
+          },
+          "source": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-deepmd-kit-e46af835ddef/8V100V0/training/summary.json",
+          "sha256": "5296e9c0c04491fc0185c33019b1d1813513e9b47486816863c06f11f29be2ba"
+        }
+      },
+      "failure_log": {
+        "dpa2": {
+          "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-deepmd-kit-e46af835ddef/16V100/training/dpa2/training.log",
+          "sha256": "d7733096085ea9897003172119097d714ab6cf3c62573b7150595963dccbff0a",
+          "errors": [
+            "  RuntimeError: Detected mismatch between collectives on ranks. Rank 1 is running collective: CollectiveFingerPrint(SequenceNumber=1, OpType=BROADCAST, TensorShape=[0], TensorDtypes=Byte, TensorDeviceTypes=TensorOptions(dtype=float (default), device=cuda, layout=Strided (default), requires_grad=false (default), pinned_memory=false (default), memory_format=(nullopt))), but Rank 0 is running collective: CollectiveFingerPrint(SequenceNumber=1, OpType=BROADCAST, TensorShape=[4], TensorDtypes=Byte, TensorDeviceTypes=TensorOptions(dtype=float (default), device=cuda, layout=Strided (default), requires_grad=false (default), pinned_memory=false (default), memory_format=(nullopt))).Collectives differ in the following aspects:   Tensor Tensor shapes: 0vs 4"
+          ]
+        },
+        "se_e2_a": {
+          "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-deepmd-kit-e46af835ddef/16V100/training/se_e2_a/training.log",
+          "sha256": "06f5fb0bc66c458beb47ae71090d10d95c5ac5d50e71467ceb0ad5e31d6976d9",
+          "errors": [
+            "  RuntimeError: Detected mismatch between collectives on ranks. Rank 1 is running collective: CollectiveFingerPrint(SequenceNumber=1, OpType=BROADCAST, TensorShape=[0], TensorDtypes=Byte, TensorDeviceTypes=TensorOptions(dtype=float (default), device=cuda, layout=Strided (default), requires_grad=false (default), pinned_memory=false (default), memory_format=(nullopt))), but Rank 0 is running collective: CollectiveFingerPrint(SequenceNumber=1, OpType=BROADCAST, TensorShape=[4], TensorDtypes=Byte, TensorDeviceTypes=TensorOptions(dtype=float (default), device=cuda, layout=Strided (default), requires_grad=false (default), pinned_memory=false (default), memory_format=(nullopt))).Collectives differ in the following aspects:   Tensor Tensor shapes: 0vs 4"
+          ]
+        }
+      },
+      "gpu_health": {
+        "cuda_runtime": "/opt/devtools/nvidia/cuda-12.9.1/lib64/libcudart.so.12",
+        "cuda_visible_devices": "0,1",
+        "device_count": 2,
+        "device_count_status": {
+          "code": 0,
+          "message": "no error"
+        },
+        "devices": [
+          {
+            "context_init": {
+              "code": 0,
+              "message": "no error"
+            },
+            "ordinal": 0,
+            "set_device": {
+              "code": 0,
+              "message": "no error"
+            }
+          },
+          {
+            "context_init": {
+              "code": 0,
+              "message": "no error"
+            },
+            "ordinal": 1,
+            "set_device": {
+              "code": 0,
+              "message": "no error"
+            }
+          }
+        ],
+        "healthy": true,
+        "hostname": "16v100n08.mr-sai.ai",
+        "job": "2359111",
+        "node": "16v100n08",
+        "partition": "16V100",
+        "probe_sha256": "2cd14374798b04a5e968ad07eb4113cf0878428fee6ae1027822bf73cf8bf313",
+        "schema": 1,
+        "workdir": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-deepmd-kit-e46af835ddef/16V100"
+      }
+    },
+    "gpumd": {
+      "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-gpumd-e46af835ddef",
+      "status": {
+        "after": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42880817991-1-gpumd",
+          "fixed": "master-beta-20261110-92c2d5ce7bec-rf678a701a42f-b30a631f6ab31",
+          "generation": "daily-20261110-42880817991-1-gpumd"
+        },
+        "attempt": "1",
+        "before": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42729730793-1-gpumd",
+          "fixed": "master-beta-20261110-8bf530101c6a-r4d85319d4295-b00ef7a1240f5",
+          "generation": "daily-20261110-42729730793-1-gpumd"
+        },
+        "catalog_sha256": "4bfa6ae6a23dcd79d989a4425ee00a6d2b083a83f1874249e61d12c3e141a559",
+        "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-gpumd-e46af835ddef/validation.json",
+        "fixed": "master-beta-20261110-92c2d5ce7bec-rf678a701a42f-b30a631f6ab31",
+        "generation": "daily-20261110-42880817991-1-gpumd",
+        "software": "gpumd",
+        "source_sha": "92c2d5ce7bec17218854332cc1c6bd0fd1c9e62a",
+        "status": "published",
+        "workflow": "42880817991"
+      }
+    },
+    "lammps": {
+      "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-lammps-e46af835ddef",
+      "status": {
+        "after": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42880817991-1-lammps",
+          "fixed": "develop-beta-20261110-e42e0bb7fc33-rf678a701a42f-b923c9ebdbad9",
+          "generation": "daily-20261110-42880817991-1-lammps"
+        },
+        "attempt": "1",
+        "before": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42729730793-1-lammps",
+          "fixed": "develop-beta-20261110-d291d572cf3c-r4d85319d4295-beaaf28e3cdff",
+          "generation": "daily-20261110-42729730793-1-lammps"
+        },
+        "catalog_sha256": "e1aeb10799b37ffe6ff0efa1c1d73109824b46118c01ffce04e679f18226edd2",
+        "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-lammps-e46af835ddef/validation.json",
+        "fixed": "develop-beta-20261110-e42e0bb7fc33-rf678a701a42f-b923c9ebdbad9",
+        "generation": "daily-20261110-42880817991-1-lammps",
+        "software": "lammps",
+        "source_sha": "e42e0bb7fc33bf009e8e1c846dedcab5f0f887ca",
+        "status": "published",
+        "workflow": "42880817991"
+      }
+    },
+    "qe": {
+      "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-qe-e46af835ddef",
+      "status": {
+        "after": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42880817991-1-qe",
+          "fixed": "develop-beta-20261110-61569eb48023-rf678a701a42f-b69766931bc01",
+          "generation": "daily-20261110-42880817991-1-qe"
+        },
+        "attempt": "1",
+        "before": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261110-42729730793-1-qe",
+          "fixed": "develop-beta-20261110-61569eb48023-r4d85319d4295-b836d23bd7ab2",
+          "generation": "daily-20261110-42729730793-1-qe"
+        },
+        "catalog_sha256": "720314ce6dc711803b9e7ac4b1980e001e76b44537b3fd7d48aeb461bf49d43c",
+        "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42880817991-1-qe-e46af835ddef/validation.json",
+        "fixed": "develop-beta-20261110-61569eb48023-rf678a701a42f-b69766931bc01",
+        "generation": "daily-20261110-42880817991-1-qe",
+        "software": "qe",
+        "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+        "status": "published",
+        "workflow": "42880817991"
+      }
+    }
+  },
+  "cleanup": {
+    "plan": "/org/org-open-sai/proj-sai-hpc-software/maintenance/storage-20261110/cleanup-plan.json",
+    "files": 24,
+    "remaining": 24,
+    "allocated_bytes": 154185561600
+  }
+}

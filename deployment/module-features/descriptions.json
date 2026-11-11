@@ -4,9 +4,8 @@
     "summary": "ABACUS 3.11.0-beta11; native CPU/V100 partition selection",
     "features": "MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions",
     "details": [
-      "Full recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/abacus/3.11.0-beta11-auto/index.txt",
-      "Run with host mpirun; system examples: /opt/sbatch_examples.",
-      "Selected executable and libraries: $SAI_ABACUS_PREFIX."
+      "Build information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111-paths/abacus/3.11.0-beta11-auto/index.txt",
+      "Run with host mpirun; system examples: /opt/sbatch_examples."
     ],
     "source_sha256": "74d00d70d824420d0ae03dc672ac2dee3298cb69093d375b4a1028e265d1c497"
   },
@@ -15,9 +14,8 @@
     "summary": "ABACUS 3.11.0-beta12; native CPU/V100 partition selection",
     "features": "MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions",
     "details": [
-      "Full recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/abacus/3.11.0-beta12-auto/index.txt",
-      "Run with host mpirun; system examples: /opt/sbatch_examples.",
-      "Selected executable and libraries: $SAI_ABACUS_PREFIX."
+      "Build information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111-paths/abacus/3.11.0-beta12-auto/index.txt",
+      "Run with host mpirun; system examples: /opt/sbatch_examples."
     ],
     "source_sha256": "5713d0050804fcfcadb40a32fa9a3431ae7fcd82e82570286dd437098aecef82"
   },
@@ -37,9 +35,8 @@
     "summary": "ABACUS 3.11.0-beta9; native CPU/V100 partition selection",
     "features": "MPI/OpenMP; PW/LCAO; ELPA; LibXC; CUDA on GPU partitions",
     "details": [
-      "Full recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/abacus/v3.11.0-beta9-auto/index.txt",
-      "Source: 149723287702677dc159c5e96fb98cbc3482f445.",
-      "Selected executable: $SAI_ABACUS_PREFIX/bin/abacus."
+      "Build information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111-paths/abacus/v3.11.0-beta9-auto/index.txt",
+      "Source: 149723287702677dc159c5e96fb98cbc3482f445."
     ],
     "source_sha256": "321b1ed5cc801e26913665df495fe670b675d2197198aacdc6a7b17f154c36b6"
   },
@@ -60,8 +57,7 @@
     "summary": "CP2K 2026.1; legacy AVX2/AVX512 selector",
     "features": "MPI/OpenMP; CUDA SM70; ELPA; LibXC; FFTW; PLUMED; HDF5",
     "details": [
-      "Full recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/cp2k/2026.1-cuda12.9-sm70-auto/index.txt",
-      "Installation: $CP2K_HOME; toolchain: $CP2K_HOME/tools/toolchain/install.",
+      "Build information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111-paths/cp2k/2026.1-cuda12.9-sm70-auto/index.txt",
       "This historical installation is distinct from cp2k/2026.2-auto."
     ],
     "source_sha256": "2fdf9835333f7682899265def2132ab1a0ce431a3038fa5808760fae83b31982"
@@ -71,8 +67,7 @@
     "summary": "CP2K 2026.2; native CPU/V100 partition selection",
     "features": "MPI/OpenMP; DBCSR; ELPA; LibXC/Libint2; PLUMED; DFT-D4/TBLITE; HDF5; CUDA on GPU partitions",
     "details": [
-      "Full recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/cp2k/2026.2-auto/index.txt",
-      "Selected installation: $SAI_CP2K_PREFIX; packaged data: $CP2K_DATA_DIR.",
+      "Build information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111-paths/cp2k/2026.2-auto/index.txt",
       "Run with host mpirun."
     ],
     "source_sha256": "48f0471fd950fa954b040e4766bd3d3f7cf5a89a1f9799cc6a43ad37b31746d9"
@@ -95,8 +90,7 @@
     "summary": "LAMMPS develop e5da37 (2026-06-11); AVX512",
     "features": "MPI; KOKKOS CUDA SM70; PLUMED 2.9.4; DeePMD 3.1.2 plugin; USER-NEP",
     "details": [
-      "Full recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/lammps/11jun2026-nep-dev-avx512/index.txt",
-      "Installation: $LAMMPS_HOME; bundle: $LAMMPS_BUNDLE_ROOT."
+      "Build information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111-paths/lammps/11jun2026-nep-dev-avx512/index.txt"
     ],
     "source_sha256": "bce6df001ee3fcc774a17e8af5e5b705d7527717f8e3db03771df00e88983248"
   },
@@ -105,8 +99,7 @@
     "summary": "LAMMPS develop e5da37 (2026-06-11); AVX2/AVX512 selector",
     "features": "MPI; KOKKOS CUDA SM70; PLUMED 2.9.4; DeePMD 3.1.2 plugin",
     "details": [
-      "Full recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/lammps/11jun2026-nvhpc245gnu-ompi508-sm70-dev/index.txt",
-      "Installation: $LAMMPS_HOME; bundle: $LAMMPS_BUNDLE_ROOT."
+      "Build information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111-paths/lammps/11jun2026-nvhpc245gnu-ompi508-sm70-dev/index.txt"
     ],
     "source_sha256": "1371709586b0e34f5664b08955f93cd5f861fcd120b263663e6be1a673b47be1"
   },
@@ -115,8 +108,7 @@
     "summary": "LAMMPS 30 Sep 2026 / DeePMD 3.2.0; V100 partition selection",
     "features": "MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP",
     "details": [
-      "Full recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/lammps/30Sep2026-deepmd320-auto/index.txt",
-      "Installation: $SAI_LAMMPS_PREFIX; potentials: $LAMMPS_POTENTIALS.",
+      "Build information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111-paths/lammps/30Sep2026-deepmd320-auto/index.txt",
       "NEPAdapters is a separate module; it is not bundled into this LAMMPS build."
     ],
     "source_sha256": "6c155ab067244d0c4903af4d56c0ad184d6df606c4065b3da659ad9ff2f93c19"
@@ -143,7 +135,7 @@
       "Source: c934e714; requires lammps/30Sep2026-deepmd320-auto.",
       "GPU: -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.",
       "NEP3 and CUDA LAMMPS qNEP are unsupported; this plugin is not for daily beta builds.",
-      "Plugin files: ls \"$SAI_NEPADAPTERS_PREFIX/lib\"."
+      "Plugin files: ls /opt/apps/nepadapters/1.0.4-lammps30Sep2026/lib"
     ],
     "source_sha256": "4ecf824343b9f81480f02026ce64dc8572d45844cc4a93795a2193eae384119e"
   },
@@ -157,7 +149,7 @@
       "Source: 3ceba8f9; requires lammps/30Sep2026-deepmd320-auto.",
       "GPU: -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.",
       "NEP3 and CUDA LAMMPS qNEP are unsupported; this plugin is not for daily beta builds.",
-      "Plugin files: ls \"$SAI_NEPADAPTERS_PREFIX/lib\"."
+      "Plugin files: ls /opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib"
     ],
     "source_sha256": "1503b8e6ad33e5194d149be76cf8e7b55c80a6b7023f4c6b525a364abab84ac7"
   },
@@ -190,9 +182,8 @@
     "summary": "Quantum ESPRESSO 7.6; native CPU/V100 partition selection",
     "features": "MPI/OpenMP; PW/PH/NEB/PP; HDF5; ScaLAPACK; FFTW3; OSCDFT; CUDA/OpenACC on GPU partitions",
     "details": [
-      "Full recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/qe/7.6-auto/index.txt",
+      "Build information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111-paths/qe/7.6-auto/index.txt",
       "Recorded CMake cache and configure command; PWSCF does not provide a standalone -h option.",
-      "Full installed command suite: ls \"$QE_ROOT/bin\".",
       "Source: 9f93ddec427d; NVHPC 26.3 / OpenMPI 5.0.10.",
       "Run with host mpirun; system examples: /opt/sbatch_examples."
     ],
@@ -263,9 +254,7 @@
     "summary": "ELPA 2026.02.001; CPU/V100 partition selection",
     "features": "MPI/OpenMP; symmetric/Hermitian eigensolvers; AVX2/AVX512; CUDA on V100",
     "details": [
-      "Full recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/elpa/2026.02.001-2603-gnu-auto/index.txt",
-      "GPU options: cat \"$ELPA_ROOT/include/elpa_openmp-2026.02.001/elpa/elpa_configured_options.h\".",
-      "Library metadata: cat \"$ELPA_ROOT/lib/pkgconfig/elpa_openmp.pc\".",
+      "Build information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111-paths/elpa/2026.02.001-2603-gnu-auto/index.txt",
       "DSPRHBM uses the CPU build; V100 partitions use NVIDIA CUDA builds."
     ],
     "source_sha256": "47bb8458ee6b288302fc201cde68b816052801952d1c39090cac17b5b63146bd"
@@ -278,7 +267,7 @@
       "Full recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/fuse2fs/1.47.4-sai/index.txt",
       "Load apptainer/1.4.4 first.",
       "Installed prefix remains /opt/devtools/fuse2fs/1.47.4-sai1; the public module was renamed to -sai.",
-      "Active configuration: cat \"$APPTAINER_CONFIG_FILE\".",
+      "Configuration: cat /opt/devtools/fuse2fs/1.47.4-sai1/etc/apptainer.conf",
       "Keep build/cache/scratch in the allocated project storage."
     ],
     "source_sha256": "b28e930c99d15b42ddd5781a2329027a06798e834689b079c785a5e3d7f16828"
