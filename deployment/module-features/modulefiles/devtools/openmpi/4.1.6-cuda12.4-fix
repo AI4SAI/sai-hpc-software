@@ -1,7 +1,6 @@
 #%Module1.0
 # SAI module documentation. Static build records are readable without loading this module.
-module-whatis "OpenMPI 4.1.6; CUDA 12.4.1 / UCX 1.15.0 / GDRCopy 2.4.1"
-module-whatis "Features: C/C++/Fortran MPI; CUDA-aware communication; UCX"
+module-whatis "OpenMPI 4.1.6; CUDA 12.4.1 / UCX 1.15.0 / GDRCopy 2.4.1; Features: C/C++/Fortran MPI; CUDA-aware communication; UCX"
 proc ModulesHelp {} {
     puts stderr "OpenMPI 4.1.6; CUDA 12.4.1 / UCX 1.15.0 / GDRCopy 2.4.1\nFeatures: C/C++/Fortran MPI; CUDA-aware communication; UCX\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/openmpi/4.1.6-cuda12.4-fix/index.txt\nCompiler/link flags: mpicc --showme; mpifort --showme.\nLocal wrapper configuration: cat /opt/devtools/openmpi/openmpi4.1.6_ucx1.15.0_gdrcopy2.4.1_cuda12.4/share/openmpi/mpicc-wrapper-data.txt"
 }

@@ -259,8 +259,7 @@ def render_native_fragment(entry, *, allowed_prefixes=()):
     stem = _stem(identity["software"])
     lines = ["#%Module1.0", "# Native installation; site modules/dependencies remain external.",
              "# Staging is not relocation: deploy at the exact expected prefix below.",
-             "module-whatis " + tcl(f'{identity["software"]} {identity["track"]} {identity["build_id"]}; native {partition}; expected prefix {prefix}; external site dependencies'),
-             "module-whatis " + tcl('Features: ' + feature_summary(identity['software'])),
+             "module-whatis " + tcl(f'{identity["software"]} {identity["track"]} {identity["build_id"]}; native {partition}; expected prefix {prefix}; external site dependencies; Features: ' + feature_summary(identity['software'])),
              'if {[module-info mode load] || [module-info mode remove]} {',
              '    if {[module-info mode load]} {',
              *('        ' + line for line in _allocation_checks()),
@@ -311,8 +310,7 @@ def render_native_selector(identity):
     stem = _stem(software)
     prefix_base = str(PurePosixPath(identity["install_prefix"]).parent)
     description = f"{software} {track} {build_id}: native Slurm-partition selection; expected prefix {prefix_base}/<PARTITION>; dependencies external; staging is not relocation"
-    lines = ["#%Module1.0", "module-whatis " + tcl(description),
-             "module-whatis " + tcl('Features: ' + feature_summary(software)),
+    lines = ["#%Module1.0", "module-whatis " + tcl(description + '; Features: ' + feature_summary(software)),
              "proc ModulesHelp {} {", "    puts stderr " + tcl(description),
              "    puts stderr " + tcl('Features: ' + feature_summary(software)),
              "    puts stderr " + tcl('Local build manifest: cat ' + prefix_base + '/<PARTITION>/share/sai/manifest.json'), "}",

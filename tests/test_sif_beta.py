@@ -137,6 +137,37 @@ proc setenv {name value} {puts "ENV $name=$value"}
         corrupt = self.evaluate(gateway, mode='remove', saved={'SAI_SIF_CP2K_BETA_GENERATION': '../../escape'})
         self.assertEqual(corrupt.returncode, 1)
 
+    def test_gateway_combines_historical_metadata_and_preserves_source_errors(self):
+        home_module = self.root / 'cp2k/master-beta-later'
+        home_module.parent.mkdir()
+        gateway = beta.render_gateway(home_module)
+        observation = 'proc module-whatis {args} {puts "WHATIS [join $args { }]"}\n'
+        for source in (
+            'module-whatis "CP2K historical"\n',
+            'set sai_feature_documentation 1\nmodule-whatis "CP2K historical"\n'
+            'module-whatis "Features: MPI/OpenMP"\n',
+            'set sai_feature_documentation 1\nset sai_static_build_info 1\n'
+            'module-whatis "CP2K current; Features: MPI/OpenMP"\n',
+        ):
+            home_module.write_text(source)
+            before = home_module.read_bytes()
+            result = self.evaluate(observation + gateway, mode='whatis', compute=False)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stdout.count('WHATIS '), 1)
+            self.assertEqual(result.stdout.count('Features:'), 1)
+            self.assertIn('CP2K ', result.stdout)
+            self.assertEqual(home_module.read_bytes(), before)
+        home_module.write_text('module-whatis "incomplete"\nerror "original source failure"\n')
+        result = self.evaluate(observation + gateway, mode='load', compute=False)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('original source failure', result.stderr)
+        self.assertNotIn('WHATIS ', result.stdout)
+        # A caller catching the error must still have the original command.
+        recovered = self.evaluate(observation + 'catch {\n' + gateway
+                                  + '\n}\nmodule-whatis restored', compute=False)
+        self.assertEqual(recovered.returncode, 0, recovered.stderr)
+        self.assertEqual(recovered.stdout, 'WHATIS restored\n')
+
     def fake_bundle(self):
         bundle = self.root / 'bundle'
         (bundle / 'libexec').mkdir(parents=True)
