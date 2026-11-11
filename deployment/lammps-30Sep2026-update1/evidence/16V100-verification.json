@@ -1,0 +1,75 @@
+{
+  "acceptance_sha256": "0ef681959f54d692830f0674500f226ef3e11088c32b5a53949b970a7725b7e3",
+  "accounting": [
+    "2156051",
+    "COMPLETED",
+    "0:0",
+    "16V100",
+    "proj-sai-hpc-software",
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-41589099639-1-release-16v100-avx2-20261103-098ffdefa525-science",
+    "00:01:39",
+    "16v100n[57-58]"
+  ],
+  "artifact_sha256": "73a469dd08d77044cd08e5c4e16fc8911b53180b64c5af6e2d4f79f0382cf161",
+  "delivery": {
+    "deepmd_dependency": {
+      "identity": {
+        "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+        "repository": "deepmodeling/deepmd-kit",
+        "schema": 2,
+        "software": "deepmd-kit",
+        "source_ref": "v3.2.0",
+        "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+        "source_version": "v3.2.0",
+        "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+        "stack_sources": {
+          "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+          "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+        },
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v3.2.0"
+      },
+      "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+    },
+    "identity": {
+      "build_id": "stable_30Sep2026_update1-g098ffdefa525-rb6a6aadddb8b",
+      "cpu_arch": "znver3",
+      "cuda_arch": "70",
+      "dependency_isa": "avx2",
+      "gpus": 1,
+      "install_prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026_update1-g098ffdefa525-rb6a6aadddb8b/16V100",
+      "partition": "16V100",
+      "recipe_sha256": "b6a6aadddb8bcd1b898217e221ed6652606e3ffa01398a187fbe62dd7af74c50",
+      "repository": "lammps/lammps",
+      "schema": 2,
+      "software": "lammps",
+      "source_ref": "stable_30Sep2026_update1",
+      "source_sha": "098ffdefa525cabc82272925de02e9884f58c657",
+      "source_version": "stable_30Sep2026_update1",
+      "stack_digest": null,
+      "stack_sources": {},
+      "target": "16v100-avx2",
+      "track": "release",
+      "version_label": "stable_30Sep2026_update1"
+    },
+    "schema": 1
+  },
+  "job": "2156051",
+  "native_runtime_verified": false,
+  "output": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-41589099639-1-release-16v100-avx2-20261103-098ffdefa525-science",
+  "packages": 71,
+  "passed": true,
+  "published": false,
+  "request_sha256": "b2655e2633b86b6ba94023a31918932966f10fda92bd016c145bdf413af0f60e",
+  "scientific_cases": 14,
+  "scientific_verified": true,
+  "styles": 2473
+}
