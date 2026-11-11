@@ -1,0 +1,32 @@
+----------------------------------------------------------------------------
+   /org/org-open-sai/proj-sai-hpc-software/operations/lammps-update1-default-20261111/module-preview/lammps/30Sep2026_update1-deepmd320-auto:
+----------------------------------------------------------------------------
+whatis("LAMMPS 30 Sep 2026 update1 / DeePMD 3.2.0; V100 partition selection; Features: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP")
+conflict("lammps")
+help([[LAMMPS 30 Sep 2026 update1 / DeePMD 3.2.0; V100 partition selection
+Features: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP
+Build information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026-update1/build-info/index.txt
+NEPAdapters modules currently select the original 30Sep2026 LAMMPS; update1 compatibility is not qualified.
+]])
+
+----------------------------------------------------------------------------
+   /org/org-open-sai/proj-sai-hpc-software/operations/lammps-update1-default-20261111/module-preview/nepadapters/1.0.5-lammps30Sep2026_update1:
+----------------------------------------------------------------------------
+whatis("NEPAdapters 1.0.5; addon for LAMMPS 30Sep2026 update1; Features: nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5")
+conflict("nepadapters")
+depends_on("lammps/30Sep2026_update1-deepmd320-auto")
+prepend_path{"LAMMPS_PLUGIN_PATH","/opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib",delim=":",priority="0"}
+setenv("SAI_NEPADAPTERS_PREFIX","/opt/apps/nepadapters/1.0.5-lammps30Sep2026")
+help([[NEPAdapters 1.0.5; addon for LAMMPS 30Sep2026 update1
+Features: nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5
+Build information and compatibility checks (readable on login nodes): cat /home/stardust/sai-hpc-software/deployment/lammps-update1-default/build-info/index.txt
+Uses the shared plugin files in /opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib.
+Requires lammps/30Sep2026_update1-deepmd320-auto.
+GPU: -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.
+NEP3 and CUDA LAMMPS qNEP are unsupported; daily beta builds are not qualified.
+]])
+
+lammps/30Sep2026_update1-deepmd320-auto                                         : LAMMPS 30 Sep 2026 update1 / DeePMD 3.2.0; V100 partition selection; Features: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP
+
+nepadapters/1.0.5-lammps30Sep2026_update1                                           : NEPAdapters 1.0.5; addon for LAMMPS 30Sep2026 update1; Features: nep/cpu; nep/gpu/kk (Kokkos CUDA); ordinary NEP4/NEP5
+

@@ -25,11 +25,13 @@ The remaining priorities are:
 2. Complete manual scratch cleanup and implement a reviewed retirement mechanism
    for obsolete SIF generations. All 24 files / 143.60 GiB in the November 10
    cleanup plan still exist. Current alias rotation does not remove old images.
-3. Install the prepared LAMMPS `stable_30Sep2026_update1` native administrator
-   handoff and complete physical installed acceptance. All three SIF scientific
-   receipts and trial extraction passed; 16V100 and 4V100 native trials passed
-   all 14 cases each, while the 8V100V0 native trial remains queued. The public module still
-   selects the original 30Sep2026 build until the administrator installs update1.
+3. Finish the 8V100V0 physical update1 and NEPAdapters cross-node checks, then
+   publish the prepared default-version configuration. The administrator has
+   installed update1 on all three GPU partitions and file verification passed.
+   4V100/16V100 passed all 14 physical LAMMPS cases and the existing NEPAdapters
+   1.0.5 plugins passed their complete single/multi-GPU and cross-node matrices.
+   8V100V0 passed the plugin's single/multi-GPU cases; its two cross-node jobs
+   remain queued. The public unversioned LAMMPS default still selects 30Sep2026.
 4. Align beta snapshot labels with the local scheduler date to avoid confusing
    UTC dates with stale builds. This is a display improvement.
 
@@ -46,12 +48,14 @@ real Lmod checks passed; application and module runtime bodies are unchanged.
 See [the module path validation](evidence/module-help-paths-20261111/README.md)
 and [the current workflow audit](evidence/workflow-audit-20261111/README.md).
 
-The LAMMPS update1 handoff is available at
+The installed LAMMPS update1 handoff is available at
 `/home/stardust/sai-hpc-software/deployment/lammps-30Sep2026-update1/install.sh`.
 It reuses installed DeePMD 3.2.0 and exports only standard LAMMPS files (2.81 GiB
 across three partitions). The new module is
 `lammps/30Sep2026_update1-deepmd320-auto`; existing NEPAdapters modules retain their
-original LAMMPS dependency. See [the handoff evidence and pending native trials](evidence/lammps-update1-handoff-20261111/README.md).
+original LAMMPS dependency. A new compatibility module and standard defaults are
+prepared behind complete installed acceptance. See [the physical installation,
+plugin ABI review and remaining jobs](evidence/lammps-update1-installed-20261111/README.md).
 
 ## CPU QE HDF5 reuse and build storage
 

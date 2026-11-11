@@ -1,0 +1,362 @@
+{
+  "schema": 1,
+  "source": {
+    "lammps_original": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+    "lammps_update1": "098ffdefa525cabc82272925de02e9884f58c657",
+    "nepadapters": "3ceba8f9b69765ac29d9f2f4f1c4f76cee8ecf37"
+  },
+  "direct_headers": {
+    "src/atom.h": {
+      "old": "66633e2a2ff5447c2eff6ac888dd621719b53e30",
+      "update1": "66633e2a2ff5447c2eff6ac888dd621719b53e30",
+      "same": true
+    },
+    "src/KOKKOS/atom_kokkos.h": {
+      "old": "20c1491ea21102d51eabde63b5b709dbee63bd97",
+      "update1": "20c1491ea21102d51eabde63b5b709dbee63bd97",
+      "same": true
+    },
+    "src/atom_masks.h": {
+      "old": "01530b519b94d51d283c3d059d1c774cba2fb1dd",
+      "update1": "01530b519b94d51d283c3d059d1c774cba2fb1dd",
+      "same": true
+    },
+    "src/comm.h": {
+      "old": "384d8937d847b38d9d1286611f6e06605650a543",
+      "update1": "384d8937d847b38d9d1286611f6e06605650a543",
+      "same": true
+    },
+    "src/error.h": {
+      "old": "83ed58eff15017a966c9d427b58c8fa8d1126c9d",
+      "update1": "83ed58eff15017a966c9d427b58c8fa8d1126c9d",
+      "same": true
+    },
+    "src/force.h": {
+      "old": "a43a481a940cf0807b6010adeebf99bb5a3911c0",
+      "update1": "a43a481a940cf0807b6010adeebf99bb5a3911c0",
+      "same": true
+    },
+    "src/KOKKOS/kokkos.h": {
+      "old": "d44a04337ebaf3c85b24ee582d77318ee1eb910f",
+      "update1": "d44a04337ebaf3c85b24ee582d77318ee1eb910f",
+      "same": true
+    },
+    "src/KOKKOS/kokkos_base.h": {
+      "old": "fd8158ad39f31ea2798fc580aa5813418d311b99",
+      "update1": "fd8158ad39f31ea2798fc580aa5813418d311b99",
+      "same": true
+    },
+    "src/KOKKOS/kokkos_type.h": {
+      "old": "637ba85dcadd52a34cabf0cf506e2a2de9431964",
+      "update1": "637ba85dcadd52a34cabf0cf506e2a2de9431964",
+      "same": true
+    },
+    "src/lammps.h": {
+      "old": "1422a8dcbf7864d5d0c49ce4046b502f8fa3ee9f",
+      "update1": "cee5753f4865635ae032d52177d6369d6ffc5eeb",
+      "same": false
+    },
+    "src/lammpsplugin.h": {
+      "old": "c1d1d00896f4bc0841c163d76a3e0a6c92e581fb",
+      "update1": "c1d1d00896f4bc0841c163d76a3e0a6c92e581fb",
+      "same": true
+    },
+    "src/lmptype.h": {
+      "old": "a9afda63060338fd9b1868479d282a82e04755c1",
+      "update1": "1cd9d5031558a1466fa5e8f7cf2434a1a1de2676",
+      "same": false
+    },
+    "src/memory.h": {
+      "old": "f91891cf821d88d350162e8b70bf74ee8ca582d0",
+      "update1": "f91891cf821d88d350162e8b70bf74ee8ca582d0",
+      "same": true
+    },
+    "src/KOKKOS/memory_kokkos.h": {
+      "old": "8b8b8db2aa47753c73c2cbb127ff58cfad53e6fa",
+      "update1": "8b8b8db2aa47753c73c2cbb127ff58cfad53e6fa",
+      "same": true
+    },
+    "src/neigh_list.h": {
+      "old": "4c592772ad91702ea0070564251a66fd214bda67",
+      "update1": "4c592772ad91702ea0070564251a66fd214bda67",
+      "same": true
+    },
+    "src/KOKKOS/neigh_list_kokkos.h": {
+      "old": "571b2f0cc64b56f4676bf8fbcb4ce8ebb485a503",
+      "update1": "571b2f0cc64b56f4676bf8fbcb4ce8ebb485a503",
+      "same": true
+    },
+    "src/neigh_request.h": {
+      "old": "78b708bb8048a9739032488b1b04734da8da5d25",
+      "update1": "78b708bb8048a9739032488b1b04734da8da5d25",
+      "same": true
+    },
+    "src/neighbor.h": {
+      "old": "fd8943067d9eaac81e24b9e87765092f46c8b397",
+      "update1": "fd8943067d9eaac81e24b9e87765092f46c8b397",
+      "same": true
+    },
+    "src/pair.h": {
+      "old": "ef20cfca41bf867128950c0411b1395ed87c2e43",
+      "update1": "ef20cfca41bf867128950c0411b1395ed87c2e43",
+      "same": true
+    },
+    "src/utils.h": {
+      "old": "173fe9773d0e10b916b9d1d11bb44cbf929eb4e3",
+      "update1": "93f053afe0ae0a3dc0a521ff5e355936fa2f3cab",
+      "same": false
+    },
+    "src/version.h": {
+      "old": "002e416a0cd4725668e39f056c8ee3425d86743e",
+      "update1": "bea7ada31a6cafed88778c9927ce4f9018a2ab88",
+      "same": false
+    }
+  },
+  "transitive_headers": {
+    "src/KOKKOS/atom_kokkos.h": {
+      "old": "20c1491ea21102d51eabde63b5b709dbee63bd97",
+      "update1": "20c1491ea21102d51eabde63b5b709dbee63bd97",
+      "same": true
+    },
+    "src/KOKKOS/kokkos.h": {
+      "old": "d44a04337ebaf3c85b24ee582d77318ee1eb910f",
+      "update1": "d44a04337ebaf3c85b24ee582d77318ee1eb910f",
+      "same": true
+    },
+    "src/KOKKOS/kokkos_base.h": {
+      "old": "fd8158ad39f31ea2798fc580aa5813418d311b99",
+      "update1": "fd8158ad39f31ea2798fc580aa5813418d311b99",
+      "same": true
+    },
+    "src/KOKKOS/kokkos_type.h": {
+      "old": "637ba85dcadd52a34cabf0cf506e2a2de9431964",
+      "update1": "637ba85dcadd52a34cabf0cf506e2a2de9431964",
+      "same": true
+    },
+    "src/KOKKOS/memory_kokkos.h": {
+      "old": "8b8b8db2aa47753c73c2cbb127ff58cfad53e6fa",
+      "update1": "8b8b8db2aa47753c73c2cbb127ff58cfad53e6fa",
+      "same": true
+    },
+    "src/KOKKOS/neigh_bond_kokkos.h": {
+      "old": "daea6b92db4dbc54e9bb6cc116dbcb41589f2610",
+      "update1": "daea6b92db4dbc54e9bb6cc116dbcb41589f2610",
+      "same": true
+    },
+    "src/KOKKOS/neigh_list_kokkos.h": {
+      "old": "571b2f0cc64b56f4676bf8fbcb4ce8ebb485a503",
+      "update1": "571b2f0cc64b56f4676bf8fbcb4ce8ebb485a503",
+      "same": true
+    },
+    "src/KOKKOS/neighbor_kokkos.h": {
+      "old": "57958883f40b1cb8048bdc3ec7bbd08de66c5e25",
+      "update1": "57958883f40b1cb8048bdc3ec7bbd08de66c5e25",
+      "same": true
+    },
+    "src/KOKKOS/pair_kokkos.h": {
+      "old": "2b26af987edd19f6ee2c92061dc87e71e0bced64",
+      "update1": "2b26af987edd19f6ee2c92061dc87e71e0bced64",
+      "same": true
+    },
+    "src/atom.h": {
+      "old": "66633e2a2ff5447c2eff6ac888dd621719b53e30",
+      "update1": "66633e2a2ff5447c2eff6ac888dd621719b53e30",
+      "same": true
+    },
+    "src/atom_masks.h": {
+      "old": "01530b519b94d51d283c3d059d1c774cba2fb1dd",
+      "update1": "01530b519b94d51d283c3d059d1c774cba2fb1dd",
+      "same": true
+    },
+    "src/comm.h": {
+      "old": "384d8937d847b38d9d1286611f6e06605650a543",
+      "update1": "384d8937d847b38d9d1286611f6e06605650a543",
+      "same": true
+    },
+    "src/creator_registry.h": {
+      "old": "c9bb4321031c3ad1ae92f44493010a8d373b8178",
+      "update1": "c9bb4321031c3ad1ae92f44493010a8d373b8178",
+      "same": true
+    },
+    "src/error.h": {
+      "old": "83ed58eff15017a966c9d427b58c8fa8d1126c9d",
+      "update1": "83ed58eff15017a966c9d427b58c8fa8d1126c9d",
+      "same": true
+    },
+    "src/exceptions.h": {
+      "old": "280802f796b9df2bfb1c1b6c3527e4940c63d067",
+      "update1": "280802f796b9df2bfb1c1b6c3527e4940c63d067",
+      "same": true
+    },
+    "src/fmt/core.h": {
+      "old": "d715fe18ac8c4d56bb68be251cc2bf78214fbc5f",
+      "update1": "d715fe18ac8c4d56bb68be251cc2bf78214fbc5f",
+      "same": true
+    },
+    "src/fmt/format.h": {
+      "old": "fcbb16124e23b1dbb128d4ed2819ef1021cd6b4c",
+      "update1": "fcbb16124e23b1dbb128d4ed2819ef1021cd6b4c",
+      "same": true
+    },
+    "src/force.h": {
+      "old": "a43a481a940cf0807b6010adeebf99bb5a3911c0",
+      "update1": "a43a481a940cf0807b6010adeebf99bb5a3911c0",
+      "same": true
+    },
+    "src/json_fwd.h": {
+      "old": "64eab800f6eb8f3786ad675182679a896530ebb8",
+      "update1": "64eab800f6eb8f3786ad675182679a896530ebb8",
+      "same": true
+    },
+    "src/lammps.h": {
+      "old": "1422a8dcbf7864d5d0c49ce4046b502f8fa3ee9f",
+      "update1": "cee5753f4865635ae032d52177d6369d6ffc5eeb",
+      "same": false
+    },
+    "src/lammpsplugin.h": {
+      "old": "c1d1d00896f4bc0841c163d76a3e0a6c92e581fb",
+      "update1": "c1d1d00896f4bc0841c163d76a3e0a6c92e581fb",
+      "same": true
+    },
+    "src/lmptype.h": {
+      "old": "a9afda63060338fd9b1868479d282a82e04755c1",
+      "update1": "1cd9d5031558a1466fa5e8f7cf2434a1a1de2676",
+      "same": false
+    },
+    "src/math_special.h": {
+      "old": "3cce45538fa61ca8a7253dc878d2bd2813d4631a",
+      "update1": "3cce45538fa61ca8a7253dc878d2bd2813d4631a",
+      "same": true
+    },
+    "src/memory.h": {
+      "old": "f91891cf821d88d350162e8b70bf74ee8ca582d0",
+      "update1": "f91891cf821d88d350162e8b70bf74ee8ca582d0",
+      "same": true
+    },
+    "src/neigh_list.h": {
+      "old": "4c592772ad91702ea0070564251a66fd214bda67",
+      "update1": "4c592772ad91702ea0070564251a66fd214bda67",
+      "same": true
+    },
+    "src/neigh_request.h": {
+      "old": "78b708bb8048a9739032488b1b04734da8da5d25",
+      "update1": "78b708bb8048a9739032488b1b04734da8da5d25",
+      "same": true
+    },
+    "src/neighbor.h": {
+      "old": "fd8943067d9eaac81e24b9e87765092f46c8b397",
+      "update1": "fd8943067d9eaac81e24b9e87765092f46c8b397",
+      "same": true
+    },
+    "src/nlohmann/json_fwd.hpp": {
+      "old": "6a76be366c794d21b640a5b0d29bda7b7f728328",
+      "update1": "6a76be366c794d21b640a5b0d29bda7b7f728328",
+      "same": true
+    },
+    "src/pair.h": {
+      "old": "ef20cfca41bf867128950c0411b1395ed87c2e43",
+      "update1": "ef20cfca41bf867128950c0411b1395ed87c2e43",
+      "same": true
+    },
+    "src/platform.h": {
+      "old": "ea0ff49ffef961b9a1c064b72a4e1b2d8ec1cc31",
+      "update1": "ea0ff49ffef961b9a1c064b72a4e1b2d8ec1cc31",
+      "same": true
+    },
+    "src/pointers.h": {
+      "old": "18bbd8eb9fec70189146b58bab7d64197a3f3cb6",
+      "update1": "18bbd8eb9fec70189146b58bab7d64197a3f3cb6",
+      "same": true
+    },
+    "src/update.h": {
+      "old": "de570a4cc279fcec722e822d3f1b12e58337ea04",
+      "update1": "de570a4cc279fcec722e822d3f1b12e58337ea04",
+      "same": true
+    },
+    "src/utils.h": {
+      "old": "173fe9773d0e10b916b9d1d11bb44cbf929eb4e3",
+      "update1": "93f053afe0ae0a3dc0a521ff5e355936fa2f3cab",
+      "same": false
+    },
+    "src/version.h": {
+      "old": "002e416a0cd4725668e39f056c8ee3425d86743e",
+      "update1": "bea7ada31a6cafed88778c9927ce4f9018a2ab88",
+      "same": false
+    }
+  },
+  "kokkos_changed_files": [
+    "lib/kokkos/bin/nvcc_wrapper"
+  ],
+  "installed_plugin_sha256": {
+    "cpu": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f",
+    "gpu": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271"
+  },
+  "symbols": {
+    "4V100": {
+      "cpu": {
+        "required": 24,
+        "missing_original": [],
+        "missing_update1": []
+      },
+      "gpu": {
+        "required": 29,
+        "missing_original": [],
+        "missing_update1": []
+      }
+    },
+    "16V100": {
+      "cpu": {
+        "required": 24,
+        "missing_original": [],
+        "missing_update1": []
+      },
+      "gpu": {
+        "required": 29,
+        "missing_original": [],
+        "missing_update1": []
+      }
+    },
+    "8V100V0": {
+      "cpu": {
+        "required": 24,
+        "missing_original": [],
+        "missing_update1": []
+      },
+      "gpu": {
+        "required": 29,
+        "missing_original": [],
+        "missing_update1": []
+      }
+    }
+  },
+  "common_build_settings": {
+    "compiler": "GNU C++ 14.3.0",
+    "cpp_standard": "C++20",
+    "mpi": "Open MPI 5.0.10",
+    "kokkos_version": "5.2.1",
+    "kokkos_apis": [
+      "CUDA",
+      "OpenMP"
+    ],
+    "kokkos_precision": "double",
+    "kokkos_view_layout": "legacy",
+    "lammps_sizes": "SMALLBIG",
+    "smallint_bits": 32,
+    "imageint_bits": 32,
+    "tagint_bits": 32,
+    "bigint_bits": 64
+  },
+  "plugin_build_settings": {
+    "cuda": "12.9.1",
+    "cuda_arch": 70,
+    "host_compiler": "GCC 14.3.0",
+    "cpp_standard": 20,
+    "cpu_native_arch": false
+  },
+  "conclusion": "No detected plugin ABI change requiring a rebuild; qualify exact existing plugin bytes against pinned update1 installations using complete runtime tests.",
+  "qualification_limits": [
+    "Exact pinned builds, toolchain and V100 partitions only; not arbitrary daily LAMMPS or changed Kokkos configuration.",
+    "Current science fixtures cover ordinary Pb/Te NEP4 static energy/force/virial plus 100 GPU MD steps, periodic/mixed/nonperiodic boundaries, one GPU, two local GPUs and two nodes.",
+    "No independent update1 validation of every NEP5, spin, qNEP or large-scale input is implied. CUDA LAMMPS qNEP and NEP3 remain unsupported by existing release."
+  ]
+}

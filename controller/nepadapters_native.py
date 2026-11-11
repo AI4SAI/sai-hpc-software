@@ -59,7 +59,17 @@ def submit_plan(plan, cases, output):
         (output / 'sif-request.json').write_text(json.dumps(request, indent=2) + '\n')
     for name in FILES:
         shutil.copyfile(CONTROL / name, output / 'control' / name)
-    plan['pins'] = {str(p.relative_to(output)): checksum(p) for root in ('control', 'cases')
+    pinned_roots = ['control', 'cases']
+    if 'module_source' in plan:
+        require(plan['installed'] and 'build' not in plan, 'module preview requires installed plugins')
+        for key, family in (('lammps_module', 'lammps'), ('nepadapters_module', 'nepadapters')):
+            require(re.fullmatch(family + r'/[A-Za-z0-9_.-]+', plan[key]), 'invalid module name')
+        module = output / 'modulefiles' / plan['nepadapters_module']
+        module.parent.mkdir(parents=True)
+        shutil.copyfile(plan.pop('module_source'), module)
+        plan['module_preview'] = str(output / 'modulefiles')
+        pinned_roots.append('modulefiles')
+    plan['pins'] = {str(p.relative_to(output)): checksum(p) for root in pinned_roots
                     for p in sorted((output / root).rglob('*')) if p.is_file()}
     if 'sif_runtime' in plan:
         plan['pins']['sif-request.json'] = checksum(output / 'sif-request.json')
@@ -106,9 +116,12 @@ def render(output, plan, phase):
              'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
              'source /etc/profile.d/lmod.sh', 'module purge',
              'module use /opt/modules/modulefiles/apps /opt/modules/modulefiles/devtools',
-             'module load lammps/30Sep2026-deepmd320-auto',
+             *(['module use ' + shlex.quote(plan['module_preview']),
+                'module load ' + shlex.quote(plan['nepadapters_module'])]
+               if 'module_preview' in plan else ['module load lammps/30Sep2026-deepmd320-auto']),
              *(['module load apptainer/1.4.4'] if 'sif_runtime' in plan else []),
-             *(['module load nepadapters/1.0.5-lammps30Sep2026'] if plan['installed'] else []), 'set -u',
+             *(['module load nepadapters/1.0.5-lammps30Sep2026']
+               if plan['installed'] and 'module_preview' not in plan else []), 'set -u',
              'export TMPDIR=' + shlex.quote(plan['scratch'][phase]),
              'export APPTAINER_TMPDIR="$TMPDIR" APPTAINER_CACHEDIR="$TMPDIR/apptainer-cache"',
              'export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1',
@@ -118,6 +131,18 @@ def render(output, plan, phase):
              'scontrol show hostnames "$SLURM_JOB_NODELIST" > ' + shlex.quote(str(output / (phase + '-nodes.txt'))),
              shlex.join(['/usr/bin/python3', '-B', str(output / 'control/nepadapters_native.py'), 'run',
                          str(output), '--phase', phase])]
+    if 'module_preview' in plan:
+        # Exercise both dependency ownership cases with the actual site Lmod.
+        addon, lammps = shlex.quote(plan['nepadapters_module']), shlex.quote(plan['lammps_module'])
+        # Site Lmod's shell initializer reads variables it may just have unset.
+        lines += ['set +u', 'module unload ' + addon,
+                  '[[ -z "${SAI_NEPADAPTERS_PREFIX:-}" && -z "${SAI_LAMMPS_PREFIX:-}" ]]',
+                  'module load ' + lammps, 'module load ' + addon, 'module unload ' + addon,
+                  '[[ -z "${SAI_NEPADAPTERS_PREFIX:-}" && "${SAI_LAMMPS_PREFIX:-}" == '
+                  + shlex.quote(plan['request']['lammps']['prefix']) + ' ]]',
+                  'module unload ' + lammps,
+                  '[[ -z "${SAI_LAMMPS_PREFIX:-}" ]]',
+                  'touch ' + shlex.quote(str(output / (phase + '-module-unload.passed')))]
     return '\n'.join(lines) + '\n'
 
 
@@ -247,6 +272,9 @@ def verify_phase(output, phase):
 
 def verify(output):
     records = {phase: verify_phase(output, phase) for phase in PHASES}
+    if 'module_preview' in context(output):
+        require(all((output / (p + '-module-unload.passed')).is_file() for p in PHASES),
+                'preview module load/unload checks did not complete')
     result = dict(schema=1, passed=True, partition=records['local']['partition'],
                   installed=records['local']['installed'], jobs={p: r['job'] for p, r in records.items()},
                   nodes=records['distributed']['nodes'], phases=records,

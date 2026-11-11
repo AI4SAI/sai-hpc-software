@@ -2,7 +2,7 @@
 # SAI module documentation. Static build records are readable without loading this module.
 module-whatis "LAMMPS 30 Sep 2026 update1 / DeePMD 3.2.0; V100 partition selection; Features: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP"
 proc ModulesHelp {} {
-    puts stderr "LAMMPS 30 Sep 2026 update1 / DeePMD 3.2.0; V100 partition selection\nFeatures: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP\nBuild information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026-update1/build-info/index.txt\nNEPAdapters modules currently select the original 30Sep2026 LAMMPS; update1 compatibility is not qualified."
+    puts stderr "LAMMPS 30 Sep 2026 update1 / DeePMD 3.2.0; V100 partition selection\nFeatures: MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP\nBuild information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026-update1/build-info/index.txt\nNEPAdapters is a separate addon; see module help nepadapters/1.0.5-lammps30Sep2026_update1 for the qualified update1 combination."
 }
 if {[module-info mode help] || [module-info mode whatis]} {return}
 conflict lammps
