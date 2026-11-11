@@ -1,0 +1,100 @@
+{
+  "passed": true,
+  "job": "2381151",
+  "route": "normal-default-module-load",
+  "lammps_prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026_update1-g098ffdefa525-rb6a6aadddb8b/16V100",
+  "plugin_prefix": "/opt/apps/nepadapters/1.0.5-lammps30Sep2026",
+  "comparison": {
+    "energy_diff": 1.9068693646318025e-07,
+    "eatom_sum_diff": 1.9068693646318025e-07,
+    "max_force_component_diff": 2.7583344880399707e-07,
+    "max_virial_component_diff": 1.4292419705519421e-06,
+    "lammps_virial6_from_stress_atom": [
+      -11.418136927874336,
+      -3.7977101314322437,
+      -2.3529832079155777,
+      -0.7985691980923803,
+      -0.02072880633347681,
+      -0.0011773844293151432
+    ],
+    "reference_virial6": [
+      -11.418138312965704,
+      -3.7977115606742142,
+      -2.3529844884631097,
+      -0.7985692844272931,
+      -0.02072881963605297,
+      -0.001177625249544784
+    ]
+  },
+  "command": [
+    "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin/mpirun",
+    "-np",
+    "1",
+    "--map-by",
+    "ppr:1:node:PE=1",
+    "--bind-to",
+    "core",
+    "/usr/bin/python3",
+    "-B",
+    "/org/org-open-sai/proj-sai-hpc-software/operations/lammps-default-load-20261112-retry1/control/nepadapters_rank.py",
+    "1",
+    "/opt/apps/lammps/lammps-release-stable_30Sep2026_update1-g098ffdefa525-rb6a6aadddb8b/16V100/bin/lmp",
+    "-k",
+    "on",
+    "g",
+    "1",
+    "-pk",
+    "kokkos",
+    "neigh",
+    "full",
+    "comm",
+    "device",
+    "gpu/aware",
+    "on",
+    "-in",
+    "in.baseline",
+    "-log",
+    "log.lammps"
+  ],
+  "ranks": [
+    {
+      "rank": 0,
+      "local_rank": 0,
+      "host": "16v100n13",
+      "gpu_uuid": "GPU-09d44fe9-29d0-3238-1087-17ea5ffe6746",
+      "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026_update1-g098ffdefa525-rb6a6aadddb8b/16V100/bin/lmp",
+      "binary_sha256": "1ff9c4424c1ed6873af24abfcaea998cb6dbaeaaf81d872a6a63549ec4b8446f",
+      "pid": 702544,
+      "cuda_visible_devices": "0",
+      "sm": 70,
+      "argv": [
+        "-k",
+        "on",
+        "g",
+        "1",
+        "-pk",
+        "kokkos",
+        "neigh",
+        "full",
+        "comm",
+        "device",
+        "gpu/aware",
+        "on",
+        "-in",
+        "in.baseline",
+        "-log",
+        "log.lammps"
+      ]
+    }
+  ],
+  "binary_sha256": "1ff9c4424c1ed6873af24abfcaea998cb6dbaeaaf81d872a6a63549ec4b8446f",
+  "plugin_sha256": {
+    "nepadapterscpuplugin.so": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f",
+    "nepadaptersgpuplugin.so": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271"
+  },
+  "case_sha256": {
+    "nep.txt": "c772e70b32e5a085936f04e5f5382c7af88a03cb68765510ac82f71ae97eab2c",
+    "train.xyz": "9679ecdac1ea13300f9bf208b7d4393e5dfd0e0527a46653de38e4c80bff74ab",
+    "baseline.py": "b60bf77c936f6bc0f862c6e588c26c7af6b80d328cfb7a0f646c61cf9bed4835"
+  }
+}

@@ -1,0 +1,235 @@
+
+Modules based on Lua: Version 9.2.4 2026-06-16 08:21 -05:00
+    https://lmod.readthedocs.io
+
+Description                                                   Value
+-----------                                                   -----
+Allow root to use Lmod (LMOD_ALLOW_ROOT_USE)                  yes
+Allow TCL modulefiles (LMOD_ALLOW_TCL_FILES)                  yes
+Auto swapping (LMOD_AUTO_SWAP)                                yes
+Avail Style (LMOD_AVAIL_STYLE)                                <system>
+Case Independent Sorting (LMOD_CASE_INDEPENDENT_SORTING)      no
+Colorize Lmod (LMOD_COLORIZE)                                 yes
+Configuration dir (LMOD_CONFIG_DIR)                           /etc/lmod
+Disable Same Name AutoSwap (LMOD_DISABLE_SAME_NAME_AUTOSWAP)  no
+Display Extension w/ avail (LMOD_AVAIL_EXTENSIONS)            yes
+Use ~/.config dir only (LMOD_USE_DOT_CONFIG_ONLY)             no
+Downstream Module Conflicts (LMOD_DOWNSTREAM_CONFLICTS)       no
+Allow duplicate paths (LMOD_DUPLICATE_PATHS)                  no
+Dynamic Spider Cache (LMOD_DYNAMIC_SPIDER_CACHE)              yes
+Require Exact Match/no defaults (LMOD_EXACT_MATCH)            no
+Export the module command (LMOD_EXPORT_MODULE)                yes
+Allow extended default (LMOD_EXTENDED_DEFAULT)                yes
+Use attached TCL over system call (LMOD_FAST_TCL_INTERP)      yes
+Is fast TCL interp available (LMOD_USING_FAST_TCL_INTERP)     yes
+File ignore patterns (LMOD_FILE_IGNORE_PATTERNS)              {"%.version[-._].*", "%.modulerc[-._].*"}
+Use italic instead of dim (LMOD_HIDDEN_ITALIC)                no
+KSH Support (LMOD_KSH_SUPPORT)                                no
+Language used for err/msg/warn (LMOD_LANG)                    en
+Site message file (LMOD_SITE_MSG_FILE)                        <empty>
+LD_LIBRARY_PATH at config time (LMOD_LD_LIBRARY_PATH)         <empty>
+LD_PRELOAD at config time (LMOD_LD_PRELOAD)                   <empty>
+LuaFileSystem version                                         1.9.0
+Lmod version                                                  9.2.4
+Lmod branch (LMOD_BRANCH)                                     main
+lmod_config.lua location (LMOD_CONFIG_LOCATION)               no
+Lua Version                                                   Lua 5.3
+LUA_CPATH                                                     /usr/local/lib/lua/5.3/?.so;/usr/lib/x86_64-linux-gnu/lua/5.3/?.so;/usr/lib/lua/5.3/?.so;/usr/local/lib/lua/5.3/loadall.so;
+LUA_PATH                                                      /usr/local/share/lua/5.3/?.lua;/usr/local/share/lua/5.3/?/init.lua;/usr/local/lib/lua/5.3/?.lua;/usr/local/lib/lua/5.3/?/init.lua;/usr/share/lua/5.3/?.lua;/usr/share/lua/5.3/?/init.lua
+System lua-term (LMOD_HAVE_LUA_TERM)                          yes
+Active lua-term                                               true
+Modules Auto Handling (MODULES_AUTO_HANDLING)                 no
+MODULERC (LMOD_MODULERC)                                      /opt/modules/lmod/etc/rc -> <empty>
+avail: Include modulepath dir (LMOD_MPATH_AVAIL)              no
+MODULEPATH_INIT (LMOD_MODULEPATH_INIT)                        /etc/lmod/.modulespath
+MODULEPATH_ROOT (MODULEPATH_ROOT)                             /opt/modules/modulefiles
+NAG File (LMOD_ADMIN_FILE)                                    /opt/modules/lmod/etc/admin.list
+number of cache dirs                                          1
+OS Name                                                       Ubuntu 24.04.4 LTS
+Pager (LMOD_PAGER)                                            /usr/bin/less
+Pager Options (LMOD_PAGER_OPTS)                               -XqMREF
+Path to HashSum (LMOD_HASHSUM_PATH)                           /usr/bin/sha1sum
+Path to Lua                                                   /usr/bin/lua5.3
+Pin Versions in restore (LMOD_PIN_VERSIONS)                   no
+Pkg Class name                                                Pkg
+Lmod prefix                                                   /opt/modules
+Site controlled prefix (SITE_CONTROLLED_PREFIX)               no
+Prepend order (LMOD_PREPEND_BLOCK)                            normal
+LMOD_RC (LMOD_RC)                                             <empty>
+Redirect to stdout (LMOD_REDIRECT)                            no
+Supporting Full Settarg Use (LMOD_SETTARG_FULL_SUPPORT)       no
+User shell                                                    bash
+Site Name (LMOD_SITE_NAME)                                    <empty>
+Site Pkg location                                             standard
+Ignore Cache (LMOD_IGNORE_CACHE)                              no
+Cached loads (LMOD_CACHED_LOADS)                              no
+System Default Modules (LMOD_SYSTEM_DEFAULT_MODULES)          <empty>
+System Name (LMOD_SYSTEM_NAME)                                <empty>
+SYSHOST (cluster name) (LMOD_SYSHOST)                         <empty>
+TCL Version                                                   8.6.14
+Terse Decorations (LMOD_TERSE_DECORATIONS)                    yes
+User cache valid time(sec) (LMOD_ANCIENT_TIME)                86400
+Write cache after (sec) (LMOD_SHORT_TIME)                     86400
+Threshold (sec) (LMOD_THRESHOLD)                              1
+Tmod find first rule (LMOD_TMOD_PATH_RULE)                    no
+Tmod prepend PATH Rule (LMOD_TMOD_PATH_RULE)                  no
+Tracing (LMOD_TRACING)                                        no
+uname -a                                                      Linux 16v100n13.mr-sai.ai 5.15.0-100-generic #110-Ubuntu SMP Wed Feb 7 13:27:48 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+User Cache Directory                                          /home/stardust/.cache/lmod
+Admin file                                                    /opt/modules/lmod/etc/admin.list
+
+
+Lmod Version: 9.2.4
+Lua Version:  5.3
+MODULEPATH:   /org/org-open-sai/proj-sai-hpc-software/operations/lammps-default-load-20261112-retry1/stage/opt/modules/modulefiles/apps:/opt/modules/modulefiles/apps:/opt/modules/modulefiles/devtools:/opt/modules/modulefiles/compiler:/opt/modules/modulefiles/mathlib:/opt/modules/modulefiles/mpi
+OS Name:      Ubuntu 24.04.4 LTS
+
+
+
+Changes from Default Configuration
+----------------------------------
+
+Name                         Where Set  Default                                          Value
+----                         ---------  -------                                          -----
+LFS_VERSION                  D          1.6.3                                            1.9.0
+LMOD_HAVE_LUA_TERM           C          no                                               yes
+LMOD_MODULEPATH_INIT         C          /opt/modules/lmod/lmod/init/.modulespath         /etc/lmod/.modulespath
+LMOD_PACKAGE_PATH            D          nil                                              <empty>
+LMOD_PAGER                   C          less                                             /usr/bin/less
+LMOD_SHORT_TIME              E          2                                                86400
+LMOD_SITEPACKAGE_LOCATION    Other      /opt/modules/lmod/9.2.4/libexec/SitePackage.lua  <srctree>
+LMOD_SYSTEM_DEFAULT_MODULES  D          __unknown__                                      <empty>
+LMOD_TCLSH                   C          tclsh                                            /usr/bin/tclsh
+MODULEPATH_ROOT              E                                                           /opt/modules/modulefiles
+PATH_TO_LUA                  C          lua                                              /usr/bin/lua5.3
+
+
+Where Set -> D: default, E: environment, C: configuration
+             lmod_cfg: lmod_config.lua SitePkg: SitePackage StdPkg: StandardPackage
+             Other: Set somewhere outside of normal locations
+
+Active RC file(s):
+------------------
+/opt/modules/lmod/9.2.4/init/lmodrc.lua
+
+
+Cache Directory          Time Stamp File
+---------------          ---------------
+/opt/modules/lmod/cache  /opt/modules/lmod/cache/system.txt
+
+
+    --------------------------------------------------------------------------
+
+ Lmod Property Table (LMOD_RC):
+    --------------------------------------------------------------------------
+
+
+
+propT = {
+  arch = {
+    displayT = {
+      gpu = {
+        color = "red",
+        doc = "built for GPU",
+        full_color = false,
+        long = "(g)",
+        short = "(g)",
+      },
+      ["gpu:mic"] = {
+        color = "red",
+        doc = "built natively for MIC and GPU",
+        full_color = false,
+        long = "(g,m)",
+        short = "(gm)",
+      },
+      ["gpu:mic:offload"] = {
+        color = "red",
+        doc = "built natively for MIC and GPU and offload to the MIC",
+        full_color = false,
+        long = "(g,m,o)",
+        short = "(@)",
+      },
+      mic = {
+        color = "blue",
+        doc = "built for host and native MIC",
+        full_color = false,
+        long = "(m)",
+        short = "(m)",
+      },
+      ["mic:offload"] = {
+        color = "blue",
+        doc = "built for host, native MIC and offload to the MIC",
+        full_color = false,
+        long = "(m,o)",
+        short = "(*)",
+      },
+      offload = {
+        color = "blue",
+        doc = "built for offload to the MIC only",
+        full_color = false,
+        long = "(o)",
+        short = "(o)",
+      },
+    },
+    validT = {
+      gpu = 1,
+      mic = 1,
+      offload = 1,
+    },
+  },
+  lmod = {
+    displayT = {
+      sticky = {
+        color = "red",
+        doc = "Module is Sticky, requires --force to unload or purge",
+        long = "(S)",
+        short = "(S)",
+      },
+    },
+    validT = {
+      sticky = 1,
+    },
+  },
+  state = {
+    displayT = {
+      experimental = {
+        color = "blue",
+        doc = "Experimental",
+        long = "(E)",
+        short = "(E)",
+      },
+      obsolete = {
+        color = "red",
+        doc = "Obsolete",
+        long = "(O)",
+        short = "(O)",
+      },
+      testing = {
+        color = "green",
+        doc = "Testing",
+        long = "(T)",
+        short = "(T)",
+      },
+    },
+    validT = {
+      experimental = 1,
+      obsolete = 1,
+      testing = 1,
+    },
+  },
+  status = {
+    displayT = {
+      active = {
+        color = "yellow",
+        doc = "Module is loaded",
+        long = "(L)",
+        short = "(L)",
+      },
+    },
+    validT = {
+      active = 1,
+    },
+  },
+}
+
+

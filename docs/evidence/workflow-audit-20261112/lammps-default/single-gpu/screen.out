@@ -1,0 +1,109 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /org/org-open-sai/proj-sai-hpc-software/operations/lammps-default-load-20261112-retry1/runtime
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+DeePMD-kit: Successfully load libcudart.so.12
+LAMMPS (30 Sep 2026 - Update 1)
+KOKKOS mode with Kokkos version 5.2.1 is enabled
+  using double precision
+  using view layout = legacy
+  will use up to 1 GPU(s) per node
+WARNING: When using a single thread, the Kokkos Serial backend (i.e. Makefile.kokkos_mpi_only) gives better performance than the OpenMP backend (src/KOKKOS/kokkos.cpp:334)
+Kokkos::OpenMP::initialize WARNING: OMP_PROC_BIND environment variable not set
+  In general, for best performance with OpenMP 4.0 or better set OMP_PROC_BIND=spread and OMP_PLACES=threads
+  For best performance with OpenMP 3.1 set OMP_PROC_BIND=true
+  For unit testing set OMP_PROC_BIND=false
+
+MPI detected: For OpenMP binding to work as intended, MPI ranks must be bound to exclusive CPU sets.
+
+  using 1 OpenMP thread(s) per MPI task
+Loaded 2 plugins from /opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib
+  using 1 OpenMP thread(s) per MPI task
+Loaded 2 plugins from /opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib
+Reading data file ...
+  orthogonal box = (0 0 0) to (20 20 20)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  8 atoms
+  read_data CPU = 0.005 seconds
+NEPAdapters 1.0.5: loaded model /org/org-open-sai/proj-sai-hpc-software/operations/lammps-default-load-20261112-retry1/cases/nep.txt
+  pair_style: nep/gpu, backend: cuda
+  model elements: Te Pb
+  LAMMPS type map: 1->Te(model 1), 2->Pb(model 2)
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+- KOKKOS package: https://doi.org/10.1145/3731599.3767498
+The log file lists these citations in BibTeX format.
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+WARNING: No fixes with time integration, atoms won't move
+For more information see https://docs.lammps.org/err0028 (src/verlet.cpp:60)
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 9
+  ghost atom cutoff = 9
+  binsize = 9, bins = 3 3 3
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair nep/gpu, perpetual
+      attributes: full, newton off, kokkos_device
+      pair build: full/bin/kk/device
+      stencil: full/bin/3d
+      bin: kk/device
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.001
+Per MPI rank memory allocation (min/avg/max) = 4.234 | 4.234 | 4.234 Mbytes
+   Step        Atoms        PotEng         Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz      
+         0           8  -17.722044110298157 -1172.8487313380529 -2286.7340764895457 -760.57524162958282 -471.23687589503038 -159.93111390147007 -4.1513966341440103 -0.23579088418447647
+Loop time of 0.000617119 on 1 procs for 0 steps with 8 atoms
+
+1.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 0.0006171  |            |       |100.00
+
+Nlocal:              8 ave           8 max           8 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:             56 ave          56 max          56 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:           52 ave          52 max          52 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 52
+Ave neighs/atom = 6.5
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00

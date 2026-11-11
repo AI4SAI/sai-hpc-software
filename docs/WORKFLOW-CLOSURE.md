@@ -1,6 +1,11 @@
-# Workflow closure — 2026-11-11
+# Workflow closure — 2026-11-12
 
 ## Current audit and remaining work
+
+The November 12 audit was performed before the next **03:00 Asia/Shanghai**
+dispatch. The VM runner is online and idle; its scheduler journal shows normal
+five-minute checks through 00:50, retaining the already requested November 11
+generation. The latest completed daily run is therefore still November 11.
 
 The VM dispatched [daily run 42880817991](https://github.com/AI4SAI/sai-hpc-software/actions/runs/42880817991)
 at **03:00:03 Asia/Shanghai on November 11**, and the run ended at 05:58:18.
@@ -22,16 +27,22 @@ The remaining priorities are:
 
 1. Reproduce and resolve the 16V100 DeePMD two-GPU broadcast failure, then repeat
    publication acceptance using the existing SIFs where possible.
-2. Complete manual scratch cleanup and implement a reviewed retirement mechanism
-   for obsolete SIF generations. All 24 files / 143.60 GiB in the November 10
-   cleanup plan still exist. Current alias rotation does not remove old images.
-3. Finish the 8V100V0 physical update1 and NEPAdapters cross-node checks, then
-   publish the prepared default-version configuration. The administrator has
-   installed update1 on all three GPU partitions and file verification passed.
-   4V100/16V100 passed all 14 physical LAMMPS cases and the existing NEPAdapters
-   1.0.5 plugins passed their complete single/multi-GPU and cross-node matrices.
-   8V100V0 passed the plugin's single/multi-GPU cases; its two cross-node jobs
-   remain queued. The public unversioned LAMMPS default still selects 30Sep2026.
+2. Check the outcome of manual scratch cleanup and implement a reviewed
+   retirement mechanism for obsolete SIF generations. The November 11 audit
+   found all 24 files / 143.60 GiB in the November 10 cleanup plan still present;
+   this was not a new storage scan on November 12. Current alias rotation does
+   not remove old images.
+3. Have the administrator install the ready default-version configuration.
+   All three partitions now passed all 14 physical LAMMPS cases, and the existing
+   NEPAdapters 1.0.5 plugins passed the single/multi-GPU and cross-node matrices.
+   The final 8V100V0 jobs 2374775 and 2374898 completed 0:0 in 1m55s and 24s.
+   The monitor produced the complete home handoff at 23:21 on November 11;
+   fresh raw-result verification and installer preflight passed on November 12.
+   Job 2381151 also passed plain default module loading, automatic update1
+   dependency selection and a NEP4 GPU calculation using the installer preview
+   and physical `/opt` files, without bypassing or changing the global cache.
+   The public unversioned LAMMPS default still selects 30Sep2026 until the
+   administrator runs `deployment/lammps-update1-default/install.sh --install`.
 4. Align beta snapshot labels with the local scheduler date to avoid confusing
    UTC dates with stale builds. This is a display improvement.
 
@@ -47,6 +58,8 @@ A follow-up administrator package replaces unusable installation variables in
 real Lmod checks passed; application and module runtime bodies are unchanged.
 See [the module path validation](evidence/module-help-paths-20261111/README.md)
 and [the current workflow audit](evidence/workflow-audit-20261111/README.md).
+See the [November 12 installation and scheduler audit](evidence/workflow-audit-20261112/README.md)
+for the latest physical installation status and unchanged daily publication gap.
 
 The installed LAMMPS update1 handoff is available at
 `/home/stardust/sai-hpc-software/deployment/lammps-30Sep2026-update1/install.sh`.
@@ -59,12 +72,13 @@ plugin ABI review and remaining jobs](evidence/lammps-update1-installed-20261111
 
 ## Optional NEP preparation and analysis applications
 
-NepTrainKit **3.1.5** and GPUMDkit **1.5.9** now have accepted SIFs and native
-administrator handoffs. Each uses one shared x86_64 installation with portable
-native-helper flags and normal third-party CPU dispatch. Neither application
-requires MPI or modifies the installed LAMMPS/NEPAdapters plugins. Public `/opt`
-installation remains manual; the prepared packages are readable from stardust's
-home, while compilation and acceptance use project storage.
+NepTrainKit **3.1.5** and GPUMDkit **1.5.9** now have accepted SIFs and installed
+native applications and modules in physical `/opt`. Each uses one shared
+x86_64 installation with portable native-helper flags and normal third-party
+CPU dispatch. Neither application requires MPI or modifies the installed
+LAMMPS/NEPAdapters plugins. Public `/opt` installation was performed by the
+administrator; the packages remain readable from stardust's home, while
+compilation and acceptance use project storage.
 
 | Application | SIF | Native file content | Module after installation |
 | --- | --- | --- | --- |
@@ -77,6 +91,8 @@ SIF job 2375174 passed 45 upstream tests plus six subtests, explicit CPU/CUDA
 energy/force/virial/descriptor comparisons and offscreen main-window startup.
 Final native module job 2375677 passed on 16V100 in 1m24s. Interactive remote
 display and OpenGL drawing are outside this qualification.
+Physical `/opt` job 2379816 subsequently passed CPU/CUDA, loader, offscreen GUI
+and module-unload checks on 16v100n05 in 1m22s.
 
 GPUMDkit provides command-line conversion, dataset and analysis helpers, including
 Calorine/NepTrain CPU prediction. SIF/native job 2375499 and real installer/module
@@ -84,6 +100,11 @@ job 2375591 passed conversions, periodic distance, two-worker NEP prediction and
 plotting. Optional OVITO, DeepMD, deprecated PyNEP and ferrodispcalc integrations
 remain separate. The upstream v1.5.9 source still prints a v1.5.8 banner; recorded
 tag/SHA identify the installed build.
+The administrator export's permission mismatch was fixed by explicitly
+normalizing native modes to 0644/0755, preserving all content/link checks and
+supporting verified resumption of the complete extraction. Full installed-file
+verification then passed. Physical `/opt` job 2380728 passed all functional and
+module/environment-restoration checks on 16v100n09 in 18s.
 
 Administrator entry points are
 `/home/stardust/sai-hpc-software/deployment/neptrainkit-3.1.5/install.sh` and

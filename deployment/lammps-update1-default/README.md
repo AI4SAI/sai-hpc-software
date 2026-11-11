@@ -25,9 +25,10 @@ module load nepadapters
 - 重新解析原始输出，并确认各任务的 Slurm 成功状态。
 
 `manifest.json` 仅在所有条件满足后生成。缺少它时 `install.sh` 会停止，
-不会修改默认版本。11 月 11 日准备时，4V100/16V100 的正式 LAMMPS 与 NEP
-完整矩阵均已通过；8V100V0 的 NEP 单/双 GPU 已通过，跨节点任务仍在排队；
-不能把准备好脚本等同于验收已经完成。
+不会修改默认版本。三个分区的完整矩阵现已通过：最后的 8V100V0 正式 LAMMPS
+作业 2374775 和 NEP 跨节点作业 2374898 均成功。11 月 11 日 23:21 已生成
+完整 manifest；11 月 12 日重新解析原始结果及运行安装前校验也通过。
+当前只待管理员安装默认配置。
 
 ## 管理员操作
 
@@ -91,3 +92,9 @@ python3 -B /home/stardust/sai-hpc-software/deployment/lammps-update1-default/pre
 真实 Lmod 预览已确认无版本号的 `show/whatis lammps` 和 `show/whatis nepadapters`
 分别解析到 update1 与对应兼容插件 module。预览树包含目标版本文件及两个
 `.modulerc.lua`，没有依赖跨 MODULEPATH 查找默认目标的特殊行为。
+
+11 月 12 日作业 2381151 还通过了普通默认加载的实际 GPU 计算：在安装器生成的
+私有预览树中执行 `module load lammps`、卸载、`module load nepadapters`，均选择
+上述版本；使用物理 `/opt` 的 LAMMPS 和原插件完成 Pb/Te NEP4 数值检查及卸载。
+未使用 `--ignore_cache`，沿用站点的 `LMOD_CACHED_LOADS=no`，全局缓存的哈希和
+时间戳未改。此测试验证的是待安装配置，公共默认仍需管理员执行安装后才生效。
