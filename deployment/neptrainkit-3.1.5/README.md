@@ -88,7 +88,15 @@ installation or module is rejected. The native payload is approximately
 outside `/opt`.
 
 The module adds the application's `bin` to PATH. It does not add MPI, require a
-CPU partition variant, or modify the shell's shared-library search path. Use:
+CPU partition variant, or modify the shell's shared-library search path.
+
+Like the installed phonopy, SSCHA and exa-amd environments, this module belongs
+to the `python` family and selects Python through PATH without activating Conda.
+It temporarily clears `PYTHONPATH`/`PYTHONHOME`, disables user-site packages and
+bytecode writes, and restores the previous values on unload. Unload it before
+switching to another Python environment. `SAI_PYTHON_ENV` identifies this prefix.
+
+Commands:
 
 ```bash
 module load neptrainkit/3.1.5

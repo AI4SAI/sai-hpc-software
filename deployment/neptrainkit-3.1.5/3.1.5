@@ -1,12 +1,17 @@
 #%Module1.0
-module-whatis "NepTrainKit 3.1.5; Features: NEP dataset preparation/filtering/visualization; Qt 6 GUI; CPU/OpenMP and CUDA inference via NEPAdapters 1.0.5; Python 3.12; shared x86-64 installation"
+module-whatis "NepTrainKit 3.1.5; Python 3.12.13; Features: NEP dataset preparation/filtering/visualization; Qt 6 GUI; CPU/OpenMP + CUDA inference (NEPAdapters 1.0.5)"
 proc ModulesHelp {} {
-    puts stderr "NepTrainKit 3.1.5 (commands: nepkit, NepTrainKit).\nFeatures: NEP dataset preparation, filtering and visualization; CPU/OpenMP and CUDA inference via private Python NEPAdapters 1.0.5.\nInstallation: /opt/apps/neptrainkit/3.1.5.\nBuild information and installed packages: cat /home/stardust/sai-hpc-software/deployment/neptrainkit-3.1.5/build-info.txt\nInteractive GUI use requires a working remote desktop/X11 display. No MPI launcher is required. CUDA computation belongs in a GPU allocation."
+    puts stderr "NepTrainKit 3.1.5; Python 3.12.13; one generic x86_64 installation.\nFeatures: NEP dataset preparation/filtering/visualization; Qt 6 GUI; CPU/OpenMP + CUDA inference via private Python NEPAdapters 1.0.5.\nInstallation: /opt/apps/neptrainkit/3.1.5\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/deployment/neptrainkit-3.1.5/build-info.txt\nExact installed package versions: cat /home/stardust/sai-hpc-software/deployment/neptrainkit-3.1.5/requirements.txt\nPackage inventory: cat /home/stardust/sai-hpc-software/deployment/neptrainkit-3.1.5/packages.json\nPython is selected through PATH without activating Conda; unload before changing environments.\nCommands: nepkit or NepTrainKit. Interactive GUI use requires a working remote desktop/X11 display. No MPI launcher is required. CUDA computation belongs in a GPU allocation."
 }
 if {[module-info mode help] || [module-info mode whatis]} {return}
+family python
 conflict neptrainkit
 set prefix /opt/apps/neptrainkit/3.1.5
-if {![file executable $prefix/bin/nepkit]} {error "NepTrainKit installation is unavailable: $prefix"}
+if {[module-info mode load] && ![file executable $prefix/bin/nepkit]} {error "NepTrainKit installation is unavailable: $prefix"}
 prepend-path PATH $prefix/bin
-setenv PYTHONDONTWRITEBYTECODE 1
-setenv PYTHONNOUSERSITE 1
+# Match the existing Python environments: isolate imports and restore user settings on unload.
+pushenv PYTHONPATH ""
+pushenv PYTHONHOME ""
+pushenv PYTHONNOUSERSITE 1
+pushenv PYTHONDONTWRITEBYTECODE 1
+setenv SAI_PYTHON_ENV $prefix

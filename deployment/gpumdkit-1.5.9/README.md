@@ -71,6 +71,10 @@ cat /home/stardust/sai-hpc-software/deployment/gpumdkit-1.5.9/build-info/index.t
 
 module 只添加应用入口及应用变量，Python 本身使用相对 RPATH 定位自带运行库，
 不会向全局 `LD_LIBRARY_PATH` 插入整个 Python lib 目录。
+与已安装的 phonopy、SSCHA、exa-amd 对齐：属于 `python` family，通过 PATH
+选择 Python，不执行 Conda 激活；加载期间隔离 `PYTHONPATH`/`PYTHONHOME`、禁用
+用户 site-packages 和字节码写入，卸载时恢复原值。切换 Python 环境前先卸载，
+`SAI_PYTHON_ENV` 指向当前环境。`whatis` 保持一条，包含版本、Python 版本和 Features。
 上游 `v1.5.9` 的 CLI banner 仍写 `1.5.8 (2026-10-20)`；保留原始源码，
 以 module 和静态记录中的 tag/SHA 标识真实版本。
 上游 Conda wrapper 的 `-update` 仅提示 Conda 更新，不会自动修改公共安装；

@@ -70,6 +70,11 @@ finds its runtime libraries without adding its entire lib directory to the
 user's `LD_LIBRARY_PATH`. [Login-readable help/whatis](module-help.txt) works and
 has one Features-bearing whatis entry.
 
+The module was subsequently aligned with the site's existing Python environment
+family and import isolation policy. See the separate
+[module consistency checks](../python-toolkit-modules-20261111/README.md) for the
+revised module; the scientific job records above retain their original inputs.
+
 Initial jobs are preserved as diagnostics: 2375065 lacked the NepTrain metadata
 build dependency `setuptools-scm`; 2375172 built the runtime and SIF but a test
 expected the string `0.2000` instead of the correct displayed `0.200`; 2375303
