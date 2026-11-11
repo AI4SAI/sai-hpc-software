@@ -1,0 +1,76 @@
+{
+  "image": "/org/org-open-sai/proj-sai-hpc-software/experimental/neptrainkit/runs/qualification-3.1.5-20261111-203608/neptrainkit-3.1.5.sif",
+  "image_bytes": 439329873,
+  "image_sha256": "59549f1d89878a1f262f7090b60a5a5e73fff7b2c7e2b523a5e1e2e75e72903b",
+  "job": "2375174",
+  "partition": "16V100",
+  "passed": true,
+  "reports": {
+    "build-science.json": {
+      "atoms": 250,
+      "backend_version": "1.0.5",
+      "cpu_cuda_max_absolute_error": {
+        "descriptors": 3.74078750642326e-07,
+        "energy": 1.72826894413447e-05,
+        "forces": 2.185182111591466e-06,
+        "structure_virials": 1.353060054554156e-07
+      },
+      "cuda_status": "BackendStatus(backend='cuda', installed=True, available=True, reason='available', detail='CUDA allocation, kernel launch, synchronization, and copyback passed on at least one device.', driver_version=12040, runtime_version=12040, free_memory_bytes=16603873280, devices=(DeviceInfo(index=0, name='Tesla V100-SXM2-16GB', compute_capability=(7, 0), total_memory_bytes=16928342016),))",
+      "frames": 1,
+      "gpu_mask": "0",
+      "implementation": "/opt/apps/neptrainkit/3.1.5/lib/python3.12/site-packages/NepTrainKit/__init__.py",
+      "passed": true,
+      "reference_sha256": {
+        "descriptor.npy": "c71754c40b58cd09158d96fdff761ede000b356aac09c3384c8d90c1c4fba421",
+        "energy.npy": "aa9bb8b2460e2e13ff08287c38c42bc2ae0043274d0bee68922f6c0d33ba3427",
+        "forces.npy": "e20ad28302cb0c06547ee6db390efe03edb4cc79099c448bc44ab96b4b4b5529",
+        "nep.txt": "c772e70b32e5a085936f04e5f5382c7af88a03cb68765510ac82f71ae97eab2c",
+        "train.xyz": "3b9f1d55fe61def164ab87370dce66b760d6740d3c1cc35ec6bc3db057572c5c",
+        "virial.npy": "7f15405b14860a74658f1908b424c6162b5f93871101723d40304725ab9b8f44"
+      },
+      "version": "3.1.5"
+    },
+    "gui-smoke.json": {
+      "exitcode": 0,
+      "passed": true,
+      "platform": "offscreen",
+      "scope": "offscreen main-window startup and clean shutdown; no remote display qualification",
+      "window": "NepTrainKitMainWindow"
+    },
+    "sif-gui.json": {
+      "exitcode": 0,
+      "passed": true,
+      "platform": "offscreen",
+      "scope": "offscreen main-window startup and clean shutdown; no remote display qualification",
+      "window": "NepTrainKitMainWindow"
+    },
+    "sif-science.json": {
+      "atoms": 250,
+      "backend_version": "1.0.5",
+      "cpu_cuda_max_absolute_error": {
+        "descriptors": 4.0888786312365255e-07,
+        "energy": 1.060696922650095e-05,
+        "forces": 2.3220865300599414e-06,
+        "structure_virials": 1.3323017250543856e-07
+      },
+      "cuda_status": "BackendStatus(backend='cuda', installed=True, available=True, reason='available', detail='CUDA allocation, kernel launch, synchronization, and copyback passed on at least one device.', driver_version=12040, runtime_version=12040, free_memory_bytes=16603873280, devices=(DeviceInfo(index=0, name='Tesla V100-SXM2-16GB', compute_capability=(7, 0), total_memory_bytes=16928342016),))",
+      "frames": 1,
+      "gpu_mask": "0",
+      "implementation": "/opt/apps/neptrainkit/3.1.5/lib/python3.12/site-packages/NepTrainKit/__init__.py",
+      "passed": true,
+      "reference_sha256": {
+        "descriptor.npy": "c71754c40b58cd09158d96fdff761ede000b356aac09c3384c8d90c1c4fba421",
+        "energy.npy": "aa9bb8b2460e2e13ff08287c38c42bc2ae0043274d0bee68922f6c0d33ba3427",
+        "forces.npy": "e20ad28302cb0c06547ee6db390efe03edb4cc79099c448bc44ab96b4b4b5529",
+        "nep.txt": "c772e70b32e5a085936f04e5f5382c7af88a03cb68765510ac82f71ae97eab2c",
+        "train.xyz": "3b9f1d55fe61def164ab87370dce66b760d6740d3c1cc35ec6bc3db057572c5c",
+        "virial.npy": "7f15405b14860a74658f1908b424c6162b5f93871101723d40304725ab9b8f44"
+      },
+      "version": "3.1.5"
+    }
+  },
+  "request_sha256": "c8db31d9289973066edeec305d213263824d31014d4cb8b44e4be569839ae676",
+  "source": "578159e74cc23ae682787593b6aec3997b590fca",
+  "tests": 51,
+  "version": "3.1.5"
+}

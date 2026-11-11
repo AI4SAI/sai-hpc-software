@@ -1,0 +1,76 @@
+{
+  "accounting": [
+    "2375677",
+    "COMPLETED",
+    "0:0",
+    "16V100",
+    "proj-sai-hpc-software",
+    "/org/org-open-sai/proj-sai-hpc-software/operations/neptrainkit-native-20261111-205235",
+    "16v100n04",
+    "00:01:24"
+  ],
+  "comparison_tolerances": {
+    "cpu_reference_atol": {
+      "energy": 0.0005,
+      "forces": 5e-06,
+      "virial": 0.0005
+    },
+    "cuda_vs_cpu": {
+      "atol": 2e-06,
+      "rtol": 1e-06
+    }
+  },
+  "files": {
+    "gui.json": "fd0831cd6a99569e69c6b3267e3dbaf7e59e42f07ed7de0bdd885256232e57b4",
+    "job.sbatch": "0d900df96863ee0b0e95c1f232783b3d56522defb4865f1c8613f86c9f00fe1b",
+    "loader.txt": "b496aab01a8e90bc05849783514818ee51549dc5d2133488d318ff99faf7c145",
+    "modules.txt": "9dabff3cff2c8077cbf1665c40497f91b1a9951c6a57b3566233aab2e99d0773",
+    "no-ld-library-path.txt": "674fa773d331535f629bda5a04024660e18b1edbd3a070656c9d18ccef2da7a9",
+    "request.json": "72f79fae9316765cdb2163fee9161fd7ee7f4928f3ab93cc086865399e0a19e3",
+    "science.json": "7bab2df27609306583c5d6ae228e6c8072171bd78a283843a8c1935b2e6512a4",
+    "submission.json": "f0e42995afb64721b05b304ca54f21cc0629dbeab6044d6eaaa2c7e146fe25a6",
+    "unload.passed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "gui": {
+    "exitcode": 0,
+    "passed": true,
+    "platform": "offscreen",
+    "scope": "offscreen main-window startup and clean shutdown; no remote display qualification",
+    "window": "NepTrainKitMainWindow"
+  },
+  "image_sha256": "59549f1d89878a1f262f7090b60a5a5e73fff7b2c7e2b523a5e1e2e75e72903b",
+  "passed": true,
+  "route": "staged-native",
+  "runtime": {
+    "bytes": 1208890420,
+    "entries": 21034,
+    "files": 18106,
+    "sha256": "6e5a145edc7966e4bfd34de040ee103cc5ce5eaba30f5c489fe11d5919006cf9"
+  },
+  "science": {
+    "atoms": 250,
+    "backend_version": "1.0.5",
+    "cpu_cuda_max_absolute_error": {
+      "descriptors": 3.862380983932212e-07,
+      "energy": 6.315434802672826e-06,
+      "forces": 2.319408977657922e-06,
+      "structure_virials": 1.5507080286525365e-07
+    },
+    "cuda_status": "BackendStatus(backend='cuda', installed=True, available=True, reason='available', detail='CUDA allocation, kernel launch, synchronization, and copyback passed on at least one device.', driver_version=12040, runtime_version=12040, free_memory_bytes=16603873280, devices=(DeviceInfo(index=0, name='Tesla V100-SXM2-16GB', compute_capability=(7, 0), total_memory_bytes=16928342016),))",
+    "frames": 1,
+    "gpu_mask": "0",
+    "implementation": "/org/org-open-sai/proj-sai-hpc-software/operations/neptrainkit-3.1.5-20261111/stage/opt/apps/neptrainkit/3.1.5/lib/python3.12/site-packages/NepTrainKit/__init__.py",
+    "passed": true,
+    "reference_sha256": {
+      "descriptor.npy": "c71754c40b58cd09158d96fdff761ede000b356aac09c3384c8d90c1c4fba421",
+      "energy.npy": "aa9bb8b2460e2e13ff08287c38c42bc2ae0043274d0bee68922f6c0d33ba3427",
+      "forces.npy": "e20ad28302cb0c06547ee6db390efe03edb4cc79099c448bc44ab96b4b4b5529",
+      "nep.txt": "c772e70b32e5a085936f04e5f5382c7af88a03cb68765510ac82f71ae97eab2c",
+      "train.xyz": "3b9f1d55fe61def164ab87370dce66b760d6740d3c1cc35ec6bc3db057572c5c",
+      "virial.npy": "7f15405b14860a74658f1908b424c6162b5f93871101723d40304725ab9b8f44"
+    },
+    "version": "3.1.5"
+  },
+  "source": "578159e74cc23ae682787593b6aec3997b590fca",
+  "version": "3.1.5"
+}
