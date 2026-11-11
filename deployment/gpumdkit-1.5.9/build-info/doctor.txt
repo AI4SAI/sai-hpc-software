@@ -1,0 +1,28 @@
+ GPUMDkit environment check
+
+ Environment
+   [OK]   GPUMDkit_path    /opt/apps/GPUMDkit/1.5.9/share/gpumdkit
+   [OK]   Python           3.12.13
+   [OK]   Bash             5.2.21(1)-release
+
+ Common packages
+   [OK]   numpy            2.5.4
+   [OK]   scipy            1.18.1
+   [OK]   matplotlib       3.11.2
+   [OK]   ase              3.29.0
+   [OK]   pandas           3.1.1
+   [OK]   pymatgen         2026.10.24
+
+ Optional packages
+   [OK]   dpdata           1.1.0
+   [OK]   calorine         4.1
+   [OK]   NepTrain         2.2.0
+   [MISS] ovito            OVITO-based conversion and analysis
+   [OK]   seaborn          0.13.2
+   [OK]   scikit-learn     1.9.1
+   [OK]   umap-learn       0.6.0
+   [OK]   tqdm             4.70.1
+   [MISS] ferrodispcalc    Polar-material analysis
+
+ Packages are not required by every GPUMDkit function.
+ Install a missing package when the corresponding function is needed.

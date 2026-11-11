@@ -57,6 +57,41 @@ original LAMMPS dependency. A new compatibility module and standard defaults are
 prepared behind complete installed acceptance. See [the physical installation,
 plugin ABI review and remaining jobs](evidence/lammps-update1-installed-20261111/README.md).
 
+## Optional NEP preparation and analysis applications
+
+NepTrainKit **3.1.5** and GPUMDkit **1.5.9** now have accepted SIFs and native
+administrator handoffs. Each uses one shared x86_64 installation with portable
+native-helper flags and normal third-party CPU dispatch. Neither application
+requires MPI or modifies the installed LAMMPS/NEPAdapters plugins. Public `/opt`
+installation remains manual; the prepared packages are readable from stardust's
+home, while compilation and acceptance use project storage.
+
+| Application | SIF | Native file content | Module after installation |
+| --- | --- | --- | --- |
+| NepTrainKit 3.1.5 | 419 MiB | 1.126 GiB | `neptrainkit/3.1.5` |
+| GPUMDkit 1.5.9 | 267 MiB | 872.5 MiB | `gpumdkit/1.5.9` |
+
+NepTrainKit provides a Qt application for training-data preparation and
+inspection, including its private Python NEPAdapters 1.0.5 CPU/CUDA backend.
+SIF job 2375174 passed 45 upstream tests plus six subtests, explicit CPU/CUDA
+energy/force/virial/descriptor comparisons and offscreen main-window startup.
+Final native module job 2375677 passed on 16V100 in 1m24s. Interactive remote
+display and OpenGL drawing are outside this qualification.
+
+GPUMDkit provides command-line conversion, dataset and analysis helpers, including
+Calorine/NepTrain CPU prediction. SIF/native job 2375499 and real installer/module
+job 2375591 passed conversions, periodic distance, two-worker NEP prediction and
+plotting. Optional OVITO, DeepMD, deprecated PyNEP and ferrodispcalc integrations
+remain separate. The upstream v1.5.9 source still prints a v1.5.8 banner; recorded
+tag/SHA identify the installed build.
+
+Administrator entry points are
+`/home/stardust/sai-hpc-software/deployment/neptrainkit-3.1.5/install.sh` and
+`/home/stardust/sai-hpc-software/deployment/gpumdkit-1.5.9/install.sh` with
+`--check`, `--install` and `--verify`. See
+[NepTrainKit evidence](evidence/neptrainkit-3.1.5-20261111/README.md) and
+[GPUMDkit evidence](evidence/gpumdkit-1.5.9-20261111/README.md).
+
 ## CPU QE HDF5 reuse and build storage
 
 CPU QE now verifies and statically links the accepted HDF5 1.14.6 NVHPC/F90

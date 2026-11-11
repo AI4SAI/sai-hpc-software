@@ -1,0 +1,16 @@
+GPUMDkit v1.5.9; source 073371a45c9f58b0c0e2ca9ba7a7934705c6a677
+Upstream: https://github.com/zhyan0603/GPUMDkit/releases/tag/v1.5.9
+Installation: /opt/apps/GPUMDkit/1.5.9
+One x86_64 installation. Python 3.12.13; generic manylinux wheels.
+Calorine/NepTrain extensions: GCC 14.3.0; -march=x86-64 -mtune=generic; no partition-specific native flags.
+Python, package libraries and standard data are included. GPUMD/NEP executables remain separate.
+Features: POSCAR/CIF/LAMMPS/DFT data conversion; dataset filtering/sampling; Calorine/NepTrain CPU NEP;
+structure and thermal/diffusion analysis; headless plotting; CP2K/VASP/ABACUS job preparation.
+Optional functions not included: OVITO, DeepMD/DPA prediction, deprecated PyNEP, ferrodispcalc, NepTrainKit GUI.
+Upstream v1.5.9 has an unchanged 1.5.8 CLI banner; the release tag/SHA above is authoritative.
+Payload: 22393 files, 914851212 bytes. Build/acceptance job: 2375499, 16V100, 16v100n04.
+Acceptance: POSCAR and compressed LAMMPS data conversion, periodic distances,
+NEP4 energy/force/virial against pinned labels, two-worker prediction, PNG plotting.
+Complete help: cat /home/stardust/sai-hpc-software/deployment/gpumdkit-1.5.9/build-info/help.txt
+Dependency availability: cat /home/stardust/sai-hpc-software/deployment/gpumdkit-1.5.9/build-info/doctor.txt
+Pinned package versions: cat /home/stardust/sai-hpc-software/deployment/gpumdkit-1.5.9/build-info/requirements.lock
