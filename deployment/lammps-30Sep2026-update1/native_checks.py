@@ -257,9 +257,11 @@ def verify_raw(output):
                 partition=request['spec']['partition'], request_sha256=digest(output / 'request.json'))
 
 
-def verify(work):
+def verify(work, partition='all'):
     reports = []
     for row in read(work / 'jobs.json'):
+        if partition != 'all' and row['partition'] != partition:
+            continue
         output = Path(row['directory'])
         submission = read(output / 'submission.json')
         require(submission == dict(job=row['job'], script_sha256=digest(output / 'job.sbatch'),
@@ -276,6 +278,7 @@ def verify(work):
         require(report == observed, 'raw native evidence changed')
         reports.append(dict(partition=row['partition'], job=row['job'], passed=True, route=report['route'],
                             cases=len(report['samples']), acceptance_sha256=digest(output / 'native-acceptance.json')))
+    require(reports, 'no submitted native jobs match the requested partition')
     print(json.dumps(dict(passed=True, results=reports), indent=2))
 
 
@@ -290,4 +293,7 @@ if __name__ == '__main__':
         submit(args.stage_root, {'4V100', '16V100', '8V100V0'} if args.partition == 'all' else {args.partition})
     else:
         require(args.directory is not None, 'results directory required')
-        globals()[args.operation](args.directory)
+        if args.operation == 'verify':
+            verify(args.directory, args.partition)
+        else:
+            globals()[args.operation](args.directory)
