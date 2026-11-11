@@ -26,7 +26,10 @@ def main():
     install = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(install)
     release = install.load_release()
-    install.preflight(release, installed=True)
+    # The home package learns the reviewed help transition only after the first
+    # complete qualification. A repeat may precede the administrator's update.
+    options = {'allow_previous_module': True} if hasattr(install, 'previous_module') else {}
+    install.preflight(release, installed=True, **options)
     plugin_release = json.loads((NEPADAPTERS / 'release.json').read_text())
     native.require(plugin_release['version'] == '1.0.5'
                    and plugin_release['source_sha'] == '3ceba8f9b69765ac29d9f2f4f1c4f76cee8ecf37',
