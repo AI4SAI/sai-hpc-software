@@ -2,7 +2,7 @@
 # SAI module documentation. Static build records are readable without loading this module.
 module-whatis "LAMMPS develop e5da37 (2026-06-11); AVX512; Features: MPI; KOKKOS CUDA SM70; PLUMED 2.9.4; DeePMD 3.1.2 plugin; USER-NEP"
 proc ModulesHelp {} {
-    puts stderr "LAMMPS develop e5da37 (2026-06-11); AVX512\nFeatures: MPI; KOKKOS CUDA SM70; PLUMED 2.9.4; DeePMD 3.1.2 plugin; USER-NEP\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/lammps/11jun2026-nep-dev-avx512/index.txt\nInstallation: \$LAMMPS_HOME; bundle: \$LAMMPS_BUNDLE_ROOT."
+    puts stderr "LAMMPS develop e5da37 (2026-06-11); AVX512\nFeatures: MPI; KOKKOS CUDA SM70; PLUMED 2.9.4; DeePMD 3.1.2 plugin; USER-NEP\nBuild information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111-paths/lammps/11jun2026-nep-dev-avx512/index.txt"
 }
 if {[module-info mode help] || [module-info mode whatis]} {return}
 

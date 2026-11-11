@@ -6,22 +6,32 @@
 it on a login node without loading a module, starting a container, or running the
 program. The `Features:` description is included in the same `module whatis` entry.
 
+Help does not use unloaded environment variables as installation paths. Fixed
+plugin/configuration locations are written out directly. Ten partition/ISA
+selectors use concise help pointing to a new `module-info/20261111-paths` index
+with the exact installation, data and configuration paths for each variant.
+Those small indexes are included under `records/` in this package. They point
+to the unchanged full captures under `module-info/20261111`; the original
+immutable records and beta generation manifests are not rewritten.
+
 For example, the installed LAMMPS release's complete recorded help is available now:
 
 ```bash
-cat /home/stardust/sai-hpc-software/module-info/20261111/lammps/30Sep2026-deepmd320-auto/index.txt
+cat /home/stardust/sai-hpc-software/module-info/20261111-paths/lammps/30Sep2026-deepmd320-auto/index.txt
 cat /home/stardust/sai-hpc-software/module-info/20261111/lammps/30Sep2026-deepmd320-auto/4V100.txt
 ```
 
 The index lists the exact file for every captured partition. Records contain the
 unabridged standard program output, command, capture job/node/time, module hashes,
-and saved configuration files where appropriate. NEPAdapters also includes an
+and saved configuration files where appropriate. The path index spells out
+every directory, so it can be used before loading the module. NEPAdapters also includes an
 explicit plugin load/list and style inventory: LAMMPS help by itself does not
 initialize these plugins. QE has no standalone `-h` option; its record contains
 the original configure command and full CMake cache. Beta QE and GPUMD also
 include output from their successful accepted calculations.
 
-The 31 public module entries have 100 static text files, about 10.4 MiB total.
+The original 31 public module entries have 100 static capture/index files, about
+10.4 MiB total, supplemented by the ten small path indexes described above.
 These are documentation only, outside the application prefixes and SIFs. No
 scientific installation is expanded or changed. ORCA's standard banner was
 captured during a small successful serial H2 run. The historical Multiwfn startup
@@ -104,7 +114,8 @@ project storage; only reviewed text is published by `prepare_records.py`. The
 administrator installer verifies public read/traverse permissions as well as all
 record hashes before updating modules. `check.py` exercises real login-node Lmod
 and checks that every help output points to a public static index and every
-whatis output contains exactly one entry. Beta gateways combine descriptions
+whatis output contains exactly one entry. It also rejects unresolved installation
+variables and verifies the concrete paths listed by the new indexes. Beta gateways combine descriptions
 from historical sealed generations without rewriting their files.
 
 Observed differences reflected in the descriptions:

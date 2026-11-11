@@ -1,4 +1,48 @@
-# Workflow closure — 2026-11-10
+# Workflow closure — 2026-11-11
+
+## Current audit and remaining work
+
+The VM dispatched [daily run 42880817991](https://github.com/AI4SAI/sai-hpc-software/actions/runs/42880817991)
+at **03:00:03 Asia/Shanghai on November 11**, and the run ended at 05:58:18.
+ABACUS, CP2K, LAMMPS, GPUMD and QE passed their complete beta partition matrices
+and rotated the public aliases. These publications include the new static build
+records. Their `20261110` snapshot label uses UTC; it is not evidence of a missed
+November 11 build. The VM runner is online; the old VPS runner is intentionally
+offline. Push/PR validation results are separate from this real build run.
+
+The run has one failed task, **DeePMD beta publication**. All three development
+SIFs built and passed their standalone scientific checks. Publication job
+2359111 on `16v100n08` then failed both se_e2_a and DPA2 two-GPU training during
+statistics initialization: `broadcast_object_list` reported collective tensor
+sizes `[0]` versus `[4]`. The GPU context probes passed. 4V100 and 8V100V0 passed
+both training and restart. The previously accepted DeePMD beta remains selected;
+the failure's underlying source/communication cause has not yet been established.
+
+The remaining priorities are:
+
+1. Reproduce and resolve the 16V100 DeePMD two-GPU broadcast failure, then repeat
+   publication acceptance using the existing SIFs where possible.
+2. Complete manual scratch cleanup and implement a reviewed retirement mechanism
+   for obsolete SIF generations. All 24 files / 143.60 GiB in the November 10
+   cleanup plan still exist. Current alias rotation does not remove old images.
+3. Prepare the LAMMPS `stable_30Sep2026_update1` native administrator handoff and
+   installed acceptance. Its accepted three-partition SIF evidence exists; the
+   physical public module still selects the original 30Sep2026 build.
+4. Align beta snapshot labels with the local scheduler date to avoid confusing
+   UTC dates with stale builds. This is a display improvement.
+
+The existing CPU QE HDF5 provider integration and compiler/dependency caching
+are already merged. CP2K direct generalized diagonalization remains optional
+performance work in issue #9. Issue #12 contains completed fuse2fs deployment
+work and additional future qualification; it does not indicate a missing
+public helper installation.
+
+The owner-reviewed module documentation now uses one whatis entry per module.
+A follow-up administrator package replaces unusable installation variables in
+13 help descriptions with concrete paths or short static path indexes. All 62
+real Lmod checks passed; application and module runtime bodies are unchanged.
+See [the module path validation](evidence/module-help-paths-20261111/README.md)
+and [the current workflow audit](evidence/workflow-audit-20261111/README.md).
 
 ## CPU QE HDF5 reuse and build storage
 

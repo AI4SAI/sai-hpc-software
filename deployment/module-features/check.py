@@ -45,14 +45,25 @@ def main():
                     Path(p).is_file() and Path(p).stat().st_mode & stat.S_IROTH
                     and all(parent.stat().st_mode & stat.S_IXOTH for parent in Path(p).parents)
                     for p in records)
+                # Scheduler variables in executable examples are useful; an
+                # unloaded module's installation variable is not a usable path.
+                item['unresolved_variables'] = [name for name in re.findall(
+                    r'\$\{?([A-Z][A-Z0-9_]*)', result.stderr)
+                    if name != 'SLURM_GPUS_ON_NODE']
+                item['installation_paths'] = [path for record in records
+                    if Path(record).is_file() for path in re.findall(
+                        r'^  [a-z][a-z -]*: (/[^\n]+)$', Path(record).read_text(), re.M)]
+                item['paths_available'] = all(Path(p).exists() for p in item['installation_paths'])
             results.append(item)
             if (item['code'] or not item['features'] or item.get('records_readable') is False
-                    or item.get('whatis_entries', 1) != 1):
+                    or item.get('whatis_entries', 1) != 1 or item.get('unresolved_variables')
+                    or item.get('paths_available') is False):
                 print(f'FAIL {module} {action}: {result.stderr}')
     if args.output:
         args.output.write_text(json.dumps(results, indent=2) + '\n')
     failures = sum(bool(row['code'] or not row['features'] or row.get('records_readable') is False
-                        or row.get('whatis_entries', 1) != 1) for row in results)
+                        or row.get('whatis_entries', 1) != 1 or row.get('unresolved_variables')
+                        or row.get('paths_available') is False) for row in results)
     print(f'{len(results)} Lmod checks; {failures} failures; '
           + ('installed modules' if args.installed else 'candidate preview'))
     raise SystemExit(bool(failures))

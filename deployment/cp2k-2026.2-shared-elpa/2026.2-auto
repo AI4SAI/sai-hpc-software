@@ -2,7 +2,7 @@
 # SAI module documentation. Static build records are readable without loading this module.
 module-whatis "CP2K 2026.2; native CPU/V100 partition selection; Features: MPI/OpenMP; DBCSR; ELPA; LibXC/Libint2; PLUMED; DFT-D4/TBLITE; HDF5; CUDA on GPU partitions"
 proc ModulesHelp {} {
-    puts stderr "CP2K 2026.2; native CPU/V100 partition selection\nFeatures: MPI/OpenMP; DBCSR; ELPA; LibXC/Libint2; PLUMED; DFT-D4/TBLITE; HDF5; CUDA on GPU partitions\nFull recorded build information (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111/cp2k/2026.2-auto/index.txt\nSelected installation: \$SAI_CP2K_PREFIX; packaged data: \$CP2K_DATA_DIR.\nRun with host mpirun."
+    puts stderr "CP2K 2026.2; native CPU/V100 partition selection\nFeatures: MPI/OpenMP; DBCSR; ELPA; LibXC/Libint2; PLUMED; DFT-D4/TBLITE; HDF5; CUDA on GPU partitions\nBuild information and installation paths (readable on login nodes): cat /home/stardust/sai-hpc-software/module-info/20261111-paths/cp2k/2026.2-auto/index.txt\nRun with host mpirun."
 }
 if {[module-info mode help] || [module-info mode whatis]} {return}
 
