@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "prefix": "/org/org-open-sai/proj-sai-hpc-software/operations/gpumdkit-install-permissions-20261112/native-stage/opt/apps/GPUMDkit/1.5.9",
+  "python": "3.12.13 | packaged by Anaconda, Inc. | (main, Mar 19 2026, 20:20:58) [GCC 14.3.0]",
+  "checks": {
+    "poscar_conversion": true,
+    "periodic_distance_angstrom": 0.2,
+    "compressed_lammps_data_conversion": true,
+    "nep_prediction": {
+      "frames": 3,
+      "workers": 2,
+      "energy_max_error": 0.0,
+      "force_max_error": 8.326672684688674e-16,
+      "virial_max_error": 4.996003610813204e-16
+    },
+    "prediction_plot_bytes": 339531,
+    "dependencies": true
+  },
+  "route": "staged-native-module-permission-fix",
+  "job": "2379958",
+  "image_sha256": "1c0424c49a39c3b3e7928ba8b5863ec32c87a3d92dde3e8d3886d1c3ab137df2",
+  "files": {
+    "nep-prediction.log": "d97dd8b556e852df2face54c972ed62dcfe73bc2098b5245022cb06d4b4ea7cd",
+    "poscar-to-xyz.log": "5a89b17f837877c33af0e6f00681cde2887dade1d4118a7af13a487fb40a1103",
+    "doctor.log": "1022dbf6eba0283a770e8a3d9afd30b55be991f7d5ee0b7bb56212a069dc64b0",
+    "compressed-lammps-data.log": "b05156a79ec95ac7cb5d022c92821d85a847b93b928e1ec39dc44ea44a0fffe8",
+    "periodic-distance.log": "c900d838e01f32985d7e8a7438c39e22c4a9362b3785883a5cefc6c2b8989a48",
+    "prediction-plot.log": "7ad5d224d57a30675fcd94e71062bb35728b79dd061243ca595c9b66bd5f5de3",
+    "conversion/converted.xyz": "6957f40d55d8e224f29d3fe879acc52ce48634b74a499d7d354863f3800df5d7",
+    "conversion/POSCAR": "58b3e7aa397048b54c6e4d01e9de34eed212a95acb59cde2de5a3d1426d97fe2",
+    "conversion/dump.xyz": "97a4425439b99e896033694e5dd01a574f0698c4cd9bef543120e8e364d60caa",
+    "conversion/structure.data.gz": "bc6e9fc71b420389bd90722398f20129f9b5bc867eebc2223c1f5a2a8a894404",
+    "conversion/structure.data": "63d9f4cf78c5f3f43dc26bd0d2f3eca4cbbfb6a9c41af6a8722902960a031406",
+    "prediction/nep.txt": "c772e70b32e5a085936f04e5f5382c7af88a03cb68765510ac82f71ae97eab2c",
+    "prediction/stress_train.out": "5b3e2e84724b59bb90c71d85efe73b8c5f37dd03baf7a0e8e1728cc77913ee3c",
+    "prediction/prediction.png": "c72801131f156e7cb5863dbb823a70a93a96c59d4faf29755eac314adae14115",
+    "prediction/virial_train.out": "8dc4a4ae05a40be71082d15e72a4fe67ca508f67e4ea5589971bc3f8b57219a2",
+    "prediction/energy_train.out": "8390af6b2c421b56ed5fdb049ce230054c10da5e5c49245b89008514db5c742d",
+    "prediction/train.xyz": "9dcf0778f416b0f7024a9f476e0a2173f7fedbb1573cf80930ebd643d2db3285",
+    "prediction/force_train.out": "a2f32dfeb13df156bddc555cbf92b117e65e414d4d9a32d531ab3e5ee5c105db"
+  }
+}
