@@ -100,6 +100,12 @@ bash /home/stardust/sai-hpc-software/deployment/gpumdkit-1.5.9/install.sh --veri
 Public `/opt` installation is pending the administrator; successful staged
 acceptance is not reported as a completed public installation.
 
+The administrator's November 12 attempt exposed extraction permission
+differences before publication. See the
+[permission fix and explicit resume verification](../gpumdkit-install-permissions-20261112/README.md).
+The SIF and archived inventory remain unchanged; native permissions are now
+standardized during export.
+
 OVITO, DeepMD/DPA inference, deprecated PyNEP, ferrodispcalc and NepTrainKit GUI
 remain separate optional tools. GPUMD/NEP engines are loaded independently for
 workflows that need them. This package does not require host MPI or CUDA.

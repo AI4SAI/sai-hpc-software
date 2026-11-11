@@ -32,8 +32,23 @@ bash /home/stardust/sai-hpc-software/deployment/gpumdkit-1.5.9/install.sh --veri
 ```
 
 安装脚本从已验收 SIF 导出精确路径，核对文件哈希、权限和软链接，最后发布 module。
+原生权限统一为目录和可执行文件 0755、普通文件 0644；SIF 原始清单中的
+构建账户组写权限不作为公共安装要求。先完整核对内容、类型和软链接，再规范
+暂存目录中的权限并严格复核，避免解包工具或账户差异造成安装误报。
 不会运行上游修改 `.bashrc` 的 `install.sh`，不会覆盖旧版本。
 重复安装相同内容可行；已存在不同内容时停止。
+
+若上一次已经完整解包，只因权限检查失败，可以显式复用报错时留下的暂存目录：
+
+```bash
+bash /home/stardust/sai-hpc-software/deployment/gpumdkit-1.5.9/install.sh --install \
+  --resume-stage /opt/apps/GPUMDkit/.1.5.9-incoming-1609074
+bash /home/stardust/sai-hpc-software/deployment/gpumdkit-1.5.9/install.sh --verify
+```
+
+恢复只接受安装账号拥有的同级 `.1.5.9-incoming-<pid>` 目录，并重新校验全部
+文件内容。成功后将已有文件直接移至最终路径，再移除空的解包目录；不会重复
+提取一份产物。首次安装仍使用普通 `--install`。
 
 ```text
 /opt/apps/GPUMDkit/1.5.9/

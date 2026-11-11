@@ -64,7 +64,15 @@ def validate_inventory(records):
         require(current in expected, 'dangling payload link')
 
 
-def verify(root, records):
+def native_inventory(records):
+    """Project archived build permissions onto public native runtime permissions."""
+    validate_inventory(records)
+    return [dict(row, mode=(0o777 if row['kind'] == 'symlink' else
+                            0o755 if row['kind'] == 'directory' or row['mode'] & 0o111 else
+                            0o644)) for row in records]
+
+
+def verify(root, records, *, check_modes=True):
     plain(root)
     expected = {r['path']: r for r in records}
     seen = set()
@@ -76,13 +84,46 @@ def verify(root, records):
         if row['kind'] == 'symlink':
             require(path.is_symlink() and os.readlink(path) == row['target'], 'changed symlink: ' + name)
         else:
-            require(not path.is_symlink() and stat.S_IMODE(info.st_mode) == row['mode'], 'changed mode: ' + name)
+            require(not path.is_symlink(), 'unexpected symlink: ' + name)
+            if check_modes:
+                require(stat.S_IMODE(info.st_mode) == row['mode'],
+                        f"changed mode: {name} (expected {row['mode']:04o}, actual {stat.S_IMODE(info.st_mode):04o})")
             if row['kind'] == 'directory':
                 require(path.is_dir(), 'missing directory')
             else:
                 require(path.is_file() and info.st_size == row['size'] and digest(path) == row['sha256'],
                         'changed payload: ' + name)
     require(seen == set(expected), 'missing installed files')
+
+
+def normalize_staged_permissions(root, records):
+    # Check the entire payload before changing permissions. Hashes, entry types,
+    # names and links must match even when extraction changed the mode bits.
+    verify(root, records, check_modes=False)
+    for row in records:
+        if row['kind'] != 'symlink':
+            (root / row['path']).chmod(row['mode'])
+    verify(root, records)
+
+
+def resumed_payload(stage, target):
+    """Reuse only an explicitly named extraction owned by the installing user."""
+    plain(stage)
+    require(stage.parent == target.parent
+            and re.fullmatch(r'\.1\.5\.9-incoming-[1-9][0-9]*', stage.name),
+            'resume stage must be a sibling .1.5.9-incoming-<pid> directory')
+    current = stage
+    for name in PREFIX.relative_to('/').parts:
+        info = current.lstat()
+        require(stat.S_ISDIR(info.st_mode) and info.st_uid == os.geteuid(),
+                'resume directory must be owned by the installing user: ' + str(current))
+        require({p.name for p in current.iterdir()} == {name},
+                'unexpected entries in resume wrapper: ' + str(current))
+        current = current / name
+        plain(current)
+    require(current.is_dir() and current.stat().st_uid == os.geteuid(),
+            'resume payload must be owned by the installing user')
+    return current
 
 
 def module_text(root=Path('/')):
@@ -97,8 +138,7 @@ def preflight(installed=False, root=Path('/')):
     for name, sha in release['metadata'].items():
         require(not Path(name).is_absolute() and '..' not in Path(name).parts, 'invalid metadata path')
         require(digest(PACKAGE / name) == sha, 'changed metadata: ' + name)
-    records = json.loads((PACKAGE / 'inventory.json').read_text())
-    validate_inventory(records)
+    records = native_inventory(json.loads((PACKAGE / 'inventory.json').read_text()))
     proof = json.loads((PACKAGE / 'acceptance.json').read_text())
     require(proof['passed'] is True and proof['route'] == 'sif' and proof['prefix'] == str(PREFIX)
             and proof['image_sha256'] == release['image_sha256']
@@ -119,24 +159,30 @@ def preflight(installed=False, root=Path('/')):
     return release, records
 
 
-def install(root=Path('/')):
+def install(root=Path('/'), resume_stage=None):
     release, records = preflight(root=root)
     target, module = root / PREFIX.relative_to('/'), root / MODULE.relative_to('/')
     directories(target.parent)
     descriptor = os.open(target.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
     try:
         fcntl.flock(descriptor, fcntl.LOCK_EX)
+        require(resume_stage is None or not target.exists(), 'already installed; use --verify without --resume-stage')
         if not target.exists():
-            stage = target.with_name('.1.5.9-incoming-' + str(os.getpid()))
-            require(not stage.exists(), 'staging destination exists')
-            image = PACKAGE / 'gpumdkit-1.5.9.sif'
-            listing = subprocess.check_output(['/opt/devtools/apptainer/1.4.4/bin/apptainer',
-                                                'sif', 'list', str(image)], text=True)
-            offset, = re.findall(r'\|\s*(\d+)-\d+\s*\|\s*FS \(Squashfs/\*System/', listing)
-            subprocess.run(['unsquashfs', '-processors', '2', '-no-xattrs', '-no-progress', '-o', offset,
-                            '-d', str(stage), str(image), str(PREFIX).lstrip('/')], check=True)
-            payload = stage / PREFIX.relative_to('/')
-            verify(payload, records)
+            if resume_stage is not None:
+                stage = resume_stage
+                payload = resumed_payload(stage, target)
+                print('Checking existing extraction: ' + str(stage), flush=True)
+            else:
+                stage = target.with_name('.1.5.9-incoming-' + str(os.getpid()))
+                require(not stage.exists() and not stage.is_symlink(), 'staging destination exists')
+                image = PACKAGE / 'gpumdkit-1.5.9.sif'
+                listing = subprocess.check_output(['/opt/devtools/apptainer/1.4.4/bin/apptainer',
+                                                    'sif', 'list', str(image)], text=True)
+                offset, = re.findall(r'\|\s*(\d+)-\d+\s*\|\s*FS \(Squashfs/\*System/', listing)
+                subprocess.run(['unsquashfs', '-processors', '2', '-no-xattrs', '-no-progress', '-o', offset,
+                                '-d', str(stage), str(image), str(PREFIX).lstrip('/')], check=True)
+                payload = stage / PREFIX.relative_to('/')
+            normalize_staged_permissions(payload, records)
             require(not target.exists() and not target.is_symlink(), 'destination appeared')
             payload.rename(target)
             # Only remove the extraction directories created by this install.
@@ -162,12 +208,16 @@ if __name__ == '__main__':
     action.add_argument('--install', action='store_true')
     action.add_argument('--verify', action='store_true')
     parser.add_argument('--stage-root', type=Path, default=Path('/'))
+    parser.add_argument('--resume-stage', type=Path,
+                        help='with --install, reuse a complete failed extraction after content verification')
     args = parser.parse_args()
+    if args.resume_stage is not None and not args.install:
+        parser.error('--resume-stage requires --install')
     try:
         root = args.stage_root
         plain(root)
         require(root == Path('/') or root.is_relative_to('/org/org-open-sai/proj-sai-hpc-software/operations'),
                 'stage root must be below project operations')
-        install(root) if args.install else preflight(args.verify, root)
+        install(root, args.resume_stage) if args.install else preflight(args.verify, root)
     except (OSError, ValueError, KeyError) as error:
         raise SystemExit('Installation stopped: ' + str(error)) from error
