@@ -1,5 +1,17 @@
 # CUDA IPC address-recycling diagnosis (2026-11-10)
 
+## UCT-first prerequisite check and review fixes (2026-11-13)
+
+Commit [`2bb888a`](https://github.com/Stardust0831/ucx/commit/2bb888a9779820fa1d26469212896ab2b677a95d) attempts the actual UCT import before using a legacy IPC diagnostic. Successful UCT imports never run the direct legacy probe; only an initial unreachable result triggers it, because UCT also reports unexpected driver import failures as unreachable. Persistent unsupported IPC can skip, while unexpected initial failures and all later import failures remain fatal. Expected CI skips now use ordinary output, and both MPI tests use the shared `test_cuda_errors_and_warnings_counter` name. The production CUDA IPC runtime source is unchanged from `ffe50ff`.
+
+Fresh baseline and candidate release-mt builds completed in job **2418498**, which finished **0:0 in 7m31s** on `16v100n26` (V100-SXM2-16GB, driver 550.163.01, CUDA 12.9.1, Open MPI 5.0.10). All **27 core scenarios**, **nine actual CI launcher cases**, and **14 shell guard/exit-status cases** reached their expected outcomes. The direct UCT regression and independent MPI reproducer each exercised 30 lower-start overlaps per variant: baseline had 30 recovered CUDA error-208 imports per program, candidate had zero, and all normal-run byte comparisons passed. The existing MPI/CUDA matrix recorded **450 passes and 36 Fabric-related skips per variant**. All **34 completed-process core library audits** and **14 CI library audits** matched the intended variant.
+
+A control disabling only direct legacy exports makes the previous `ffe50ff` test exit 77, while the revised test passes all 30 overlaps. This validates the test gate on V100; the successful UCT imports still use real legacy handles, so it does not establish Fabric/POSIX-FD hardware coverage. The later import-error controls and error-208 recovery control verify a successful real stale-mapping close before the injected failure. The latter reaches full-cache purge/retry with an empty cache after proactive invalidation; purging unrelated live mappings remains unvalidated.
+
+Seven source hashes match the tested commit. The [validation record](review-probe-20261113.json) includes commands, source/library hashes, driver results, injection source and scheduler accounting. Raw evidence is `review-probe-evidence.tar.gz` in `/org/org-open-sai/proj-sai-hpc-software/ucx-review-probe-20261113` and the corresponding local `.work` directory (SHA256 `838ea318ef5497708b341ebc8e7009d9de6ff18a6e68672cf50377aa9703e84b`).
+
+The overlap trigger remains allocator dependent, and the external injection controls do not provide deterministic in-tree coverage. Full upstream CI completion, exhaustive Fabric/concurrency coverage, full static-build/GPU acceptance, and application/performance acceptance remain outside this validation.
+
 ## Shared test helpers and CI guards (2026-11-13)
 
 Commit [`ffe50ff`](https://github.com/Stardust0831/ucx/commit/ffe50ff8575a55437920238abdf620dda9e05eec) links the overlap regression with `libtest_cuda_common.la`, reuses its ERROR/WARN counter and full-buffer comparison, and checks the overlap executable independently in the MPI CI launcher. The CUDA IPC runtime source is unchanged from `cf3a1d0`. Collective prerequisite checks and the primary-context lifecycle remain specific to the overlap regression.
