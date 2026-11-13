@@ -58,4 +58,23 @@ Future generations use these changes:
 Regression coverage includes real Git reuse with an unavailable origin,
 interrupted fetches, exact commit retention, recoverable versus permanent
 errors, and repeated LAMMPS upload without replacing existing file inodes.
-The complete repository test suite runs in the PR's validation job.
+The complete repository suite passed: 1374 tests in 63.2 seconds, with two
+optional local-source-cache tests skipped in GitHub CI. All seven workflow
+validation jobs passed for commit `968494b218a8614aaf6426b2a61c0ddb3f80ac42`.
+
+## Live recovery results
+
+Both recovered controller snapshots matched all 58 archived file hashes.
+The 4V100 build (2418042) completed in 7m17s and the 16V100 build (2418138)
+in 8m39s, both with exit 0:0. Their SIFs passed the existing executable,
+package/style and runtime-path checks. The relay service peaked at 379 MiB
+during preparation and continued to use its original 2 GiB limit.
+
+The 16V100 scientific job 2418489 completed on two nodes in 1m26s: all
+14 cases passed, with 71 packages and 2657 styles. The original 8V100V0
+scientific job 2414615 also passed all 14 cases. The 4V100 scientific job
+2418479 was queued at the time of this record; its requested budget was
+reduced from 40 to 15 minutes for backfill eligibility, with all inputs,
+nodes, GPUs and gates unchanged. Beta publication remains gated on that
+result and the subsequent Lmod/runtime acceptance. The linked daily run
+and retained task receipts provide the continuing status.
