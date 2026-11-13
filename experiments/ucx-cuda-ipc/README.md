@@ -1,5 +1,15 @@
 # CUDA IPC address-recycling diagnosis (2026-11-10)
 
+## Shared test helpers and CI guards (2026-11-13)
+
+Commit [`ffe50ff`](https://github.com/Stardust0831/ucx/commit/ffe50ff8575a55437920238abdf620dda9e05eec) links the overlap regression with `libtest_cuda_common.la`, reuses its ERROR/WARN counter and full-buffer comparison, and checks the overlap executable independently in the MPI CI launcher. The CUDA IPC runtime source is unchanged from `cf3a1d0`. Collective prerequisite checks and the primary-context lifecycle remain specific to the overlap regression.
+
+Fresh baseline and candidate release-mt builds completed in job **2417162**, which finished **0:0 in 8m58s** on `16v100n10`. All **21 core scenarios**, **nine actual CI launcher cases**, and **14 shell guard/exit-status cases** reached their expected outcomes. The direct UCT regression and independent MPI reproducer each exercised 30 lower-start overlaps per variant: baseline had 30 recovered CUDA error-208 imports per program, candidate had zero, and all normal-run byte comparisons passed. A new negative control corrupts the last byte after a successful host copy and is rejected by the shared comparison helper.
+
+The existing MPI/CUDA matrix recorded **450 passes and 36 Fabric-related skips per variant**. All **28 completed-process core library audits** and **14 CI library audits** matched the intended variant. Seven source hashes match the tested commit. The [validation record](review-reuse-20261113.json) includes commands, source/library hashes, driver results, the injection source and scheduler accounting. Raw evidence is `review-reuse-evidence.tar.gz` in `/org/org-open-sai/proj-sai-hpc-software/ucx-review-reuse-20261113` and the corresponding local `.work` directory (SHA256 `b1dbcfc1c3ca1f9cf5cf7fa2e2ad082e88c3b581a305697baecdf90eaacbda1d`).
+
+The overlap trigger still depends on allocator address reuse. The existing LRU gtest fixture uses a standalone synthetic cache and does not drive the production remote-cache import path; deterministic coverage remains open. This validation does not establish full upstream CI completion, exhaustive Fabric/concurrency coverage, full static-build/GPU acceptance, or application/performance acceptance.
+
 ## Follow-up review: insertion, diagnostic scope and launcher (2026-11-12)
 
 Commit [`cf3a1d00c46a82c8ca9fae696f75342d71dd2ce8`](https://github.com/Stardust0831/ucx/commit/cf3a1d00c46a82c8ca9fae696f75342d71dd2ce8) removes the remaining page-table insertion retry: the prior range invalidation covers the aligned insertion span while the same write lock remains held. Other insertion failures still propagate. The regression's ERROR/WARN handler is now active only around receiver-side `uct_rkey_unpack()` and `uct_rkey_ptr()`, so host synchronization warnings outside the mapping import do not affect the gate. Import and stale-mapping-close diagnostics still fail the test without relying on message wording.
