@@ -77,6 +77,15 @@ class ControllerUploadTests(unittest.TestCase):
 
 
 class CheckpointTests(unittest.TestCase):
+    def test_source_network_failure_defers_only_the_checkpointed_relay(self):
+        with patch.dict(os.environ, SAI_RELAY_TASK='/state/task.json'):
+            with self.assertRaises(SystemExit) as caught:
+                checkpoint.entry(Mock(side_effect=checkpoint.SourceNetworkError('unavailable')))
+            self.assertEqual(caught.exception.code, 76)
+        with patch.dict(os.environ, {}, clear=True):
+            with self.assertRaises(checkpoint.SourceNetworkError):
+                checkpoint.entry(Mock(side_effect=checkpoint.SourceNetworkError('unavailable')))
+
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
