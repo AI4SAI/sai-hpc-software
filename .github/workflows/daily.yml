@@ -73,7 +73,13 @@ jobs:
           git config --local --unset-all http.https://github.com/.extraheader || :
           git sparse-checkout init --cone
           git sparse-checkout set controller deployment .ci/slurm docs/evidence/sif-lmod-20261024/raw/4V100
-          git -c protocol.version=2 fetch --no-tags --depth=1 origin "$GITHUB_SHA"
+          for attempt in 1 2 3; do
+            if git -c protocol.version=2 -c fetch.fsckObjects=true fetch --no-tags --depth=1 origin "$GITHUB_SHA"; then
+              break
+            fi
+            if [ "$attempt" = 3 ]; then exit 1; fi
+            sleep "$((5 * attempt))"
+          done
           git checkout --force --detach "$GITHUB_SHA"
           git clean -ffdx
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"

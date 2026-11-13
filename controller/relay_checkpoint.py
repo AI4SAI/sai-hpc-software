@@ -10,6 +10,8 @@ import os
 from pathlib import Path
 import subprocess
 
+from source_transport import SourceNetworkError
+
 
 class Pending(Exception):
     pass
@@ -155,6 +157,11 @@ def entry(main):
     except Pending as error:
         print('RELAY_PENDING: ' + str(error), flush=True)
         raise SystemExit(75)
+    except SourceNetworkError as error:
+        if os.environ.get('SAI_RELAY_TASK'):
+            print('RELAY_TRANSPORT_RETRY: ' + str(error), flush=True)
+            raise SystemExit(76)
+        raise
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as error:
         if os.environ.get('SAI_RELAY_TASK') and (isinstance(error, subprocess.TimeoutExpired) or error.returncode == 255):
             print('RELAY_TRANSPORT_RETRY: ' + str(error), flush=True)

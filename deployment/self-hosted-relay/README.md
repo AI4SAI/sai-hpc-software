@@ -173,6 +173,24 @@ reject changed contents. A lost submission reply is recoverable only with
 matching complete request/script/job receipts; incomplete submission evidence
 stops rather than guessing that another `sbatch` is safe.
 
+Source preparation reuses a complete, non-shallow Git cache for the exact
+frozen commit before contacting upstream. Missing commits are fetched with
+three attempts, with 5 and 10 second delays for transient DNS, connection,
+TLS and gateway errors. An exhausted network retry defers the relay task
+(exit 76); it does not mark a build successful or move to a newer commit.
+Invalid revisions, authentication, certificate and object-integrity failures
+remain hard failures. Source-fetch diagnostics are streamed through a file
+with a bounded in-memory tail. Initial controller checkout also retries the
+same GitHub SHA three times.
+
+On 2026-11-13 the VM could reach one GitHub frontend while another timed out;
+the latter subsequently recovered. Authenticated DNS returned the same
+affected address, so the probes did not establish DNS poisoning. A temporary
+GitHub-only DNS-over-TLS experiment was rolled back, including its service and
+WSL resolver changes. The relay retains normal system DNS and certificate
+verification. The recovery and network evidence are recorded in
+[`docs/evidence/relay-network-20261113`](../../docs/evidence/relay-network-20261113/README.md).
+
 Earlier VPS results are retained in
 [`docs/evidence/self-hosted-relay-20261106`](../../docs/evidence/self-hosted-relay-20261106/README.md)
 and the lightweight

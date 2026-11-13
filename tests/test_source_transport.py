@@ -48,6 +48,56 @@ class TransferTests(unittest.TestCase):
                 manifest = cache.pack(second, second_sha, self.root / 'relay-parts', base)
                 self.assertEqual(manifest['base'], self.commit)
 
+    def test_complete_frozen_source_remains_usable_when_origin_is_unavailable(self):
+        with patch.dict(os.environ, SAI_SOURCE_CACHE=str(self.root / 'relay-cache')):
+            with transport.source_repository(str(self.repo), self.commit, self.root, 'source') as repository:
+                self.assertTrue(cache.complete(repository, self.commit))
+            self.repo.rename(self.root / 'offline-origin')
+            with transport.source_repository(str(self.repo), self.commit, self.root, 'source') as reused:
+                self.assertEqual(reused, repository)
+                self.assertEqual(cache.git(reused, 'show', self.commit + ':data'), 'verified source')
+
+    def test_network_interruptions_retry_the_same_sha_before_real_fetch(self):
+        cache.git(self.root, 'init', '--bare', str(self.store))
+        calls = []
+        pauses = []
+        def interrupted(argv, **kwargs):
+            calls.append(argv)
+            if len(calls) < 3:
+                kwargs['stderr'].write(b'fatal: GnuTLS recv error (-110): The TLS connection was non-properly terminated.\n')
+                return subprocess.CompletedProcess(argv, 128)
+            return subprocess.run(argv, **kwargs)
+        transport.fetch_source(self.store, str(self.repo), self.commit, run=interrupted, pause=pauses.append)
+        self.assertEqual(pauses, [5, 10])
+        self.assertTrue(all(call == calls[0] for call in calls))
+        self.assertEqual(cache.git(self.store, 'show', self.commit + ':data'), 'verified source')
+
+    def test_exhausted_network_failures_and_timeouts_are_recoverable(self):
+        for timeout in (False, True):
+            calls = []
+            def unavailable(argv, **kwargs):
+                calls.append(argv)
+                if timeout:
+                    raise subprocess.TimeoutExpired(argv, 900)
+                kwargs['stderr'].write(b'fatal: Failed to connect to github.com port 443: Could not connect to server\n')
+                return subprocess.CompletedProcess(argv, 128)
+            with self.subTest(timeout=timeout), self.assertRaises(transport.SourceNetworkError):
+                transport.fetch_source(self.store, str(self.repo), self.commit, run=unavailable, pause=lambda _: None)
+            self.assertEqual(len(calls), 3)
+
+    def test_invalid_revision_auth_certificate_and_integrity_errors_are_not_network_retries(self):
+        for message in ('fatal: not our ref ' + self.commit, 'fatal: Authentication failed',
+                        'fatal: server certificate verification failed', 'fatal: pack has bad object'):
+            calls = []
+            def rejected(argv, **kwargs):
+                calls.append(argv)
+                kwargs['stderr'].write(message.encode())
+                return subprocess.CompletedProcess(argv, 128)
+            with self.subTest(message=message), self.assertRaises(subprocess.CalledProcessError):
+                transport.fetch_source(self.store, str(self.repo), self.commit, run=rejected,
+                                       pause=lambda _: self.fail('permanent failure retried'))
+            self.assertEqual(len(calls), 1)
+
     def start(self):
         p = subprocess.Popen(self.argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, text=True)

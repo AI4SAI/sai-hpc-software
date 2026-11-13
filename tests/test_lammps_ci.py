@@ -50,6 +50,30 @@ class SourceTests(unittest.TestCase):
                 ci.selected_source()
 
 
+class ControllerUploadTests(unittest.TestCase):
+    def test_source_failure_retry_preserves_frozen_files_and_rejects_changes(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            source = root / 'recipe.py'
+            source.write_text('original recipe\n')
+            snapshot = root / 'snapshot'
+            def ssh(argv, **kwargs):
+                return subprocess.run(argv, check=True, text=True, **kwargs)
+            def upload(files, directory):
+                for path in files:
+                    shutil.copyfile(path, Path(directory) / path.name)
+            ci.upload_controller([source], str(snapshot), ssh, upload)
+            original = (snapshot / source.name).stat()
+            self.assertEqual(original.st_mode & 0o222, 0)
+            ci.upload_controller([source], str(snapshot), ssh, upload)
+            resumed = (snapshot / source.name).stat()
+            self.assertEqual((resumed.st_ino, resumed.st_mtime_ns), (original.st_ino, original.st_mtime_ns))
+            source.write_text('changed recipe\n')
+            with self.assertRaises(subprocess.CalledProcessError):
+                ci.upload_controller([source], str(snapshot), ssh, upload)
+            self.assertEqual((snapshot / source.name).read_text(), 'original recipe\n')
+
+
 class LifecycleTests(unittest.TestCase):
     def exercise(self, runner, history, *, track='development', attempt='1', retry='false', failure=None,
                  phase='all', handoff=None, state=None):
@@ -66,6 +90,8 @@ class LifecycleTests(unittest.TestCase):
                 uploads.append(list(map(str, argv)))
                 return subprocess.CompletedProcess(argv, 0, '')
             command = shlex.split(argv[-1])
+            if command[:4] == ['python3', '-I', '-B', '-c']:
+                return subprocess.CompletedProcess(argv, 0, 'true')
             if command[0] == 'env':
                 self.assertEqual(command[1], 'SAI_SOFTWARE_ROOT=/org/org-open-sai/proj-sai-hpc-software')
                 command = command[2:]

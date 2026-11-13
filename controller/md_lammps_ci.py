@@ -9,16 +9,31 @@ import re
 import shlex
 import subprocess
 import time
+import uuid
 
 from md_lammps_standalone import CONTROL, make_delivery, runtime_plan
 from release_contract import resolve_tracks, validate_identity
 from remote_controller import SAI_PROJECT_ROOT, safe_name, safe_sha
 from source_transport import ensure_source
-from relay_checkpoint import Checkpoint, entry
+from relay_checkpoint import Checkpoint, entry, remote as remote_call
 
 
 def run(argv, **kwargs):
     return subprocess.run(list(map(str, argv)), check=True, text=True, **kwargs)
+
+
+def upload_controller(files, snapshot, ssh, upload):
+    # Source preparation can fail after this snapshot has become read-only.
+    # Reuse byte-identical files on retry, without opening them for writing.
+    from ci import install_controller
+    from source_cache import checksum
+    staging = snapshot + '.upload-' + uuid.uuid4().hex
+    manifest = {path.name: checksum(path) for path in files}
+    if len(manifest) != len(files):
+        raise ValueError('duplicate LAMMPS controller filename')
+    ssh(['mkdir', '-p', snapshot, staging])
+    upload(files, staging + '/')
+    remote_call(ssh, install_controller, staging, snapshot, manifest, [])
 
 
 def selected_source():
@@ -260,14 +275,13 @@ def main():
 
     if phase != 'science':
         if not relay.data.get('preparation'):
-            ssh(['mkdir', '-p', snapshot])
             files = [p for p in CONTROL.glob('md_*.*') if p.suffix in ('.py', '.sh', '.json')]
             files += [CONTROL / name for name in ('remote_controller.py', 'source_cache.py', 'source_transport.py', 'relay_checkpoint.py', 'resolve_source.py',
                       'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py',
                       'module_publication.py', 'delivery_layout.py', 'cp2k_image_driver.py', 'managed_overlay.py', 'cp2k_overlay_sync.py',
                       'lammps_acceptance.py', 'lammps_rank.sh', 'lammps_verify.sbatch')]
             files += [runtime_plan(), reference, request]
-            upload(files, snapshot + '/')
+            upload_controller(files, snapshot, ssh, upload)
             decision = json.loads(python('release_contract.py', root, run_id, json.dumps([delivery['identity']]),
                                          *(['--retry'] if retry == 'true' else []),
                                          *(['--resume'] if relay.enabled else []), capture_output=True).stdout)
