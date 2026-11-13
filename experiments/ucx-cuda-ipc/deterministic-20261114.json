@@ -1,0 +1,771 @@
+{
+  "job": "2436165",
+  "cases": [
+    {
+      "name": "candidate-gtest-no-gpu",
+      "command": [
+        "timeout",
+        "180",
+        "make",
+        "-C",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/test/gtest",
+        "test",
+        "GTEST_FILTER=test_cuda_ipc_cache_*",
+        "GTEST_EXTRA_ARGS=--gtest_shuffle --gtest_random_seed=2026 --gtest_repeat=3"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/candidate-gtest-no-gpu.log",
+      "accepted": true,
+      "gpu_visibility": "",
+      "passed": 36,
+      "failed": []
+    },
+    {
+      "name": "baseline-order-build",
+      "command": [
+        "make",
+        "-C",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/src/uct/cuda",
+        "-j8"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/baseline-order-build.log",
+      "accepted": true
+    },
+    {
+      "name": "baseline-order-install",
+      "command": [
+        "make",
+        "-C",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/src/uct/cuda",
+        "install"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/baseline-order-install.log",
+      "accepted": true
+    },
+    {
+      "name": "baseline-order-negative",
+      "command": [
+        "timeout",
+        "180",
+        "make",
+        "-C",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/test/gtest",
+        "test",
+        "GTEST_FILTER=test_cuda_ipc_cache_overlap.lower_overlap",
+        "GTEST_EXTRA_ARGS=--gtest_shuffle --gtest_random_seed=2026 --gtest_repeat=1"
+      ],
+      "exit_code": 2,
+      "expected": 2,
+      "log": "logs/baseline-order-negative.log",
+      "accepted": true,
+      "gpu_visibility": "",
+      "passed": 0,
+      "failed": [
+        "test_cuda_ipc_cache_overlap.lower_overlap,",
+        "test_cuda_ipc_cache_overlap.lower_overlap,"
+      ]
+    },
+    {
+      "name": "baseline-regression",
+      "command": [
+        "timeout",
+        "--kill-after=10",
+        "180",
+        "mpirun",
+        "-np",
+        "2",
+        "--bind-to",
+        "none",
+        "-mca",
+        "pml",
+        "ob1",
+        "-mca",
+        "osc",
+        "^ucx",
+        "-mca",
+        "btl",
+        "tcp,self",
+        "-mca",
+        "btl_tcp_if_include",
+        "lo",
+        "-mca",
+        "coll",
+        "^hcoll,ml,ucc",
+        "/usr/bin/python3",
+        "-B",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/rank.py",
+        "baseline-regression",
+        "candidate",
+        "normal",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-probe-20261113/build-candidate/test/mpi/.libs/test_cuda_ipc_overlap"
+      ],
+      "exit_code": 1,
+      "expected": 1,
+      "log": "logs/baseline-regression.log",
+      "accepted": true,
+      "executable_sha256": "951d2063a29d4d53b2b98cad1c43f32e0d2cff5730468bd043905076e202b1f0",
+      "library_maps": [
+        [
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucp.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucs.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libuct.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+        ],
+        [
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucp.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucs.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libuct.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+        ]
+      ],
+      "driver_open_results": {
+        "0": 60,
+        "208": 30
+      }
+    },
+    {
+      "name": "baseline-native",
+      "command": [
+        "timeout",
+        "--kill-after=10",
+        "180",
+        "mpirun",
+        "-np",
+        "2",
+        "--bind-to",
+        "none",
+        "/usr/bin/python3",
+        "-B",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/rank.py",
+        "baseline-native",
+        "candidate",
+        "native",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/mpi_repro"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/baseline-native.log",
+      "accepted": true,
+      "executable_sha256": "a5679ee5a1909c2080c272a81bc460485218ed6acc6e3a7effaf37accaaa0a99",
+      "library_maps": [
+        [
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucp.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucs.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libuct.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libucm_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+        ],
+        [
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucp.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucs.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libuct.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libucm_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+        ]
+      ],
+      "driver_open_results": {
+        "0": 60,
+        "208": 30
+      }
+    },
+    {
+      "name": "missing-close-build",
+      "command": [
+        "make",
+        "-C",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/src/uct/cuda",
+        "-j8"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/missing-close-build.log",
+      "accepted": true
+    },
+    {
+      "name": "missing-close-install",
+      "command": [
+        "make",
+        "-C",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/src/uct/cuda",
+        "install"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/missing-close-install.log",
+      "accepted": true
+    },
+    {
+      "name": "missing-close-negative",
+      "command": [
+        "timeout",
+        "180",
+        "make",
+        "-C",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/test/gtest",
+        "test",
+        "GTEST_FILTER=test_cuda_ipc_cache_overlap.insert_failure",
+        "GTEST_EXTRA_ARGS=--gtest_shuffle --gtest_random_seed=2026 --gtest_repeat=1"
+      ],
+      "exit_code": 2,
+      "expected": 2,
+      "log": "logs/missing-close-negative.log",
+      "accepted": true,
+      "gpu_visibility": "",
+      "passed": 0,
+      "failed": [
+        "test_cuda_ipc_cache_overlap.insert_failure,",
+        "test_cuda_ipc_cache_overlap.insert_failure,"
+      ]
+    },
+    {
+      "name": "missing-purge-build",
+      "command": [
+        "make",
+        "-C",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/src/uct/cuda",
+        "-j8"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/missing-purge-build.log",
+      "accepted": true
+    },
+    {
+      "name": "missing-purge-install",
+      "command": [
+        "make",
+        "-C",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/src/uct/cuda",
+        "install"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/missing-purge-install.log",
+      "accepted": true
+    },
+    {
+      "name": "missing-purge-negative",
+      "command": [
+        "timeout",
+        "180",
+        "make",
+        "-C",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/test/gtest",
+        "test",
+        "GTEST_FILTER=test_cuda_ipc_cache_overlap.purge_retry",
+        "GTEST_EXTRA_ARGS=--gtest_shuffle --gtest_random_seed=2026 --gtest_repeat=1"
+      ],
+      "exit_code": 2,
+      "expected": 2,
+      "log": "logs/missing-purge-negative.log",
+      "accepted": true,
+      "gpu_visibility": "",
+      "passed": 0,
+      "failed": [
+        "test_cuda_ipc_cache_overlap.purge_retry,",
+        "test_cuda_ipc_cache_overlap.purge_retry,"
+      ]
+    },
+    {
+      "name": "candidate-restored-build",
+      "command": [
+        "make",
+        "-C",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/src/uct/cuda",
+        "-j8"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/candidate-restored-build.log",
+      "accepted": true
+    },
+    {
+      "name": "candidate-restored-install",
+      "command": [
+        "make",
+        "-C",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/src/uct/cuda",
+        "install"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/candidate-restored-install.log",
+      "accepted": true
+    },
+    {
+      "name": "candidate-restored-no-gpu",
+      "command": [
+        "timeout",
+        "180",
+        "make",
+        "-C",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/test/gtest",
+        "test",
+        "GTEST_FILTER=test_cuda_ipc_cache_overlap.*",
+        "GTEST_EXTRA_ARGS=--gtest_shuffle --gtest_random_seed=2026 --gtest_repeat=1"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/candidate-restored-no-gpu.log",
+      "accepted": true,
+      "gpu_visibility": "",
+      "passed": 6,
+      "failed": []
+    },
+    {
+      "name": "candidate-regression",
+      "command": [
+        "timeout",
+        "--kill-after=10",
+        "180",
+        "mpirun",
+        "-np",
+        "2",
+        "--bind-to",
+        "none",
+        "-mca",
+        "pml",
+        "ob1",
+        "-mca",
+        "osc",
+        "^ucx",
+        "-mca",
+        "btl",
+        "tcp,self",
+        "-mca",
+        "btl_tcp_if_include",
+        "lo",
+        "-mca",
+        "coll",
+        "^hcoll,ml,ucc",
+        "/usr/bin/python3",
+        "-B",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/rank.py",
+        "candidate-regression",
+        "candidate",
+        "normal",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-probe-20261113/build-candidate/test/mpi/.libs/test_cuda_ipc_overlap"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/candidate-regression.log",
+      "accepted": true,
+      "executable_sha256": "951d2063a29d4d53b2b98cad1c43f32e0d2cff5730468bd043905076e202b1f0",
+      "library_maps": [
+        [
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucp.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucs.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libuct.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+        ],
+        [
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucp.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucs.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libuct.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+        ]
+      ],
+      "driver_open_results": {
+        "0": 60
+      }
+    },
+    {
+      "name": "candidate-native",
+      "command": [
+        "timeout",
+        "--kill-after=10",
+        "180",
+        "mpirun",
+        "-np",
+        "2",
+        "--bind-to",
+        "none",
+        "/usr/bin/python3",
+        "-B",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/rank.py",
+        "candidate-native",
+        "candidate",
+        "native",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/mpi_repro"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/candidate-native.log",
+      "accepted": true,
+      "executable_sha256": "a5679ee5a1909c2080c272a81bc460485218ed6acc6e3a7effaf37accaaa0a99",
+      "library_maps": [
+        [
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucp.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucs.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libuct.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libucm_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+        ],
+        [
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucp.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucs.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libuct.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libucm_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+        ]
+      ],
+      "driver_open_results": {
+        "0": 60
+      }
+    },
+    {
+      "name": "candidate-mpi-matrix",
+      "command": [
+        "timeout",
+        "--kill-after=10",
+        "180",
+        "mpirun",
+        "-np",
+        "2",
+        "--bind-to",
+        "none",
+        "/usr/bin/python3",
+        "-B",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/rank.py",
+        "candidate-mpi-matrix",
+        "candidate",
+        "mpi-matrix",
+        "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/build/test/mpi/.libs/test_mpi_cuda"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "log": "logs/candidate-mpi-matrix.log",
+      "accepted": true,
+      "executable_sha256": "fef0b99788605d9682873e2fbebbf288f3fb38326dea49847a8f20296a2d4369",
+      "passed": 450,
+      "skipped": 36,
+      "library_maps": [
+        [
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucp.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucs.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libuct.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libucm_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+        ],
+        [
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucp.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libucs.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/libuct.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libucm_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cma.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_efa.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_ib_mlx5_gda.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_knem.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_rdmacm.so.0.0.0",
+          "/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate/lib/ucx/libuct_xpmem.so.0.0.0"
+        ]
+      ],
+      "driver_open_results": {
+        "0": 170
+      }
+    }
+  ],
+  "phases": {
+    "candidate": {
+      "cache_source_sha256": "388b88ab176fe3558be03e5ab1b31fa09eefd95296c5c549bbddca437b8b3f68",
+      "cuda_module_sha256": "e855e6bea2365f800f3f51131e569a4703e6556ead6f93a330213dcf62fe82fa"
+    },
+    "baseline-order": {
+      "cache_source_sha256": "44f5075beb25ba777af4494e7511f97f9aa5ad1a1aafbf44a47d074a6dfe315f",
+      "cuda_module_sha256": "1da1d29839314d30cff703ef49af3ff3947549f3dd3311fbed38ee794992169d"
+    },
+    "missing-close": {
+      "cache_source_sha256": "a6d755233a12cc67b76c7f444ec69459bee7062f6c685ef942f54f22c54440fa",
+      "cuda_module_sha256": "2a090f3359637a78b147e2a18599812dd9e2dd098eea0afcc96200f120a44520"
+    },
+    "missing-purge": {
+      "cache_source_sha256": "c762ea8706977b83aa2030991cde89647b9498cc85b3f32c77df4da6920db22b",
+      "cuda_module_sha256": "44c7bd8cfc6f04ae16a0015da5e480386034a70ba36949f113edf50182ae144b"
+    },
+    "candidate-restored": {
+      "cache_source_sha256": "388b88ab176fe3558be03e5ab1b31fa09eefd95296c5c549bbddca437b8b3f68",
+      "cuda_module_sha256": "e855e6bea2365f800f3f51131e569a4703e6556ead6f93a330213dcf62fe82fa"
+    }
+  },
+  "source_sha256": {
+    "AUTHORS": "dcea21a463b0da4ed09ddf35aac9db21423abd22905a8136fc770b5f9f73beda",
+    "src/uct/cuda/cuda_ipc/cuda_ipc_cache.c": "388b88ab176fe3558be03e5ab1b31fa09eefd95296c5c549bbddca437b8b3f68",
+    "src/uct/cuda/cuda_ipc/cuda_ipc_cache.h": "5f2cd5076cacd4574737afca37c2b93e699f607edc3246b17b529823bedce661",
+    "test/gtest/uct/cuda/test_cuda_ipc_md.cc": "41af7886da2a389ec2fb07a863f34e16b2ae1fa9eb39485eceeb982ad2c1f748",
+    "contrib/test_jenkins.sh": "6f1f5f1ff3e1dc364f77096fb02736461721920678e222e5077ba1c07d65a312",
+    "test/mpi/Makefile.am": "311af636b4fa6969fa3bb0f9b7561d32ad2c3a14b15bfc854569fb37e9184e18",
+    "test/mpi/test_cuda_common.c": "092c049cafa7e2919f6c18c37d43f5ba33c9957e4015cd82fc48298ecb263c48",
+    "test/mpi/test_cuda_common.h": "f896ec50d343164be974a4afb82332726b75c99916157eccd8b82e42224f1287"
+  },
+  "status": "PASS",
+  "tested_commit": "e11c90d6ba64ac4d6b594c3e3af11265ece006a8",
+  "nodes": [
+    {
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95
+      ],
+      "cpu": "AMD Ryzen Threadripper PRO 5995WX 64-Cores",
+      "devices": [
+        {
+          "driver": "550.163.01",
+          "index": "0",
+          "name": "Tesla V100-SXM2-16GB",
+          "uuid": "GPU-3b7cd61f-68c1-9129-7f00-43eb992b5625"
+        },
+        {
+          "driver": "550.163.01",
+          "index": "1",
+          "name": "Tesla V100-SXM2-16GB",
+          "uuid": "GPU-0ddab4a0-19b0-92c4-d028-dc9e92ceb397"
+        },
+        {
+          "driver": "550.163.01",
+          "index": "2",
+          "name": "Tesla V100-SXM2-16GB",
+          "uuid": "GPU-176ab7ec-7212-6d49-f579-f922a670b7bf"
+        },
+        {
+          "driver": "550.163.01",
+          "index": "3",
+          "name": "Tesla V100-SXM2-16GB",
+          "uuid": "GPU-e703fd52-4746-f5ad-1af7-dd2b62b711e4"
+        }
+      ],
+      "logical_cpus": "128",
+      "node": "16v100n06",
+      "operating_system": "Linux 16v100n06.mr-sai.ai 5.15.0-100-generic #110-Ubuntu SMP Wed Feb 7 13:27:48 UTC 2024 x86_64"
+    },
+    {
+      "affinity": [
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        125,
+        126,
+        127
+      ],
+      "cpu": "AMD Ryzen Threadripper PRO 5995WX 64-Cores",
+      "devices": [
+        {
+          "driver": "550.163.01",
+          "index": "0",
+          "name": "Tesla V100-SXM2-16GB",
+          "uuid": "GPU-16dc143c-afbc-ba46-428a-57a503247b58"
+        },
+        {
+          "driver": "550.163.01",
+          "index": "1",
+          "name": "Tesla V100-SXM2-16GB",
+          "uuid": "GPU-ff2bf4e2-e636-50fb-ec33-d73de4266ce5"
+        },
+        {
+          "driver": "550.163.01",
+          "index": "2",
+          "name": "Tesla V100-SXM2-16GB",
+          "uuid": "GPU-d5d4702c-13ad-57fe-d440-dcdb72e696e5"
+        },
+        {
+          "driver": "550.163.01",
+          "index": "3",
+          "name": "Tesla V100-SXM2-16GB",
+          "uuid": "GPU-232475dd-6a76-14cb-7b89-29c2870ce10a"
+        }
+      ],
+      "logical_cpus": "128",
+      "node": "16v100n47",
+      "operating_system": "Linux 16v100n47.mr-sai.ai 5.15.0-100-generic #110-Ubuntu SMP Wed Feb 7 13:27:48 UTC 2024 x86_64"
+    }
+  ],
+  "modules": "cuda/12.9.1\nnvhpc/26.3-gnu-cuda12-tuned\nopenmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto\n",
+  "configure_command": "--enable-gtest --enable-examples --enable-test-apps --with-valgrind=guess --enable-profiling --enable-frame-pointer --enable-stats --enable-debug-data --enable-mt --prefix=/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/install/candidate --without-go --without-java --without-rocm --with-mpi --disable-static --with-cuda=/opt/devtools/nvidia/cuda-12.9.1 --with-gdrcopy=/usr CC=/usr/bin/gcc CXX=/usr/bin/g++ 'CFLAGS=-O1 -g' 'CXXFLAGS=-O1 -g'\n",
+  "gtest_sha256": "6747bf2fa720461882265cfffa631e4d76f646488ba84299af69fcaf1ce7954f",
+  "allocation": "JobId=2436165 JobName=ucx-cache-gtest\n   SLUID=s391M7AXEJD900\n   UserId=xujiacheng(1478400242) GroupId=xujiacheng(1478400242) MCS_label=N/A\n   Priority=10002 Nice=0 Account=proj-sai-hpc-software QOS=rush-gpu WCKey=*\n   JobState=RUNNING Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   DerivedExitCode=0:0\n   RunTime=00:00:01 TimeLimit=00:30:00 TimeMin=N/A\n   SubmitTime=2026-11-14T00:56:21 EligibleTime=2026-11-14T00:56:21\n   AccrueTime=2026-11-14T00:56:21\n   StartTime=2026-11-14T00:56:22 EndTime=2026-11-14T01:26:22 Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-11-14T00:56:22 Scheduler=Main\n   Partition=16V100 AllocNode:Sid=login-01:295082\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=16v100n06\n   BatchHost=16v100n06\n   NumNodes=1 NumCPUs=32 NumTasks=4 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=4,mem=60G,node=1,billing=600,gres/gpu=4\n   AllocTRES=cpu=32,mem=60G,node=1,billing=600,gres/gpu=4\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   JOB_GRES=gpu:V100-SXM2:4\n     Nodes=16v100n06 CPU_IDs=0-15,48-63 Mem=61440 GRES=gpu:V100-SXM2:4(IDX:10-13)\n   MinCPUsNode=1 MinMemoryTRES=15G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/retry.sbatch\n   SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/retry.sbatch\n   WorkDir=/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114\n   StdErr=\n   StdIn=/dev/null\n   StdOut=/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/slurm-2436165.log\n   CpusPerTres=gpu:8\n   MemPerTres=gpu:15360\n   TresPerNode=gres/gpu:4\n\n",
+  "accounting_psv": "JobID|JobName|State|ExitCode|Elapsed|Start|End|AllocTRES|NodeList|MaxRSS\n2436128|ucx-cache-gtest|FAILED|1:0|00:04:54|2026-11-14T00:48:47|2026-11-14T00:53:41|billing=600,cpu=32,gres/gpu=4,mem=60G,node=1|16v100n47|\n2436128.batch|batch|FAILED|1:0|00:04:54|2026-11-14T00:48:47|2026-11-14T00:53:41|cpu=32,gres/gpu=4,mem=60G,node=1|16v100n47|5602432K\n2436128.extern|extern|COMPLETED|0:0|00:04:54|2026-11-14T00:48:47|2026-11-14T00:53:41|billing=600,cpu=32,gres/gpu=4,mem=60G,node=1|16v100n47|\n2436165|ucx-cache-gtest|COMPLETED|0:0|00:02:39|2026-11-14T00:56:22|2026-11-14T00:59:01|billing=600,cpu=32,gres/gpu=4,mem=60G,node=1|16v100n06|\n2436165.batch|batch|COMPLETED|0:0|00:02:39|2026-11-14T00:56:22|2026-11-14T00:59:01|cpu=32,gres/gpu=4,mem=60G,node=1|16v100n06|1105744K\n2436165.extern|extern|COMPLETED|0:0|00:02:39|2026-11-14T00:56:22|2026-11-14T00:59:01|billing=600,cpu=32,gres/gpu=4,mem=60G,node=1|16v100n06|\n",
+  "attempt_notes": [
+    {
+      "stage": "source setup",
+      "result": "copytree stalled on shared-filesystem reads after SSH command timed out; stopped the owned copy process and preserved its partial directory. Extracting the original source archive and applying the reviewed delta instead."
+    },
+    {
+      "job": "2436128",
+      "stage": "initial deterministic suite",
+      "result": "Build succeeded. aligned_overlap, lower_overlap, failed_open and cache_hit passed before insert_failure terminated: a NULL pgtable directory allocator is fatal in UCX, not a returned allocation error. Replaced that injection with a conflicting region inserted by the mock driver after successful import; it exercises the UCS_ERR_ALREADY_EXISTS cleanup path. Prior logs retained."
+    }
+  ],
+  "interpretation": [
+    "The six deterministic overlap tests and six existing LRU tests run with CUDA_VISIBLE_DEVICES empty. Only open/close operations are mocked; the production cache lock, page table, invalidation, purge, accounting and insertion-failure cleanup execute.",
+    "The baseline-order control replaces only the cache insertion routine with its pre-fix form, adapted to the same open/close operations table. Its lower-overlap test fails because import precedes close even when the mock import succeeds. This is a controlled baseline, not a separate unmodified upstream build.",
+    "Removing insertion-failure close or the full-cache purge makes its corresponding test fail. The purge test includes an unrelated referenced mapping. These negative outcomes are expected and preserved.",
+    "The real GPU regression executable is the previously built 2bb888a standalone UCT test, used here as external validation after replacing it in-tree with deterministic gtests. Its binary hash is recorded; each process library map is audited against this build prefix.",
+    "Normal native MPI and direct UCT runs verify data and 30 lower-start overlaps. The baseline-order runtime recovers 30 CUDA error-208 imports per program; the candidate has none. Baseline regression failure is expected.",
+    "The candidate runtime is restored before final acceptance. These checks do not establish Fabric/POSIX-FD hardware behavior, concurrent allocation/free safety, full upstream CI completion, or application/performance acceptance."
+  ],
+  "scripts": {
+    "build.sh": "#!/bin/bash\nset -euo pipefail\nucx_validation_root=$PWD\ncd source\n./autogen.sh > ../logs/autogen.log 2>&1\ncd \"$ucx_validation_root\"\nmkdir build\ncd build\n../source/contrib/configure-devel --prefix=\"$ucx_validation_root/install/candidate\" \\\n    --without-go --without-java --without-rocm --with-mpi --disable-static \\\n    --with-cuda=/opt/devtools/nvidia/cuda-12.9.1 --with-gdrcopy=/usr \\\n    CC=/usr/bin/gcc CXX=/usr/bin/g++ CFLAGS='-O1 -g' CXXFLAGS='-O1 -g' \\\n    > ../logs/configure.log 2>&1\nucx_link_flags=\"-Wl,-rpath-link,$PWD/src/ucp/.libs -Wl,-rpath-link,$PWD/src/uct/.libs -Wl,-rpath-link,$PWD/src/ucs/.libs -Wl,-rpath-link,$PWD/src/ucm/.libs\"\nmake -j16 LDFLAGS=\"$ucx_link_flags\" > ../logs/build.log 2>&1\nmake install LDFLAGS=\"$ucx_link_flags\" > ../logs/install.log 2>&1\ncd \"$ucx_validation_root\"\ncc -shared -fPIC -O2 -g -I/opt/devtools/nvidia/cuda-12.9.1/include ipc_trace.c -ldl -pthread -o ipc_trace.so\nmpicc -O2 -g -I/opt/devtools/nvidia/cuda-12.9.1/include mpi_repro.c -L/opt/devtools/nvidia/cuda-12.9.1/lib64 -lcudart -o mpi_repro\n",
+    "run.sbatch": "#!/bin/bash\n#SBATCH --job-name=ucx-cache-gtest\n#SBATCH --partition=16V100\n#SBATCH --qos=rush-gpu\n#SBATCH --account=proj-sai-hpc-software\n#SBATCH --nodes=1\n#SBATCH --ntasks=4\n#SBATCH --gres=gpu:4\n#SBATCH --time=00:30:00\n#SBATCH --chdir=/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114\n#SBATCH --output=/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261114/slurm-%j.log\nset -eo pipefail\nexport PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\nexport LD_LIBRARY_PATH= LD_PRELOAD= PYTHONPATH=\nexport PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1 SLURM_EXPORT_ENV=ALL\nexport OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1\nexport OMPI_MCA_plm_slurm_args=--external-launcher PRTE_MCA_plm_slurm_args=--external-launcher\nsource /etc/profile.d/lmod.sh\nmodule purge\nmodule load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto\nmodule -t list > logs/modules.txt 2>&1\nscontrol show job -d \"$SLURM_JOB_ID\" > logs/allocation.txt\nbash build.sh\npython3 -B validate.py\n",
+    "validate.py": "from pathlib import Path\nimport collections\nimport hashlib\nimport json\nimport os\nimport re\nimport subprocess\nimport sys\n\nroot = Path(__file__).resolve().parent\nsys.path.insert(0, '/org/org-open-sai/proj-sai-hpc-software/ucx-ipc-20261110-a/control')\nfrom suite import node_info\nnode_info(root / 'runs', 4)\nreport = {'job': os.environ['SLURM_JOB_ID'], 'cases': [], 'phases': {}}\nsource = root / 'source/src/uct/cuda/cuda_ipc/cuda_ipc_cache.c'\ncandidate = source.read_text()\nhashes = json.loads((root / 'source-hashes.json').read_text())\nfor name, digest in hashes.items():\n    assert hashlib.sha256((root / 'source' / name).read_bytes()).hexdigest() == digest, name\nreport['source_sha256'] = hashes\n\ndef record():\n    (root / 'results.json').write_text(json.dumps(report, indent=2) + '\\n')\n\ndef run(name, command, env=None, expected=0):\n    log = root / 'logs' / (name + '.log')\n    with log.open('w') as stream:\n        result = subprocess.run(command, cwd=root, env=env, stdout=stream, stderr=subprocess.STDOUT)\n    text = log.read_text(errors='replace')\n    item = {'name': name, 'command': command, 'exit_code': result.returncode,\n            'expected': expected, 'log': str(log.relative_to(root))}\n    item['accepted'] = result.returncode == expected\n    report['cases'].append(item)\n    record()\n    print(json.dumps(item), flush=True)\n    assert item['accepted'], text[-4000:]\n    return text, item\n\ndef phase(name):\n    report['phases'][name] = {\n        'cache_source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),\n        'cuda_module_sha256': hashlib.sha256((root / 'install/candidate/lib/ucx/libuct_cuda.so.0.0.0').read_bytes()).hexdigest()\n    }\n    record()\n\ndef rebuild(name, text):\n    source.write_text(text)\n    run(name + '-build', ['make', '-C', str(root / 'build/src/uct/cuda'), '-j8'])\n    run(name + '-install', ['make', '-C', str(root / 'build/src/uct/cuda'), 'install'])\n    phase(name)\n\ndef gtest(name, filter, expected=0, repeat=1):\n    env = os.environ.copy()\n    env['CUDA_VISIBLE_DEVICES'] = ''\n    env['UCX_HANDLE_ERRORS'] = 'bt'\n    text, item = run(name, ['timeout', '180', 'make', '-C', str(root / 'build/test/gtest'),\n                    'test', 'GTEST_FILTER=' + filter,\n                    'GTEST_EXTRA_ARGS=--gtest_shuffle --gtest_random_seed=2026 --gtest_repeat=' + str(repeat)],\n                    env=env, expected=expected)\n    item['gpu_visibility'] = ''\n    item['passed'] = len(re.findall(r'^\\[       OK \\]', text, re.M))\n    item['failed'] = re.findall(r'^\\[  FAILED  \\] (test_cuda_ipc_cache_\\S+)', text, re.M)\n    assert '[  SKIPPED ]' not in text, text[-4000:]\n    if expected == 0:\n        assert item['passed'] >= 6 * repeat, item\n        assert not item['failed'], item\n    else:\n        assert item['failed'], text[-4000:]\n    record()\n\ndef hardware(name, mode, expected=0, errors=0):\n    case = root / 'runs' / name\n    (case / 'trace').mkdir(parents=True)\n    executable = {\n        'normal': root.parent / 'ucx-review-probe-20261113/build-candidate/test/mpi/.libs/test_cuda_ipc_overlap',\n        'native': root / 'mpi_repro',\n        'mpi-matrix': root / 'build/test/mpi/.libs/test_mpi_cuda'\n    }[mode]\n    cmd = ['timeout', '--kill-after=10', '180', 'mpirun', '-np', '2', '--bind-to', 'none']\n    if mode == 'normal':\n        cmd += ['-mca', 'pml', 'ob1', '-mca', 'osc', '^ucx', '-mca', 'btl', 'tcp,self',\n                '-mca', 'btl_tcp_if_include', 'lo', '-mca', 'coll', '^hcoll,ml,ucc']\n    cmd += ['/usr/bin/python3', '-B', str(root / 'rank.py'), name, 'candidate', mode, str(executable)]\n    text, item = run(name, cmd, expected=expected)\n    item['executable_sha256'] = hashlib.sha256(executable.read_bytes()).hexdigest()\n    if mode == 'mpi-matrix':\n        item['passed'] = len(re.findall(r': PASS', text))\n        item['skipped'] = len(re.findall(r': SKIP', text))\n        assert item['passed'] == 450 and item['skipped'] == 36 and ': FAIL' not in text, item\n    elif mode == 'normal':\n        assert f'lower overlaps=30, UCX errors/warnings={errors}; data checks passed' in text, text[-4000:]\n    else:\n        assert 'PASS exact data checks; lower_overlap_count=30' in text, text[-4000:]\n    traces = list((case / 'trace').glob('ipc-r[01]-*.log'))\n    assert len(traces) == 2, traces\n    counts = collections.Counter()\n    item['library_maps'] = []\n    for trace in traces:\n        content = trace.read_text()\n        counts.update(re.findall(r'^\\d+ open result=(\\d+)\\b', content, re.M))\n        libs = sorted({line.split()[-1] for line in content.splitlines()\n                       if line.startswith('MAP ') and re.search(r'/lib(?:ucs|ucp|uct|ucm)(?:[._])', line)})\n        assert libs and all(lib.startswith(str(root / 'install/candidate') + '/') for lib in libs), libs\n        item['library_maps'].append(libs)\n    if mode != 'mpi-matrix':\n        assert counts['0'] == 60 and counts['208'] == errors, counts\n        assert sum(n for c, n in counts.items() if c != '0') == errors, counts\n    item['driver_open_results'] = dict(counts)\n    record()\n\nphase('candidate')\ngtest('candidate-gtest-no-gpu', 'test_cuda_ipc_cache_*', repeat=3)\nstart = candidate.index('ucs_status_t\\nuct_cuda_ipc_cache_put_region(')\nend = candidate.index('UCS_PROFILE_FUNC(ucs_status_t, uct_cuda_ipc_map_memhandle,', start)\nbaseline = candidate[:start] + (root / 'baseline-cache-put.c').read_text() + candidate[end:]\ntry:\n    rebuild('baseline-order', baseline)\n    gtest('baseline-order-negative', 'test_cuda_ipc_cache_overlap.lower_overlap', expected=2)\n    hardware('baseline-regression', 'normal', expected=1, errors=30)\n    hardware('baseline-native', 'native', errors=30)\n    leak_anchor = '        cache->ops->close(region);\\n        goto err_free_region;'\n    assert candidate.count(leak_anchor) == 1\n    rebuild('missing-close', candidate.replace(leak_anchor, '        goto err_free_region;'))\n    gtest('missing-close-negative', 'test_cuda_ipc_cache_overlap.insert_failure', expected=2)\n    purge_anchor = '            uct_cuda_ipc_cache_purge(cache, 1);'\n    assert candidate.count(purge_anchor) == 1\n    rebuild('missing-purge', candidate.replace(purge_anchor, '            /* mutation: omit purge */'))\n    gtest('missing-purge-negative', 'test_cuda_ipc_cache_overlap.purge_retry', expected=2)\nfinally:\n    rebuild('candidate-restored', candidate)\ngtest('candidate-restored-no-gpu', 'test_cuda_ipc_cache_overlap.*')\nhardware('candidate-regression', 'normal')\nhardware('candidate-native', 'native')\nhardware('candidate-mpi-matrix', 'mpi-matrix')\nassert report['phases']['candidate']['cache_source_sha256'] == report['phases']['candidate-restored']['cache_source_sha256']\nreport['status'] = 'PASS'\nrecord()\nprint('VALIDATION PASS', flush=True)\n",
+    "baseline-cache-put.c": "ucs_status_t\nuct_cuda_ipc_cache_put_region(uct_cuda_ipc_cache_t *cache,\n                              uct_cuda_ipc_extended_rkey_t *ext_key,\n                              CUdevice cu_dev, void **mapped_addr,\n                              ucs_log_level_t log_level)\n{\n    uct_cuda_ipc_rkey_t *key = &ext_key->super;\n    ucs_pgt_region_t *pgt_region;\n    uct_cuda_ipc_cache_region_t *region;\n    ucs_status_t status;\n    int ret;\n\n    pthread_rwlock_wrlock(&cache->lock);\n    pgt_region = UCS_PROFILE_CALL(ucs_pgtable_lookup,\n                                  &cache->pgtable, key->d_bptr);\n    if (ucs_likely(pgt_region != NULL)) {\n        region = ucs_derived_of(pgt_region, uct_cuda_ipc_cache_region_t);\n\n        if (key->ph.buffer_id == region->key.ph.buffer_id) {\n            /*cache hit */\n            ucs_trace(\"%s: cuda_ipc cache hit addr:%p size:%lu region:\"\n                      UCS_PGT_REGION_FMT, cache->name, (void *)key->d_bptr,\n                      key->b_len, UCS_PGT_REGION_ARG(&region->super));\n\n            /* Move to LRU tail (most recently used). Region is always on LRU\n             * while alive, so unconditional del/add_tail is safe. */\n            ucs_list_del(&region->lru_list);\n            ucs_list_add_tail(&cache->lru_list, &region->lru_list);\n\n            *mapped_addr = region->mapped_addr;\n            ucs_assert(region->refcount < UINT64_MAX);\n            region->refcount++;\n            pthread_rwlock_unlock(&cache->lock);\n            return UCS_OK;\n        } else {\n            ucs_trace(\"%s: cuda_ipc cache remove stale region:\"\n                      UCS_PGT_REGION_FMT \" new_addr:%p new_size:%lu\",\n                      cache->name, UCS_PGT_REGION_ARG(&region->super),\n                      (void *)key->d_bptr, key->b_len);\n\n            uct_cuda_ipc_cache_region_destroy(cache, region);\n        }\n    }\n\n    status = cache->ops->open(ext_key, cu_dev,\n                                         (CUdeviceptr*)mapped_addr, log_level);\n    if (ucs_unlikely(status != UCS_OK)) {\n        if (ucs_likely(status == UCS_ERR_ALREADY_EXISTS)) {\n            /* unmap all overlapping regions and retry*/\n            uct_cuda_ipc_cache_invalidate_regions(cache, (void *)key->d_bptr,\n                                                  UCS_PTR_BYTE_OFFSET(key->d_bptr,\n                                                                      key->b_len));\n            status = cache->ops->open(ext_key, cu_dev,\n                                                 (CUdeviceptr*)mapped_addr,\n                                                 log_level);\n            if (ucs_unlikely(status != UCS_OK)) {\n                if (ucs_likely(status == UCS_ERR_ALREADY_EXISTS)) {\n                    /* unmap all cache entries and retry */\n                    uct_cuda_ipc_cache_purge(cache, 1);\n                    status = cache->ops->open(\n                            ext_key, cu_dev, (CUdeviceptr*)mapped_addr,\n                            log_level);\n                    if (status != UCS_OK) {\n                        ucs_fatal(\"%s: failed to open ipc mem handle. addr:%p \"\n                                  \"len:%lu (%s)\", cache->name,\n                                  (void *)key->d_bptr, key->b_len,\n                                  ucs_status_string(status));\n                    }\n                } else {\n                    ucs_fatal(\"%s: failed to open ipc mem handle. addr:%p len:%lu\",\n                              cache->name, (void *)key->d_bptr, key->b_len);\n                }\n            }\n        } else {\n            ucs_debug(\"%s: failed to open ipc mem handle. addr:%p len:%lu\",\n                      cache->name, (void *)key->d_bptr, key->b_len);\n            goto err;\n        }\n    }\n\n    /*create new cache entry */\n    ret = ucs_posix_memalign((void **)&region,\n                             ucs_max(sizeof(void *), UCS_PGT_ENTRY_MIN_ALIGN),\n                             sizeof(uct_cuda_ipc_cache_region_t),\n                             \"uct_cuda_ipc_cache_region\");\n    if (ret != 0) {\n        ucs_warn(\"failed to allocate uct_cuda_ipc_cache region\");\n        status = UCS_ERR_NO_MEMORY;\n        goto err;\n    }\n\n    region->super.start = ucs_align_down_pow2((uintptr_t)key->d_bptr,\n                                               UCS_PGT_ADDR_ALIGN);\n    region->super.end   = ucs_align_up_pow2  ((uintptr_t)key->d_bptr + key->b_len,\n                                               UCS_PGT_ADDR_ALIGN);\n    region->key         = *key;\n    region->mapped_addr = *mapped_addr;\n    region->refcount    = 1;\n    region->cu_dev      = cu_dev;\n\n    status = UCS_PROFILE_CALL(ucs_pgtable_insert,\n                              &cache->pgtable, &region->super);\n    if (status == UCS_ERR_ALREADY_EXISTS) {\n        /* overlapped region means memory freed at source. remove and try insert */\n        uct_cuda_ipc_cache_invalidate_regions(cache,\n                                              (void *)region->super.start,\n                                              (void *)region->super.end);\n        status = UCS_PROFILE_CALL(ucs_pgtable_insert,\n                                  &cache->pgtable, &region->super);\n    }\n    if (status != UCS_OK) {\n\n        ucs_error(\"%s: failed to insert region:\"UCS_PGT_REGION_FMT\" size:%lu :%s\",\n                  cache->name, UCS_PGT_REGION_ARG(&region->super), key->b_len,\n                  ucs_status_string(status));\n        ucs_free(region);\n        goto err;\n    }\n\n    cache->num_regions++;\n    cache->total_size += key->b_len;\n    ucs_list_add_tail(&cache->lru_list, &region->lru_list);\n\n    uct_cuda_ipc_cache_evict_lru(cache);\n\n    ucs_trace(\"%s: cuda_ipc cache new region:\"UCS_PGT_REGION_FMT\" size:%lu\"\n              \" (regions:%lu/%lu size:%zu/%zu)\",\n              cache->name, UCS_PGT_REGION_ARG(&region->super), key->b_len,\n              cache->num_regions, uct_cuda_ipc_remote_cache.max_regions,\n              cache->total_size, uct_cuda_ipc_remote_cache.max_size);\n\n    status = UCS_OK;\n\nerr:\n    pthread_rwlock_unlock(&cache->lock);\n    return status;\n}\n\n"
+  },
+  "raw_archive": {
+    "name": "deterministic-evidence.tar.gz",
+    "bytes": 163407,
+    "sha256": "0135d672bb99ccb5e7dfdc67c5bfaf2e16a153aa73851716aa160a748c3d085a"
+  }
+}
