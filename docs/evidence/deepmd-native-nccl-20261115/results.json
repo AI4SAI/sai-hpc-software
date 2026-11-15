@@ -1,0 +1,296 @@
+{
+  "schema": 1,
+  "installation": "/opt/apps/conda_env/deepmd-kit-3.2.0",
+  "module": "/opt/modules/modulefiles/apps/deepmd-kit/3.2.0",
+  "remote_evidence": "/org/org-open-sai/proj-sai-hpc-software/operations/diagnostics/deepmd-native-nccl-20261115",
+  "tests": [
+    {
+      "partition": "16V100",
+      "job": "2483571",
+      "cases": {
+        "default": {
+          "summary": "16V100-default-summary.json.gz",
+          "sha256": "0bd9cb4db341d36c3c3c4269aa6747b5615fa6d915a92732c719e0506a005817",
+          "results": {
+            "se_e2_a": {
+              "training": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 12.221326319500804
+              },
+              "restart": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 9.955249149352312
+              }
+            },
+            "dpa2": {
+              "training": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 12.037219615653157
+              },
+              "restart": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 10.143454110249877
+              }
+            }
+          }
+        },
+        "forced-ib": {
+          "summary": "16V100-forced-ib-summary.json.gz",
+          "sha256": "1b187e8e228fb04c8ece3884460ad9e313deb2b627139c6148ec9b904b2b7ecf",
+          "results": {
+            "se_e2_a": {
+              "training": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 11.110142963007092
+              },
+              "restart": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 10.071680096909404
+              }
+            },
+            "dpa2": {
+              "training": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 11.311765037477016
+              },
+              "restart": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 10.167535608634353
+              }
+            }
+          }
+        }
+      },
+      "nccl_log_excerpts": {
+        "training-default/dpa2/restart.log": {
+          "sha256": "af53a6970b1f62d478e7d6fb06707437e8bc20f8a09c3b29d6e264f622fc3db4",
+          "lines": [
+            "16v100n40:257980:257980 [0] NCCL INFO NCCL-SAI rail-by-channel communicator agreement enabled for 2 ranks with rail subnets fe80000000000001/fe80000000000002"
+          ]
+        },
+        "training-default/dpa2/training.log": {
+          "sha256": "084eaa10e0b62d0922bdf5df1af856346e3d734d7c1446383e858abf50bc3204",
+          "lines": [
+            "16v100n40:257361:257361 [0] NCCL INFO NCCL-SAI rail-by-channel communicator agreement enabled for 2 ranks with rail subnets fe80000000000001/fe80000000000002"
+          ]
+        },
+        "training-default/se_e2_a/restart.log": {
+          "sha256": "259a31cbaa04cf4717c1f86b05000c78bc93bce2790af2306f2afc67619be259",
+          "lines": [
+            "16v100n40:256919:256919 [0] NCCL INFO NCCL-SAI rail-by-channel communicator agreement enabled for 2 ranks with rail subnets fe80000000000001/fe80000000000002"
+          ]
+        },
+        "training-default/se_e2_a/training.log": {
+          "sha256": "d7320ea7fab91c7092577d084aa2f18217ed530b54d90ff9457550048b8b9056",
+          "lines": [
+            "16v100n40:256470:256470 [0] NCCL INFO NCCL-SAI rail-by-channel communicator agreement enabled for 2 ranks with rail subnets fe80000000000001/fe80000000000002"
+          ]
+        },
+        "training-forced-ib/dpa2/restart.log": {
+          "sha256": "e1052a54162332c1b45e85a41f8036184cd460bb94d48c3069ea5dc0065ae4a7",
+          "lines": [
+            "16v100n40:259643:259643 [0] NCCL INFO NCCL-SAI rail-by-channel communicator agreement enabled for 2 ranks with rail subnets fe80000000000001/fe80000000000002",
+            "16v100n40:259644:259644 [1] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [receive] via NET/IB/4/GDRDMA",
+            "16v100n40:259644:259644 [1] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [receive] via NET/IB/5/GDRDMA",
+            "16v100n40:259644:259644 [1] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [send] via NET/IB/4/GDRDMA",
+            "16v100n40:259644:259644 [1] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [send] via NET/IB/5/GDRDMA",
+            "16v100n40:259643:259643 [0] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [receive] via NET/IB/4/GDRDMA",
+            "16v100n40:259643:259643 [0] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [receive] via NET/IB/5/GDRDMA",
+            "16v100n40:259643:259643 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [send] via NET/IB/4/GDRDMA",
+            "16v100n40:259643:259643 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [send] via NET/IB/5/GDRDMA"
+          ]
+        },
+        "training-forced-ib/dpa2/training.log": {
+          "sha256": "745dfeef1e567c679490df86d483bb5de76151d28a7f1f1b388d056598f3731e",
+          "lines": [
+            "16v100n40:259202:259202 [0] NCCL INFO NCCL-SAI rail-by-channel communicator agreement enabled for 2 ranks with rail subnets fe80000000000001/fe80000000000002",
+            "16v100n40:259202:259202 [0] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [receive] via NET/IB/4/GDRDMA",
+            "16v100n40:259202:259202 [0] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [receive] via NET/IB/5/GDRDMA",
+            "16v100n40:259202:259202 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [send] via NET/IB/4/GDRDMA",
+            "16v100n40:259202:259202 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [send] via NET/IB/5/GDRDMA",
+            "16v100n40:259203:259203 [1] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [receive] via NET/IB/4/GDRDMA",
+            "16v100n40:259203:259203 [1] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [receive] via NET/IB/5/GDRDMA",
+            "16v100n40:259203:259203 [1] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [send] via NET/IB/4/GDRDMA",
+            "16v100n40:259203:259203 [1] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [send] via NET/IB/5/GDRDMA"
+          ]
+        },
+        "training-forced-ib/se_e2_a/restart.log": {
+          "sha256": "24c231a1071a9220f07f25680a66efe1e0bd094571fe27bf681067f3fce66e16",
+          "lines": [
+            "16v100n40:258824:258824 [0] NCCL INFO NCCL-SAI rail-by-channel communicator agreement enabled for 2 ranks with rail subnets fe80000000000001/fe80000000000002",
+            "16v100n40:258824:258824 [0] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [receive] via NET/IB/4/GDRDMA",
+            "16v100n40:258824:258824 [0] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [receive] via NET/IB/5/GDRDMA",
+            "16v100n40:258824:258824 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [send] via NET/IB/4/GDRDMA",
+            "16v100n40:258825:258825 [1] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [receive] via NET/IB/4/GDRDMA",
+            "16v100n40:258824:258824 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [send] via NET/IB/5/GDRDMA",
+            "16v100n40:258825:258825 [1] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [receive] via NET/IB/5/GDRDMA",
+            "16v100n40:258825:258825 [1] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [send] via NET/IB/4/GDRDMA",
+            "16v100n40:258825:258825 [1] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [send] via NET/IB/5/GDRDMA"
+          ]
+        },
+        "training-forced-ib/se_e2_a/training.log": {
+          "sha256": "2a55295de898bbc00f364d34a98ca3aadd54821bae7df04321746a4f19ceb155",
+          "lines": [
+            "16v100n40:258390:258390 [0] NCCL INFO NCCL-SAI rail-by-channel communicator agreement enabled for 2 ranks with rail subnets fe80000000000001/fe80000000000002",
+            "16v100n40:258391:258391 [1] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [receive] via NET/IB/4/GDRDMA",
+            "16v100n40:258391:258391 [1] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [receive] via NET/IB/5/GDRDMA",
+            "16v100n40:258391:258391 [1] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [send] via NET/IB/4/GDRDMA",
+            "16v100n40:258391:258391 [1] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [send] via NET/IB/5/GDRDMA",
+            "16v100n40:258390:258390 [0] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [receive] via NET/IB/4/GDRDMA",
+            "16v100n40:258390:258390 [0] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [receive] via NET/IB/5/GDRDMA",
+            "16v100n40:258390:258390 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [send] via NET/IB/4/GDRDMA",
+            "16v100n40:258390:258390 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [send] via NET/IB/5/GDRDMA"
+          ]
+        }
+      }
+    },
+    {
+      "partition": "8V100V0",
+      "job": "2483659",
+      "cases": {
+        "default": {
+          "summary": "8V100V0-default-summary.json.gz",
+          "sha256": "d20283a4d652cc0c93913acd6b10eb93ef7108985cabefe4669c996a38752b81",
+          "results": {
+            "se_e2_a": {
+              "training": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 13.353506283950992
+              },
+              "restart": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 11.520052321022376
+              }
+            },
+            "dpa2": {
+              "training": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 13.856342775048688
+              },
+              "restart": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 12.983976289979182
+              }
+            }
+          }
+        },
+        "forced-ib": {
+          "summary": "8V100V0-forced-ib-summary.json.gz",
+          "sha256": "110643fc653b896f900558383dc445e087fd25a6fdd080da1b72030965b52ec8",
+          "results": {
+            "se_e2_a": {
+              "training": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 13.225551826995797
+              },
+              "restart": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 11.758922309032641
+              }
+            },
+            "dpa2": {
+              "training": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 16.353499382035807
+              },
+              "restart": {
+                "returncode": 0,
+                "passed": true,
+                "elapsed_seconds": 12.995004567084834
+              }
+            }
+          }
+        }
+      },
+      "nccl_log_excerpts": {
+        "training-default/dpa2/restart.log": {
+          "sha256": "3c60534e8fe4930e0963e495bdc834f49329acf9bfca087288a74720fb510470",
+          "lines": []
+        },
+        "training-default/dpa2/training.log": {
+          "sha256": "8a68668963a3b803d4f340ccd7fbad1b210820fac8abfbd7c82f818e86ad32a7",
+          "lines": []
+        },
+        "training-default/se_e2_a/restart.log": {
+          "sha256": "4a1903f5ff2e81855cd88864e5a7aabbbaf941d95f5850a0e99b8f79a7847fb3",
+          "lines": []
+        },
+        "training-default/se_e2_a/training.log": {
+          "sha256": "cdda2a278f489164bb57fbc48295a5f6faaf88de5f43742bfc6d541abf04b07f",
+          "lines": []
+        },
+        "training-forced-ib/dpa2/restart.log": {
+          "sha256": "d029ad3002928e44267115d20f03548153f846d102e647d51d40ea16edd1e580",
+          "lines": [
+            "8v100v0n09:925760:925760 [0] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925760:925760 [0] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925760:925760 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [send] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925760:925760 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [send] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925761:925761 [1] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925761:925761 [1] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925761:925761 [1] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [send] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925761:925761 [1] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [send] via NET/IB/0/GDRDMA"
+          ]
+        },
+        "training-forced-ib/dpa2/training.log": {
+          "sha256": "acec9ffc040fbeeea2895f68281e83b0f011c66492b663ad53745720cf6d76b7",
+          "lines": [
+            "8v100v0n09:925225:925225 [1] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925225:925225 [1] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925225:925225 [1] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [send] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925225:925225 [1] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [send] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925224:925224 [0] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925224:925224 [0] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925224:925224 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [send] via NET/IB/0/GDRDMA",
+            "8v100v0n09:925224:925224 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [send] via NET/IB/0/GDRDMA"
+          ]
+        },
+        "training-forced-ib/se_e2_a/restart.log": {
+          "sha256": "e8d2fd9cc3c043089d8d7702b70ee4da28c37e1dfc7b63be82ce19d3523a0820",
+          "lines": [
+            "8v100v0n09:924866:924866 [1] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924866:924866 [1] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924866:924866 [1] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [send] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924866:924866 [1] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [send] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924865:924865 [0] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924865:924865 [0] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924865:924865 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [send] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924865:924865 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [send] via NET/IB/0/GDRDMA"
+          ]
+        },
+        "training-forced-ib/se_e2_a/training.log": {
+          "sha256": "394724e1a83e6b09935488ace5c129062fe8cf6533c6b1ac380eb45d538c6f19",
+          "lines": [
+            "8v100v0n09:924458:924458 [0] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924458:924458 [0] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924458:924458 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [send] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924458:924458 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [send] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924459:924459 [1] NCCL INFO Channel 00/0 : 0[0] -> 1[1] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924459:924459 [1] NCCL INFO Channel 01/0 : 0[0] -> 1[1] [receive] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924459:924459 [1] NCCL INFO Channel 00/0 : 1[1] -> 0[0] [send] via NET/IB/0/GDRDMA",
+            "8v100v0n09:924459:924459 [1] NCCL INFO Channel 01/0 : 1[1] -> 0[0] [send] via NET/IB/0/GDRDMA"
+          ]
+        }
+      }
+    }
+  ],
+  "pending": {
+    "partition": "4V100",
+    "job": "2483656"
+  }
+}

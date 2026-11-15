@@ -1,0 +1,20 @@
+#%Module1.0
+module-whatis "DeePMD-kit 3.2.0 complete TF/PT/JAX CUDA runtime, Supporting DPA4(C)"
+
+module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto
+
+# Select the site NCCL patch before PyTorch searches its embedded DT_RPATH.
+prepend-path LD_PRELOAD /opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib/libnccl.so.2
+
+set env_home /opt/apps/conda_env/deepmd-kit-3.2.0
+set lammps_home /opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-nvhpc263-ompi5010-sm70
+
+prepend-path PATH $env_home/bin
+prepend-path PATH $lammps_home/bin
+setenv DEEPMD_ROOT $env_home
+setenv DEEPMD_PYTHON $env_home/bin/python
+setenv DP_CUDA_INFER 2
+#setenv PYTORCH_ALLOC_CONF expandable_segments:False
+setenv OMP_NUM_THREADS 2
+setenv DP_INTRA_OP_PARALLELISM_THREADS 1
+setenv DP_INTER_OP_PARALLELISM_THREADS 1
