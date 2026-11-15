@@ -1,5 +1,15 @@
 # CUDA IPC address-recycling diagnosis (2026-11-10)
 
+## Minimal legacy overlap fix (2026-11-15)
+
+Commit [`90efa04`](https://github.com/Stardust0831/ucx/commit/90efa0403b29f69f259310247e8657e565c4d479) narrows the upstream patch to **eight added runtime lines**, plus the AUTHORS entry. On a legacy cache miss, it calls the existing overlap-invalidation helper before the first import. The operations table, exposed cache insertion routine, new test fixture, allocation reordering and general failure cleanup are removed from the PR.
+
+SAI job **2481375** completed with **0:0**. The external direct-UCT and native-MPI reproducers each observed **30 lower-start overlaps**: the original runtime recovered **30 CUDA error-208 imports per program**, while the minimal candidate had **zero**; byte comparisons passed in both. All ten hardware-process library maps selected this build. The **six existing LRU gtests passed**, and the existing MPI/CUDA matrix recorded **450 passes and 36 Fabric-related skips**.
+
+The external direct-UCT executable was built from `2bb888a` and loads the candidate runtime. The baseline uses the original cache source from `74b413a`, without adapting its control flow. The overlap check depends on observed allocator reuse and is not an automatic in-tree regression. A first build stopped because the source package omitted the GPUNetIO submodule; its fixed commit was restored and the build resumed. Commands, hashes, failed-attempt evidence and scheduler receipts are in the [validation record](minimal-20261115.json).
+
+Raw evidence: local `.work/ucx-scope-20261115/minimal-evidence.tar.gz`, SHA256 `ad3414e09220516a4bf7c024e6433aca18de601fee585fdde269baf1cf243dfb`.
+
 ## Explicit null guard and CI follow-up (2026-11-15)
 
 Commit [`01d981a`](https://github.com/Stardust0831/ucx/commit/01d981aadf2f5618c26eff619e5137f1eb263780) makes the missing-region exit in `aligned_overlap` explicit with `ADD_FAILURE()` and `return`. The actual CI merge source already contained `ASSERT_NE(nullptr, region)`; Coverity still reported `NULL_RETURNS` at the following dereference. Only the test changes.
