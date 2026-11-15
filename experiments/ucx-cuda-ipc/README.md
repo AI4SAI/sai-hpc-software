@@ -1,5 +1,15 @@
 # CUDA IPC address-recycling diagnosis (2026-11-10)
 
+## Explicit null guard and CI follow-up (2026-11-15)
+
+Commit [`01d981a`](https://github.com/Stardust0831/ucx/commit/01d981aadf2f5618c26eff619e5137f1eb263780) makes the missing-region exit in `aligned_overlap` explicit with `ADD_FAILURE()` and `return`. The actual CI merge source already contained `ASSERT_NE(nullptr, region)`; Coverity still reported `NULL_RETURNS` at the following dereference. Only the test changes.
+
+SAI job **2480566** completed **0:0 in 1m00s** on `16v100n17`. An isolated rebuild of the changed test linked against the unchanged `e11c90d` development libraries: **all 12 cache tests passed with no visible GPUs**, and a null-lookup control printed the expected failure and exited **1 without a crash**. Source and runtime library hashes were checked before and after the run. The earlier setup failures and scheduler receipts are preserved in the [validation record](null-guard-20261115.json).
+
+The other failure in Azure build **145089** was `ib/test_md.alloc/1` on `mlx5_1`: **77%** of allocations returned `OUT_OF_RESOURCE`, above the **50%** threshold, while gtest reported **9100/9101 passes** and skipped CUDA device tests. Its resource-exhaustion cause remains unconfirmed. Coverity and RoCE confirmation await the follow-up CI run; the real-GPU/MPI results below belong to `e11c90d` and were not rerun for this test guard.
+
+Raw evidence: local `.work/ucx-review-20261115/null-guard-evidence.tar.gz`, SHA256 `f2dbfb06130b640f67d67749b973b401a18345838e0a9aa9468b08945f060cac`. The smaller execution archive also remains under `/org/org-open-sai/proj-sai-hpc-software/ucx-review-20261115`.
+
 ## Deterministic cache coverage and insertion cleanup (2026-11-14)
 
 Commit [`e11c90d`](https://github.com/Stardust0831/ucx/commit/e11c90d6ba64ac4d6b594c3e3af11265ece006a8) replaces the allocator-dependent MPI regression with six deterministic tests derived from the existing CUDA IPC LRU fixture. They call the production cache insertion routine with cache-local open/close operations; the default operations retain the existing CUDA driver implementation. The real lock, page table, invalidation, purge, accounting and insertion cleanup execute. The runtime allocates its descriptor before import, invalidates the aligned insertion span, and closes an imported mapping if insertion fails.
