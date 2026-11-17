@@ -1,13 +1,13 @@
 {
   "16V100": {
-    "passed": true,
-    "job": "2542696",
     "cases": 8,
+    "job": "2542696",
     "maximum_reference_error_ev": 2.0441802917048335e-08,
     "nodes": [
       "16v100n17",
       "16v100n18"
     ],
+    "passed": true,
     "samples": {
       "cusolvermp-multi": {
         "device": "gpu",
@@ -75,15 +75,91 @@
       }
     }
   },
-  "DSPRHBM": {
+  "4V100": {
+    "cases": 8,
+    "job": "2542695",
+    "maximum_reference_error_ev": 2.0453626348171383e-08,
+    "nodes": [
+      "4v100n06",
+      "4v100n27"
+    ],
     "passed": true,
-    "job": "2542698",
+    "samples": {
+      "cusolvermp-multi": {
+        "device": "gpu",
+        "energy_ev": -196.62217499801974,
+        "nodes": 2,
+        "ranks": 2,
+        "reference_error_ev": 3.694822225952521e-13,
+        "wall_seconds": 19.614997075055726
+      },
+      "deepks-multi": {
+        "device": "cpu",
+        "energy_ev": -71.32203132091472,
+        "nodes": 2,
+        "ranks": 2,
+        "reference_error_ev": 4.632738637155853e-12,
+        "wall_seconds": 1.5666190669871867
+      },
+      "deepks-single": {
+        "device": "cpu",
+        "energy_ev": -71.32203132092023,
+        "nodes": 1,
+        "ranks": 1,
+        "reference_error_ev": 8.810729923425242e-13,
+        "wall_seconds": 1.6662037139758468
+      },
+      "hse-multi": {
+        "device": "cpu",
+        "energy_ev": -428.9943139416823,
+        "nodes": 2,
+        "ranks": 2,
+        "reference_error_ev": 3.979039320256561e-13,
+        "wall_seconds": 1.3161451659398153
+      },
+      "hse-single": {
+        "device": "cpu",
+        "energy_ev": -428.99431394168084,
+        "nodes": 1,
+        "ranks": 1,
+        "reference_error_ev": 1.8758328224066645e-12,
+        "wall_seconds": 1.1653445429401472
+      },
+      "nccl-multi": {
+        "device": "gpu",
+        "energy_ev": -4869.747051979813,
+        "nodes": 2,
+        "ranks": 2,
+        "reference_error_ev": 1.2732925824820995e-11,
+        "wall_seconds": 2.7184104890329763
+      },
+      "pw-multi": {
+        "device": "gpu",
+        "energy_ev": -4869.747051950185,
+        "nodes": 2,
+        "ranks": 2,
+        "reference_error_ev": 0.0,
+        "wall_seconds": 2.1670290160691366
+      },
+      "pw-single": {
+        "device": "gpu",
+        "energy_ev": -4869.747051929731,
+        "nodes": 1,
+        "ranks": 1,
+        "reference_error_ev": 2.0453626348171383e-08,
+        "wall_seconds": 2.8672154130181298
+      }
+    }
+  },
+  "DSPRHBM": {
     "cases": 6,
+    "job": "2542698",
     "maximum_reference_error_ev": 1.533408067189157e-09,
     "nodes": [
       "d9470n03",
       "d9470n04"
     ],
+    "passed": true,
     "samples": {
       "deepks-multi": {
         "device": "cpu",
