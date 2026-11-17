@@ -21,12 +21,17 @@ the GPU builds retain it and check compatibility in the final-image science gate
 On the CPU target, NVHPC rejects the combination of HDF5's `mpi_f08` overloads
 and QE's legacy `mpi` module, including after recompiling HDF5 with NVHPC 26.3.
 A comparison using the actual failing QE source file passed with HDF5's F90
-MPI interface selected. The CPU recipe therefore builds HDF5 1.14.6 with
-NVHPC 26.3/OpenMPI 5.0.10 inside `<QE-prefix>/deps/hdf5`. A guarded CMake edit
-adds the `HDF5_ENABLE_MPI_F08` switch and selects `OFF`; numerical source is
-unchanged. Parallel I/O, Fortran, high-level APIs, zlib and SZIP are retained.
-The CMake edit hashes and full dependency configuration are recorded with the
-installed build metadata. CPU compilation keeps CUDA disabled.
+MPI interface selected. The CPU recipe therefore uses the accepted HDF5 1.14.6
+installation at `/opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM`,
+built with NVHPC 26.3/OpenMPI 5.0.10 and `HDF5_ENABLE_MPI_F08=OFF`. It verifies
+the installed files, compiler/MPI identity and static link paths before compiling
+QE. Parallel I/O, Fortran, high-level APIs, zlib and SZIP are retained. CPU
+compilation keeps CUDA disabled.
+
+Regular release/development preparation stages only QE's pinned Git submodules;
+it does not download or rebuild HDF5. The separate application-dependency builder
+still accepts an explicit HDF5 source archive and checks its pinned SHA256 when
+preparing a new installation.
 
 This recipe uses NVHPC 26.3/OpenMPI 5.0.10 on all four targets, with native host
 CPU code generation. CPU uses a separate build with GPU disabled. V100 builds
