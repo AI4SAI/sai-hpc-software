@@ -1,0 +1,959 @@
+{
+  "partitions": {
+    "16V100": {
+      "build_run": "43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266",
+      "cases": {
+        "cusolvermp": {
+          "candidate_energy_ev": -196.62217499802037,
+          "device": "gpu",
+          "energy_ev": -196.62217499802037,
+          "inputs": {
+            "INPUT": {
+              "sha256": "0bb50de5d6ded1c747b2550d9207bba702b4044e1a74a6f302924f015c2808e6",
+              "source": "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/INPUT"
+            },
+            "KPT": {
+              "sha256": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+              "source": "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/KPT"
+            },
+            "PP_ORB/Si_ONCV_PBE-1.0.upf": {
+              "sha256": "481a5fae1167fd712d4e8e2e4df33f8bfc1e7d2abbc0565290d39fbba9dccb41",
+              "source": "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/PP_ORB/Si_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/Si_gga_8au_100Ry_2s2p1d.orb": {
+              "sha256": "28d0c1c16399423e4c8c1dd1795b707fd467838ac6153162eb9734ab4f3cb8a2",
+              "source": "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/PP_ORB/Si_gga_8au_100Ry_2s2p1d.orb"
+            },
+            "STRU": {
+              "sha256": "54afe671f351a76e7f5deb99ccb170d8aa3e674677fd5fd1f355738b0f5d9d0c",
+              "source": "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/STRU"
+            }
+          },
+          "reference_scf": "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/OUT.autotest/running_scf.log"
+        },
+        "deepks": {
+          "candidate_energy_ev": -71.32203132091492,
+          "device": "cpu",
+          "energy_ev": -71.32203132091935,
+          "inputs": {
+            "INPUT": {
+              "sha256": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/INPUT"
+            },
+            "KPT": {
+              "sha256": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/KPT"
+            },
+            "Model_ProjOrb/2au_20Ry_jle.orb": {
+              "sha256": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/2au_20Ry_jle.orb"
+            },
+            "Model_ProjOrb/model_lda_pbe_18.ptg": {
+              "sha256": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/model_lda_pbe_18.ptg"
+            },
+            "PP_ORB/C_ONCV_PBE-1.0.upf": {
+              "sha256": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": {
+              "sha256": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb"
+            },
+            "PP_ORB/H_ONCV_PBE-1.0.upf": {
+              "sha256": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/H_gga_8au_100Ry_2s1p.orb": {
+              "sha256": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_gga_8au_100Ry_2s1p.orb"
+            },
+            "STRU": {
+              "sha256": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/STRU"
+            },
+            "result.ref": {
+              "sha256": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/result.ref"
+            }
+          },
+          "reference_scf": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/OUT.autotest/running_scf.log"
+        },
+        "hse": {
+          "candidate_energy_ev": -428.9943139416825,
+          "device": "cpu",
+          "energy_ev": -428.9943139416827,
+          "inputs": {
+            "INPUT": {
+              "sha256": "90b328e6cc2b61027d06d60d6b29da14276824e6ccb10a64763af25c0367339d",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/INPUT"
+            },
+            "KPT": {
+              "sha256": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/KPT"
+            },
+            "PP_ORB/H_ONCV_PBE-1.0.upf": {
+              "sha256": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/H_gga_6au_60Ry_1s.orb": {
+              "sha256": "39fd52952bbc116d969c37df35597e4d9ba6dc7b273b2f468ec4296e23f76334",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_gga_6au_60Ry_1s.orb"
+            },
+            "PP_ORB/O_ONCV_PBE-1.0.upf": {
+              "sha256": "8e871106df466470da52be4481695062782fb6c774bfd6079f4a2b1ae49a6139",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/O_gga_6au_60Ry_1s1p.orb": {
+              "sha256": "3cfeb130f7543814bf02e22c6fa5f6fdddf9d4737499ae6e0c2cc03605877c45",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_gga_6au_60Ry_1s1p.orb"
+            },
+            "STRU": {
+              "sha256": "addafc70bd83cf23037748c36707446eab98339c613cdc4a26f2d5652e77c2b4",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/STRU"
+            },
+            "result.ref": {
+              "sha256": "92c27b0988debac1a0e0ba0f80ba70b6666b121e6654c101b3a9c6bfb0300019",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/result.ref"
+            }
+          },
+          "reference_scf": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/OUT.autotest/running_scf.log"
+        },
+        "nccl": {
+          "candidate_energy_ev": -4869.747051979826,
+          "device": "gpu",
+          "energy_ev": -4869.747051979826,
+          "inputs": {
+            "INPUT": {
+              "sha256": "ab6ad80b9d66e419c26d6a84cd6842040fb8e84acf041ff1a5b71b1b1de88b8d",
+              "source": "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/INPUT"
+            },
+            "KPT": {
+              "sha256": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+              "source": "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/KPT"
+            },
+            "PP_ORB/As_dojo.upf": {
+              "sha256": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+              "source": "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/PP_ORB/As_dojo.upf"
+            },
+            "PP_ORB/Ga_dojo.upf": {
+              "sha256": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+              "source": "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/PP_ORB/Ga_dojo.upf"
+            },
+            "STRU": {
+              "sha256": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+              "source": "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/STRU"
+            }
+          },
+          "reference_scf": "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/OUT.autotest/running_scf.log"
+        },
+        "pw": {
+          "candidate_energy_ev": -4869.747051950186,
+          "device": "gpu",
+          "energy_ev": -4869.747051950186,
+          "inputs": {
+            "INPUT": {
+              "sha256": "4c7d1cd7ed322c6dc3089801b153c287310b0130f65404eac0f6cdc0a373df74",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/input/INPUT"
+            },
+            "KPT": {
+              "sha256": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/input/KPT"
+            },
+            "PP_ORB/As_dojo.upf": {
+              "sha256": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/input/PP_ORB/As_dojo.upf"
+            },
+            "PP_ORB/Ga_dojo.upf": {
+              "sha256": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/input/PP_ORB/Ga_dojo.upf"
+            },
+            "STRU": {
+              "sha256": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/input/STRU"
+            }
+          },
+          "reference_scf": "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/OUT.autotest/running_scf.log"
+        }
+      },
+      "files": {
+        "containers/software/abacus/prerelease/v3.11.0-beta13-gfcd57f6db266-r4555f0f84db5/16V100/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266.native/share/sai/dependency-lock.json": "55c31e5282ea4091d88252c72ad08841c319091bb2d18acabb3dc086e3c8e8bc",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/INPUT": "0bb50de5d6ded1c747b2550d9207bba702b4044e1a74a6f302924f015c2808e6",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/OUT.autotest/running_scf.log": "1518ba52a249fa0efe10a06a6dff6e49d87ab15fc6e393057b848762fd17c5a4",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/PP_ORB/Si_ONCV_PBE-1.0.upf": "481a5fae1167fd712d4e8e2e4df33f8bfc1e7d2abbc0565290d39fbba9dccb41",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/PP_ORB/Si_gga_8au_100Ry_2s2p1d.orb": "28d0c1c16399423e4c8c1dd1795b707fd467838ac6153162eb9734ab4f3cb8a2",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/STRU": "54afe671f351a76e7f5deb99ccb170d8aa3e674677fd5fd1f355738b0f5d9d0c",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/INPUT": "ab6ad80b9d66e419c26d6a84cd6842040fb8e84acf041ff1a5b71b1b1de88b8d",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/KPT": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/OUT.autotest/running_scf.log": "72b86e4571d45b063512c68bbad5c638914ba851cb9004cea48c0b078fa579e9",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/PP_ORB/As_dojo.upf": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/PP_ORB/Ga_dojo.upf": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/STRU": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/request.json": "e33c86df11f70a58556dea4eb3872e4c4d8da84894f1e043a9d974ca1c0c451c",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/results/cusolvermp/abacus.log": "ef5d7d3907e21c2d713c65554fbb8368ff977e76ffd05c5d8f0f0dd0dca55f4b",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/results/evidence.json": "7e49c01282a2b1f5fa6b0a1190b45552d67e82ff48271c013b88a8f0d969b6b4",
+        "runtime-tests/43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-gpu-features/results/nccl/abacus.log": "d6e92aa2747ba4edf239a527cb86ce050301065e6741cd904ad1b300189e0de9",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/INPUT": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/2au_20Ry_jle.orb": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/model_lda_pbe_18.ptg": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_ONCV_PBE-1.0.upf": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_gga_8au_100Ry_2s1p.orb": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/STRU": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/input/result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/request.json": "49816e41cef7004173e46ebe075c94ca90633c07088ef545e91467ba0d134b2a",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/results/evidence.json": "0d0e23aa2d36c85dfc5edfbc909c63f149e324a882400678aec2393e9955308b",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/OUT.autotest/running_scf.log": "e3b7937eb197613e62fcadcc71524160980fe847f12b7b480f40765db7e1ed5e",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/info.log": "b14da795ff7c7716ff282f9447b54d170e1662b0b587b576f8ac18d477701714",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/stdout.log": "78888f24b8946decdf4ea1f22d1fd0b089cfff05729201dd683c6ea0f498818e",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/wall-seconds.txt": "41094b6c78e8e5e20288f6619e3ca80f3feec179cafb1db937fffbee216304d1",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/INPUT": "90b328e6cc2b61027d06d60d6b29da14276824e6ccb10a64763af25c0367339d",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_gga_6au_60Ry_1s.orb": "39fd52952bbc116d969c37df35597e4d9ba6dc7b273b2f468ec4296e23f76334",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_ONCV_PBE-1.0.upf": "8e871106df466470da52be4481695062782fb6c774bfd6079f4a2b1ae49a6139",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_gga_6au_60Ry_1s1p.orb": "3cfeb130f7543814bf02e22c6fa5f6fdddf9d4737499ae6e0c2cc03605877c45",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/STRU": "addafc70bd83cf23037748c36707446eab98339c613cdc4a26f2d5652e77c2b4",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/input/result.ref": "92c27b0988debac1a0e0ba0f80ba70b6666b121e6654c101b3a9c6bfb0300019",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/request.json": "df6c6bb83618414006f533f9f701543790e712eaabb229f96c1883327b88bdd6",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/results/evidence.json": "ef45b9d8c64eaa028f5f2e853e8d3dfe6f6aaafc91b995c36e5de654ca24313e",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/OUT.autotest/running_scf.log": "e4b54e980c41b7ba3039f126cea6fbe59ef1a7b47dc7e966d345d6899885798c",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/info.log": "5bfed59092722ff42c37da0c350fdcbbc953533a69d97e72ed41cdd433b92e6b",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/stdout.log": "dd20f188e14557efbb2cfc202a0c988438c3cf796265c2999e79f39e58b24db4",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/wall-seconds.txt": "0f45337d74dd5df4abe52f41a2dc03db08a8c98192ae9825d10785813f602294",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/input/INPUT": "4c7d1cd7ed322c6dc3089801b153c287310b0130f65404eac0f6cdc0a373df74",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/input/KPT": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/input/PP_ORB/As_dojo.upf": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/input/PP_ORB/Ga_dojo.upf": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/input/STRU": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/request.json": "d7530879f4fe5f4adab3a91a4c16cbe8d893ee9012b45b0a2317bad226470ce4",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/results/evidence.json": "457137290881db87200f8d2be5e1f521368aef742c905189d86362a9029b6ce1",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/OUT.autotest/running_scf.log": "d9b8b4fb39695dd8643052f72bd4332fc92bb10fd122bc7396ba9d320624c4aa",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/info.log": "2692044b440f9257f4b94780bc3f7c37b5e9a1fdf8c273388cbf9fe081330f68",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/stdout.log": "5931184f425394b1de418c8e128cb2a70da1d2e04a22c2194e50b87a0570101f",
+        "runtime-tests/benchmark-43487977288-1-prerelease-16v100-avx2-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/wall-seconds.txt": "4ce8db690e6c6938921639e700b40519686e976b01c6d214198030ef8c0a3651"
+      },
+      "image_sha256": "5d369351a325ac24d79eded428b1496a700cfbbec3894e6e444bdd44b5304c6c",
+      "publication_sha256": "8cb9203e78bf00d83bbbebaa9981f77dd896448120a97107b6adb7a25f9d1288",
+      "required_info": [
+        "OpenMP Support",
+        "LCAO Algorithm",
+        "ELPA Support",
+        "LibXC Support",
+        "FFTW Support",
+        "Cereal Serialization",
+        "LibRI Support",
+        "LibComm Support",
+        "LibTorch Support",
+        "Libnpy Support",
+        "NEP Support",
+        "JSON Support",
+        "CUDA-aware MPI",
+        "NVIDIA CUDA Support",
+        "CUSOLVERMP Support"
+      ],
+      "tolerance_ev": 1e-05
+    },
+    "4V100": {
+      "build_run": "43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266",
+      "cases": {
+        "cusolvermp": {
+          "candidate_energy_ev": -196.6221749980201,
+          "device": "gpu",
+          "energy_ev": -196.6221749980201,
+          "inputs": {
+            "INPUT": {
+              "sha256": "0bb50de5d6ded1c747b2550d9207bba702b4044e1a74a6f302924f015c2808e6",
+              "source": "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/INPUT"
+            },
+            "KPT": {
+              "sha256": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+              "source": "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/KPT"
+            },
+            "PP_ORB/Si_ONCV_PBE-1.0.upf": {
+              "sha256": "481a5fae1167fd712d4e8e2e4df33f8bfc1e7d2abbc0565290d39fbba9dccb41",
+              "source": "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/PP_ORB/Si_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/Si_gga_8au_100Ry_2s2p1d.orb": {
+              "sha256": "28d0c1c16399423e4c8c1dd1795b707fd467838ac6153162eb9734ab4f3cb8a2",
+              "source": "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/PP_ORB/Si_gga_8au_100Ry_2s2p1d.orb"
+            },
+            "STRU": {
+              "sha256": "54afe671f351a76e7f5deb99ccb170d8aa3e674677fd5fd1f355738b0f5d9d0c",
+              "source": "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/STRU"
+            }
+          },
+          "reference_scf": "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/OUT.autotest/running_scf.log"
+        },
+        "deepks": {
+          "candidate_energy_ev": -71.32203132091472,
+          "device": "cpu",
+          "energy_ev": -71.32203132091935,
+          "inputs": {
+            "INPUT": {
+              "sha256": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/INPUT"
+            },
+            "KPT": {
+              "sha256": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/KPT"
+            },
+            "Model_ProjOrb/2au_20Ry_jle.orb": {
+              "sha256": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/2au_20Ry_jle.orb"
+            },
+            "Model_ProjOrb/model_lda_pbe_18.ptg": {
+              "sha256": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/model_lda_pbe_18.ptg"
+            },
+            "PP_ORB/C_ONCV_PBE-1.0.upf": {
+              "sha256": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": {
+              "sha256": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb"
+            },
+            "PP_ORB/H_ONCV_PBE-1.0.upf": {
+              "sha256": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/H_gga_8au_100Ry_2s1p.orb": {
+              "sha256": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_gga_8au_100Ry_2s1p.orb"
+            },
+            "STRU": {
+              "sha256": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/STRU"
+            },
+            "result.ref": {
+              "sha256": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/result.ref"
+            }
+          },
+          "reference_scf": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/OUT.autotest/running_scf.log"
+        },
+        "hse": {
+          "candidate_energy_ev": -428.9943139416823,
+          "device": "cpu",
+          "energy_ev": -428.9943139416827,
+          "inputs": {
+            "INPUT": {
+              "sha256": "90b328e6cc2b61027d06d60d6b29da14276824e6ccb10a64763af25c0367339d",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/INPUT"
+            },
+            "KPT": {
+              "sha256": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/KPT"
+            },
+            "PP_ORB/H_ONCV_PBE-1.0.upf": {
+              "sha256": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/H_gga_6au_60Ry_1s.orb": {
+              "sha256": "39fd52952bbc116d969c37df35597e4d9ba6dc7b273b2f468ec4296e23f76334",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_gga_6au_60Ry_1s.orb"
+            },
+            "PP_ORB/O_ONCV_PBE-1.0.upf": {
+              "sha256": "8e871106df466470da52be4481695062782fb6c774bfd6079f4a2b1ae49a6139",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/O_gga_6au_60Ry_1s1p.orb": {
+              "sha256": "3cfeb130f7543814bf02e22c6fa5f6fdddf9d4737499ae6e0c2cc03605877c45",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_gga_6au_60Ry_1s1p.orb"
+            },
+            "STRU": {
+              "sha256": "addafc70bd83cf23037748c36707446eab98339c613cdc4a26f2d5652e77c2b4",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/STRU"
+            },
+            "result.ref": {
+              "sha256": "92c27b0988debac1a0e0ba0f80ba70b6666b121e6654c101b3a9c6bfb0300019",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/result.ref"
+            }
+          },
+          "reference_scf": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/OUT.autotest/running_scf.log"
+        },
+        "nccl": {
+          "candidate_energy_ev": -4869.747051979825,
+          "device": "gpu",
+          "energy_ev": -4869.747051979825,
+          "inputs": {
+            "INPUT": {
+              "sha256": "ab6ad80b9d66e419c26d6a84cd6842040fb8e84acf041ff1a5b71b1b1de88b8d",
+              "source": "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/INPUT"
+            },
+            "KPT": {
+              "sha256": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+              "source": "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/KPT"
+            },
+            "PP_ORB/As_dojo.upf": {
+              "sha256": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+              "source": "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/PP_ORB/As_dojo.upf"
+            },
+            "PP_ORB/Ga_dojo.upf": {
+              "sha256": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+              "source": "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/PP_ORB/Ga_dojo.upf"
+            },
+            "STRU": {
+              "sha256": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+              "source": "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/STRU"
+            }
+          },
+          "reference_scf": "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/OUT.autotest/running_scf.log"
+        },
+        "pw": {
+          "candidate_energy_ev": -4869.747051950185,
+          "device": "gpu",
+          "energy_ev": -4869.747051950185,
+          "inputs": {
+            "INPUT": {
+              "sha256": "4c7d1cd7ed322c6dc3089801b153c287310b0130f65404eac0f6cdc0a373df74",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/input/INPUT"
+            },
+            "KPT": {
+              "sha256": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/input/KPT"
+            },
+            "PP_ORB/As_dojo.upf": {
+              "sha256": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/input/PP_ORB/As_dojo.upf"
+            },
+            "PP_ORB/Ga_dojo.upf": {
+              "sha256": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/input/PP_ORB/Ga_dojo.upf"
+            },
+            "STRU": {
+              "sha256": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/input/STRU"
+            }
+          },
+          "reference_scf": "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/OUT.autotest/running_scf.log"
+        }
+      },
+      "files": {
+        "containers/software/abacus/prerelease/v3.11.0-beta13-gfcd57f6db266-r4555f0f84db5/4V100/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266.native/share/sai/dependency-lock.json": "55c31e5282ea4091d88252c72ad08841c319091bb2d18acabb3dc086e3c8e8bc",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/INPUT": "0bb50de5d6ded1c747b2550d9207bba702b4044e1a74a6f302924f015c2808e6",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/OUT.autotest/running_scf.log": "b0d0a31381b7816c4e0defb993357f4103a9a076ff556248481f5d29725b917f",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/PP_ORB/Si_ONCV_PBE-1.0.upf": "481a5fae1167fd712d4e8e2e4df33f8bfc1e7d2abbc0565290d39fbba9dccb41",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/PP_ORB/Si_gga_8au_100Ry_2s2p1d.orb": "28d0c1c16399423e4c8c1dd1795b707fd467838ac6153162eb9734ab4f3cb8a2",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/STRU": "54afe671f351a76e7f5deb99ccb170d8aa3e674677fd5fd1f355738b0f5d9d0c",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/INPUT": "ab6ad80b9d66e419c26d6a84cd6842040fb8e84acf041ff1a5b71b1b1de88b8d",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/KPT": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/OUT.autotest/running_scf.log": "6eb966e77539ade29f1fbb5afea5002378c7cffeab0f6caa68c529557f7333d0",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/PP_ORB/As_dojo.upf": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/PP_ORB/Ga_dojo.upf": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/STRU": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/request.json": "1f53baebf50d586a328906c83675883679fb4fca721a29c0902964e5fd131501",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/results/cusolvermp/abacus.log": "059c5b7471f2dea8e2ae4a0c00c787df2961b1fa143f9b13c5b107028cd32f88",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/results/evidence.json": "270c5a3858eb71ada96b2483dfea30edaaf83d3742235c573bbf8daaa2b00ad8",
+        "runtime-tests/43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-gpu-features/results/nccl/abacus.log": "3d2b6550dac4747c56389a8e86e30198cbe358c1a1f5863d883d292e7230b458",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/INPUT": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/2au_20Ry_jle.orb": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/model_lda_pbe_18.ptg": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_ONCV_PBE-1.0.upf": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_gga_8au_100Ry_2s1p.orb": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/STRU": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/input/result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/request.json": "8d251f7808dc0da4f5fbed5d88d7596f3cfcb25006a8699850e83782a319fc14",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/results/evidence.json": "3cc941718d12a162ecca19b3330996d702ec1d2038d731a0c79c63117c108c9b",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/OUT.autotest/running_scf.log": "230f092250515ba8d801f64031948f2b28e7633414febbae2c0623740df4471b",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/info.log": "fbfe40e47bd56e640a86781d7badc49125fcd12be000d1489a5fd81c28b1d9d5",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/stdout.log": "164bf8637a90f2ae41119fe50dbbc3fe15eea98435b571ff1a9f950c9abfdc40",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/wall-seconds.txt": "2d96aa2908cee11115fa1b19757cfe82cd3ecb7f1daf09aa85a2530298a1b1e9",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/INPUT": "90b328e6cc2b61027d06d60d6b29da14276824e6ccb10a64763af25c0367339d",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_gga_6au_60Ry_1s.orb": "39fd52952bbc116d969c37df35597e4d9ba6dc7b273b2f468ec4296e23f76334",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_ONCV_PBE-1.0.upf": "8e871106df466470da52be4481695062782fb6c774bfd6079f4a2b1ae49a6139",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_gga_6au_60Ry_1s1p.orb": "3cfeb130f7543814bf02e22c6fa5f6fdddf9d4737499ae6e0c2cc03605877c45",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/STRU": "addafc70bd83cf23037748c36707446eab98339c613cdc4a26f2d5652e77c2b4",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/input/result.ref": "92c27b0988debac1a0e0ba0f80ba70b6666b121e6654c101b3a9c6bfb0300019",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/request.json": "3e44136a96047585008b296688308cd671c1486a410267ecb02a2a86d6fd50ad",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/results/evidence.json": "7c73c631e37b0fa27a9b66340df559e9c41b1676da255f2ae5dd914cf7928e73",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/OUT.autotest/running_scf.log": "7b5953e2d4f251cc09cabd7d2fbc3a9186bbb16cd1555d4169581158a8eccb4b",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/info.log": "ae3d8aaba1f8b3788808510a2902a2e5c271049a6ac81fa878fe23fd326e0578",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/stdout.log": "2d470ad3f43ac5b4d5aeada352c0dee4dd68e6eaba6dbd373e5456c12fe456a4",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/wall-seconds.txt": "7040ce55c55c08099dc8ffacd4d9fbc7227968adceb2ca8de139c4457d322af6",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/input/INPUT": "4c7d1cd7ed322c6dc3089801b153c287310b0130f65404eac0f6cdc0a373df74",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/input/KPT": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/input/PP_ORB/As_dojo.upf": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/input/PP_ORB/Ga_dojo.upf": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/input/STRU": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/request.json": "94ed3e97f366dc7c4527b503795d7aa1f570c438568e06dc487c1aafb629a0dd",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/results/evidence.json": "c638cbe6060764036f6a3a7bb33f33fe53a619e88416b634bbc23ba3127074db",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/OUT.autotest/running_scf.log": "fe5719aeb9d9ec89a64edb1abfa1263a090845fcc3f85045c3d2e27d7cb597ca",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/info.log": "b83fa5418044fece43e14bddefc4ae04c17b496f50613bb163389f35811125a7",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/stdout.log": "bda0ae37e7ef160bfc6803f6c0b0fccc123a523e814163f17b1d6094041674c2",
+        "runtime-tests/benchmark-43487977288-1-prerelease-4v100-avx512-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/wall-seconds.txt": "2957bd0b7fe22c2f2ae9ad6188163e970ea8fda3188c40aeaefdfe7af48d5777"
+      },
+      "image_sha256": "2256cfe2fa2d054c6e381b9bd41cb3bb02833882b939fe801b566600a5ac27cb",
+      "publication_sha256": "d31ab4c5fcc51259b836ac9a9a042f506e87cea6b4f79ec742a776be536e7346",
+      "required_info": [
+        "OpenMP Support",
+        "LCAO Algorithm",
+        "ELPA Support",
+        "LibXC Support",
+        "FFTW Support",
+        "Cereal Serialization",
+        "LibRI Support",
+        "LibComm Support",
+        "LibTorch Support",
+        "Libnpy Support",
+        "NEP Support",
+        "JSON Support",
+        "CUDA-aware MPI",
+        "NVIDIA CUDA Support",
+        "CUSOLVERMP Support"
+      ],
+      "tolerance_ev": 1e-05
+    },
+    "8V100V0": {
+      "build_run": "43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266",
+      "cases": {
+        "cusolvermp": {
+          "candidate_energy_ev": -196.62217499802026,
+          "device": "gpu",
+          "energy_ev": -196.62217499802026,
+          "inputs": {
+            "INPUT": {
+              "sha256": "0bb50de5d6ded1c747b2550d9207bba702b4044e1a74a6f302924f015c2808e6",
+              "source": "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/INPUT"
+            },
+            "KPT": {
+              "sha256": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+              "source": "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/KPT"
+            },
+            "PP_ORB/Si_ONCV_PBE-1.0.upf": {
+              "sha256": "481a5fae1167fd712d4e8e2e4df33f8bfc1e7d2abbc0565290d39fbba9dccb41",
+              "source": "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/PP_ORB/Si_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/Si_gga_8au_100Ry_2s2p1d.orb": {
+              "sha256": "28d0c1c16399423e4c8c1dd1795b707fd467838ac6153162eb9734ab4f3cb8a2",
+              "source": "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/PP_ORB/Si_gga_8au_100Ry_2s2p1d.orb"
+            },
+            "STRU": {
+              "sha256": "54afe671f351a76e7f5deb99ccb170d8aa3e674677fd5fd1f355738b0f5d9d0c",
+              "source": "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/STRU"
+            }
+          },
+          "reference_scf": "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/OUT.autotest/running_scf.log"
+        },
+        "deepks": {
+          "candidate_energy_ev": -71.32203132091435,
+          "device": "cpu",
+          "energy_ev": -71.32203132091935,
+          "inputs": {
+            "INPUT": {
+              "sha256": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/INPUT"
+            },
+            "KPT": {
+              "sha256": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/KPT"
+            },
+            "Model_ProjOrb/2au_20Ry_jle.orb": {
+              "sha256": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/2au_20Ry_jle.orb"
+            },
+            "Model_ProjOrb/model_lda_pbe_18.ptg": {
+              "sha256": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/model_lda_pbe_18.ptg"
+            },
+            "PP_ORB/C_ONCV_PBE-1.0.upf": {
+              "sha256": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": {
+              "sha256": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb"
+            },
+            "PP_ORB/H_ONCV_PBE-1.0.upf": {
+              "sha256": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/H_gga_8au_100Ry_2s1p.orb": {
+              "sha256": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_gga_8au_100Ry_2s1p.orb"
+            },
+            "STRU": {
+              "sha256": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/STRU"
+            },
+            "result.ref": {
+              "sha256": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/result.ref"
+            }
+          },
+          "reference_scf": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/OUT.autotest/running_scf.log"
+        },
+        "hse": {
+          "candidate_energy_ev": -428.9943139416825,
+          "device": "cpu",
+          "energy_ev": -428.9943139416827,
+          "inputs": {
+            "INPUT": {
+              "sha256": "90b328e6cc2b61027d06d60d6b29da14276824e6ccb10a64763af25c0367339d",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/INPUT"
+            },
+            "KPT": {
+              "sha256": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/KPT"
+            },
+            "PP_ORB/H_ONCV_PBE-1.0.upf": {
+              "sha256": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/H_gga_6au_60Ry_1s.orb": {
+              "sha256": "39fd52952bbc116d969c37df35597e4d9ba6dc7b273b2f468ec4296e23f76334",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_gga_6au_60Ry_1s.orb"
+            },
+            "PP_ORB/O_ONCV_PBE-1.0.upf": {
+              "sha256": "8e871106df466470da52be4481695062782fb6c774bfd6079f4a2b1ae49a6139",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/O_gga_6au_60Ry_1s1p.orb": {
+              "sha256": "3cfeb130f7543814bf02e22c6fa5f6fdddf9d4737499ae6e0c2cc03605877c45",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_gga_6au_60Ry_1s1p.orb"
+            },
+            "STRU": {
+              "sha256": "addafc70bd83cf23037748c36707446eab98339c613cdc4a26f2d5652e77c2b4",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/STRU"
+            },
+            "result.ref": {
+              "sha256": "92c27b0988debac1a0e0ba0f80ba70b6666b121e6654c101b3a9c6bfb0300019",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/result.ref"
+            }
+          },
+          "reference_scf": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/OUT.autotest/running_scf.log"
+        },
+        "nccl": {
+          "candidate_energy_ev": -4869.747051979827,
+          "device": "gpu",
+          "energy_ev": -4869.747051979827,
+          "inputs": {
+            "INPUT": {
+              "sha256": "ab6ad80b9d66e419c26d6a84cd6842040fb8e84acf041ff1a5b71b1b1de88b8d",
+              "source": "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/INPUT"
+            },
+            "KPT": {
+              "sha256": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+              "source": "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/KPT"
+            },
+            "PP_ORB/As_dojo.upf": {
+              "sha256": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+              "source": "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/PP_ORB/As_dojo.upf"
+            },
+            "PP_ORB/Ga_dojo.upf": {
+              "sha256": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+              "source": "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/PP_ORB/Ga_dojo.upf"
+            },
+            "STRU": {
+              "sha256": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+              "source": "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/STRU"
+            }
+          },
+          "reference_scf": "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/OUT.autotest/running_scf.log"
+        },
+        "pw": {
+          "candidate_energy_ev": -4869.7470519501785,
+          "device": "gpu",
+          "energy_ev": -4869.7470519501785,
+          "inputs": {
+            "INPUT": {
+              "sha256": "4c7d1cd7ed322c6dc3089801b153c287310b0130f65404eac0f6cdc0a373df74",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/input/INPUT"
+            },
+            "KPT": {
+              "sha256": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/input/KPT"
+            },
+            "PP_ORB/As_dojo.upf": {
+              "sha256": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/input/PP_ORB/As_dojo.upf"
+            },
+            "PP_ORB/Ga_dojo.upf": {
+              "sha256": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/input/PP_ORB/Ga_dojo.upf"
+            },
+            "STRU": {
+              "sha256": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/input/STRU"
+            }
+          },
+          "reference_scf": "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/OUT.autotest/running_scf.log"
+        }
+      },
+      "files": {
+        "containers/software/abacus/prerelease/v3.11.0-beta13-gfcd57f6db266-r4555f0f84db5/8V100V0/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266.native/share/sai/dependency-lock.json": "55c31e5282ea4091d88252c72ad08841c319091bb2d18acabb3dc086e3c8e8bc",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/INPUT": "0bb50de5d6ded1c747b2550d9207bba702b4044e1a74a6f302924f015c2808e6",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/OUT.autotest/running_scf.log": "053bdb6d90ac446de56637cc2384e7b63c09d0bd35dd22db0f2f6cd6a187efef",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/PP_ORB/Si_ONCV_PBE-1.0.upf": "481a5fae1167fd712d4e8e2e4df33f8bfc1e7d2abbc0565290d39fbba9dccb41",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/PP_ORB/Si_gga_8au_100Ry_2s2p1d.orb": "28d0c1c16399423e4c8c1dd1795b707fd467838ac6153162eb9734ab4f3cb8a2",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/cusolvermp/STRU": "54afe671f351a76e7f5deb99ccb170d8aa3e674677fd5fd1f355738b0f5d9d0c",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/INPUT": "ab6ad80b9d66e419c26d6a84cd6842040fb8e84acf041ff1a5b71b1b1de88b8d",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/KPT": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/OUT.autotest/running_scf.log": "d4eb35184f52d0ab8af72becd6d40f1b31f17423a5056411353faae115c9f7cc",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/PP_ORB/As_dojo.upf": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/PP_ORB/Ga_dojo.upf": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/cases/nccl/STRU": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/request.json": "a4cd97f3576be8063041071523c017fe8cedbce82105cb7fcfa67e5b77ed564b",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/results/cusolvermp/abacus.log": "c4ecb1187b72356fba6011dbf989174c2fb9c208579ada0c0bb003f016c6b156",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/results/evidence.json": "0ce71e40760109ace073b58a7f1124549f04dd12d207b6ff6ae20b1cd9533210",
+        "runtime-tests/43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-gpu-features/results/nccl/abacus.log": "64b877ed31a887f840fd40a6e6ea58c5ffb424d053e33a4ac28077cc5015afd4",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/INPUT": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/2au_20Ry_jle.orb": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/model_lda_pbe_18.ptg": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_ONCV_PBE-1.0.upf": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_gga_8au_100Ry_2s1p.orb": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/STRU": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/input/result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/request.json": "d047384396db22fadfaa8d1e110f3deef1c38b20aa562c3e9216d44bc9d27efe",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/results/evidence.json": "06cc370fe058c735ece98842e7bd16b5d890b28241abd098030767fd549f7582",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/OUT.autotest/running_scf.log": "3f7ddfbbb007021bf74f64c3011e2ce977d87e73ff7a4dfb9790cdd2b4c84391",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/info.log": "f9cf67e7d802e749d06e43cc9b38c07a844e7ccf4ea3f9dbce396f67f71e7eed",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/stdout.log": "2401a1cf113a794a254b684ad38f1a673b5d1ad90e69eab7b83fcbef285e92a3",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/wall-seconds.txt": "9d44899046ae362afdbc1cbf9c60645e4cccb08c9649527dd4240ec342ff133d",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/INPUT": "90b328e6cc2b61027d06d60d6b29da14276824e6ccb10a64763af25c0367339d",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_gga_6au_60Ry_1s.orb": "39fd52952bbc116d969c37df35597e4d9ba6dc7b273b2f468ec4296e23f76334",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_ONCV_PBE-1.0.upf": "8e871106df466470da52be4481695062782fb6c774bfd6079f4a2b1ae49a6139",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_gga_6au_60Ry_1s1p.orb": "3cfeb130f7543814bf02e22c6fa5f6fdddf9d4737499ae6e0c2cc03605877c45",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/STRU": "addafc70bd83cf23037748c36707446eab98339c613cdc4a26f2d5652e77c2b4",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/input/result.ref": "92c27b0988debac1a0e0ba0f80ba70b6666b121e6654c101b3a9c6bfb0300019",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/request.json": "1bda5d5f8c97b9781aa23de821117f3167cded629ae091340a0d33175460ce28",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/results/evidence.json": "742d1eca920cc62a5ce8ccb1c7fd10b3ebd98f267cd3e66b0f1f27f935e784f6",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/OUT.autotest/running_scf.log": "5509bf3b76169f664efe36aee166be055425d09a9af85768d6ec78fdb4548b59",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/info.log": "2553b841b510669149e4f56dc50eaaabeecd0eba5eb8b997bb8851e6c0f6b869",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/stdout.log": "aba4c0a21f494f1d056eb661b7f4cb18e1868f4ea60eb12bb3f3573ff4dd9106",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/wall-seconds.txt": "050a3d7bd452ff1471c9cc04b63e0884b4a81671042eeb6b7b0caee5b2b5923d",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/input/INPUT": "4c7d1cd7ed322c6dc3089801b153c287310b0130f65404eac0f6cdc0a373df74",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/input/KPT": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/input/PP_ORB/As_dojo.upf": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/input/PP_ORB/Ga_dojo.upf": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/input/STRU": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/request.json": "4c31f82db3a45cb7a6ee7b1daef4880fc9ec4248bbb0ca62809548fa187877fc",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/results/evidence.json": "d8d3b8ddff3cf5b9b4dc70b02230f1f8541fefe82fee6f40667860e8ea7d5577",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/OUT.autotest/running_scf.log": "b13ae4b6aa2ebf418500559b8412d75896bff2f520b942525f2c7205cebbc521",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/info.log": "1e9e8d98f772667ffb688f6b0f4fe2704c7d5261d75d33ca957e37c69db7ee09",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/stdout.log": "8c63a635263c603e8f9d62184d4e735bba9debbcf9f0384483233c857fcde9f9",
+        "runtime-tests/benchmark-43487977288-1-prerelease-8v100v0-avx512-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/wall-seconds.txt": "7174dd9d4bcfc73f8b0afa1db57fb2942deb0f57fb509ff9e5354b62484be882"
+      },
+      "image_sha256": "1e5057004493d51d9b7fb800727c1996899b7678f2a986bf7da9a5d4f493bd91",
+      "publication_sha256": "44c04803f07d16fa4be4cca210e82c7f75c6d108a4c2e3cee4437c72277b23b6",
+      "required_info": [
+        "OpenMP Support",
+        "LCAO Algorithm",
+        "ELPA Support",
+        "LibXC Support",
+        "FFTW Support",
+        "Cereal Serialization",
+        "LibRI Support",
+        "LibComm Support",
+        "LibTorch Support",
+        "Libnpy Support",
+        "NEP Support",
+        "JSON Support",
+        "CUDA-aware MPI",
+        "NVIDIA CUDA Support",
+        "CUSOLVERMP Support"
+      ],
+      "tolerance_ev": 1e-05
+    },
+    "DSPRHBM": {
+      "build_run": "43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266",
+      "cases": {
+        "deepks": {
+          "candidate_energy_ev": -71.32203132091753,
+          "device": "cpu",
+          "energy_ev": -71.32203132091935,
+          "inputs": {
+            "INPUT": {
+              "sha256": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/INPUT"
+            },
+            "KPT": {
+              "sha256": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/KPT"
+            },
+            "Model_ProjOrb/2au_20Ry_jle.orb": {
+              "sha256": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/2au_20Ry_jle.orb"
+            },
+            "Model_ProjOrb/model_lda_pbe_18.ptg": {
+              "sha256": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/model_lda_pbe_18.ptg"
+            },
+            "PP_ORB/C_ONCV_PBE-1.0.upf": {
+              "sha256": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": {
+              "sha256": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb"
+            },
+            "PP_ORB/H_ONCV_PBE-1.0.upf": {
+              "sha256": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/H_gga_8au_100Ry_2s1p.orb": {
+              "sha256": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_gga_8au_100Ry_2s1p.orb"
+            },
+            "STRU": {
+              "sha256": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/STRU"
+            },
+            "result.ref": {
+              "sha256": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/result.ref"
+            }
+          },
+          "reference_scf": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/OUT.autotest/running_scf.log"
+        },
+        "hse": {
+          "candidate_energy_ev": -428.99431394168175,
+          "device": "cpu",
+          "energy_ev": -428.9943139416827,
+          "inputs": {
+            "INPUT": {
+              "sha256": "90b328e6cc2b61027d06d60d6b29da14276824e6ccb10a64763af25c0367339d",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/INPUT"
+            },
+            "KPT": {
+              "sha256": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/KPT"
+            },
+            "PP_ORB/H_ONCV_PBE-1.0.upf": {
+              "sha256": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/H_gga_6au_60Ry_1s.orb": {
+              "sha256": "39fd52952bbc116d969c37df35597e4d9ba6dc7b273b2f468ec4296e23f76334",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_gga_6au_60Ry_1s.orb"
+            },
+            "PP_ORB/O_ONCV_PBE-1.0.upf": {
+              "sha256": "8e871106df466470da52be4481695062782fb6c774bfd6079f4a2b1ae49a6139",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_ONCV_PBE-1.0.upf"
+            },
+            "PP_ORB/O_gga_6au_60Ry_1s1p.orb": {
+              "sha256": "3cfeb130f7543814bf02e22c6fa5f6fdddf9d4737499ae6e0c2cc03605877c45",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_gga_6au_60Ry_1s1p.orb"
+            },
+            "STRU": {
+              "sha256": "addafc70bd83cf23037748c36707446eab98339c613cdc4a26f2d5652e77c2b4",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/STRU"
+            },
+            "result.ref": {
+              "sha256": "92c27b0988debac1a0e0ba0f80ba70b6666b121e6654c101b3a9c6bfb0300019",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/result.ref"
+            }
+          },
+          "reference_scf": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/OUT.autotest/running_scf.log"
+        },
+        "pw": {
+          "candidate_energy_ev": -4869.747051943179,
+          "device": "cpu",
+          "energy_ev": -4869.747051943179,
+          "inputs": {
+            "INPUT": {
+              "sha256": "d3822ff21b440779e0302e7b5d5cf58f18043ff23a0f340f5232111993de99e8",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/input/INPUT"
+            },
+            "KPT": {
+              "sha256": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/input/KPT"
+            },
+            "PP_ORB/As_dojo.upf": {
+              "sha256": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/input/PP_ORB/As_dojo.upf"
+            },
+            "PP_ORB/Ga_dojo.upf": {
+              "sha256": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/input/PP_ORB/Ga_dojo.upf"
+            },
+            "STRU": {
+              "sha256": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+              "source": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/input/STRU"
+            }
+          },
+          "reference_scf": "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/OUT.autotest/running_scf.log"
+        }
+      },
+      "files": {
+        "containers/software/abacus/prerelease/v3.11.0-beta13-gfcd57f6db266-r4555f0f84db5/DSPRHBM/43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266.native/share/sai/dependency-lock.json": "55c31e5282ea4091d88252c72ad08841c319091bb2d18acabb3dc086e3c8e8bc",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/INPUT": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/2au_20Ry_jle.orb": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/Model_ProjOrb/model_lda_pbe_18.ptg": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_ONCV_PBE-1.0.upf": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/PP_ORB/H_gga_8au_100Ry_2s1p.orb": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/STRU": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/input/result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/request.json": "bb4ef0536d0576e9a3197ad8da0063c5e038f448579c25280bd2bf13523fc3d2",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/results/evidence.json": "454b00e9bddc4debf3a97aec41f5171939e2446b3b296ea16e7a34428c8735a2",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/OUT.autotest/running_scf.log": "e32a2ec0789d7365188bed614691d2cd148eb7c1e24c6847754122f6179cc7b3",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/info.log": "2b0fc0c96d62f729892ef00314360440bf497208391c3eb7aab51dc57caed6d1",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/stdout.log": "c237460ad69db79bcc00f30ce22e209c0f43509c23fd05ab1305a9ed71307c31",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-deepks/runs/m000-candidate/wall-seconds.txt": "fe446f497349e61f69209e6992fc290f92e835691ff9ea86eac8d3d526604e76",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/INPUT": "90b328e6cc2b61027d06d60d6b29da14276824e6ccb10a64763af25c0367339d",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/PP_ORB/H_gga_6au_60Ry_1s.orb": "39fd52952bbc116d969c37df35597e4d9ba6dc7b273b2f468ec4296e23f76334",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_ONCV_PBE-1.0.upf": "8e871106df466470da52be4481695062782fb6c774bfd6079f4a2b1ae49a6139",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/PP_ORB/O_gga_6au_60Ry_1s1p.orb": "3cfeb130f7543814bf02e22c6fa5f6fdddf9d4737499ae6e0c2cc03605877c45",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/STRU": "addafc70bd83cf23037748c36707446eab98339c613cdc4a26f2d5652e77c2b4",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/input/result.ref": "92c27b0988debac1a0e0ba0f80ba70b6666b121e6654c101b3a9c6bfb0300019",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/request.json": "1d71c381db14a383047115b9d64ad5eb28e83ada4518dd47f45bcb923ba3d543",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/results/evidence.json": "b601732026fa0e463d098fe387c05ad0e07ffd6d87e201c140131f0d88f75f61",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/OUT.autotest/running_scf.log": "5e792a63f8eee986cd8e125000d5be76068e90dabb2648f0f77461b634b6875e",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/info.log": "2b0fc0c96d62f729892ef00314360440bf497208391c3eb7aab51dc57caed6d1",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/stdout.log": "725b0066416f488ecdab11aa4e52b192a36db3954f109498b86910eddd7e9c96",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-hse/runs/m000-candidate/wall-seconds.txt": "a2e381d771c2f061497b1ea12368a6b8881c20eecb05a7879af72b815b7e2210",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/input/INPUT": "d3822ff21b440779e0302e7b5d5cf58f18043ff23a0f340f5232111993de99e8",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/input/KPT": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/input/PP_ORB/As_dojo.upf": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/input/PP_ORB/Ga_dojo.upf": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/input/STRU": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/request.json": "dc422a924f4cbe3ac5e4f101211e0b4409275045915678acc762d1505848ad91",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/results/evidence.json": "19decc5e2c16432d6d879e22777d45102c83858a54c426b11c2ae9857489500a",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/OUT.autotest/running_scf.log": "73fc9cac4879c2e44bf9933523965760ad97a6c0400604b8424235089ffd158f",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/info.log": "2b0fc0c96d62f729892ef00314360440bf497208391c3eb7aab51dc57caed6d1",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/stdout.log": "681af374e5605630abd7533de640ba411f76f71bbc8d3fe1c197e3e6a60bd395",
+        "runtime-tests/benchmark-43487977288-1-prerelease-dsprhbm-2026-11-13-fcd57f6db266-pw/runs/m000-candidate/wall-seconds.txt": "d841ae7af9f8300a3e1678a68906d127b3d6f40ce7848a1ade5060402bded770"
+      },
+      "image_sha256": "dc95da7a6d6d869d70ff28783427063ecfdef113f9229b5e9c567445fbadf3df",
+      "publication_sha256": "42e4c5c5561b1d73729d30e31ab95689b2bb2d85be6ec8aa9206916f72a2408f",
+      "required_info": [
+        "OpenMP Support",
+        "LCAO Algorithm",
+        "ELPA Support",
+        "LibXC Support",
+        "FFTW Support",
+        "Cereal Serialization",
+        "LibRI Support",
+        "LibComm Support",
+        "LibTorch Support",
+        "Libnpy Support",
+        "NEP Support",
+        "JSON Support"
+      ],
+      "tolerance_ev": 1e-05
+    }
+  },
+  "release_sha256": "6d4c149ab1906801bb6a051ed55dfe83916e2f0dbe4c45ce4b853b23cceb5dee",
+  "schema": 1
+}

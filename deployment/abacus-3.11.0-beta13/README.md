@@ -64,3 +64,13 @@ module 根据分区选择对应的程序和依赖，显示版本、源码摘要�
 四份 SIF 来自 [2026-11-14 自动构建](https://github.com/AI4SAI/sai-hpc-software/actions/runs/43487977288)，均已通过多节点 MPI、PW、HSE 和 DeePKS 验收；GPU 分区还通过 cuSOLVERMp/NCCL 检查。`--verify` 核对物理安装文件的完整性，安装后的原生计算验收另行执行。
 
 `prepare-release.py` 供维护者从固定的已验收产物生成交付包；管理员直接运行 `install.sh`。
+
+## 安装后的原生计算验收
+
+维护者可在安装后运行 `bash submit-native-checks.sh all`，也可以将 `all` 替换为一个分区名。作业使用项目账号 `proj-sai-hpc-software`，工作目录、结果和临时文件均在 `/org/org-open-sai/proj-sai-hpc-software`。
+
+验收使用已固定的 beta13 SIF 算例和原始输出，直接运行物理安装的程序。每分区检查版本、功能开关、每个 MPI rank 的程序哈希与动态库路径，以及 PW、HSE、DeePKS 的单节点和双节点计算；GPU 分区额外检查 cuSOLVERMp 求解及 NCCL 集合通信的实际执行。能量误差阈值为 `1e-5 eV`，也核对单节点与双节点结果一致性。
+
+提交脚本会输出结果目录。作业结束后，用 `python3 native_checks.py verify <结果目录>` 重新读取原始记录并核对 Slurm 退出状态。`finalize-native.sbatch` 可作为依赖这些验收作业的收尾任务，从冻结的控制脚本验证结果并写入 `final-status.json`。
+
+本次安装验收记录见 [2026-11-17 状态](../../docs/evidence/abacus-beta13-installed-20261117/README.md)。
