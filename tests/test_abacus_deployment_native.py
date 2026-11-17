@@ -215,7 +215,7 @@ class AbacusNativeChecksTests(unittest.TestCase):
         binary_sha = next(r['sha256'] for r in plan['files'] if r['path'] == 'bin/abacus_max_gpu')
         for filename, value in {'job.id': '123', 'nodes.txt': 'node-a\nnode-b',
                                 'binary.txt': prefix + '/bin/abacus', 'mpirun.txt': mpi + '/bin/mpirun',
-                                'modules.txt': 'abacus/3.11.0-beta11-auto\nelpa/2026.02.001-2603-gnu-auto\nopenmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto'}.items():
+                                'modules.txt': 'abacus/' + native.deployment.MODULE.name + '\nelpa/2026.02.001-2603-gnu-auto\nopenmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto'}.items():
             (self.root / filename).write_text(value + '\n')
         matrix = [('version', None, 2), *native.cases(ref)]
         for key, name, nodes in matrix:
@@ -226,7 +226,7 @@ class AbacusNativeChecksTests(unittest.TestCase):
                 (folder / f'ranks/rank-{rank}.tsv').write_text(
                     f'{rank}\t{host}\t{prefix}/bin/abacus\t0\t1\t{binary_sha}\t{mpi}\t1\n')
                 (folder / f'ranks/ldd-{rank}.txt').write_text('loader fixture')
-            text = 'ABACUS v3.11.0-beta11\n' + ''.join(label + ': yes\n' for label in ref['required_info'])
+            text = 'ABACUS ' + self.spec['identity']['source_version'] + '\n' + ''.join(label + ': yes\n' for label in ref['required_info'])
             if name:
                 data = native.case_input((self.root / 'inputs' / name / 'INPUT').read_bytes(), name, nodes, '4V100')
                 (folder / 'INPUT').write_bytes(data)
