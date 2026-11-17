@@ -8,7 +8,6 @@ from pathlib import Path
 import shutil
 import subprocess
 import tarfile
-import urllib.request
 
 from remote_controller import safe_sha
 from source_cache import checksum
@@ -121,20 +120,14 @@ def prepare(repository, commit, directory):
 
 
 def cache_archives(directory, commit):
+    """Prepare pinned submodules; all QE targets use installed HDF5 providers."""
     directory = Path(directory)
     directory.mkdir(parents=True)
     repository = directory / 'source'
     repository.mkdir()
     git(repository, 'init', '-q')
     git(repository, 'fetch', '--depth=1', '--no-tags', 'https://github.com/QEF/q-e.git', safe_sha(commit))
-    archives = prepare(repository, commit, directory / 'dependencies')
-    archive = directory / 'hdf5-1.14.6.tar.gz'
-    url = 'https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.6/' + archive.name
-    with urllib.request.urlopen(url, timeout=120) as source, archive.open('xb') as output:
-        shutil.copyfileobj(source, output)
-    if checksum(archive) != HDF5_SHA256:
-        raise ValueError('HDF5 release archive checksum changed')
-    return [*archives, (archive, HDF5_SHA256)]
+    return prepare(repository, commit, directory / 'dependencies')
 
 
 def populate(repository, directory):

@@ -69,6 +69,26 @@ class OfflineDependenciesTests(unittest.TestCase):
         self.git(self.parent, 'submodule', 'init', '--', 'external/devxlib')
         self.git(self.parent, 'submodule', 'update', '--depth', '5', '--', 'external/devxlib')
 
+    def test_daily_inputs_work_without_hdf5_release_download(self):
+        original_git = dependencies.git
+
+        def local_upstream(repository, *args):
+            args = tuple(self.parent.as_uri() if arg == 'https://github.com/QEF/q-e.git' else arg
+                         for arg in args)
+            return original_git(repository, *args)
+
+        with patch.object(dependencies, 'git', side_effect=local_upstream), \
+                patch('urllib.request.urlopen', side_effect=ConnectionError('release download unavailable')):
+            archives = dependencies.cache_archives(self.root/'daily', self.parent_sha)
+        self.assertEqual(len(archives), 2)
+        for archive, digest in archives:
+            self.assertEqual(hashlib.sha256(archive.read_bytes()).hexdigest(), digest)
+        self.module.rename(self.root/'upstream-unavailable')
+        dependencies.populate(self.parent, self.root/'daily/dependencies')
+        module = self.parent/'external/devxlib'
+        self.assertEqual(self.git(module, 'rev-parse', 'HEAD'), self.module_sha)
+        self.assertEqual(self.git(module, 'status', '--porcelain'), '')
+
     def test_extracted_worktree_must_match_its_pinned_git_objects(self):
         archives = dependencies.prepare(self.parent, self.parent_sha, self.root/'input')
         tree = self.root/'input/tree'
