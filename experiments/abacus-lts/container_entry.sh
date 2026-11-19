@@ -18,7 +18,11 @@ environment() {
     test -s "$LTS_MATH_ROOT/lib/libcal.so"
     test -s "$LTS_MATH_ROOT/lib/libcusolverMp.so"
     export CPATH="$LTS_MATH_ROOT/include:${CPATH:-}"
-    export LD_LIBRARY_PATH="$LTS_MATH_ROOT/lib:${LD_LIBRARY_PATH:-}"
+    # Site MPI was linked through /opt/mellanox/hcoll. Resolve the real SDK
+    # libraries inside the read-only /opt/devtools bind instead of that alias.
+    lts_hpcx=/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1
+    test -s "$lts_hpcx/hcoll/lib/libhcoll.so.1"
+    export LD_LIBRARY_PATH="$LTS_MATH_ROOT/lib:$lts_hpcx/hcoll/lib:$lts_hpcx/ucc/lib:$lts_hpcx/ucx/lib:${LD_LIBRARY_PATH:-}"
   fi
 }
 case "$op" in
