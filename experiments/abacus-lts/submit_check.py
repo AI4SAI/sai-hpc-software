@@ -58,13 +58,19 @@ def main():
     lines += dependency
     lines += (['#SBATCH --gpus-per-node=1'] if gpu else
               ['#SBATCH --cpus-per-task=1', '#SBATCH --mem=6G', '#SBATCH --exclude=d9470n07'])
-    lines += ['set -eo pipefail', 'export PATH=/usr/bin:/bin',
+    lines += ['set -eo pipefail', 'export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
               'export LD_LIBRARY_PATH="" LD_PRELOAD=""',
+              # Restore the submitting user's real home after --export=NIL,
+              # as in runtime_controller.py; scratch remains in the project.
+              'export HOME=' + shlex.quote(str(Path.home())),
               'export USER=${SLURM_JOB_USER:?}', 'export LOGNAME=$USER',
               f'export TMPDIR={task}/mpi-runtime', f'export APPTAINER_TMPDIR={task}/apptainer-runtime',
               f'export APPTAINER_CACHEDIR={task}/apptainer-runtime',
               'source /etc/profile.d/lmod.sh', 'module purge',
               'module load apptainer/1.4.4 openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto', 'set -u',
+              'export SLURM_EXPORT_ENV=ALL',
+              'export OMPI_MCA_plm_slurm_args=--external-launcher',
+              'export PRTE_MCA_plm_slurm_args=--external-launcher',
               f'export SAI_SOFTWARE_ROOT={root}',
               shlex.join(['python3', str(control / 'software_controller.py'), 'monitor',
                           build.name, '--timeout', '60', '--interval', '1']),
