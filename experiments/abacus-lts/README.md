@@ -1,5 +1,7 @@
 # ABACUS LTS build pilot
 
+The [2026-11-19 pilot results](RESULTS-20261119.md) record completed SIFs, scientific checks and the remaining queued partition.
+
 This independent recipe builds an exact commit from upstream `LTS` on DSPRHBM, 16V100, 4V100 and 8V100V0. It reuses the main workflow's file-backed overlay, pinned fuse2fs driver, explicit writeback, offline dependency archives, final-prefix installation and SIF packaging. All computation and writable storage remain under `/org/org-open-sai/proj-sai-hpc-software`.
 
 LTS currently reports `v3.10.1`; its actual identity is the branch commit, recorded separately. It uses `USE_OPENMP`, `USE_ELPA`, `ENABLE_DEEPKS`, the older test layout, and `--version`. Its cuSOLVERMp implementation needs CAL, so GPU builds explicitly select the preinstalled NVHPC 25.7 CUDA 12.9 math libraries while retaining the workflow's site MPI, compiler and ELPA. The newer NCCL/cuBLASMp interfaces and NEP support from develop are not present in LTS.
