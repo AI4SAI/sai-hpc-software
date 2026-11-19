@@ -16,3 +16,5 @@ python3 experiments/abacus-lts/submit.py \
 ```
 
 Each run receives immutable controller files and a recipe checksum. Use the staged `software_controller.py monitor RUN_ID` with `SAI_SOFTWARE_ROOT` set to the project root to record its build result. Do not call `publish`: the normal develop acceptance contract deliberately remains unchanged. This experiment neither rotates `develop-beta-later` nor installs files under the physical `/opt` tree.
+
+Submit independent scientific checks with `python3 experiments/abacus-lts/submit_check.py /org/org-open-sai/proj-sai-hpc-software/runs/RUN_ID`. The dependent Slurm job uses host MPI to execute the SIF, checks energies against the pinned upstream inputs, and records one-rank PW, HSE, DeePKS and GPU cuSOLVERMp results. `--attempt 2` creates a separate retry directory. These checks do not constitute multi-node or performance acceptance.

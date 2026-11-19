@@ -15,7 +15,7 @@ import subprocess
 import sys
 
 
-def run(build):
+def run(build, attempt=1):
     root = Path('/org/org-open-sai/proj-sai-hpc-software')
     build = Path(build).resolve()
     if build.parent != root / 'runs':
@@ -30,7 +30,10 @@ def run(build):
     manifest = load_artifact(root, image, software='abacus', target=identity['target'])
     if manifest['identity'] != identity:
         raise ValueError('build and artifact identity differ')
-    task = root / 'runtime-tests' / (build.name + '-lts-science')
+    if not 1 <= attempt <= 9:
+        raise ValueError('invalid check attempt')
+    suffix = '' if attempt == 1 else f'-r{attempt}'
+    task = root / 'runtime-tests' / (build.name + '-lts-science' + suffix)
     task.mkdir(exist_ok=True)
     for name in ('results', 'mpi-runtime', 'apptainer-runtime'):
         (task / name).mkdir(exist_ok=True)
@@ -93,5 +96,6 @@ def run(build):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('build')
+    parser.add_argument('--attempt', type=int, default=1)
     args = parser.parse_args()
-    raise SystemExit(run(args.build))
+    raise SystemExit(run(args.build, args.attempt))
