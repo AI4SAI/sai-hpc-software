@@ -77,12 +77,16 @@ def run(build, attempt=1):
             values = re.findall(r'!FINAL_ETOT_IS\s+([-+0-9.eE]+)', text)
             energy = float(values[-1])
             converged = 'charge density convergence is achieved' in text.lower()
-            device_executed = device == 'cpu' or bool(re.search(r'GPU.*\(x1\)', text))
+            device_executed = device == 'cpu' or bool(re.search(
+                r'^\s*RUNNING WITH DEVICE\s*:\s*GPU\s*/\s*\S+', text, re.M))
+            solver_executed = name != 'cusolvermp' or bool(re.search(
+                r'^\s*DiagoCusolverMP\s+Diag_CusolverMP_gvd\s', text, re.M))
             row.update(energy_ev=energy, reference_energy_ev=reference,
                        absolute_error_ev=abs(energy-reference), converged=converged,
                        device_executed=device_executed,
+                       solver_executed=solver_executed,
                        passed=math.isfinite(energy) and abs(energy-reference) <= tolerance
-                              and converged and device_executed)
+                              and converged and device_executed and solver_executed)
         except Exception as error:
             row['error'] = str(error)
         record['results'].append(row)
