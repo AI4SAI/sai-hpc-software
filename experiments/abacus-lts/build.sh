@@ -13,6 +13,7 @@ cmake -S /workspace/dependencies/rapidjson-master -B /workspace/dependency-build
 cmake --install /workspace/dependency-build/rapidjson
 cp /workspace/dependency-build/rapidjson/CMakeFiles/RapidJSONConfig.cmake \
   "$deps/rapidjson/lib/cmake/RapidJSON/RapidJSONConfig.cmake"
+test -s "$deps/rapidjson/include/rapidjson/document.h"
 
 # LTS has the pre-3.11 CMake interface and CAL-based cuSOLVERMp backend.
 opts=(-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"
@@ -30,6 +31,7 @@ opts=(-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"
   -Dlibnpy_INCLUDE_DIR=/workspace/dependencies/libnpy-1.0.1/include
   "-DTorch_DIR=$deps/libtorch/share/cmake/Torch"
   "-DRapidJSON_DIR=$deps/rapidjson/lib/cmake/RapidJSON"
+  "-DRapidJSON_INCLUDE_PATH=$deps/rapidjson/include"
   -DFETCHCONTENT_FULLY_DISCONNECTED=ON -DFETCHCONTENT_UPDATES_DISCONNECTED=ON
   -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF -DCMAKE_BUILD_RPATH_USE_ORIGIN=ON)
 # Keep a literal ELF $ORIGIN; the array below does not undergo another expansion.
