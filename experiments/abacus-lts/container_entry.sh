@@ -10,9 +10,8 @@ export INSTALL_PREFIX
 environment() {
   source /control/environment.sh "$target"
   if [[ "$target" != dsprhbm ]]; then
-    set +u
-    module unload nvmplibs/26.7-tmp
-    set -u
+    # Keep the loaded compiler/CUDA module dependency chain. Select the old
+    # CAL API by include/library order, without unloading shared prerequisites.
     export LTS_MATH_ROOT=/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/25.7/math_libs/12.9/targets/x86_64-linux
     test -s "$LTS_MATH_ROOT/include/cal.h"
     test -s "$LTS_MATH_ROOT/lib/libcal.so"

@@ -40,7 +40,9 @@ if [[ "$target" == dsprhbm ]]; then
   opts+=(-DUSE_CUDA=OFF -DENABLE_CUSOLVERMP=OFF)
 else
   : "${LTS_MATH_ROOT:?CAL-compatible SDK required}"
+  test -x "${CUDA_HOME:?CUDA module required}/bin/nvcc"
   opts+=(-DUSE_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES=70 -DENABLE_CUSOLVERMP=ON
+    "-DCMAKE_CUDA_COMPILER:FILEPATH=$CUDA_HOME/bin/nvcc" "-DCUDAToolkit_ROOT=$CUDA_HOME"
     "-DCAL_CUSOLVERMP_PATH=$LTS_MATH_ROOT/lib"
     "-DCMAKE_CUDA_FLAGS=-I$LTS_MATH_ROOT/include")
   runtime_rpath+=";$LTS_MATH_ROOT/lib"
