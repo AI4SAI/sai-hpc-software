@@ -25,6 +25,20 @@ def main():
     job = (build / 'job.id').read_text().strip()
     if not job.isdigit():
         raise ValueError('invalid build receipt')
+    accounting = subprocess.check_output(
+        ['sacct', '-X', '-j', job, '-n', '-P', '-o', 'JobIDRaw,State,ExitCode'], text=True)
+    rows = [line.split('|') for line in accounting.splitlines() if line.split('|')[0] == job]
+    if len(rows) != 1:
+        raise ValueError('build accounting record unavailable')
+    state, exit_code = rows[0][1:3]
+    if state == 'COMPLETED' and exit_code == '0:0':
+        # Slurm can discard completed jobs before a later check is submitted.
+        # The monitor below still verifies the build and artifact provenance.
+        dependency = []
+    elif state in ('PENDING', 'RUNNING', 'CONFIGURING', 'COMPLETING'):
+        dependency = [f'#SBATCH --dependency=afterok:{job}', '#SBATCH --kill-on-invalid-dep=yes']
+    else:
+        raise ValueError(f'build cannot be checked: {state} ({exit_code})')
     suffix = '' if args.attempt == 1 else f'-r{args.attempt}'
     task = root / 'runtime-tests' / (build.name + '-lts-science' + suffix)
     task.mkdir()
@@ -39,9 +53,9 @@ def main():
     lines = ['#!/bin/bash', f'#SBATCH --job-name=lts-science-{target}',
              f'#SBATCH --partition={identity["partition"]}', f'#SBATCH --qos={qos}',
              '#SBATCH --account=proj-sai-hpc-software', f'#SBATCH --chdir={task}',
-             f'#SBATCH --dependency=afterok:{job}', '#SBATCH --kill-on-invalid-dep=yes',
              '#SBATCH --nodes=1', '#SBATCH --ntasks=1', '#SBATCH --time=20',
              f'#SBATCH --output={task}/results/slurm-%j.log', '#SBATCH --export=NIL']
+    lines += dependency
     lines += (['#SBATCH --gpus-per-node=1'] if gpu else
               ['#SBATCH --cpus-per-task=1', '#SBATCH --mem=6G', '#SBATCH --exclude=d9470n07'])
     lines += ['set -eo pipefail', 'export PATH=/usr/bin:/bin',
@@ -59,7 +73,9 @@ def main():
     script.write_text('\n'.join(lines) + '\n')
     script.chmod(0o700)
     subprocess.run(['bash', '-n', str(script)], check=True)
-    result = subprocess.run(['sbatch', '--parsable', str(script)], text=True, capture_output=True, check=True)
+    result = subprocess.run(['sbatch', '--parsable', str(script)], text=True, capture_output=True)
+    if result.returncode:
+        raise RuntimeError('Slurm submission failed: ' + result.stderr.strip())
     science_job = result.stdout.strip().split(';')[0]
     if not science_job.isdigit():
         raise ValueError('invalid science job receipt')
