@@ -1,0 +1,237 @@
+{
+  "deliveries": [
+    {
+      "build_job": "2621633",
+      "evidence": {
+        "accounting": {
+          "path": "evidence/DSPRHBM/accounting.json",
+          "sha256": "a56172deded0a75f3f476f7306ff207896cdcc1c71b642970d357847816c6e53"
+        },
+        "build": {
+          "path": "evidence/DSPRHBM/build.json",
+          "sha256": "2c094dd2b2f837ef5b54d87c1fd2716cb493482ccd5f63d6c93ca5b15e15a290"
+        },
+        "deepks": {
+          "path": "evidence/DSPRHBM/deepks.log",
+          "sha256": "c3e03510b77097d58a363ca6e964bbfb64da1620126e640d1f19307cc6509432"
+        },
+        "hse": {
+          "path": "evidence/DSPRHBM/hse.log",
+          "sha256": "ec03b6892a616029e52c0eeef3298cfe4067025ddad97ad070870153f16e0cc5"
+        },
+        "pw": {
+          "path": "evidence/DSPRHBM/pw.log",
+          "sha256": "6ce33169af3a1f0d3a32a62e370aa669000fd9ddfa9ec1be7e6b65d8ffb95f41"
+        },
+        "science": {
+          "path": "evidence/DSPRHBM/science.json",
+          "sha256": "828faacb3ab367bc178c803a311c5fddedceeaccda3c13bfa53c81f208d6a66d"
+        }
+      },
+      "identity": {
+        "build_id": "LTS-2026-11-16-g0d967f1f1bc3-r95113744402d",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/abacus/abacus-development-LTS-2026-11-16-g0d967f1f1bc3-r95113744402d/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "95113744402d4d616ea28d0c453ac210eff95ead3f3d49bef6b51e1a966d4b16",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "LTS",
+        "source_sha": "0d967f1f1bc39c16e3bf435e5f02281c72daaf05",
+        "source_version": "LTS-2026-11-16",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "LTS-2026-11-16"
+      },
+      "image": "images/DSPRHBM.sif",
+      "image_sha256": "5841a2d321fa472e5c59a8a6ad73e0306decce364a0adadb98c03a0e7aabef0c",
+      "origin_image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/LTS-2026-11-16-g0d967f1f1bc3-r95113744402d/DSPRHBM/lts-20261119-c-dsprhbm-0d967f1f1bc3.sif",
+      "partition": "DSPRHBM"
+    },
+    {
+      "build_job": "2621746",
+      "evidence": {
+        "accounting": {
+          "path": "evidence/16V100/accounting.json",
+          "sha256": "be953d5402dcfadce06ae78ac1d838c05f5d2542150f81d3637afc5cc5d1c803"
+        },
+        "build": {
+          "path": "evidence/16V100/build.json",
+          "sha256": "efad47be529736966a97a9f45cab93d9c810bdcb6a80b12fb9008e6772f2952b"
+        },
+        "cusolvermp": {
+          "path": "evidence/16V100/cusolvermp.log",
+          "sha256": "995c5d0a986f244caf82701c921f8d7d6bc856ab9d28615301d490a4db5cd782"
+        },
+        "deepks": {
+          "path": "evidence/16V100/deepks.log",
+          "sha256": "03e4cc79cbb9431f29bcda31d3f5e6eed9c7aa9181c5d9f893a40a90d38ee179"
+        },
+        "hse": {
+          "path": "evidence/16V100/hse.log",
+          "sha256": "4a6dbf91cab39747d7fa20690bbf4dcd9be844bd7c5eebd21a1fc234dfb5dce6"
+        },
+        "pw": {
+          "path": "evidence/16V100/pw.log",
+          "sha256": "9f29f187ff5732b248cf56f74698d5cfba885b8bcbe51b38e7c994afe41b3b11"
+        },
+        "science": {
+          "path": "evidence/16V100/science.json",
+          "sha256": "ccaf9d5ce013330a1daa5c528d013b34772b043a94f6a53ccebd8eb9c764e9d4"
+        }
+      },
+      "identity": {
+        "build_id": "LTS-2026-11-16-g0d967f1f1bc3-rf650f4584906",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/abacus/abacus-development-LTS-2026-11-16-g0d967f1f1bc3-rf650f4584906/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "f650f458490697e2c83a0caefbb4f8972e79e311df25b0bb11e99481d45650b9",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "LTS",
+        "source_sha": "0d967f1f1bc39c16e3bf435e5f02281c72daaf05",
+        "source_version": "LTS-2026-11-16",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "development",
+        "version_label": "LTS-2026-11-16"
+      },
+      "image": "images/16V100.sif",
+      "image_sha256": "6cf6f60dcb6cd87637bf6bca3eeed9b387974dc15960f2a80f36b1c3d3f40cc6",
+      "origin_image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/LTS-2026-11-16-g0d967f1f1bc3-rf650f4584906/16V100/lts-20261119-d-16v100-avx2-0d967f1f1bc3.sif",
+      "partition": "16V100"
+    },
+    {
+      "build_job": "2621748",
+      "evidence": {
+        "accounting": {
+          "path": "evidence/8V100V0/accounting.json",
+          "sha256": "d820c4dc642b4554fdfc5d9e35d2039e3879e46ed284d8a106520078f202e122"
+        },
+        "build": {
+          "path": "evidence/8V100V0/build.json",
+          "sha256": "d095985be021b13ecb67cc218203de1a49a036a5eb7dcec976445deaf04e0182"
+        },
+        "cusolvermp": {
+          "path": "evidence/8V100V0/cusolvermp.log",
+          "sha256": "6b81beaadb84345724ad824a3b824df048648a0f519d5ca3dd2bae073a4c463c"
+        },
+        "deepks": {
+          "path": "evidence/8V100V0/deepks.log",
+          "sha256": "c5e76b19d405d6e41a81eb6a42e372c4e62c45bd330446949838f71c45a32b20"
+        },
+        "hse": {
+          "path": "evidence/8V100V0/hse.log",
+          "sha256": "6bc1c63cf402e3636117b5ded20ce46c90f236254eb6a17d1e57418a64041add"
+        },
+        "pw": {
+          "path": "evidence/8V100V0/pw.log",
+          "sha256": "afd33b754424df4465936144951203836d7cba5f415ed041271525aa2922e66d"
+        },
+        "science": {
+          "path": "evidence/8V100V0/science.json",
+          "sha256": "a30689587300e1c18cba07f1c7ef78b2e524d322f0503d787c79f96c35468aaf"
+        }
+      },
+      "identity": {
+        "build_id": "LTS-2026-11-16-g0d967f1f1bc3-rf650f4584906",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/abacus/abacus-development-LTS-2026-11-16-g0d967f1f1bc3-rf650f4584906/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "f650f458490697e2c83a0caefbb4f8972e79e311df25b0bb11e99481d45650b9",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "LTS",
+        "source_sha": "0d967f1f1bc39c16e3bf435e5f02281c72daaf05",
+        "source_version": "LTS-2026-11-16",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "development",
+        "version_label": "LTS-2026-11-16"
+      },
+      "image": "images/8V100V0.sif",
+      "image_sha256": "13750a6bd8ce2f5459ded723fe4f33e1b447b8f9b4c2b4ddca2b02c5c17c5693",
+      "origin_image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/LTS-2026-11-16-g0d967f1f1bc3-rf650f4584906/8V100V0/lts-20261119-d-8v100v0-avx512-0d967f1f1bc3.sif",
+      "partition": "8V100V0"
+    },
+    {
+      "build_job": "2621750",
+      "evidence": {
+        "accounting": {
+          "path": "evidence/4V100/accounting.json",
+          "sha256": "9a62703dce41428c0616217f15fee51257fa21dab17aa10c8e33970c7d8e39e4"
+        },
+        "build": {
+          "path": "evidence/4V100/build.json",
+          "sha256": "01df9d3b6a9cb4e3cf8e7a4b7dd280c3a095b073271a71d4f91cfe73e960388c"
+        },
+        "cusolvermp": {
+          "path": "evidence/4V100/cusolvermp.log",
+          "sha256": "90db043b011e8a7fa9325b57499be31614a351a0d835dcd15ae80d28bcb934e7"
+        },
+        "deepks": {
+          "path": "evidence/4V100/deepks.log",
+          "sha256": "d97e3d7ecf7bce79cf8db6707d074e4ccf1fab997c4f7fce733ab883b46cbec9"
+        },
+        "hse": {
+          "path": "evidence/4V100/hse.log",
+          "sha256": "c044ac9a5ef259c37b09e8b5a41573061a1e12c1298da8212fd0fb4808b75d7e"
+        },
+        "pw": {
+          "path": "evidence/4V100/pw.log",
+          "sha256": "39267b299af61e2a2c67921a5009546a2bd1ddf432412069d633a43de7da148f"
+        },
+        "science": {
+          "path": "evidence/4V100/science.json",
+          "sha256": "da6eb11203722d5afb02d524a7f1318ad5f1f0d7cabd9e876c7b083ae49b0cf4"
+        }
+      },
+      "identity": {
+        "build_id": "LTS-2026-11-16-g0d967f1f1bc3-rf650f4584906",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/abacus/abacus-development-LTS-2026-11-16-g0d967f1f1bc3-rf650f4584906/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "f650f458490697e2c83a0caefbb4f8972e79e311df25b0bb11e99481d45650b9",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "LTS",
+        "source_sha": "0d967f1f1bc39c16e3bf435e5f02281c72daaf05",
+        "source_version": "LTS-2026-11-16",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "development",
+        "version_label": "LTS-2026-11-16"
+      },
+      "image": "images/4V100.sif",
+      "image_sha256": "6a138cc5bb01f5b17e04aaed9316050f4475a9cf8f370a121bf7e74e4b67e636",
+      "origin_image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/LTS-2026-11-16-g0d967f1f1bc3-rf650f4584906/4V100/lts-20261119-d-4v100-avx512-0d967f1f1bc3.sif",
+      "partition": "4V100"
+    }
+  ],
+  "generated_at": "2026-11-20T01:09:01.250990+00:00",
+  "module_sha256": "16611d10c588e0f0af2947614f6ed67499c5720de537f63f2d13a1262256d390",
+  "schema": 1,
+  "source_sha": "0d967f1f1bc39c16e3bf435e5f02281c72daaf05",
+  "version": "LTS-2026-11-16"
+}

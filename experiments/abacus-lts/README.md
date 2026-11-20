@@ -1,6 +1,6 @@
 # ABACUS LTS build pilot
 
-The [2026-11-19 pilot results](RESULTS-20261119.md) record completed SIFs, scientific checks and the remaining queued partition.
+The [2026-11-19 pilot results](RESULTS-20261119.md) record completed SIFs and scientific checks on all four partitions.
 
 This independent recipe builds an exact commit from upstream `LTS` on DSPRHBM, 16V100, 4V100 and 8V100V0. It reuses the main workflow's file-backed overlay, pinned fuse2fs driver, explicit writeback, offline dependency archives, final-prefix installation and SIF packaging. All computation and writable storage remain under `/org/org-open-sai/proj-sai-hpc-software`.
 
