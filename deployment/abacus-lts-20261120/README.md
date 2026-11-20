@@ -68,6 +68,7 @@ ABACUS LTS v3.10.1; snapshot 2026-11-20; native CPU/V100 partition selection
 Source: deepmodeling/abacus-develop; branch LTS; commit 0d967f1f1bc39c16e3bf435e5f02281c72daaf05 (2026-11-16)
 Features: MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch 2.1.2); LibXC; ELPA; CUDA sm70 and CAL/cuSOLVERMp on GPU partitions
 Toolchain: OpenMPI 5.0.10 / NVHPC 26.3 GNU; CPU GCC 13.3.0; CUDA 12.9.1; ELPA 2026.02.001; GPU CAL/cuSOLVERMp from NVHPC 25.7
+CPU SIMD: DSPRHBM/4V100 AVX512; 16V100 AVX2; 8V100V0 AVX512 with AVX2 dependency libraries; GPU V100 sm70
 ```
 
 登录节点尝试加载时先显示帮助，再要求进入 Slurm 作业。Lmod 缓存未刷新时使用 `module --ignore_cache avail abacus`。
@@ -77,3 +78,5 @@ Toolchain: OpenMPI 5.0.10 / NVHPC 26.3 GNU; CPU GCC 13.3.0; CUDA 12.9.1; ELPA 20
 原始 SIF 均通过版本、CMake 功能选项、动态库解析和单 MPI 进程的上游算例检查；最大能量偏差低于 `2e-11 eV`。GPU 算例还检查实际设备与 cuSOLVERMp 执行记录。HSE、DeePKS 此轮使用 CPU 路径；这些结果不构成多卡、多节点或性能验收。
 
 `--verify` 验证安装完整性，不提交计算任务。`prepare-release.py` 供维护者准备交付包。`validate-staged.py` 和 `staged-entry.sh` 供维护者在项目暂存树上检查精简安装及 module，均不安装到 `/opt`。
+
+暂存试装和 module 验证结果见 [VALIDATION.md](VALIDATION.md)。三个分区的暂存运行复验通过，4V100 的额外暂存计算仍在排队；其原始 SIF 科学验收已通过。

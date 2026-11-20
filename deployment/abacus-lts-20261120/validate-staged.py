@@ -109,13 +109,13 @@ def run(task):
     print(json.dumps(result), flush=True)
 
 
-def submit(stage):
+def submit(stage, partitions):
     stage = stage.resolve(strict=True)
     deployment.require(stage.is_relative_to(deployment.ORIGIN / 'operations'), 'stage must be in project operations')
     deployment.preflight(deployment.load_release(), stage, installed=True)
     root = stage.parent / ('checks-' + datetime.now().strftime('%Y%m%d-%H%M%S'))
     root.mkdir()
-    for partition in deployment.PARTITIONS:
+    for partition in partitions:
         task = root / partition
         task.mkdir()
         for name in ('mpi', 'apptainer'):
@@ -153,8 +153,9 @@ if __name__ == '__main__':
     action = parser.add_mutually_exclusive_group(required=True)
     action.add_argument('--submit', type=Path)
     action.add_argument('--run', type=Path)
+    parser.add_argument('--partition', choices=deployment.PARTITIONS, action='append')
     args = parser.parse_args()
     if args.submit:
-        submit(args.submit)
+        submit(args.submit, args.partition or deployment.PARTITIONS)
     else:
         run(args.run)
