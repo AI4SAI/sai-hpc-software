@@ -112,6 +112,12 @@ request explicitly. The per-request `gpumd-deepmd-lock.json` records the
 identity, SIF/manifest/header/library digests and acceptance proof before the
 GPUMD recipe identity is calculated. Retries retain that lock; continuations
 use their original controller. Historical requests are not relabeled.
+Initial lock publication writes and closes a temporary file in the same
+directory, with mode 0444 and a completed file sync, before linking it once
+at the final path under the selection lock. Interrupted writes leave no
+partial final lock; retry ignores unpublished temporary files. Existing
+invalid locks and any file or symlink appearing at publication are rejected
+without replacing the recorded dependency.
 
 The accepted SIF supplies the build base and its complete DeePMD prefix is
 bundled with GPUMD. The C++ API probe must compile/link against the selected

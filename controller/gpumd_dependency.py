@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 import shlex
 import subprocess
+import tempfile
 
 from export_native import MANIFEST_PATH, SquashfsReader, canonical, read_installed_manifests, inventory
 from release_contract import validate_identity
@@ -154,9 +155,22 @@ def select(project, target, control):
         locked = read(control, target)
         if locked is None:
             locked = resolve(project, target)
-            with (control / LOCK).open('x') as out:
-                out.write(canonical(locked))
-            (control / LOCK).chmod(0o444)
+            temporary = None
+            try:
+                with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', dir=control,
+                        prefix='.' + LOCK + '.', delete=False) as out:
+                    temporary = Path(out.name)
+                    out.write(canonical(locked))
+                    out.flush()
+                    os.fchmod(out.fileno(), 0o444)
+                    os.fsync(out.fileno())
+                # Publish only complete, closed, read-only bytes. Like the
+                # immutable controller upload, link is atomic and refuses to
+                # replace any intervening file or symlink at the final path.
+                os.link(temporary, control / LOCK)
+            finally:
+                if temporary is not None:
+                    temporary.unlink(missing_ok=True)
         return verify_image(locked, target)
 
 

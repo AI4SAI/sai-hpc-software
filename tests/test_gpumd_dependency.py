@@ -1,6 +1,7 @@
 """Real-header ABI regression, frozen selection and complete native dependency export."""
 import argparse
 import copy
+from contextlib import contextmanager
 import gzip
 import hashlib
 import json
@@ -43,6 +44,121 @@ def locked(root, target='4v100-avx512'):
 
 
 class DependencySelectionTests(unittest.TestCase):
+    @unittest.skipUnless(hasattr(os, 'fork'), 'process interruption test requires POSIX fork')
+    def test_interrupted_first_publication_leaves_no_final_lock_and_can_retry(self):
+        for failure in ('write', 'close', 'process-exit'):
+            with self.subTest(failure=failure), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                first = locked(root)
+                original_open = Path.open
+                original_temporary = tempfile.NamedTemporaryFile
+
+                @contextmanager
+                def interrupt(output):
+                    with output as stream:
+                        write = stream.write
+
+                        def interrupted_write(content):
+                            if failure == 'close':
+                                return write(content)
+                            write(content[:len(content) // 2])
+                            stream.flush()
+                            if failure == 'process-exit':
+                                os._exit(73)  # No finally/close cleanup in the writer.
+                            raise OSError('injected partial write failure')
+
+                        with patch.object(stream, 'write', side_effect=interrupted_write):
+                            yield stream
+                    if failure == 'close':
+                        raise OSError('injected close failure')
+
+                def open_path(path, mode='r', *args, **kwargs):
+                    stream = original_open(path, mode, *args, **kwargs)
+                    return interrupt(stream) if path.name == dep.LOCK and mode == 'x' else stream
+
+                def temporary(*args, **kwargs):
+                    return interrupt(original_temporary(*args, **kwargs))
+
+                with patch.object(dep, 'resolve', return_value=first), \
+                        patch.object(Path, 'open', open_path), \
+                        patch.object(tempfile, 'NamedTemporaryFile', side_effect=temporary):
+                    if failure == 'process-exit':
+                        child = os.fork()
+                        if child == 0:
+                            try:
+                                dep.select(root, '4v100-avx512', root)
+                            except BaseException:
+                                os._exit(74)
+                            os._exit(75)
+                        _, status = os.waitpid(child, 0)
+                        self.assertEqual(os.waitstatus_to_exitcode(status), 73)
+                    else:
+                        with self.assertRaisesRegex(OSError, 'injected'):
+                            dep.select(root, '4v100-avx512', root)
+                self.assertFalse((root / dep.LOCK).exists())
+                self.assertFalse((root / dep.LOCK).is_symlink())
+                with patch.object(dep, 'resolve', return_value=first):
+                    self.assertEqual(dep.select(root, '4v100-avx512', root), first)
+                self.assertEqual((root / dep.LOCK).read_text(), dep.canonical(first))
+                self.assertEqual((root / dep.LOCK).stat().st_mode & 0o777, 0o444)
+                with patch.object(dep, 'resolve', side_effect=AssertionError('must keep the frozen identity')):
+                    self.assertEqual(dep.select(root, '4v100-avx512', root), first)
+
+    def test_existing_invalid_or_changed_lock_fails_without_reselection(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            first = locked(root)
+            invalid = copy.deepcopy(first)
+            invalid['acceptance']['scientific_verified'] = False
+            for content in ('', '{', dep.canonical(invalid)):
+                with self.subTest(content=content):
+                    final = root / dep.LOCK
+                    final.write_text(content)
+                    with patch.object(dep, 'resolve', side_effect=AssertionError('must not reselect')):
+                        with self.assertRaises(ValueError):
+                            dep.select(root, '4v100-avx512', root)
+                    self.assertEqual(final.read_text(), content)
+            final.write_text(dep.canonical(first))
+            image = Path(first['image'])
+            image.chmod(0o644)
+            image.write_bytes(b'changed accepted image')
+            image.chmod(0o444)
+            with patch.object(dep, 'resolve', side_effect=AssertionError('must not reselect')):
+                with self.assertRaisesRegex(ValueError, 'checksum'):
+                    dep.select(root, '4v100-avx512', root)
+            self.assertEqual(final.read_text(), dep.canonical(first))
+
+    def test_publication_is_readonly_and_does_not_replace_an_intervening_path(self):
+        for collision in ('file', 'symlink'):
+            with self.subTest(collision=collision), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                first = locked(root)
+                final = root / dep.LOCK
+                preserved = root / 'preserved.json'
+                preserved.write_text('preserve existing bytes')
+                original_link = os.link
+
+                def collide(source, destination):
+                    self.assertEqual(Path(source).parent, root)
+                    self.assertEqual(Path(source).read_text(), dep.canonical(first))
+                    self.assertEqual(Path(source).stat().st_mode & 0o777, 0o444)
+                    if collision == 'symlink':
+                        final.symlink_to(preserved)
+                    else:
+                        final.write_text(preserved.read_text())
+                    return original_link(source, destination)
+
+                with patch.object(dep, 'resolve', return_value=first), \
+                        patch.object(dep.os, 'link', side_effect=collide):
+                    with self.assertRaises(FileExistsError):
+                        dep.select(root, '4v100-avx512', root)
+                self.assertEqual(final.is_symlink(), collision == 'symlink')
+                self.assertEqual(final.read_text(), 'preserve existing bytes')
+                self.assertEqual(preserved.read_text(), 'preserve existing bytes')
+                with patch.object(dep, 'resolve', side_effect=AssertionError('must not reselect')):
+                    with self.assertRaises(ValueError):
+                        dep.select(root, '4v100-avx512', root)
+
     def test_resolve_uses_latest_accepted_target_and_revalidates_recovery(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
