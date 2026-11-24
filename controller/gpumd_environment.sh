@@ -8,6 +8,15 @@ source /etc/profile.d/lmod.sh
 module purge
 module use /opt/modules/modulefiles/devtools /opt/modules/modulefiles/apps
 module load cuda/12.9.1 deepmd-kit/3.2.0 gcc/13.3.0
+# The site environment supplies shared frameworks; the accepted dependency
+# bundled in the base SIF supplies its matching C++ headers, plugins and Python.
+# A legacy frozen controller without a lock retains its recorded environment.
+if [[ -f /control/gpumd-deepmd-lock.json ]]; then
+  python3 /control/gpumd_dependency.py environment / "${1:?target required}" /control \
+    > /workspace/deepmd-environment.sh
+  source /workspace/deepmd-environment.sh
+  export PATH="/opt/devtools/gcc/13.3.0/bin:/opt/devtools/nvidia/cuda-12.9.1/bin:$PATH"
+fi
 # The site has no standalone PLUMED module. Do not load the LAMMPS application
 # merely to pick up these libraries; record and bind its dependency explicitly.
 export GPUMD_PLUMED_PREFIX=/opt/apps/plumed/plumed-2.10.1

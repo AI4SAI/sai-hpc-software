@@ -19,13 +19,14 @@ build)
   test "$(git -C /workspace/source rev-parse HEAD)" = "$sha"
   source /control/gpumd_environment.sh "$target"
   bash /control/gpumd_build.sh
+  cp /control/gpumd-deepmd-lock.json "$INSTALL_PREFIX/share/sai/deepmd-dependency.json"
   printf '%s\n' "$sha" > "$INSTALL_PREFIX/share/sai/source-sha"
   printf '%s\n' "$target" > "$INSTALL_PREFIX/share/sai/target"
   module -t list > "$INSTALL_PREFIX/share/sai/modules.txt" 2>&1
   nvcc --version > "$INSTALL_PREFIX/share/sai/compiler.txt"
   gcc -march=native -Q --help=target > "$INSTALL_PREFIX/share/sai/native-cpu-flags.txt"
   lscpu > "$INSTALL_PREFIX/share/sai/hardware.txt"
-  for key in PATH LD_LIBRARY_PATH CUDA_HOME CUDA_PATH DEEPMD_ROOT DEEPMD_PYTHON PLUMED_KERNEL \
+  for key in PATH LD_LIBRARY_PATH PYTHONPATH DP_BACKEND_PLUGIN_PATH CUDA_HOME CUDA_PATH DEEPMD_ROOT DEEPMD_PYTHON PLUMED_KERNEL \
              DP_CUDA_INFER OMP_NUM_THREADS DP_INTRA_OP_PARALLELISM_THREADS DP_INTER_OP_PARALLELISM_THREADS; do
     if [[ -v "$key" ]]; then printf 'export %s=%q\n' "$key" "${!key}"; fi
   done > "$INSTALL_PREFIX/share/sai/runtime-env.sh"
@@ -50,6 +51,11 @@ export)
   bash /control/create_rootfs.sh /workspace/export
   mkdir -p "/workspace/export$(dirname -- "$INSTALL_PREFIX")"
   cp -a "$INSTALL_PREFIX" "/workspace/export$INSTALL_PREFIX"
+  deepmd_prefix=$(python3 /control/gpumd_dependency.py prefix / "$target" /control)
+  mkdir -p "/workspace/export$(dirname -- "$deepmd_prefix")"
+  cp -a "$deepmd_prefix" "/workspace/export$deepmd_prefix"
+  env -u LD_PRELOAD python3 -c 'import json,sys; sys.path.insert(0,"/control"); from md_packaging import prepare; from gpumd_dependency import read; print(prepare("/workspace/export", [json.loads(sys.argv[1]), read("/control",sys.argv[2],required=True)["identity"]]))' \
+    "$delivery" "$target"
   mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
   ;;
 verify)

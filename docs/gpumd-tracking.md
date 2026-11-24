@@ -95,6 +95,39 @@ the overlay. No host `/tmp` or host installation tree is used.
 
 ## Features and system dependencies
 
+The November 24 Daily (`45244259821`) froze GPUMD at
+`91287ce2993c211408f0229fafee3a9447e4ff16`. Its canonical graph interface
+requires the newer DeePMD index-width, int64 source-order, halo and long-range
+cell API. The selected site 3.2.0 headers and libraries implement API 30 and
+cannot build that source. The normal build remains upstream's `src/makefile`;
+the controller does not remove long-range arguments or replace the upstream
+partial-periodicity rejection.
+
+New requests select the newest scientifically accepted standalone DeePMD
+development delivery for the exact GPUMD target. Selection uses the immutable
+request timestamp, revalidates acceptance (including recorded recovery) with
+the delivery's original controller, and checks its actual SIF manifest and
+headers. A missing, changed or incompatible selected dependency stops the
+request explicitly. The per-request `gpumd-deepmd-lock.json` records the
+identity, SIF/manifest/header/library digests and acceptance proof before the
+GPUMD recipe identity is calculated. Retries retain that lock; continuations
+use their original controller. Historical requests are not relabeled.
+
+The accepted SIF supplies the build base and its complete DeePMD prefix is
+bundled with GPUMD. The C++ API probe must compile/link against the selected
+headers/libraries, and `ldd` must resolve the matching C++ library before CUDA
+compilation. Runtime and native export retain the same Python/backend plugin
+selection and both prefix inventories. The site GPUMD baseline separately
+uses its original 3.2.0 library ABI during scientific/performance comparisons.
+
+Local regression used the actual same-Daily DeePMD
+`ed859426333b462512c86cd496f9a194379a515f` (`master-2026-11-18`) headers,
+libraries and native entry. This SHA is a fixture, not a permanent production
+path. Full CUDA builds, GPU numerics (including long-range and partially
+periodic behavior), and physical native installation remain unverified for
+this change. The existing science, performance and publication gates still
+apply before any delivery can be accepted.
+
 The package installs `gpumd`, `nep`, and `gnep`. Site GPUMD 5.8 and master both
 actually print version 5.7 and directly link `libdeepmd_cc.so`; the version label
 alone is not evidence of features. The recipe explicitly enables `USE_DEEPMD`
@@ -103,7 +136,8 @@ and `USE_PLUMED` through upstream's Make build interface.
 | Dependency | Policy |
 | --- | --- |
 | CUDA/GCC | Read-only `cuda/12.9.1`, `gcc/13.3.0` modules |
-| DeePMD C++ interface | Read-only `deepmd-kit/3.2.0`, `/opt/apps/conda_env/deepmd-kit-3.2.0` |
+| DeePMD C++ interface | Frozen, accepted same-target standalone development SIF; complete prefix bundled with GPUMD |
+| DeePMD framework dependencies / site baseline | Read-only `deepmd-kit/3.2.0`, `/opt/apps/conda_env/deepmd-kit-3.2.0`; selected dependency's recorded shared-library paths |
 | PLUMED | Read-only `/opt/apps/plumed/plumed-2.10.1`; site has no independent module |
 | ELPA | Not a GPUMD dependency; no duplicate ELPA installation |
 
@@ -164,9 +198,9 @@ GPU, not the login node.
 Canonical prefix: `/opt/apps/gpumd/GPUMD-<track>-<build_id>/<partition>`, using
 the shared schema-2 release contract. Historical schema-1 `/opt/software`
 identities remain readable without relabeling. Development labels include the pinned commit's UTC
-date; the shared build ID adds source and recipe hashes. The SIF contains
-only the installation; external dependencies remain read-only at their recorded
-site paths. It also contains matching CUDA source/headers under
+date; the shared build ID adds source and recipe hashes. New SIFs contain
+GPUMD and its complete locked DeePMD installation; shared infrastructure
+dependencies remain read-only at their recorded site paths. They also contain matching CUDA source/headers under
 `share/gpumd/src`: modern NEP training JIT genuinely needs these, so copying only
 the executables is not a complete installation.
 
@@ -186,7 +220,9 @@ and host, with file and sidecar invalidation. Scientific reports and publication
 proofs carry the same release identity. Packaging a complete candidate does not
 set scientific acceptance or publish a module.
 
-If the complete prefix is later copied to physical storage, source
+Both exported prefixes must be copied to their recorded canonical locations;
+the GPUMD native module rejects a missing bundled DeePMD manifest or library.
+If the complete prefixes are later copied to physical storage, source
 `<prefix>/share/sai/runtime-env.sh` before running it. The script derives its own
 prefix and JIT source path relative to its location; JIT writes into the job's
 managed `TMPDIR`, never the installed source tree. ELF loader paths may refer to

@@ -82,6 +82,7 @@ SITE_APPS = {
     "abacus": (),
     "cp2k": (),
     "gpumd": ("/opt/apps/conda_env/deepmd-kit-3.2.0",
+              "/opt/apps/conda_env/deepmd-kit-3.1.2", "/opt/apps/conda_env/VeloxChem/gpu",
               "/opt/apps/plumed/plumed-2.10.1", "/opt/apps/gpumd/GPUMD-5.8"),
     "lammps": ("/opt/apps/conda_env/deepmd-kit-3.2.0",
                "/opt/apps/conda_env/deepmd-kit-3.1.2",

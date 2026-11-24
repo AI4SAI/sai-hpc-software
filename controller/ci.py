@@ -403,10 +403,8 @@ def main():
                    "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "cp2k_overlay_workdir.py", "cp2k_image_driver.py", "managed_overlay.py", "build_capacity.py",
                    "native_module.py", "export_native.py"])
         if software == "gpumd":
-            recipe = ["gpumd_container_entry.sh", "gpumd_environment.sh", "gpumd_build.sh",
-                      "gpumd_science.py", "gpumd_reference_cases.json", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
-                      "export_native.py", "native_module.py", "cp2k_image_driver.py",
-                      "managed_overlay.py", "cp2k_overlay_sync.py"]
+            from software_controller import contract_files
+            recipe = [name for name in contract_files('gpumd') if name not in ('gpumd', 'nep', 'gnep')]
         if software == "qe":
             from software_controller import contract_files
             recipe = [name for name in contract_files("qe") if name != "qe"]
@@ -430,6 +428,10 @@ def main():
     results.mkdir(exist_ok=True)
     # The uploaded, immutable remote recipe owns the fingerprint. Never invent
     # an identity from the runner's checkout or from a mutable channel label.
+    # Continuations use their frozen controller/lock, including older requests
+    # whose controller predates dependency selection altogether.
+    if software == 'gpumd' and not continuing:
+        python('gpumd_dependency.py', 'select', root, target, control, capture_output=True)
     identity = validate_identity(json.loads(python("software_controller.py", "identity", software,
         upstream, version, target, *provenance_flags, capture_output=True).stdout))
     expected_fields = {"software": software, "track": track, "source_ref": source_ref,

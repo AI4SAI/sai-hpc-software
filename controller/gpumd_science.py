@@ -87,7 +87,7 @@ def _site_roots(identity):
     return [CUDA, GCC, DEEPMD, PLUMED, mpi, NVHPC, NCCL, MODULE_ROOT, BLAS, LAPACK]
 
 
-def build_native_entry(identity, prefix, environment, ldd_reports, executables=COMMANDS):
+def build_native_entry(identity, prefix, environment, ldd_reports, executables=COMMANDS, dependency=None):
     """Pure constructor from a canonical identity and observed build evidence.
 
     ``ldd_reports`` maps all three installed commands and each SITE_LIBRARIES
@@ -108,8 +108,14 @@ def build_native_entry(identity, prefix, environment, ldd_reports, executables=C
     if not isinstance(ldd_reports, dict) or set(ldd_reports) != set(COMMANDS) | set(SITE_LIBRARIES):
         raise ValueError("complete command and site-library ldd evidence is required")
     roots = _site_roots(identity)
+    deepmd = DEEPMD
+    if dependency:
+        from gpumd_dependency import validate
+        validate(dependency, identity['target'])
+        deepmd = dependency['identity']['install_prefix']
+        roots = _unique([*roots, *dependency['entry']['external_roots']])
     mpi = roots[4]
-    expected = {"CUDA_HOME": CUDA, "CUDA_PATH": CUDA, "DEEPMD_ROOT": DEEPMD,
+    expected = {"CUDA_HOME": CUDA, "CUDA_PATH": CUDA, "DEEPMD_ROOT": deepmd,
                 "PLUMED_KERNEL": SITE_LIBRARIES["libplumedKernel.so"],
                 "DP_CUDA_INFER": "2", **THREADS}
     for key, value in expected.items():
@@ -135,12 +141,12 @@ def build_native_entry(identity, prefix, environment, ldd_reports, executables=C
 
     def approved(value):
         _path(value)
-        if not any(_beneath(value, root) for root in [prefix, *roots, "/usr", "/lib", "/lib64"]):
+        if not any(_beneath(value, root) for root in [prefix, deepmd, *roots, "/usr", "/lib", "/lib64"]):
             raise ValueError("unrecorded native library path: " + value)
         return value
 
     library_paths = _unique(approved(value) for value in environment.get("LD_LIBRARY_PATH", "").split(":"))
-    for required in (DEEPMD + "/lib", PLUMED + "/lib", BLAS, LAPACK, mpi + "/lib"):
+    for required in (deepmd + "/lib", PLUMED + "/lib", BLAS, LAPACK, mpi + "/lib"):
         if required not in library_paths:
             raise ValueError("required site library directory is absent: " + required)
     resolved = {name: [approved(path) for path in parse_ldd(report)]
@@ -160,6 +166,14 @@ def build_native_entry(identity, prefix, environment, ldd_reports, executables=C
              "runtime": {"modules": list(MODULES),
                          "prepend": {"MODULEPATH": [MODULE_ROOT], "LD_LIBRARY_PATH": library_paths},
                          "set": settings}}
+    if dependency:
+        from gpumd_dependency import declaration, verify_link
+        verify_link(ldd_reports['gpumd'], deepmd)
+        entry['bundled_dependencies'] = [declaration(dependency)]
+        entry['runtime']['set'].update(DEEPMD_PYTHON=deepmd + '/bin/python',
+            DP_BACKEND_PLUGIN_PATH=environment['DP_BACKEND_PLUGIN_PATH'])
+        entry['runtime']['prepend']['PYTHONPATH'] = _unique(
+            approved(value) for value in environment['PYTHONPATH'].split(':') if value)
     # Do not weaken the public whitelist for unsupported GPUMD variables.
     return validate_native_entry(entry)
 
@@ -169,6 +183,20 @@ def _regular(path, *, executable=False):
     if not stat.S_ISREG(info.st_mode) or (executable and info.st_mode & 0o111 != 0o111):
         raise ValueError("installed command/metadata is not a regular readable executable: " + str(path))
     return path
+
+
+def baseline_environment(environment, dependency):
+    """Keep the old GPUMD binary on its original DeePMD ABI during comparison."""
+    result = dict(environment)
+    if dependency:
+        prefix = dependency['identity']['install_prefix']
+        for key in ('PATH', 'LD_LIBRARY_PATH', 'PYTHONPATH'):
+            result[key] = ':'.join(value for value in result.get(key, '').split(':')
+                                   if value and not _beneath(value, prefix))
+        result['LD_LIBRARY_PATH'] = DEEPMD + '/lib:' + result.get('LD_LIBRARY_PATH', '')
+        result.update(DEEPMD_ROOT=DEEPMD, DEEPMD_PYTHON=DEEPMD + '/bin/python',
+                      DP_BACKEND_PLUGIN_PATH=DEEPMD + '/lib')
+    return result
 
 
 BASELINE = Path("/opt/apps/gpumd/GPUMD-5.8")
@@ -292,12 +320,21 @@ def inspect(prefix, identity=None, environment=None):
     if not expected <= installed or not {"gpumd", "nep", "gnep"} <= installed:
         raise ValueError("installed executable set is below the site baseline")
     report = {}
+    dependency = None
+    if (prefix / 'share/sai/deepmd-dependency.json').exists():
+        from gpumd_dependency import validate, installed as verify_installed_dependency, verify_link
+        selected_identity = identity or json.loads((prefix / 'share/sai/release-identity.json').read_text())
+        dependency = validate(json.loads((prefix / 'share/sai/deepmd-dependency.json').read_text()),
+                              selected_identity['target'])
+        verify_installed_dependency(dependency)
     for name in sorted(installed):
         binary = prefix / "bin" / name
         dynamic = subprocess.check_output(["readelf", "-d", binary], text=True)
         dependencies = subprocess.check_output(["ldd", binary], text=True)
         if "not found" in dependencies:
             raise ValueError(f"{name}: missing shared libraries")
+        if dependency and name == 'gpumd':
+            verify_link(dependencies, dependency['identity']['install_prefix'])
         # __FILE__ strings are debug provenance, not loader dependencies.
         if re.search(r"/workspace|/control|/home/[^/]+/sai-hpc-software", dynamic):
             raise ValueError(f"{name}: nonportable loader path")
@@ -332,7 +369,11 @@ def inspect(prefix, identity=None, environment=None):
             if shutil.which(compiler, path=environment.get("PATH")) != expected:
                 raise ValueError("JIT compiler differs from verified site dependency: " + compiler)
         ldd_reports = {name: result["ldd"] for name, result in report.items()}
-        for name, path in SITE_LIBRARIES.items():
+        site_libraries = dict(SITE_LIBRARIES)
+        if dependency:
+            for name in ('libdeepmd_cc.so', 'libdeepmd_c.so'):
+                site_libraries[name] = dependency['identity']['install_prefix'] + '/lib/' + name
+        for name, path in site_libraries.items():
             if not Path(path).is_file():
                 raise ValueError("missing site dependency: " + path)
             ldd_reports[name] = subprocess.check_output(
@@ -341,7 +382,7 @@ def inspect(prefix, identity=None, environment=None):
         for name in COMMANDS:
             _regular(prefix / "bin" / name, executable=True)
         entry = build_native_entry(identity, prefix, environment, ldd_reports,
-                                   _regular(prefix / "share/sai/executables.txt").read_text().split())
+                                   _regular(prefix / "share/sai/executables.txt").read_text().split(), dependency)
         for path in [*entry["external_roots"], *entry["runtime"]["prepend"]["LD_LIBRARY_PATH"]]:
             if not Path(path).is_dir():
                 raise ValueError("recorded native dependency does not exist: " + path)
@@ -359,12 +400,13 @@ def inspect(prefix, identity=None, environment=None):
                 with path.open("x") as output:
                     output.write(canonical(value))
                 path.chmod(0o444)
-        write_manifests([entry])
+        write_manifests([entry, dependency['entry']] if dependency else [entry])
     else:
         entry = validate_native_entry(json.loads(_regular(prefix / "share/sai/native-entry.json").read_text()))
         if entry["identity"]["install_prefix"] != str(prefix):
             raise ValueError("installed native entry differs from its prefix")
-        if read_installed_manifests([entry]) != inventory([entry]):
+        entries = [entry, dependency['entry']] if dependency else [entry]
+        if read_installed_manifests(entries) != inventory(entries):
             raise ValueError("installed native manifest differs from the complete installation")
     return report
 
@@ -828,6 +870,16 @@ def run(prefix, task, repeat_source=None):
                              for mode, root, names in (("candidate", prefix, COMMANDS),
                                                        ("baseline", BASELINE, ("gpumd", "nep")))}
     report["packaged_inputs"] = raw_file_inventory(inputs)
+    dependency_file = prefix / 'share/sai/deepmd-dependency.json'
+    dependency = json.loads(dependency_file.read_text()) if dependency_file.exists() else None
+    if dependency:
+        from gpumd_dependency import declaration, verify_link
+        report['deepmd_dependency'] = declaration(dependency)
+        report['baseline_deepmd_root'] = DEEPMD
+        baseline_ldd = subprocess.check_output(['ldd', BASELINE / 'bin/gpumd'], text=True,
+                                               env=baseline_environment(os.environ, dependency))
+        verify_link(baseline_ldd, DEEPMD)
+        (task / 'baseline-deepmd-ldd.txt').write_text(baseline_ldd)
     previous = None
     if repeat_source is not None:
         previous = json.loads((repeat_source / "science.json").read_text())
@@ -852,6 +904,8 @@ def run(prefix, task, repeat_source=None):
         clear_previous_outputs(dest)
         executable = (prefix if mode == "candidate" else BASELINE) / "bin" / name
         environment = os.environ.copy()
+        if mode == 'baseline':
+            environment = baseline_environment(environment, dependency)
         environment["GPUMD_SRC"] = str((prefix / "share/gpumd/src") if mode == "candidate" else (BASELINE / "src"))
         start = time.monotonic()
         with (dest / "run.log").open("w") as log:

@@ -45,11 +45,13 @@ def contract_files(software):
             "qe_science.py", "qe_acceptance.py", "qe_fixture.json", "qe", "sif_runtime.py",
             "export_native.py", "native_module.py", "cp2k_image_driver.py", "managed_overlay.py", "cp2k_overlay_sync.py"]
     if software == "gpumd":
-        return [name for name in common if name != "environment.sh"] + [
+        files = [name for name in common if name != "environment.sh"] + [
             "gpumd_environment.sh", "gpumd_container_entry.sh", "gpumd_build.sh",
+            "gpumd_dependency.py", "gpumd_deepmd_api.cpp", "beta_candidates.py", "sif_runtime.py", "md_packaging.py",
             "gpumd_science.py", "gpumd_reference_cases.json", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
             "export_native.py", "native_module.py", "gpumd", "nep", "gnep",
             "cp2k_image_driver.py", "managed_overlay.py", "cp2k_overlay_sync.py"]
+        return files
     raise ValueError("unknown software contract")
 
 def recipe_fingerprint(software, control=None):
@@ -63,6 +65,11 @@ def recipe_fingerprint(software, control=None):
         if not path.is_file() or path.is_symlink():
             raise ValueError(f"missing trusted contract file: {name}")
         digest.update(f"{name}\0{checksum(path)}\n".encode())
+    if software == 'gpumd':
+        from gpumd_dependency import LOCK, regular
+        locked = control / LOCK
+        if locked.exists() or locked.is_symlink():
+            digest.update(f"{LOCK}\0{checksum(regular(locked))}\n".encode())
     return digest.hexdigest()
 
 def request_identity(args):
@@ -71,6 +78,17 @@ def request_identity(args):
 
 def identity(args):
     print(json.dumps(request_identity(args), sort_keys=True))
+
+
+def export_identities(request):
+    identities = [validate_record(request)]
+    if request['software'] == 'gpumd' and request.get('deepmd_dependency'):
+        from gpumd_dependency import read, validate
+        locked = validate(request['deepmd_dependency'], request['target'])
+        if locked != read(Path(request['controller']), request['target'], required=True):
+            raise ValueError('GPUMD request differs from its frozen DeePMD dependency')
+        identities.append(locked['identity'])
+    return identities
 
 def required_acceptance(software, target):
     if software == "qe":
@@ -216,7 +234,7 @@ def validate_candidate(manifest, artifact, *, published=False):
     validate_acceptance(manifest)
     if published:
         from export_native import validate_export_record
-        validate_export_record(manifest.get('native_export'), manifest['sha256'], [delivery])
+        validate_export_record(manifest.get('native_export'), manifest['sha256'], export_identities(request))
         validate_module(manifest, artifact, root=ROOT)
 
 def call(argv, **kw):
@@ -297,7 +315,7 @@ def _publish_runtime_entry(request, artifact, manifest):
             raise ValueError("publication launcher was not runtime-tested")
     from export_native import export_delivery
     manifest['native_export'] = export_delivery(artifact, manifest['sha256'],
-                                                artifact.with_suffix('.native'), [validate_record(manifest)])
+                                                artifact.with_suffix('.native'), export_identities(request))
     manifest.update(publish_module(ROOT, request, artifact, launcher, module_lines, description))
     target_dir = artifact.parent
     current_tmp = target_dir / f".current-{os.getpid()}.sif"
@@ -340,6 +358,12 @@ def render_job(args):
     if not 256 <= args.overlay_mb <= 32768:
         raise ValueError("overlay size outside policy bounds")
     image = ROOT / "containers/base/minimal-v1.sif"
+    deepmd = None
+    if args.software == 'gpumd':
+        from gpumd_dependency import read
+        deepmd = read(CONTROL, args.target)
+        if deepmd:
+            image = Path(deepmd['image'])
     repo = ROOT / "cache/repositories" / args.software
     overlay = r / "work.ext3"
     squash = r / "final.squashfs"
@@ -467,6 +491,8 @@ def render_job(args):
            'export APPTAINERENV_CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:?}"']
           if args.software == "gpumd" else []),
         f"test -s {q(str(image))}",
+        *([shlex.join(['/usr/bin/python3', str(CONTROL / 'gpumd_dependency.py'),
+                      'verify-image', str(ROOT), args.target, str(CONTROL)])] if deepmd else []),
         *([shlex.join(['/usr/bin/python3', str(CONTROL / 'build_capacity.py'), '--shell-script-stdin',
                       str(ROOT), str(r), str(3 * args.overlay_mb)]) + " <<'SAI_BUILD_BODY'"]
           if args.software == 'cp2k' else []),
@@ -503,6 +529,9 @@ def render_job(args):
 def submit(args):
     # Do not spend an allocation on a target that cannot pass publication.
     required_acceptance(args.software, args.target)
+    if args.software == 'gpumd':
+        from gpumd_dependency import read, verify_image
+        args.deepmd_dependency = verify_image(read(CONTROL, args.target, required=True), args.target)
     if args.jobs is None:
         args.jobs = TARGETS[args.target].get("build_jobs", 8)
     from remote_controller import require_capacity

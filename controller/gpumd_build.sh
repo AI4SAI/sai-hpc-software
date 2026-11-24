@@ -26,6 +26,15 @@ libraries='-lcublas -lcusolver -lcufft -ldeepmd_cc -ldeepmd_c -lplumed -lplumedK
 executables=(gpumd nep)
 if grep -q '^gnep:' makefile; then executables+=(gnep); fi
 mkdir -p "$INSTALL_PREFIX/bin" "$INSTALL_PREFIX/share/sai" "$INSTALL_PREFIX/share/gpumd/src"
+# Check the complete current canonical call against both selected headers and
+# actual shared-library symbols. Never patch out long-range/cell arguments.
+g++ -std=c++14 -O0 -I"$DEEPMD_ROOT/include/deepmd" /control/gpumd_deepmd_api.cpp \
+  -L"$DEEPMD_ROOT/lib" -Wl,-rpath,"$DEEPMD_ROOT/lib" \
+  -Wl,-rpath-link,"$DEEPMD_ROOT/lib" -ldeepmd_cc -ldeepmd_c \
+  -o /workspace/gpumd-deepmd-api
+ldd /workspace/gpumd-deepmd-api > "$INSTALL_PREFIX/share/sai/deepmd-api-ldd.txt"
+python3 -c 'import pathlib,sys; sys.path.insert(0,"/control"); from gpumd_dependency import verify_link; verify_link(pathlib.Path(sys.argv[1]).read_text(), sys.argv[2])' \
+  "$INSTALL_PREFIX/share/sai/deepmd-api-ldd.txt" "$DEEPMD_ROOT"
 printf '%s\n' "CFLAGS=$flags" "INC=$includes" "LDFLAGS=$links" "LIBS=$libraries" \
   > "$INSTALL_PREFIX/share/sai/build-options.txt"
 make -j "$BUILD_JOBS" "CC=nvcc" "CFLAGS=$flags" "INC=$includes" \

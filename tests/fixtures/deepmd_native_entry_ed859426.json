@@ -1,0 +1,128 @@
+{
+  "commands": {
+    "dp": "bin/dp"
+  },
+  "external_roots": [
+    "/lib",
+    "/lib/x86_64-linux-gnu/blas",
+    "/lib/x86_64-linux-gnu/lapack",
+    "/lib64",
+    "/opt/apps/conda_env/deepmd-kit-3.2.0",
+    "/opt/apps/conda_env/deepmd-kit-3.2.0/bin",
+    "/opt/apps/conda_env/deepmd-kit-3.2.0/lib",
+    "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow",
+    "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib",
+    "/opt/apps/plumed/plumed-2.10.1",
+    "/opt/apps/plumed/plumed-2.10.1/bin",
+    "/opt/apps/plumed/plumed-2.10.1/lib",
+    "/opt/devtools/cmake/3.31.6/bin",
+    "/opt/devtools/gcc/14.3.0/bin",
+    "/opt/devtools/gcc/14.3.0/lib",
+    "/opt/devtools/gcc/14.3.0/lib64",
+    "/opt/devtools/gcc/14.3.0/libexec",
+    "/opt/devtools/nvidia/cuda-12.9.1/bin",
+    "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib",
+    "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/bin",
+    "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib",
+    "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/bin",
+    "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib",
+    "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib",
+    "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/targets/x86_64-linux/lib",
+    "/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib",
+    "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/bin",
+    "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib",
+    "/opt/modules/modulefiles/apps",
+    "/opt/modules/modulefiles/compiler",
+    "/opt/modules/modulefiles/devtools",
+    "/opt/modules/modulefiles/mathlib",
+    "/opt/modules/modulefiles/mpi",
+    "/usr",
+    "/usr/bin",
+    "/usr/lib",
+    "/usr/lib/x86_64-linux-gnu",
+    "/usr/local/bin",
+    "/usr/local/sbin",
+    "/usr/sbin"
+  ],
+  "identity": {
+    "build_id": "master-2026-11-18-ged859426333b-reb7e0498c946",
+    "cpu_arch": "znver4",
+    "cuda_arch": "70",
+    "dependency_isa": "avx512",
+    "gpus": 1,
+    "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-18-ged859426333b-reb7e0498c946/4V100",
+    "partition": "4V100",
+    "recipe_sha256": "eb7e0498c9467a56904b9cc55a73182b426e6e1ce6571a124bfaab4d28bb9cd6",
+    "repository": "deepmodeling/deepmd-kit",
+    "schema": 2,
+    "software": "deepmd-kit",
+    "source_ref": "master",
+    "source_sha": "ed859426333b462512c86cd496f9a194379a515f",
+    "source_version": "master-2026-11-18",
+    "stack_digest": null,
+    "stack_sources": {},
+    "target": "4v100-avx512",
+    "track": "development",
+    "version_label": "master-2026-11-18"
+  },
+  "runtime": {
+    "modules": [
+      "cuda/12.9.1",
+      "nvhpc/26.3-gnu-cuda12-tuned",
+      "openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
+      "gcc/14.3.0"
+    ],
+    "prepend": {
+      "LD_LIBRARY_PATH": [
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-18-ged859426333b-reb7e0498c946/4V100/lib",
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-18-ged859426333b-reb7e0498c946/4V100/lib/python3.13/site-packages/deepmd/lib",
+        "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow",
+        "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib",
+        "/opt/apps/conda_env/deepmd-kit-3.2.0/lib",
+        "/lib/x86_64-linux-gnu/lapack",
+        "/lib/x86_64-linux-gnu/blas",
+        "/opt/devtools/gcc/14.3.0/libexec",
+        "/opt/devtools/gcc/14.3.0/lib",
+        "/opt/devtools/gcc/14.3.0/lib64",
+        "/opt/apps/plumed/plumed-2.10.1/lib",
+        "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib",
+        "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib",
+        "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib",
+        "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib",
+        "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib",
+        "/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib",
+        "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/targets/x86_64-linux/lib",
+        "/usr/lib/x86_64-linux-gnu",
+        "/usr/lib"
+      ],
+      "MODULEPATH": [
+        "/opt/modules/modulefiles/apps",
+        "/opt/modules/modulefiles/devtools",
+        "/opt/modules/modulefiles/compiler",
+        "/opt/modules/modulefiles/mathlib",
+        "/opt/modules/modulefiles/mpi"
+      ],
+      "PATH": [
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-18-ged859426333b-reb7e0498c946/4V100/bin",
+        "/opt/devtools/gcc/14.3.0/bin",
+        "/opt/apps/plumed/plumed-2.10.1/bin",
+        "/opt/apps/conda_env/deepmd-kit-3.2.0/bin",
+        "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/bin",
+        "/opt/devtools/nvidia/cuda-12.9.1/bin",
+        "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/bin",
+        "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/bin",
+        "/opt/devtools/cmake/3.31.6/bin",
+        "/usr/local/sbin",
+        "/usr/local/bin",
+        "/usr/sbin",
+        "/usr/bin"
+      ],
+      "PYTHONPATH": [
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-18-ged859426333b-reb7e0498c946/4V100/lib/python3.13/site-packages"
+      ]
+    },
+    "set": {
+      "DP_BACKEND_PLUGIN_PATH": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-18-ged859426333b-reb7e0498c946/4V100/lib/python3.13/site-packages/deepmd/lib"
+    }
+  }
+}

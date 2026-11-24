@@ -25,7 +25,7 @@ _PREPEND = frozenset(("PATH", "LD_LIBRARY_PATH", "LIBRARY_PATH", "CPATH",
                       "C_INCLUDE_PATH", "CPLUS_INCLUDE_PATH", "PKG_CONFIG_PATH",
                       "CMAKE_PREFIX_PATH", "PYTHONPATH", "MANPATH", "MODULEPATH"))
 _PATH_SETTINGS = frozenset((
-    "QE_ROOT", "CP2K_DATA_DIR", "CP2K_ROOT", "ABACUS_ROOT", "DEEPMD_ROOT", "DEEPMD_DIR", "DP_BACKEND_PLUGIN_PATH",
+    "QE_ROOT", "CP2K_DATA_DIR", "CP2K_ROOT", "ABACUS_ROOT", "DEEPMD_ROOT", "DEEPMD_DIR", "DEEPMD_PYTHON", "DP_BACKEND_PLUGIN_PATH",
     "GPUMD_ROOT", "GPUMD_SRC", "LAMMPS_ROOT", "LAMMPS_POTENTIALS", "PLUMED_ROOT", "PLUMED_KERNEL",
     "PLUMED_INCLUDEDIR", "PLUMED_HTMLDIR", "PLUMED_TCLLIBPATH", "TORCH_ROOT",
     "Torch_DIR", "TENSORFLOW_ROOT", "CUDA_HOME", "CUDA_ROOT", "CUDA_PATH",
@@ -121,7 +121,8 @@ def _sequence(value, field):
 def validate_native_entry(entry, *, allowed_prefixes=()):
     """Return a fresh validated entry; never read or execute its shell metadata."""
     fields = {"identity", "commands", "runtime", "external_roots"}
-    if not isinstance(entry, dict) or set(entry) not in (fields, fields | {"site_dependencies"}):
+    if not isinstance(entry, dict) or set(entry) not in (
+            fields, fields | {"site_dependencies"}, fields | {"bundled_dependencies"}):
         raise ValueError("native entry requires identity, commands, runtime and external_roots")
     identity = validate_identity(entry["identity"])
     prefix = _install_prefix(identity["install_prefix"])
@@ -131,6 +132,19 @@ def validate_native_entry(entry, *, allowed_prefixes=()):
     external_paths = [_external_root(value) for value in external]
     site_dependencies = entry.get("site_dependencies", [])
     managed_dependencies = []
+    bundled = entry.get('bundled_dependencies', [])
+    if 'bundled_dependencies' in entry:
+        if identity['software'] != 'gpumd' or not isinstance(bundled, list) or len(bundled) != 1:
+            raise ValueError('only GPUMD may bundle one accepted DeePMD dependency')
+        dependency = bundled[0]
+        if set(dependency) != {'identity', 'manifest_sha256', 'image_sha256'}:
+            raise ValueError('bundled DeePMD requires identity, manifest and image digests')
+        dep_identity = validate_identity(dependency['identity'])
+        if (dep_identity['software'] != 'deepmd-kit' or dep_identity['target'] != identity['target']
+                or dep_identity['stack_digest'] or any(not re.fullmatch('[0-9a-f]{64}', dependency[key])
+                    for key in ('manifest_sha256', 'image_sha256'))):
+            raise ValueError('bundled DeePMD target or provenance mismatch')
+        other_prefixes.append(_install_prefix(dep_identity['install_prefix']))
     if "site_dependencies" in entry:
         if (identity["software"] != "lammps" or identity["schema"] != 2 or identity["stack_digest"]
                 or not isinstance(site_dependencies, list) or len(site_dependencies) != 1):
@@ -222,6 +236,8 @@ def validate_native_entry(entry, *, allowed_prefixes=()):
               "runtime": {"modules": modules, "prepend": clean_prepend, "set": clean_settings}}
     if site_dependencies:
         result["site_dependencies"] = site_dependencies
+    if bundled:
+        result['bundled_dependencies'] = bundled
     return result
 
 
@@ -271,6 +287,11 @@ def render_native_fragment(entry, *, allowed_prefixes=()):
              '    }',
              *('    ' + line for line in _regular_tree(tcl(prefix), directory=True, install_root='/opt/apps' if identity['schema'] == 2 else '/opt/software')),
              f'    conflict {tcl(identity["software"])}']
+    for dependency in entry.get('bundled_dependencies', []):
+        dep_prefix = dependency['identity']['install_prefix']
+        for relative in ('share/sai/manifest.json', 'lib/libdeepmd_cc.so', 'lib/libdeepmd_c.so'):
+            lines.extend('    ' + line for line in _regular_tree(
+                tcl(dep_prefix + '/' + relative), directory=False, install_root='/opt/apps'))
     for value in reversed(runtime["prepend"].get("MODULEPATH", [])):
         lines.append(f'    prepend-path MODULEPATH {tcl(value)}')
     for value in runtime["modules"]:

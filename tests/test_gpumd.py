@@ -321,10 +321,18 @@ class GpumdCiTests(unittest.TestCase):
             self.assertEqual(len(names), len(set(names)))
     def test_gpumd_requires_science_and_benchmark_before_publication(self):
         self.assertEqual(self.execute(software="gpumd"), [
+            ("gpumd_dependency.py", "select"),
             ("software_controller.py", "identity"),
             ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
             ("gpumd_acceptance.py", "submit"), ("gpumd_acceptance.py", "monitor"),
             ("software_controller.py", "publish")])
+
+    def test_continuation_keeps_the_original_controller_and_dependency(self):
+        commands = self.execute(software="gpumd", phase="acceptance")
+        self.assertNotIn(("gpumd_dependency.py", "select"), commands)
+        self.assertNotIn(("software_controller.py", "submit"), commands)
+        self.assertEqual(self.uploads, [])
+        self.assertIn(("gpumd_acceptance.py", "monitor"), commands)
 
     def test_failed_gpumd_science_cannot_publish(self):
         commands = self.execute(software="gpumd", fail_monitor="gpumd_acceptance.py")

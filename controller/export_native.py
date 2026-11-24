@@ -199,6 +199,10 @@ def validate_manifest(manifest):
             companion_for(identity, identities)
     entries = [validate_native_entry(entry, allowed_prefixes=compatible_prefixes(identity, identities))
                for entry, identity in zip(manifest["entries"], identities)]
+    for entry in entries:
+        for dependency in entry.get('bundled_dependencies', []):
+            if dependency['identity'] not in identities:
+                raise ValueError('bundled DeePMD installation is missing or has a different identity')
     roots = [prefix.lstrip("/") for prefix in prefixes]
     reserved = {root + "/" + path for root in roots for path in RESERVED_PATHS}
     indexed = {}
@@ -504,6 +508,11 @@ class SquashfsReader:
             self.manifest_records[path] = {"path": path, "kind": "file", "mode": 0o444,
                                            "size": len(data), "sha256": hashlib.sha256(data).hexdigest()}
         aggregate = aggregate_manifests(locals_)
+        for entry in aggregate['entries']:
+            for dependency in entry.get('bundled_dependencies', []):
+                name = dependency['identity']['install_prefix'].lstrip('/') + '/' + MANIFEST_PATH
+                if self.manifest_records[name]['sha256'] != dependency['manifest_sha256']:
+                    raise ValueError('bundled DeePMD manifest differs from accepted dependency')
         if prefixes is not None:
             if not isinstance(prefixes, (list, tuple)) or not prefixes or any(not isinstance(p, str) for p in prefixes):
                 raise ValueError("selected prefixes must be a nonempty list of canonical install prefixes")
@@ -514,6 +523,10 @@ class SquashfsReader:
             for identity in identities:
                 if identity["install_prefix"] in selected and identity["stack_digest"]:
                     selected.add(companion_for(identity, identities)["install_prefix"])
+            for entry in aggregate['entries']:
+                if entry['identity']['install_prefix'] in selected:
+                    selected.update(dep['identity']['install_prefix']
+                                    for dep in entry.get('bundled_dependencies', []))
             aggregate = validate_manifest({
                 "schema": 1,
                 "entries": [item for item in aggregate["entries"] if item["identity"]["install_prefix"] in selected],
@@ -844,6 +857,12 @@ def verify_export(destination, receipt, expected_sha256, identities):
 
     manifest = aggregate_manifests(locals_)
     indexed_entries = {entry["identity"]["install_prefix"]: entry for entry in manifest["entries"]}
+    source_manifests = {row['expected_install_prefix']: row['source_manifest_sha256']
+                        for row in receipt['installations']}
+    for entry in manifest['entries']:
+        for dependency in entry.get('bundled_dependencies', []):
+            if source_manifests[dependency['identity']['install_prefix']] != dependency['manifest_sha256']:
+                raise ValueError('exported DeePMD differs from the accepted bundled dependency')
     prefixes = receipt["expected_install_prefixes"]
     for installation in receipt["installations"]:
         prefix = installation["expected_install_prefix"]
