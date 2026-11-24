@@ -41,6 +41,49 @@ class ELPASetupFixTests(unittest.TestCase):
 
 
 class NCCLProgressFixTests(unittest.TestCase):
+    def test_daily_assert_refactor_keeps_single_context_progress_barrier(self):
+        fixture = Path(__file__).parent / 'fixtures/cp2k_cusolver_be0de0a7.c.gz'
+        original = gzip.decompress(fixture.read_bytes())
+        self.assertEqual(hashlib.sha256(original).hexdigest(),
+                         '8953ed28c2dc261c00e55e8d5a51ff9dc26050de28934ae54fc7f102a1386c23')
+        broadcast = b'  MPI_Bcast(&nccl_id, sizeof(nccl_id), MPI_BYTE, 0, ctx->comm);\n'
+        progress = fixes.NCCL_PROGRESS.replace('comm);', 'ctx->comm);').encode()
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / 'source/src/fm/cp_fm_cusolver.c'
+            source.parent.mkdir(parents=True)
+            source.write_bytes(original)
+            record = fixes.fix_nccl_progress(root / 'source', root / 'metadata')
+            repaired = source.read_bytes()
+            self.assertTrue(record['applied'])
+            self.assertEqual(record['bootstrap_sites'], 1)
+            self.assertEqual(repaired, original.replace(broadcast, broadcast + progress))
+            self.assertEqual(hashlib.sha256(repaired).hexdigest(),
+                             '8dd2ad5635cdbc4069b499c2fdc69e71eb7e8a012441345104bdedb2deccfaaf')
+            self.assertEqual(repaired.count(b'MPI_Barrier(ctx->comm);'), 1)
+            self.assertIn(progress + b'  NCCL_CHECK(ncclCommInitRank(', repaired)
+            self.assertLess(repaired.index(b'    return ctx;'), repaired.index(progress))
+            self.assertEqual(json.loads((root / 'metadata/nccl-mpi-progress-fix.json').read_text()), record)
+            self.assertFalse(fixes.fix_nccl_progress(root / 'source', root / 'metadata')['applied'])
+            self.assertEqual(source.read_bytes(), repaired)
+
+    def test_daily_changed_communicator_and_unreviewed_barrier_are_rejected(self):
+        fixture = Path(__file__).parent / 'fixtures/cp2k_cusolver_be0de0a7.c.gz'
+        original = gzip.decompress(fixture.read_bytes())
+        for changed in (
+                original.replace(b'MPI_Comm_dup(comm, &ctx->comm);', b'ctx->comm = comm;'),
+                original.replace(b'  NCCL_CHECK(ncclCommInitRank(',
+                                 b'  MPI_Barrier(ctx->comm);\n  NCCL_CHECK(ncclCommInitRank(')):
+            with self.subTest(digest=hashlib.sha256(changed).hexdigest()), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                source = root / 'source/src/fm/cp_fm_cusolver.c'
+                source.parent.mkdir(parents=True)
+                source.write_bytes(changed)
+                with self.assertRaisesRegex(ValueError, hashlib.sha256(changed).hexdigest()):
+                    fixes.fix_nccl_progress(root / 'source', root / 'metadata')
+                self.assertEqual(source.read_bytes(), changed)
+                self.assertFalse((root / 'metadata').exists())
+
     def test_real_release_source_repair_and_repeated_application(self):
         fixture = Path(__file__).parent / 'fixtures/cp2k_cusolver_v2026_2.c.gz'
         original = gzip.decompress(fixture.read_bytes())

@@ -33,6 +33,9 @@ NCCL_SOURCE_SHA256 = '379cda72ac8c18e18f30ffd019b37ae0e8216572c40f5e6ad2fbceb6de
 NCCL_REPAIRED_SHA256 = 'eb22082437dbee127fedd77a8f7e2f7cb05444b507b2a4be29843cc1fa9ceff3'
 NCCL_CONTEXT_SOURCE_SHA256 = '9f68fe666f1f1c9da411c8bd6dd7810dd8572c39c486efbe4afb4a3c15e14b31'
 NCCL_CONTEXT_REPAIRED_SHA256 = '6fa681c45d5dce92eeb33a7047a851d5bcc5146133e4e50d48804a30f1fa7b40'
+# #6611 changes only assertions; the shared bootstrap still needs MPI progress.
+NCCL_ASSERT_SOURCE_SHA256 = '8953ed28c2dc261c00e55e8d5a51ff9dc26050de28934ae54fc7f102a1386c23'
+NCCL_ASSERT_REPAIRED_SHA256 = '8dd2ad5635cdbc4069b499c2fdc69e71eb7e8a012441345104bdedb2deccfaaf'
 NCCL_BROADCAST = '  MPI_Bcast(&nccl_id, sizeof(nccl_id), MPI_BYTE, 0, comm);\n'
 NCCL_PROGRESS = '''  // Drain outstanding MPI traffic before entering blocking NCCL bootstrap.
   // ScaLAPACK peers can still require MPI progress after this rank returns.
@@ -47,6 +50,7 @@ def fix_nccl_progress(source, metadata):
     layouts = (
         (NCCL_SOURCE_SHA256, NCCL_REPAIRED_SHA256, 'comm', 3),
         (NCCL_CONTEXT_SOURCE_SHA256, NCCL_CONTEXT_REPAIRED_SHA256, 'ctx->comm', 1),
+        (NCCL_ASSERT_SOURCE_SHA256, NCCL_ASSERT_REPAIRED_SHA256, 'ctx->comm', 1),
     )
     for source_digest, repaired_digest, communicator, sites in layouts:
         if digest not in (source_digest, repaired_digest):
