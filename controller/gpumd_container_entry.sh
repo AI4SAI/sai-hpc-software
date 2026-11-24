@@ -47,6 +47,10 @@ build)
   python3 /control/gpumd_science.py inspect "$INSTALL_PREFIX" --identity "$delivery"
   ;;
 export)
+  # The managed overlay already supplies the root-mapped namespace. Do not
+  # let fakeroot's inode metadata emulation reinterpret inherited SIF links
+  # while copying the accepted dependency (libdeepmd_cc_low.so is an alias).
+  unset LD_PRELOAD
   test ! -e /workspace/export
   bash /control/create_rootfs.sh /workspace/export
   mkdir -p "/workspace/export$(dirname -- "$INSTALL_PREFIX")"
