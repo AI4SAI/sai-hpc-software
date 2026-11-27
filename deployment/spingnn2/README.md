@@ -31,6 +31,22 @@ qualification. Unqualified or unavailable targets are explicitly skipped;
 accepted targets proceed independently. A100 nodes were `unk*` during initial
 qualification. An SM80 cross-compile is not A100 runtime acceptance.
 
+The initial v2.0.0 receipts cover all five enabled targets:
+
+| Partition | Successful build | Installed science | Public module check |
+|---|---|---|---|
+| DSPRHBM | 2947871 (recovery) | 2948062 | 2949506 |
+| CPU-MISC | 2948657 | 2948955 | 2949505 |
+| 16V100 | 2948654 | 2948684 | 2949539 |
+| 4V100 | 2948655 | 2948685 | 2949494 |
+| 8V100V0 | 2948656 | 2948686 | 2949920 |
+
+These jobs belong to the initial installation. Daily adoption reuses their
+evidence; it does not submit a second initial build. The installed version is
+already available as `spingnn/2.0.0`. The `spingnn/release` entry described below
+becomes available only after the reviewed Daily controller adopts and publishes
+the accepted installations.
+
 Source tag/SHA/target changes trigger independent attempts. An unchanged
 formal release is skipped even if a previous attempt failed or the recipe
 changed: choose `retry_releases=true` to retry that selection explicitly.
