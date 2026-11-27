@@ -45,6 +45,9 @@ SOFTWARE = {
                    "targets": GPU_TARGETS},
     "lammps": {"repository": "lammps/lammps", "development_ref": "develop",
                "targets": GPU_TARGETS},
+    "spingnn2": {"repository": "Hyyu-Lab/SpinGNN", "development_ref": None,
+                 "tracks": ("release",),
+                 "targets": (*PARTITIONS, "cpu-misc", "8a100m40", "8a100m80")},
 }
 STACK_SOFTWARE = frozenset(("deepmd-kit", "lammps"))
 MAX_VERSION_LABEL = 64
@@ -174,7 +177,25 @@ def _track(track):
 
 def allowed_partitions(software):
     """Return this software's permitted real Slurm partition names, in order."""
-    return tuple(PARTITIONS[target] for target in _software(software)["targets"])
+    return tuple(target_profile(software, target)['partition'] for target in _software(software)["targets"])
+
+
+def target_profile(software, target):
+    """Keep native-only extra partitions out of the existing software matrices."""
+    if target not in _software(software)['targets']:
+        raise ValueError('target is not registered for this software')
+    if software == 'spingnn2':
+        from spingnn_config import hardware
+        return hardware(target)
+    profile = TARGETS[target]
+    if profile['partition'] != PARTITIONS[target]:
+        raise ValueError('target partition no longer matches the delivery contract')
+    return profile
+
+
+def supported_tracks(software):
+    """Software may opt into fewer channels than the shared daily selection."""
+    return tuple(_software(software).get("tracks", TRACKS))
 
 
 def _source_ref(value):
@@ -220,7 +241,8 @@ def _stack(software, source_sha, sources):
 
 
 def make_identity(software, track, source_ref, source_sha, source_version,
-                  recipe_sha256, target, stack_sources=None, *, layout_schema=SCHEMA):
+                  recipe_sha256, target, stack_sources=None, *, layout_schema=SCHEMA,
+                  installation_run=None):
     """Return provenance and the final host/container installation prefix.
 
     ``target`` is a registered architecture key, while the final prefix
@@ -231,14 +253,15 @@ def make_identity(software, track, source_ref, source_sha, source_version,
         raise ValueError("unsupported installation layout schema")
     profile = _software(software)
     _track(track)
+    if track not in supported_tracks(software):
+        raise ValueError("release track is not supported for this software")
     _source_ref(source_ref)
     _sha(source_sha, 40, "source_sha")
     _sha(recipe_sha256, 64, "recipe_sha256")
     if not isinstance(target, str) or target not in profile["targets"]:
         raise ValueError("target is not registered for this software")
-    hardware = TARGETS[target]
-    if hardware["partition"] != PARTITIONS[target]:
-        raise ValueError("target partition no longer matches the delivery contract")
+    hardware = target_profile(software, target)
+    partition = hardware['partition']
     label = _version_label(source_version)
     stack, stack_digest = _stack(software, source_sha, stack_sources)
     build_id = f"{label}-g{source_sha[:12]}-r{recipe_sha256[:12]}"
@@ -246,21 +269,33 @@ def make_identity(software, track, source_ref, source_sha, source_version,
         build_id += "-s" + stack_digest[:12]
     if len(build_id) > MAX_BUILD_ID:
         raise ValueError("build_id exceeds the delivery name limit")
-    prefix = (f"/opt/software/{software}/{track}/{build_id}/{PARTITIONS[target]}"
+    prefix = (f"/opt/software/{software}/{track}/{build_id}/{partition}"
               if layout_schema == 1 else
-              f"/opt/apps/{software}/{APP_STEMS.get(software, software)}-{track}-{build_id}/{PARTITIONS[target]}")
-    return {
+              f"/opt/apps/{software}/{APP_STEMS.get(software, software)}-{track}-{build_id}/{partition}")
+    if installation_run is not None and software != 'spingnn2':
+        raise ValueError('installation_run is only supported for SpinGNN native releases')
+    if software == 'spingnn2':
+        if layout_schema != SCHEMA:
+            raise ValueError('SpinGNN has no legacy installation layout')
+        from spingnn_config import prefix as native_prefix
+        if installation_run is not None:
+            safe_name(installation_run)
+        prefix = native_prefix(label, source_sha, recipe_sha256, partition, installation_run)
+    result = {
         "schema": layout_schema, "software": software, "track": track,
         "repository": profile["repository"], "source_ref": source_ref,
         "source_sha": source_sha, "source_version": source_version,
         "version_label": label, "recipe_sha256": recipe_sha256,
-        "target": target, "partition": PARTITIONS[target],
+        "target": target, "partition": partition,
         "cpu_arch": hardware["cpu_arch"], "dependency_isa": hardware["dependency_isa"],
         "cuda_arch": hardware["cuda_arch"], "gpus": hardware["gpus"],
         "build_id": build_id,
         "install_prefix": prefix,
         "stack_sources": stack, "stack_digest": stack_digest,
     }
+    if installation_run is not None:
+        result['installation_run'] = installation_run
+    return result
 
 
 def validate_identity(record):
@@ -272,7 +307,8 @@ def validate_identity(record):
     if not isinstance(record, dict):
         raise ValueError("identity must be a versioned object")
     try:
-        expected = make_identity(layout_schema=record["schema"], **{name: record[name] for name in (
+        expected = make_identity(layout_schema=record["schema"], installation_run=record.get('installation_run'),
+                                **{name: record[name] for name in (
             "software", "track", "source_ref", "source_sha", "source_version",
             "recipe_sha256", "target", "stack_sources")})
         # JSON comparison distinguishes bool/int and int/float schema changes.
@@ -308,6 +344,9 @@ def resolve_tracks(software, tracks=TRACKS, resolver=_resolve_source):
         requested = profile["development_ref"] if track == "development" else "latest-" + track
         row = {"software": software, "track": track, "repository": profile["repository"],
                "requested_ref": requested}
+        if track not in supported_tracks(software):
+            rows.append(dict(row, status="skipped", reason="release track is not supported for this software"))
+            continue
         try:
             resolved = resolver(profile["repository"], requested)
         except ValueError as error:

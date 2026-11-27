@@ -14,13 +14,13 @@ on:
       software:
         description: Software to build independently
         type: choice
-        options: [all, abacus, cp2k, deepmd-kit, lammps, gpumd, qe]
+        options: [all, abacus, cp2k, deepmd-kit, lammps, gpumd, qe, spingnn2]
         default: all
       tracks:
         description: Channels; development always builds, unchanged releases skip
         default: development,prerelease,release
       targets:
-        description: Native targets — dsprhbm,16v100-avx2,4v100-avx512,8v100v0-avx512
+        description: Native targets or all; SpinGNN also registers cpu-misc,8a100m40,8a100m80 (qualification gated)
         default: all
       retry_releases:
         description: Explicitly retry the selected release/prerelease versions

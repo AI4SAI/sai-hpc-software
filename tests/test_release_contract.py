@@ -29,9 +29,9 @@ class BuildAttemptTests(unittest.TestCase):
 
     def test_all_software_development_always_builds_and_releases_only_once(self):
         for software in contract.SOFTWARE:
-            for track in contract.TRACKS:
+            for track in contract.supported_tracks(software):
                 with self.subTest(software=software, track=track):
-                    identity = self.identity(software, track)
+                    identity = self.identity(software, track, target=contract.SOFTWARE[software]['targets'][0])
                     run = software + "-" + track
                     self.assertTrue(contract.claim_build(self.root, [identity], run)["build"])
                     result = contract.claim_build(self.root, [identity], run + "-again")
@@ -152,15 +152,15 @@ class IdentityTests(unittest.TestCase):
         self.assertEqual(set(profile["software"]), set(contract.SOFTWARE))
         for software, settings in contract.SOFTWARE.items():
             declared = profile["software"][software]
-            self.assertEqual(declared["tracks"], list(contract.TRACKS))
+            self.assertEqual(declared["tracks"], list(contract.supported_tracks(software)))
             self.assertEqual(declared["targets"], list(settings["targets"]))
             for name in ("repository", "development_ref"):
                 self.assertEqual(declared[name], settings[name])
             self.assertEqual(contract.allowed_partitions(software),
-                             tuple(contract.PARTITIONS[t] for t in settings["targets"]))
+                             tuple(contract.target_profile(software, t)['partition'] for t in settings["targets"]))
             for target in settings["targets"]:
                 identity = self.identity(software=software, target=target)
-                self.assertEqual(identity["partition"], contract.PARTITIONS[target])
+                self.assertEqual(identity["partition"], contract.target_profile(software, target)['partition'])
                 self.assertTrue(identity["install_prefix"].endswith("/" + identity["partition"]))
                 self.assertEqual(contract.validate_identity(identity), identity)
             if "dsprhbm" not in settings["targets"]:
@@ -266,6 +266,8 @@ class ResolveTrackTests(unittest.TestCase):
 
     def test_live_branch_date_precedes_sha_in_all_software_build_names(self):
         for software, settings in contract.SOFTWARE.items():
+            if 'development' not in contract.supported_tracks(software):
+                continue
             ref = settings["development_ref"]
             refs = "a" * 40 + "\trefs/heads/" + ref + "\n"
             identities = []

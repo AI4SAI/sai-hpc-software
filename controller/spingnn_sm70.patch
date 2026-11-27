@@ -1,0 +1,102 @@
+--- a/tools/native/build_native.py
++++ b/tools/native/build_native.py
+@@ -18,13 +18,14 @@
+ JSON_VERSION = "3.11.3"
+ JSON_HASH = "0d8ef5af7f9794e3263480193c491549b2ba6cc74bb018906202ada498a79406"
+ CUDA_ARCHITECTURES = {
++    "sm70": "VOLTA70",
+     "sm80": "AMPERE80",
+     "sm86": "AMPERE86",
+     "sm89": "ADA89",
+     "sm90": "HOPPER90",
+     "sm120": "BLACKWELL120",
+ }
+-ALL_GPU_ARCHES = ("sm80", "sm86", "sm89", "sm90", "sm120")
++ALL_GPU_ARCHES = ("sm70", "sm80", "sm86", "sm89", "sm90", "sm120")
+ CLUSTER_GCC = Path("/data/app/gcc/10.5.0")
+ CLUSTER_MKL = Path("/data/app/intel/oneapi-2024.2.1/mkl/2024.2")
+ CLUSTER_CUDA = Path("/data/app/cuda/12.8")
+@@ -151,7 +152,7 @@
+     parser.add_argument("--backend", choices=("cpu", "cuda"))
+     parser.add_argument(
+         "--arch",
+-        help="CUDA arch: sm80|sm86|sm89|sm90|sm120, comma-separated list, or all-gpu",
++        help="CUDA arch: sm70|sm80|sm86|sm89|sm90|sm120, comma-separated list, or all-gpu",
+     )
+     parser.add_argument("--build-dir", type=Path)
+     parser.add_argument(
+--- a/libspingnn2/CMakeLists.txt
++++ b/libspingnn2/CMakeLists.txt
+@@ -23,7 +23,7 @@
+ set(SP2_CPU_BLAS_ROOT "" CACHE PATH "Optional Intel oneMKL installation root")
+ set(SP2_KOKKOS_SOURCE "" CACHE PATH "Local Kokkos 4.7.02 source for an offline build")
+ set(SP2_JSON_SOURCE "" CACHE PATH "Local nlohmann/json 3.11.3 source for an offline build")
+-set(SP2_CUDA_ARCHES "" CACHE STRING "Semicolon-separated CUDA SM targets (e.g. sm_80;sm_86;sm_89;sm_90;sm_120)")
++set(SP2_CUDA_ARCHES "" CACHE STRING "Semicolon-separated CUDA SM targets (e.g. sm_70;sm_80;sm_86;sm_89;sm_90;sm_120)")
+ 
+ set(BUILD_SHARED_LIBS OFF CACHE BOOL "Link the Kokkos runtime into the C ABI library" FORCE)
+ set(Kokkos_ENABLE_TESTS OFF CACHE BOOL "" FORCE)
+@@ -121,11 +121,13 @@
+       set(sp2_cuda_targets "sm_86")
+     elseif(Kokkos_ARCH_AMPERE80)
+       set(sp2_cuda_targets "sm_80")
++    elseif(Kokkos_ARCH_VOLTA70)
++      set(sp2_cuda_targets "sm_70")
+     else()
+-      message(FATAL_ERROR "Set the CUDA build architecture to AMPERE80, AMPERE86, ADA89, HOPPER90, or BLACKWELL120 (or SP2_CUDA_ARCHES).")
++      message(FATAL_ERROR "Set the CUDA build architecture to VOLTA70, AMPERE80, AMPERE86, ADA89, HOPPER90, or BLACKWELL120 (or SP2_CUDA_ARCHES).")
+     endif()
+     string(REPLACE "," ";" sp2_cuda_targets "${sp2_cuda_targets}")
+-    set(sp2_valid_arches "sm_80;sm_86;sm_89;sm_90;sm_120")
++    set(sp2_valid_arches "sm_70;sm_80;sm_86;sm_89;sm_90;sm_120")
+     foreach(sp2_arch IN LISTS sp2_cuda_targets)
+       if(NOT sp2_arch IN_LIST sp2_valid_arches)
+         message(FATAL_ERROR "Unsupported SpinGNN2 CUDA architecture '${sp2_arch}'. Expected one of: ${sp2_valid_arches}.")
+--- a/libspingnn2/src/jit_artifact.cpp
++++ b/libspingnn2/src/jit_artifact.cpp
+@@ -24,7 +24,7 @@
+ }
+ 
+ bool is_supported_cuda_arch(std::string_view arch) {
+-    return arch == "sm_80" || arch == "sm_86" || arch == "sm_89" || arch == "sm_90" ||
++    return arch == "sm_70" || arch == "sm_80" || arch == "sm_86" || arch == "sm_89" || arch == "sm_90" ||
+            arch == "sm_120";
+ }
+ 
+--- a/libspingnn2/src/jit_nvrtc.cpp
++++ b/libspingnn2/src/jit_nvrtc.cpp
+@@ -131,10 +131,10 @@
+         if (!source || !architecture || !output)
+             throw std::invalid_argument("Missing NVRTC preparation input");
+         const std::string arch = architecture;
+-        if (arch != "sm_80" && arch != "sm_86" && arch != "sm_89" && arch != "sm_90" &&
++        if (arch != "sm_70" && arch != "sm_80" && arch != "sm_86" && arch != "sm_89" && arch != "sm_90" &&
+             arch != "sm_120")
+             throw std::invalid_argument(
+-                "NVRTC preparation requires sm_80, sm_86, sm_89, sm_90, or sm_120");
++                "NVRTC preparation requires sm_70, sm_80, sm_86, sm_89, sm_90, or sm_120");
+         const auto& api = nvrtc();
+         Program program{api};
+         api.check(api.create(&program.value, source, "sp2_generated.cu", 0, nullptr, nullptr),
+--- a/src/spingnn2/jit.py
++++ b/src/spingnn2/jit.py
+@@ -22,8 +22,9 @@
+ _ABI = 1
+ _KERNEL_ABI = 1
+ _BUNDLE_ABI = 1
+-_ARCHES = ("sm_80", "sm_86", "sm_89", "sm_90", "sm_120")
++_ARCHES = ("sm_70", "sm_80", "sm_86", "sm_89", "sm_90", "sm_120")
+ _ARCH_ALIASES = {
++    "sm70": "sm_70",
+     "sm80": "sm_80",
+     "sm86": "sm_86",
+     "sm89": "sm_89",
+@@ -403,7 +404,7 @@
+     parser.add_argument("--precision", choices=("float32", "float64"))
+     parser.add_argument(
+         "--arch",
+-        help="Target CUDA arch (sm80|sm86|sm89|sm90|sm120, comma-separated list, or all-gpu)",
++        help="Target CUDA arch (sm70|sm80|sm86|sm89|sm90|sm120, comma-separated list, or all-gpu)",
+     )
+     parser.add_argument("--cache-dir", type=Path)
+     parser.add_argument("--library", type=Path)

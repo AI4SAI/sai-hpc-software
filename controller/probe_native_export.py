@@ -13,10 +13,13 @@ import subprocess
 
 from export_native import (MANIFEST_PATH, FRAGMENT_PATH, canonical, checksum, export_image,
                            verify_export, write_manifests)
-from release_contract import SOFTWARE, make_identity
+from release_contract import SOFTWARE as TRACKED_SOFTWARE, make_identity
 
 COMMANDS = {"abacus": "abacus", "cp2k": "cp2k.psmp", "deepmd-kit": "dp",
             "lammps": "lmp", "gpumd": "gpumd", "qe": "pw.x"}
+# This probe exercises the SIF export format. Native-home deliveries have their
+# own lifecycle and must not acquire development/SIF fixtures here.
+SOFTWARE = {name: TRACKED_SOFTWARE[name] for name in COMMANDS}
 
 
 def prepare(directory):

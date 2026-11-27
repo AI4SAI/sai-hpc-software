@@ -10,7 +10,7 @@ import tarfile
 import time
 
 from beta_candidates import validate_plan
-from release_contract import SOFTWARE
+from sif_beta import SOFTWARE
 from remote_controller import SAI_PROJECT_ROOT, safe_name, safe_sha
 from source_cache import checksum
 from relay_checkpoint import Checkpoint, Pending, entry

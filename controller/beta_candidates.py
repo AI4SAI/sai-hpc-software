@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 import subprocess
 
-from release_contract import SOFTWARE, validate_identity
+from release_contract import SOFTWARE, supported_tracks, validate_identity
 from remote_controller import SAI_PROJECT_ROOT, safe_name, safe_sha, site_app_binds
 from sif_runtime import digest, require
 
@@ -28,6 +28,7 @@ def run_controller(control, code, *args):
 
 def validate_plan(software, builds):
     require(software in SOFTWARE, 'unknown beta application')
+    require('development' in supported_tracks(software), 'application has no development/beta channel')
     selected = [row for row in builds if row['track'] == 'development']
     require(len(selected) == len(SOFTWARE[software]['targets'])
             and {row['target'] for row in selected} == set(SOFTWARE[software]['targets']),

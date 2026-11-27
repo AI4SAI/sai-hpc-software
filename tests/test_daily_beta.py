@@ -22,7 +22,8 @@ import beta_ci
 import daily_beta as daily
 import sif_beta
 import sif_modules
-from release_contract import SOFTWARE, PARTITIONS, resolve_tracks
+from release_contract import PARTITIONS, resolve_tracks
+from sif_beta import SOFTWARE
 from sif_runtime import digest
 import test_sif_beta as previous_tests
 

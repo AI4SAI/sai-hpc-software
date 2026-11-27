@@ -1,15 +1,16 @@
 """Select supported software/partition jobs for the shared daily workflow."""
 import json
 import os
-from release_contract import PARTITIONS, SOFTWARE, TRACKS
+from release_contract import SOFTWARE, TRACKS
 
 
 def plan(software='all', tracks=','.join(TRACKS), targets='all'):
     if software not in ('all', *SOFTWARE):
         raise ValueError('unknown software')
     channels = tracks.split(',')
-    selected = list(PARTITIONS) if targets == 'all' else targets.split(',')
-    for values, allowed in ((channels, TRACKS), (selected, PARTITIONS)):
+    available = tuple(dict.fromkeys(target for row in SOFTWARE.values() for target in row['targets']))
+    selected = list(available) if targets == 'all' else targets.split(',')
+    for values, allowed in ((channels, TRACKS), (selected, available)):
         if not values or len(set(values)) != len(values) or any(v not in allowed for v in values):
             raise ValueError('invalid or duplicate tracks/targets')
     result = {}

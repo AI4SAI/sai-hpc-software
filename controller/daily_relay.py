@@ -40,6 +40,12 @@ def make_plan(software, tracks, targets, resolver=resolve_tracks):
         skipped.extend(row for row in sources if row['status'] == 'skipped')
         builds[name] = [dict(row, target=part) for row in sources if row['status'] == 'resolved' for part in parts]
         for source in builds[name]:
+            if name == 'spingnn2':
+                from spingnn_config import target_policy
+                policy = target_policy(source['target'])
+                if not policy['enabled']:
+                    skipped.append(dict(source, status='skipped', reason=policy['reason']))
+                    continue
             tasks.append(dict(id=f'{name}-{source["track"]}-{source["target"]}', kind='build',
                               software=name, source=source, state='new'))
     # Submit development on every partition first. Releases retain claim-based
@@ -146,6 +152,9 @@ def task_environment(generation, task, directory, key):
         elif task['software'] == 'lammps':
             script = 'md_lammps_ci.py'
             env.update(LAMMPS_SOURCE=json.dumps(row), LAMMPS_TARGET=row['target'])
+        elif task['software'] == 'spingnn2':
+            script = 'spingnn_ci.py'
+            env['SPINGNN_SOURCE'] = json.dumps(row)
         else:
             script = 'ci.py'
             env.update(SOFTWARE=row['software'], TARGET=row['target'], SOURCE_SHA=row['source_sha'],
@@ -228,7 +237,8 @@ def report(paths, summary):
     for path in paths:
         generation = read(path)
         for source in generation.get('skipped_sources', []):
-            lines.append(f'| {generation["workflow"]} | {source["software"]}-{source["track"]} | '
+            label = f'{source["software"]}-{source["track"]}' + ('-' + source['target'] if 'target' in source else '')
+            lines.append(f'| {generation["workflow"]} | {label} | '
                          f'skipped: {source["reason"]} | |')
         for task in generation['tasks']:
             checkpoint = path.parent / 'tasks' / task['id'] / 'checkpoint.json'
@@ -262,6 +272,12 @@ def main():
              "p=Path('/org/org-open-sai/proj-sai-hpc-software'); "
              "assert p.is_dir() and os.access(p,os.W_OK); assert shutil.which('sbatch'); "
              "print('SAI project access and Slurm commands verified; no allocation submitted')"])
+        if args.software == 'spingnn2':
+            from spingnn_config import site
+            ssh(['python3', '-c', "import os,sys,tempfile; from pathlib import Path; "
+                 "p=Path(sys.argv[1]); assert p.resolve()==p and p.is_dir(); "
+                 "f=tempfile.TemporaryFile(dir=p); f.write(b'probe'); f.flush(); f.close(); "
+                 "print('SpinGNN publication root writable by daily uid',os.getuid(),str(p))", site()['root']])
         return
     with (root / '.relay.lock').open('a+') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)

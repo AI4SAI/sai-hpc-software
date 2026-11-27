@@ -9,9 +9,12 @@ from pathlib import Path
 import re
 
 from module_publication import feature_summary, tcl
-from release_contract import PARTITIONS, SOFTWARE
+from release_contract import PARTITIONS, SOFTWARE as TRACKED_SOFTWARE, supported_tracks
 from sif_modules import load_snapshot, render_module, verify_sources, write
 from sif_runtime import MPI_LAUNCHERS, PROGRAMS, digest, require
+
+SOFTWARE = {name: profile for name, profile in TRACKED_SOFTWARE.items()
+            if 'development' in supported_tracks(name)}
 
 
 def token(value):

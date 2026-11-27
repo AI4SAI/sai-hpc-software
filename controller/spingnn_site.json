@@ -1,0 +1,88 @@
+{
+  "root": "/home/stardust/spingnn",
+  "module_family": "spingnn",
+  "modules": {
+    "cpu": [
+      "openmpi/5.0.10-nvhpc25.7-gnu-auto",
+      "gcc/13.3.0",
+      "cmake/3.31.6"
+    ],
+    "cuda": [
+      "openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
+      "gcc/13.3.0",
+      "cmake/3.31.6"
+    ]
+  },
+  "gcc": "/opt/devtools/gcc/13.3.0",
+  "cmake": "/opt/devtools/cmake/3.31.6/bin/cmake",
+  "mkl": "/opt/devtools/intel/oneapi/mkl/2024.2",
+  "export_python": "/opt/apps/conda_env/mace-main/bin/python",
+  "targets": {
+    "dsprhbm": {
+      "enabled": true,
+      "backend": "cpu",
+      "partition": "DSPRHBM",
+      "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc257-gnu-avx512"
+    },
+    "4v100-avx512": {
+      "enabled": true,
+      "backend": "cuda",
+      "partition": "4V100",
+      "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512"
+    },
+    "16v100-avx2": {
+      "enabled": true,
+      "backend": "cuda",
+      "partition": "16V100",
+      "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2"
+    },
+    "8v100v0-avx512": {
+      "enabled": false,
+      "backend": "cuda",
+      "partition": "8V100V0",
+      "reason": "SM70 recipe and installed GPU scientific acceptance pending",
+      "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2"
+    },
+    "cpu-misc": {
+      "enabled": true,
+      "backend": "cpu",
+      "partition": "CPU-MISC",
+      "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc257-gnu-avx512"
+    },
+    "8a100m40": {
+      "enabled": false,
+      "backend": "cuda",
+      "partition": "8A100M40",
+      "reason": "All nodes unk*; no A100 scientific acceptance; cross compilation is not qualification"
+    },
+    "8a100m80": {
+      "enabled": false,
+      "backend": "cuda",
+      "partition": "8A100M80",
+      "reason": "All nodes unk*; no A100 scientific acceptance; cross compilation is not qualification"
+    }
+  },
+  "lammps_tag": "stable_30Sep2026_update1",
+  "lammps_tag_object": "17ea1b9effad496ec60d0f079e8b0aaa4c5b6d89",
+  "lammps_sha": "098ffdefa525cabc82272925de02e9884f58c657",
+  "archives": [
+    {
+      "name": "kokkos.tar.gz",
+      "directory": "kokkos-4.7.02",
+      "url": "https://codeload.github.com/kokkos/kokkos/tar.gz/refs/tags/4.7.02",
+      "sha256": "de8a1a137cf2110d391a21454406f4f5ea367c7610b540a3961f7bf1246b4ff8"
+    },
+    {
+      "name": "json.tar.gz",
+      "directory": "json-3.11.3",
+      "url": "https://codeload.github.com/nlohmann/json/tar.gz/refs/tags/v3.11.3",
+      "sha256": "0d8ef5af7f9794e3263480193c491549b2ba6cc74bb018906202ada498a79406"
+    },
+    {
+      "name": "te3nn.tar.gz",
+      "directory": "T-e3nn-75334027fffc38f2268db8ab1eed281a18ffdbf2",
+      "url": "https://codeload.github.com/Hongyu-yu/T-e3nn/tar.gz/75334027fffc38f2268db8ab1eed281a18ffdbf2",
+      "sha256": "5bebfc70c934116d8c6c773397958c0889db42d29b04187a1d638d6bf623bfe6"
+    }
+  ]
+}
