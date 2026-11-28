@@ -104,7 +104,11 @@ class SIFTests(unittest.TestCase):
             for command in (build, final):
                 self.assertIn('--cleanenv', command)
                 self.assertNotIn('/opt/apps:/opt/apps:ro', command)
-                self.assertFalse(any(arg.startswith('/home/') for arg in command))
+                # GitHub's checkout itself lives under /home/runner. Only the
+                # immutable controller may be bound there, at /control:ro.
+                binds = [command[i + 1] for i, arg in enumerate(command) if arg == '--bind']
+                home_binds = [arg for arg in binds if arg.startswith('/home/')]
+                self.assertTrue(all(arg == str(release.CONTROL) + ':/control:ro' for arg in home_binds))
             self.assertFalse(any('conda_env' in arg or '/sources' in arg for arg in final))
 
     def test_generic_export_manifests_support_exact_spingnn_prefix(self):

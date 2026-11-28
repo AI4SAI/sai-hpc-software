@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import shlex
 import subprocess
+import sys
 import uuid
 
 from ci import install_controller, stage_archives
@@ -37,6 +38,8 @@ def main():
     def ssh(argv, **kwargs):
         response = subprocess.run(['ssh', *options, '-p', '12022', remote,
             shlex.join(list(map(str, argv)))], check=False, text=True, **kwargs)
+        if response.returncode and response.stderr:
+            print(response.stderr, file=sys.stderr, end='', flush=True)
         if response.returncode == 75:
             raise Pending('SpinGNN first-install/Slurm evidence pending')
         response.check_returncode()
@@ -70,7 +73,7 @@ def main():
         return
     if not relay.data.get('inputs_ready'):
         archives = prepare(temporary / 'spingnn-inputs', source)
-        stage_archives(python, upload, ROOT, directory / 'input', archives)
+        stage_archives(python, upload, ROOT, directory / 'input/spingnn-dependencies', archives)
         relay.set('inputs_ready', True)
     relay.submitted(ssh, str(directory), dict(delivery=value, controller=str(snapshot)),
                     lambda: python('spingnn_release.py', 'submit', run_id, payload))

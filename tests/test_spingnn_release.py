@@ -299,7 +299,8 @@ class NativeLifecycleTests(unittest.TestCase):
                 patch.object(native.subprocess, 'run') as run, \
                 patch.object(native.subprocess, 'check_output', return_value='123;cluster\n') as submit:
             native.claim('one', value)
-            native.save(self.root / 'runs/one/input/sources.json', dict(source_sha='c' * 40))
+            (self.root / 'runs/one/input/spingnn-dependencies').mkdir()
+            native.save(self.root / 'runs/one/input/spingnn-dependencies/sources.json', dict(source_sha='c' * 40))
             request = native.submit('one', value)
             self.assertEqual(native.submit('one', value), request)
             submit.assert_called_once()
@@ -317,7 +318,8 @@ class NativeLifecycleTests(unittest.TestCase):
                 patch.object(native.subprocess, 'run'), \
                 patch.object(native.subprocess, 'check_output', side_effect=OSError('lost sbatch reply')) as submit:
             native.claim('one', value)
-            native.save(self.root / 'runs/one/input/sources.json', dict(source_sha='c' * 40))
+            (self.root / 'runs/one/input/spingnn-dependencies').mkdir()
+            native.save(self.root / 'runs/one/input/spingnn-dependencies/sources.json', dict(source_sha='c' * 40))
             with self.assertRaises(OSError):
                 native.submit('one', value)
             with self.assertRaisesRegex(ValueError, 'recover the held Slurm handle'):

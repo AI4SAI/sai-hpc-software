@@ -86,7 +86,8 @@ def requirements_digest():
 
 def unpack(directory, expected_sha):
     directory = Path(directory)
-    manifest = json.loads((directory / 'input/sources.json').read_text())
+    inputs = directory / 'input/spingnn-dependencies'
+    manifest = json.loads((inputs / 'sources.json').read_text())
     expected = {'spingnn2.tar.gz', 'lammps.tar.gz', 'wheels.tar.gz', *[item['name'] for item in site()['archives']]}
     if (manifest.get('schema') != 2 or manifest.get('source_sha') != expected_sha
             or manifest.get('requirements_sha256') != requirements_digest()
@@ -98,7 +99,7 @@ def unpack(directory, expected_sha):
     destination = directory / 'sources'
     destination.mkdir()
     for name, digest in manifest['files'].items():
-        path = directory / 'input' / name
+        path = inputs / name
         if path.is_symlink() or checksum(path) != digest:
             raise ValueError('input archive changed: ' + name)
         with tarfile.open(path) as archive:

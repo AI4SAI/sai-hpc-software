@@ -93,7 +93,7 @@ fi
 "$run/export-env/bin/python" "$control/spingnn_fixture.py" "$run" > evidence/fixture-export.log 2>&1
 # Carry the exact sources/overlay, build recipe and notices with each delivery.
 mkdir -p "$prefix/share/source" "$prefix/share/doc/spingnn2"
-cp "$run"/input/*.tar.gz "$control/spingnn_runtime.txt" "$control/spingnn_build.sh" \
+cp "$run"/input/spingnn-dependencies/*.tar.gz "$control/spingnn_runtime.txt" "$control/spingnn_build.sh" \
   "$control/spingnn_site.json" "$control"/spingnn_sm70.* \
   "$run/evidence/source-adaptation.json" "$prefix/share/source/"
 tar --exclude=.git -czf "$prefix/share/source/lammps-spingnn2-corresponding-source.tar.gz" \

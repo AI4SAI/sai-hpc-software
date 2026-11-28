@@ -308,7 +308,7 @@ def submit(run_id, value):
             'incomplete SpinGNN submission; recover the held Slurm handle before retrying')
     from spingnn_sif import preflight
     preflight()
-    sources = read(directory / 'input/sources.json')
+    sources = read(directory / 'input/spingnn-dependencies/sources.json')
     require(sources['source_sha'] == value['identity']['source_sha'], 'wrong source input')
     (directory / 'evidence').mkdir(exist_ok=True)
     for name in ('runtime', 'results', 'apptainer-cache'):
@@ -326,7 +326,7 @@ def submit(run_id, value):
     require(job.isdigit() and int(job) > 0, 'invalid Slurm job handle')
     record = dict(schema=1, delivery=value, controller=str(CONTROL), job_id=job,
                   job_script_sha256=checksum(directory / 'job.sbatch'),
-                  sources_sha256=checksum(directory / 'input/sources.json'),
+                  sources_sha256=checksum(directory / 'input/spingnn-dependencies/sources.json'),
                   created_ns=read(directory / 'input/created.json')['created_ns'])
     save(request, record)
     immutable(directory / 'job.id', (job + '\n').encode())

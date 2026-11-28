@@ -77,6 +77,17 @@ class InputArchiveCacheTests(unittest.TestCase):
                 path.write_bytes(self.data)
                 path.chmod(0o444)
 
+    def test_spingnn_dependency_input_reuses_cache_but_input_root_stays_forbidden(self):
+        first = self.root / 'runs/spingnn-one/input/spingnn-dependencies'
+        second = self.root / 'runs/spingnn-two/input/spingnn-dependencies'
+        self.assertFalse(cache.stage(self.root, first, self.name, self.digest))
+        self.assertTrue(cache.stage(self.root, first, self.name, self.digest, upload=self.upload(first)))
+        self.assertTrue(cache.stage(self.root, second, self.name, self.digest))
+        self.assertEqual((second / self.name).read_bytes(), self.data)
+        for directory in (first.parent, first.parent / 'unregistered'):
+            with self.assertRaisesRegex(ValueError, 'run dependency input'):
+                cache.stage(self.root, directory, self.name, self.digest)
+
     def test_parallel_publish_never_shares_inodes_or_truncates(self):
         jobs = []
         for index in range(8):

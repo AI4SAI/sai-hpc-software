@@ -70,7 +70,7 @@ def inspect_request(directory):
     request = release.read(directory / 'request.json')
     identity = release.validate_delivery(request['delivery'], directory.name)['identity']
     release.inspect_submission(directory, dict(delivery=request['delivery'], controller=str(release.CONTROL)))
-    release.require(release.checksum(directory / 'input/sources.json') == request['sources_sha256'], 'changed input manifest')
+    release.require(release.checksum(directory / 'input/spingnn-dependencies/sources.json') == request['sources_sha256'], 'changed input manifest')
     return request, identity
 
 
