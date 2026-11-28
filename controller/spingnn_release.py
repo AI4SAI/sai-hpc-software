@@ -17,7 +17,7 @@ import time
 import uuid
 
 from release_contract import SOFTWARE, claim_build, make_identity, validate_identity
-from remote_controller import SAI_PROJECT_ROOT, project_batch_directives, project_qos, safe_name
+from remote_controller import SAI_PROJECT_ROOT, project_batch_directives, project_qos, safe_name, private_scratch
 from relay_checkpoint import Pending, entry, inspect_submission
 from source_cache import checksum
 from spingnn_config import hardware, site, target_policy
@@ -311,8 +311,9 @@ def submit(run_id, value):
     sources = read(directory / 'input/spingnn-dependencies/sources.json')
     require(sources['source_sha'] == value['identity']['source_sha'], 'wrong source input')
     (directory / 'evidence').mkdir(exist_ok=True)
-    for name in ('runtime', 'results', 'apptainer-cache'):
-        (directory / name).mkdir(exist_ok=True)
+    (directory / 'results').mkdir(exist_ok=True)
+    for name in ('runtime', 'apptainer-cache'):
+        private_scratch(directory / name)
     modules = directory / 'input/modulefiles' / site()['module_family']
     plain(modules).mkdir(parents=True, exist_ok=True)
     immutable(modules / (module_name(value['identity'], run_id) + '.lua'),

@@ -296,6 +296,7 @@ class NativeLifecycleTests(unittest.TestCase):
         value = native.delivery(self.source, 'one')
         with patch.object(native, 'ROOT', self.root), patch.object(native, 'PROJECT', self.root), \
                 patch.object(native, 'check_access', return_value=True), \
+                patch.object(native, 'private_scratch', wraps=native.private_scratch) as scratch, \
                 patch.object(native.subprocess, 'run') as run, \
                 patch.object(native.subprocess, 'check_output', return_value='123;cluster\n') as submit:
             native.claim('one', value)
@@ -306,6 +307,8 @@ class NativeLifecycleTests(unittest.TestCase):
             submit.assert_called_once()
             self.assertIn('--hold', submit.call_args.args[0])
             self.assertEqual(run.call_args.args[0], ['scontrol', 'release', '123'])
+            self.assertEqual([call.args[0] for call in scratch.call_args_list],
+                             [self.root / 'runs/one/runtime', self.root / 'runs/one/apptainer-cache'])
             script = (self.root / 'runs/one/job.sbatch').read_text()
             subprocess.run(['bash', '-n'], input=script, text=True, check=True)
             self.assertIn('--partition=DSPRHBM', script)
