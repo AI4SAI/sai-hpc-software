@@ -48,9 +48,10 @@ fi
   --build-dir "$run/build/native" --install-prefix "$prefix" --jobs 2
 # Preserve site dependencies while using self-relative paths for owned ELF libs.
 "$SPINGNN_CMAKE" -S "$src/libspingnn2" -B "$run/build/native" \
+  -DCMAKE_INSTALL_PREFIX="$prefix" \
   -DCMAKE_INSTALL_RPATH="\$ORIGIN;$SPINGNN_GCC/lib64;${CUDA_HOME:-/nonexistent}/lib64;$SPINGNN_MKL/lib"
 "$SPINGNN_CMAKE" --build "$run/build/native" --parallel 2
-"$SPINGNN_CMAKE" --install "$run/build/native"
+"$SPINGNN_CMAKE" --install "$run/build/native" --prefix "$prefix"
 # DSPRHBM's system Python has no ensurepip; the first install qualified this path.
 /usr/bin/python3 -m venv --without-pip "$prefix/venv"
 /usr/bin/python3 -m pip --python "$prefix/venv/bin/python" install --no-index --find-links "$run/sources/wheels" \

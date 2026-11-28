@@ -15,7 +15,8 @@ assert all(row['expected']==row['actual'] for row in checks.values()),checks
 (case/'fixture-manifest-check.json').write_text(json.dumps(dict(passed=True,files=checks),indent=2)+'\n')
 assert Path(spingnn2.__file__).resolve().is_relative_to(prefix/'venv')
 assert 'torch' not in sys.modules
-binary=Path(shutil.which('lmp_spingnn2'))
+binary=Path(shutil.which('lmp'))
+assert binary == prefix/'bin/lmp' and binary.is_symlink() and os.readlink(binary)=='lmp_spingnn2'
 assert binary.resolve()==prefix/'bin/lmp_spingnn2'
 backend=os.environ['SPINGNN2_BACKEND']
 threads=int(os.environ['OMP_NUM_THREADS'])

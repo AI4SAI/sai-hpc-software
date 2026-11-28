@@ -19,7 +19,7 @@ def entry(identity):
     identity = qualified_identity(identity)
     prefix = identity['install_prefix']
     settings, policy = site(), target_policy(identity['target'])
-    return dict(identity=identity, commands={'lmp_spingnn2': 'bin/lmp_spingnn2'},
+    return dict(identity=identity, commands={'lmp': 'bin/lmp', 'lmp_spingnn2': 'bin/lmp_spingnn2'},
         external_roots=['/usr', '/lib', '/lib64', settings['gcc'], policy['mpi_prefix'], settings['mkl'],
                         '/opt/devtools/nvidia/cuda-12.9.1', '/opt/modules/modulefiles/devtools'],
         runtime=dict(modules=settings['modules'][policy['backend']][:2],
@@ -71,6 +71,16 @@ def repair_records(prefix):
             csv.writer(stream).writerows(rows)
 
 
+def lammps_link(prefix):
+    """Expose the standard command as one relative link to the same binary."""
+    binary, link = prefix / 'bin/lmp_spingnn2', prefix / 'bin/lmp'
+    require(binary.is_file() and not binary.is_symlink(), 'missing regular SpinGNN LAMMPS binary')
+    if not link.exists() and not link.is_symlink():
+        link.symlink_to('lmp_spingnn2')
+    require(link.is_symlink() and os.readlink(link) == 'lmp_spingnn2'
+            and link.resolve(strict=True) == binary, 'lmp must link relatively to lmp_spingnn2')
+
+
 def relocatable(prefix, run, identity):
     """Use the prior administrator delivery's self-locating entry convention."""
     for path in (prefix / 'venv/bin').iterdir():
@@ -107,6 +117,7 @@ def package(run, identity):
     require(os.environ.get('APPTAINER_CONTAINER') and os.environ.get('SAI_SPINGNN_CONTEXT') == 'build',
             'SpinGNN packaging must follow an actual container build')
     prefix = Path(identity['install_prefix'])
+    lammps_link(prefix)
     dynamic = relocatable(prefix, run, identity)
     metadata = prefix / 'share/sai'
     metadata.mkdir(parents=True, exist_ok=True)

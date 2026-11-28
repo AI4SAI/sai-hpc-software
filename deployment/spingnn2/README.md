@@ -33,6 +33,9 @@ That exported runtime executes the same science directly on the allocated
 host, without a container wrapper. Owned ELF libraries use `$ORIGIN`; Python
 commands locate their adjacent venv. Both routes record actual binary and
 dependency hashes, namespaces, Slurm identity, resources and full results.
+Every partition includes the relative link `bin/lmp -> lmp_spingnn2`, recorded
+in the SIF/export inventory. Both scientific routes invoke `lmp` and verify
+that it resolves to the same qualified binary; the original name is retained.
 
 Native and oracle error bounds remain `<1e-10`; LAMMPS energy, force and spin
 force bounds remain `<=1e-11`. Both configurations require nontrivial forces

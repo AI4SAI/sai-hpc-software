@@ -13,7 +13,7 @@ from unittest.mock import Mock, patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'controller'))
 import spingnn_release as release
 import spingnn_sif as sif
-from spingnn_package import entry, version_module
+from spingnn_package import entry, version_module, lammps_link
 from spingnn_install import install
 from native_module import validate_native_entry, render_native_selector
 from export_native import write_manifests, validate_packaged_modules
@@ -125,12 +125,33 @@ class SIFTests(unittest.TestCase):
             binary = prefix / 'bin/lmp_spingnn2'
             binary.write_text('#!/bin/sh\nexit 0\n')
             binary.chmod(0o755)
+            lammps_link(prefix)
             actual = validate_native_entry(entry(identity))
             manifest = write_manifests([actual], root)
             validate_packaged_modules(manifest)
             self.assertEqual(manifest['entries'][0]['identity']['install_prefix'], '/opt/apps/spingnn/v2.0.0/DSPRHBM')
             self.assertNotIn('8A100', render_native_selector(identity))
             self.assertNotIn('CPU-MISC', render_native_selector(identity))
+            link = next(row for row in manifest['files'] if row['path'].endswith('/bin/lmp'))
+            self.assertEqual(link['kind'], 'symlink')
+            self.assertEqual(os.readlink(prefix / 'bin/lmp'), 'lmp_spingnn2')
+
+    def test_standard_lammps_link_preserves_binary_and_rejects_conflicting_entry(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            prefix = Path(temporary)
+            (prefix / 'bin').mkdir()
+            binary = prefix / 'bin/lmp_spingnn2'
+            binary.write_bytes(b'qualified executable')
+            lammps_link(prefix)
+            lammps_link(prefix)
+            link = prefix / 'bin/lmp'
+            self.assertEqual(link.resolve(), binary)
+            self.assertEqual(link.read_bytes(), b'qualified executable')
+            link.unlink()
+            link.write_bytes(b'existing different program')
+            with self.assertRaisesRegex(ValueError, 'must link relatively'):
+                lammps_link(prefix)
+            self.assertEqual(link.read_bytes(), b'existing different program')
 
     def test_completed_stage_resume_rechecks_request_and_output_bytes(self):
         with tempfile.TemporaryDirectory() as temporary:

@@ -30,6 +30,10 @@ cp "$prefix/share/sai/fixture/"* "$case_dir/"
   "$control" "$prefix" > "$case_dir/modulefiles/spingnn/check.lua"
 module use "$case_dir/modulefiles"
 module load spingnn/check
+test "$(command -v lmp)" = "$prefix/bin/lmp"
+test -L "$prefix/bin/lmp"
+test "$(readlink "$prefix/bin/lmp")" = lmp_spingnn2
+test "$(readlink -f "$prefix/bin/lmp")" = "$prefix/bin/lmp_spingnn2"
 unset PYTHONPATH
 cd "$case_dir"
 module -t list > modules.txt 2>&1
