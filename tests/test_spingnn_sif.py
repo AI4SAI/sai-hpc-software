@@ -117,6 +117,10 @@ class SIFTests(unittest.TestCase):
             self.assertIn(str(directory / 'runtime') + ':/runtime:rw', final)
             self.assertIn('TMPDIR=/runtime', final)
             self.assertIn('--nv', final) if identity['gpus'] else self.assertNotIn('--nv', final)
+            private_tmp = str(directory / 'runtime') + ':/tmp:rw'
+            self.assertIn(private_tmp, final) if identity['gpus'] else self.assertNotIn(private_tmp, final)
+            self.assertNotIn(private_tmp, build)
+            self.assertNotIn('/tmp:/tmp', ' '.join(final))
             for command in (build, final):
                 self.assertIn('--cleanenv', command)
                 self.assertNotIn('/opt/apps:/opt/apps:ro', command)

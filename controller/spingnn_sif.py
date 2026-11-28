@@ -35,6 +35,10 @@ def container(directory, identity, phase):
     command = container_command(image, payload, control=release.CONTROL,
         overlay=None if final else directory / 'work.ext3', jobs=2, gpu=bool(identity['gpus']),
         extra_binds=binds, runtime=directory / 'runtime')
+    if final and identity['gpus']:
+        # Nsight writes literal /tmp paths as well as TMPDIR. Reuse the same
+        # private scratch bind as the existing DeePMD final-SIF science job.
+        command[2:2] = ['--bind', str(directory / 'runtime') + ':/tmp:rw']
     command[2:2] = ['--ignore-fakeroot-command', '--bind', str(directory / 'results') + ':/results:rw']
     if phase == 'build':
         for local, inside in (('evidence', '/workspace/recipe/evidence'), ('fixture', '/workspace/recipe/acceptance')):
