@@ -45,13 +45,16 @@ fi
 /usr/bin/python3 "$src/tools/native/build_native.py" --backend "$SAI_SPINGNN_BACKEND" \
   --kokkos-source "$run/sources/kokkos-4.7.02" --json-source "$run/sources/json-3.11.3" \
   --cxx "$CXX" --cmake "$SPINGNN_CMAKE" "${native_opts[@]}" \
-  --build-dir "$run/build/native" --install-prefix "$prefix" --jobs 2
+  --build-dir "$run/build/native" --jobs 2
 # Preserve site dependencies while using self-relative paths for owned ELF libs.
+# Pin lib explicitly: a minimal image lacks the host distro markers that make
+# GNUInstallDirs choose lib instead of lib64. Install only after this configure.
 "$SPINGNN_CMAKE" -S "$src/libspingnn2" -B "$run/build/native" \
-  -DCMAKE_INSTALL_PREFIX="$prefix" \
+  -DCMAKE_INSTALL_PREFIX="$prefix" -DCMAKE_INSTALL_LIBDIR=lib \
   -DCMAKE_INSTALL_RPATH="\$ORIGIN;$SPINGNN_GCC/lib64;${CUDA_HOME:-/nonexistent}/lib64;$SPINGNN_MKL/lib"
 "$SPINGNN_CMAKE" --build "$run/build/native" --parallel 2
 "$SPINGNN_CMAKE" --install "$run/build/native" --prefix "$prefix"
+test -f "$prefix/lib/libspingnn2.so.1"
 # DSPRHBM's system Python has no ensurepip; the first install qualified this path.
 /usr/bin/python3 -m venv --without-pip "$prefix/venv"
 /usr/bin/python3 -m pip --python "$prefix/venv/bin/python" install --no-index --find-links "$run/sources/wheels" \
@@ -78,7 +81,7 @@ fi
   -DPKG_SPIN=ON -DPKG_KOKKOS=ON -DKokkos_ENABLE_OPENMP=ON \
   -DCMAKE_CXX_STANDARD=20 -DLAMMPS_MACHINE=spingnn2 \
   -DCMAKE_PREFIX_PATH="$prefix" -DMPI_CXX_COMPILER="$MPI_HOME/bin/mpicxx" \
-  -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="$prefix" \
+  -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="$prefix" -DCMAKE_INSTALL_LIBDIR=lib \
   -DCMAKE_INSTALL_RPATH="\$ORIGIN/../lib;$SPINGNN_GCC/lib64;$MPI_HOME/lib;${CUDA_HOME:-/nonexistent}/lib64" \
   -DBUILD_SHARED_LIBS=OFF -DWITH_PNG=OFF -DWITH_JPEG=OFF -DWITH_FFMPEG=OFF \
   -DCMAKE_EXPORT_COMPILE_COMMANDS=ON "${lammps_opts[@]}"
