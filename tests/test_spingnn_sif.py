@@ -100,6 +100,8 @@ class SIFTests(unittest.TestCase):
             self.assertNotIn('--overlay', final)
             self.assertIn(str(directory / 'result.sif'), final)
             self.assertIn('SLURM_JOB_ID=123', final)
+            self.assertIn(str(directory / 'runtime') + ':/runtime:rw', final)
+            self.assertIn('TMPDIR=/runtime', final)
             self.assertIn('--nv', final) if identity['gpus'] else self.assertNotIn('--nv', final)
             for command in (build, final):
                 self.assertIn('--cleanenv', command)

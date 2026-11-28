@@ -33,7 +33,8 @@ def container(directory, identity, phase):
                   (directory / 'input', '/workspace/recipe/input')]
     payload = ['/usr/bin/bash', '/control/spingnn_sif_entry.sh', phase, identity['install_prefix']]
     command = container_command(image, payload, control=release.CONTROL,
-        overlay=None if final else directory / 'work.ext3', jobs=2, gpu=bool(identity['gpus']), extra_binds=binds)
+        overlay=None if final else directory / 'work.ext3', jobs=2, gpu=bool(identity['gpus']),
+        extra_binds=binds, runtime=directory / 'runtime')
     command[2:2] = ['--ignore-fakeroot-command', '--bind', str(directory / 'results') + ':/results:rw']
     if phase == 'build':
         for local, inside in (('evidence', '/workspace/recipe/evidence'), ('fixture', '/workspace/recipe/acceptance')):

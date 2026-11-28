@@ -100,11 +100,17 @@ def validate_receipt(project, record):
         raise ValueError('CP2K image driver provenance differs from the recipe')
 
 
-def prepare(project, run):
-    app, site_config = runtime_paths()
+def run_paths(project, run):
+    """The outer and inner overlay layers accept the same exact run roots."""
     project, run = canonical(project), canonical(run)
     if run.parent not in (project / 'runs', project / 'experimental/spingnn2-release/sif/runs'):
         raise ValueError('image driver run escaped the project')
+    return project, run
+
+
+def prepare(project, run):
+    app, site_config = runtime_paths()
+    project, run = run_paths(project, run)
     for directory in (run / 'runtime', run / 'results'):
         if not canonical(directory).is_dir():
             raise ValueError('image driver requires prepared run directories')

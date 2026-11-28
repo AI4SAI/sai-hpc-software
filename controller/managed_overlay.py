@@ -210,14 +210,14 @@ def stop_driver(driver, mount, record):
 
 def inside(request_path):
     from cp2k_image_driver import (canonical, checksum, DRIVER_SHA256, driver_path,
-                                   execute, prepare, runtime_paths)
+                                   execute, prepare, runtime_paths, run_paths)
 
     request_path = canonical(request_path)
     request = json.loads(request_path.read_text())
-    project, run = canonical(request['project']), canonical(request['run'])
+    project, run = run_paths(request['project'], request['run'])
     session = run / 'runtime' / ('overlay-session-' + request['token'])
     if (not re.fullmatch('[0-9a-f]{32}', request['token']) or
-            request_path != session / 'request.json' or run.parent != project / 'runs'):
+            request_path != session / 'request.json'):
         raise ValueError('managed overlay request escaped its run')
     app, _ = runtime_paths()
     config = prepare(project, run)

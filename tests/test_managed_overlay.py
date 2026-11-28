@@ -13,6 +13,24 @@ from remote_controller import container_command
 
 
 class ManagedOverlayTests(unittest.TestCase):
+    def test_inner_layer_accepts_only_registered_run_roots_before_starting_driver(self):
+        import cp2k_image_driver as driver
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for parent, allowed in (('runs', True), ('experimental/spingnn2-release/sif/runs', True),
+                                    ('experimental/unregistered/runs', False)):
+                run = root / parent / 'build'
+                session = run / 'runtime' / ('overlay-session-' + 'a' * 32)
+                session.mkdir(parents=True)
+                request = session / 'request.json'
+                request.write_text(json.dumps(dict(project=str(root), run=str(run), token='a' * 32)))
+                with patch.object(driver, 'runtime_paths', side_effect=RuntimeError('reached pinned runtime')) as runtime:
+                    expected, message = ((RuntimeError, 'reached pinned runtime') if allowed else
+                                         (ValueError, 'escaped the project'))
+                    with self.assertRaisesRegex(expected, message):
+                        managed.inside(request)
+                    self.assertEqual(runtime.call_count, int(allowed))
+
     def test_parser_preserves_payload_arguments_and_ignores_payload_overlay_flag(self):
         command = container_command('/images/base.sif', ['program', '--overlay', '/not-an-image'],
                                     overlay='/project/runs/build/work.ext3', gpu=True)[1:]
