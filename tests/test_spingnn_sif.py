@@ -81,6 +81,20 @@ print("SPINGNN_MODULE_CASES_PASSED " .. count)
 
 
 class SIFTests(unittest.TestCase):
+    def test_nil_allocation_restores_real_account_for_host_mpi(self):
+        for target in ('dsprhbm', '4v100-avx512', '16v100-avx2', '8v100v0-avx512'):
+            with self.subTest(target=target), patch.object(Path, 'home', return_value=Path('/home/real account')), \
+                    patch.object(sif, 'project_qos', return_value='test'), \
+                    patch.object(sif, 'project_batch_directives', return_value=[]):
+                script = sif.render_job('test', value(target))
+            subprocess.run(['bash', '-n'], input=script, text=True, check=True)
+            prefix = script.split('source /etc/profile.d/lmod.sh', 1)[0]
+            result = subprocess.run(['/usr/bin/bash', '--noprofile', '--norc'],
+                env={'SLURM_JOB_USER': 'allocated-user'}, text=True, capture_output=True, check=True,
+                input=prefix + 'printf "%s\\n" "$HOME" "$USER" "$LOGNAME" "$SLURM_EXPORT_ENV"\n')
+            self.assertEqual(result.stdout.splitlines(),
+                ['/home/real account', 'allocated-user', 'allocated-user', 'ALL'])
+
     def test_native_receipts_never_skip_sif_and_adoption_is_rejected(self):
         delivery = value()
         with patch.object(release, 'read') as read:

@@ -58,6 +58,11 @@ def render_job(run_id, value):
         *project_batch_directives(release.PROJECT, directory), '#SBATCH --export=NIL',
         '#SBATCH --output=' + str(directory / 'evidence/slurm-%j.log'),
         'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
+        # NIL drops the account identity needed by site OpenMPI on the host.
+        # Restore the submitter's real home, as in the existing beta jobs;
+        # temporary files still use this run's private runtime directory.
+        'export HOME=' + shlex.quote(str(Path.home())),
+        'export USER=${SLURM_JOB_USER:?} LOGNAME=${SLURM_JOB_USER:?} SLURM_EXPORT_ENV=ALL',
         'source /etc/profile.d/lmod.sh', 'module purge', 'module use /opt/modules/modulefiles/devtools',
         'module load apptainer/1.4.4', 'set -u', 'umask 022',
         'unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH',
