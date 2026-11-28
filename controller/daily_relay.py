@@ -130,7 +130,7 @@ def enqueue(root, args):
     return path
 
 
-def current_task_policy(task):
+def current_task_policy(task, control=None):
     # Recovery executes the original snapshot. Apply current SpinGNN target
     # eligibility before allowing that snapshot to schedule or publish.
     if task['software'] == 'spingnn2':
@@ -138,14 +138,19 @@ def current_task_policy(task):
         policy = target_policy(task['source']['target'])
         if not policy['enabled']:
             raise ValueError(policy['reason'])
+        if control is not None:
+            frozen = read(control / 'spingnn_site.json')
+            if 'cpu-misc' in frozen['targets']:
+                raise ValueError('frozen SpinGNN controller can republish CPU-MISC; '
+                                 'start a new generation with the current controller')
 
 
-def block_ineligible_tasks(generation):
+def block_ineligible_tasks(generation, control=None):
     for task in generation['tasks']:
         if task['state'] in TERMINAL:
             continue
         try:
-            current_task_policy(task)
+            current_task_policy(task, control)
         except ValueError as error:
             task.update(state='blocked', reason=str(error))
 
@@ -184,6 +189,7 @@ def task_environment(generation, task, directory, key):
 
 
 def advance(path, task, generation, key, run=subprocess.run):
+    current_task_policy(task, path.parent / 'checkout/controller')
     directory = path.parent / 'tasks' / task['id']
     directory.mkdir(parents=True, exist_ok=True)
     script, env = task_environment(generation, task, directory, key)
@@ -321,7 +327,7 @@ def main():
                     verified.add(path)
                 # Block revoked targets before inspecting pending/held jobs,
                 # not only when their frozen subprocess becomes runnable.
-                block_ineligible_tasks(generation)
+                block_ineligible_tasks(generation, path.parent / 'checkout/controller')
                 checkpoints = {}
                 for task in generation['tasks']:
                     saved = path.parent / 'tasks' / task['id'] / 'checkpoint.json'

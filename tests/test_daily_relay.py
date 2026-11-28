@@ -211,6 +211,9 @@ class RelayTests(unittest.TestCase):
             root = Path(temporary).resolve()
             path = root / '100/plan.json'
             path.parent.mkdir()
+            control = path.parent / 'checkout/controller'
+            control.mkdir(parents=True)
+            (control / 'spingnn_site.json').write_bytes((REPO / 'controller/spingnn_site.json').read_bytes())
             retired = dict(id='spingnn2-release-cpu-misc', kind='build', software='spingnn2',
                            source=dict(software='spingnn2', target='cpu-misc'), state='waiting')
             supported = relay.make_plan('spingnn2', 'release', 'dsprhbm', self.sources)['tasks'][0]
@@ -242,6 +245,25 @@ class RelayTests(unittest.TestCase):
             run = Mock()
             with self.assertRaisesRegex(ValueError, 'CPU-MISC is excluded'):
                 relay.advance(path, retired, generation, root / 'key', run=run)
+            run.assert_not_called()
+
+    def test_old_supported_spingnn_task_cannot_restore_retired_selector(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            control = root / 'checkout/controller'
+            control.mkdir(parents=True)
+            # The old selector included every site target, even disabled ones.
+            (control / 'spingnn_site.json').write_text(json.dumps(dict(targets={'cpu-misc': {'enabled': False}})))
+            supported = relay.make_plan('spingnn2', 'release', 'dsprhbm', self.sources)['tasks'][0]
+            unrelated = relay.make_plan('gpumd', 'release', '16v100-avx2', self.sources)['tasks'][0]
+            generation = dict(tasks=[supported, unrelated])
+            relay.block_ineligible_tasks(generation, control)
+            self.assertEqual(supported['state'], 'blocked')
+            self.assertIn('start a new generation', supported['reason'])
+            self.assertEqual(unrelated['state'], 'new')
+            run = Mock()
+            with self.assertRaisesRegex(ValueError, 'can republish CPU-MISC'):
+                relay.advance(root / 'plan.json', supported, generation, root / 'key', run=run)
             run.assert_not_called()
 
     def test_failed_child_is_failed_and_pending_is_not_acceptance(self):

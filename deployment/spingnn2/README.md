@@ -61,6 +61,13 @@ builds, adoption and publication continue to reject those identities. Existing
 remote controllers or module files are not rewritten by a branch update;
 withdrawal of public installation entries is a separate deployment operation.
 
+A frozen SpinGNN controller whose site configuration still includes CPU-MISC
+is also blocked: even a supported-target completion could regenerate its old
+shared selector and restore the retired route. Start a new generation using
+the reviewed controller, with `retry_releases=true` if the release was already
+claimed; do not edit the frozen snapshot. Compatible SpinGNN
+generations and other software continue normally.
+
 Source tag/SHA/target changes trigger independent attempts. An unchanged
 formal release is skipped even if a previous attempt failed or the recipe
 changed: choose `retry_releases=true` to retry that selection explicitly.
