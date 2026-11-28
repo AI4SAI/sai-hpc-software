@@ -30,8 +30,13 @@ def site():
 
 
 def prefix(label, sha, recipe, partition, run=None):
-    root = Path(site()['root']) / 'versions' / label / sha / recipe
-    return str(root / run / partition if run else root / partition)
+    # Attempts have separate SIFs and export bundles, never separate runtime
+    # prefixes. The exact same versioned path is used in the image and /opt.
+    import re
+    version = label.removeprefix('v')
+    if not re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+(?:[.+-][A-Za-z0-9.-]+)?', version):
+        raise ValueError('SpinGNN requires a concrete release version')
+    return str(Path('/opt/apps/spingnn') / ('v' + version) / partition)
 
 
 def target_policy(target):

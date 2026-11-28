@@ -15,6 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'controller'))
 from daily_relay import make_plan
 from release_contract import PARTITIONS, SOFTWARE, TRACKS, claim_build, make_identity, resolve_tracks, validate_identity
 import spingnn_release as native
+import spingnn_sif as sif
 
 
 def retired_cpu_misc():
@@ -165,13 +166,15 @@ class SpinGNNReleaseTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'differs'):
                 claim_build(root, [changed_source], 'initial', resume=True)
 
-    def test_attempt_prefix_keeps_complete_source_and_recipe_and_never_aliases_retry(self):
+    def test_same_opt_prefix_has_separate_sif_attempts(self):
+        from delivery_layout import artifact_path
         first = self.identity(installation_run='attempt-one')
         second = self.identity(installation_run='attempt-two')
-        self.assertNotEqual(first['install_prefix'], second['install_prefix'])
-        self.assertIn('/' + first['source_sha'] + '/', first['install_prefix'])
-        self.assertIn('/' + first['recipe_sha256'] + '/', first['install_prefix'])
-        self.assertTrue(first['install_prefix'].startswith('/home/stardust/spingnn/versions/'))
+        self.assertEqual(first['install_prefix'], '/opt/apps/spingnn/v2.0.0/DSPRHBM')
+        self.assertEqual(first['install_prefix'], second['install_prefix'])
+        self.assertNotEqual(first, second)
+        self.assertNotEqual(artifact_path(Path('/tmp'), first, 'attempt-one'),
+                            artifact_path(Path('/tmp'), second, 'attempt-two'))
         with self.assertRaises(ValueError):
             self.identity(installation_run='../elsewhere')
 
@@ -181,6 +184,9 @@ class NativeLifecycleTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name).resolve()
+        preflight = patch.object(sif, 'preflight')
+        preflight.start()
+        self.addCleanup(preflight.stop)
         self.source = dict(software='spingnn2', repository='Hyyu-Lab/SpinGNN', track='release',
                            requested_ref='latest-release', status='resolved', source_ref='v2.0.1',
                            source_version='v2.0.1', source_sha='c' * 40, target='dsprhbm')
@@ -347,16 +353,18 @@ class NativeLifecycleTests(unittest.TestCase):
             directory = self.root / 'runs' / name
             directory.mkdir(parents=True)
             (directory / 'completion.json').write_text('{}\n')
+            (directory / 'result.sif').write_bytes(b'accepted-image-' + name.encode())
             records[name] = (dict(delivery=native.delivery(self.source, name), created_ns=2-index),
-                             dict(prefix=str(self.root / name)))
+                             dict(identity=native.delivery(self.source, name)['identity'],
+                                  sif_sha256=native.checksum(directory / 'result.sif'), export=dict(directory=str(directory / 'native'))))
         with patch.object(native, 'ROOT', self.root), patch.object(native, 'site', return_value=settings), \
                 patch.object(native, 'check_access', return_value=True), \
-                patch.object(native, 'verified', side_effect=lambda name: records[name]) as verified:
+                patch.object(sif, 'verified', side_effect=lambda name: records[name]) as verified:
             result = native.publish('new')
-            current = self.root / 'release-targets/dsprhbm/current'
+            current = self.root / 'release-targets/dsprhbm/current.json'
             selected = current.read_text()
             self.assertTrue(result['published'])
-            self.assertFalse(native.publish('old')['current'])
+            native.publish('old')
             self.assertEqual(current.read_text(), selected)
             verified.side_effect = ValueError('scientific gate failed')
             with self.assertRaisesRegex(ValueError, 'scientific gate'):
@@ -373,16 +381,18 @@ class NativeLifecycleTests(unittest.TestCase):
                 directory = self.root / 'runs' / name
                 directory.mkdir(parents=True)
                 (directory / 'completion.json').write_text('{}\n')
+                (directory / 'result.sif').write_bytes(b'accepted-image-' + name.encode())
                 value = native.delivery(dict(self.source, target=target), name)
-                records[name] = (dict(delivery=value, created_ns=1), dict(prefix=str(self.root / name)))
+                records[name] = (dict(delivery=value, created_ns=1), dict(identity=value['identity'],
+                    sif_sha256=native.checksum(directory / 'result.sif'), export=dict(directory=str(directory / 'native'))))
             with patch.object(native, 'ROOT', self.root), patch.object(native, 'site', return_value=settings), \
                     patch.object(native, 'check_access', return_value=True), \
-                    patch.object(native, 'verified', side_effect=lambda name: records[name]) as verified:
+                    patch.object(sif, 'verified', side_effect=lambda name: records[name]) as verified:
                 native.publish('cpu')
-                cpu = self.root / 'release-targets/dsprhbm/current'
+                cpu = self.root / 'release-targets/dsprhbm/current.json'
                 original = cpu.read_bytes()
                 native.publish('gpu')
-                gpu = self.root / 'release-targets/4v100-avx512/current'
+                gpu = self.root / 'release-targets/4v100-avx512/current.json'
                 self.assertEqual(cpu.read_bytes(), original)
                 self.assertTrue(gpu.is_file())
                 verified.side_effect = ValueError('failed new GPU science')

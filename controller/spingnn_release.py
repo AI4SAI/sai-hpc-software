@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Native SpinGNN release claims, held Slurm submissions and gated modules."""
+"""SpinGNN SIF release claims, held Slurm submissions and native deliveries."""
 import argparse
 import csv
 import fcntl
@@ -24,12 +24,16 @@ from spingnn_config import hardware, site, target_policy
 
 CONTROL = Path(__file__).resolve().parent
 PROJECT = SAI_PROJECT_ROOT
-ROOT = PROJECT / 'experimental/spingnn2-release'
+ROOT = PROJECT / 'experimental/spingnn2-release/sif'
 FILES = ('spingnn_release.py', 'spingnn_inputs.py', 'spingnn_build.sh', 'spingnn_fixture.py',
          'spingnn_science.py', 'spingnn_config.py', 'spingnn_site.json', 'spingnn_bootstrap.json',
          'spingnn_source.py', 'spingnn_sm70.patch', 'spingnn_sm70.json',
          'release_contract.py', 'resolve_source.py', 'remote_controller.py', 'source_cache.py',
-         'source_transport.py', 'relay_checkpoint.py', 'input_archive_cache.py', 'spingnn_runtime.txt')
+         'source_transport.py', 'relay_checkpoint.py', 'input_archive_cache.py', 'spingnn_runtime.txt',
+         'spingnn_sif.py', 'spingnn_accept.sh', 'spingnn_package.py', 'spingnn_install.py',
+         'spingnn_sif_entry.sh', 'spingnn_wheels.txt', 'create_rootfs.sh', 'export_native.py',
+         'native_module.py', 'module_publication.py', 'delivery_layout.py', 'cp2k_image_driver.py',
+         'managed_overlay.py', 'cp2k_overlay_sync.py')
 FIELDS = {'total_energy', 'atomic_energy', 'forces', 'spin_forces', 'spin_forces_vert', 'virial'}
 
 
@@ -82,7 +86,7 @@ def save(path, value):
 
 
 def fingerprint():
-    value = hashlib.sha256(b'sai-spingnn2-native-release-v1\n')
+    value = hashlib.sha256(b'sai-spingnn2-sif-native-release-v1\n')
     for name in FILES:
         value.update(name.encode() + b'\0' + plain(CONTROL / name).read_bytes())
     return value.hexdigest()
@@ -124,6 +128,8 @@ def task(run_id):
 
 def check_access():
     root = plain(site()['root'])
+    require(root == ROOT, 'SpinGNN SIF publication must use the project staging root')
+    root.mkdir(parents=True, exist_ok=True)
     require(root.is_dir() and os.access(root, os.W_OK | os.X_OK),
             'daily SSH identity cannot write the configured SpinGNN root')
     return dict(uid=os.getuid(), root=str(root), writable=True)
@@ -146,20 +152,13 @@ def public_directory(path):
 
 def bootstrap(identity):
     identity = qualified_identity(identity)
-    record = read(CONTROL / 'spingnn_bootstrap.json').get(identity['target'])
-    if record is None:
-        return None
-    if any(identity[key] != record[key] for key in ('source_sha', 'source_ref', 'source_version')):
-        return None
-    if record.get('qualified') is not True:
-        raise Pending('SpinGNN first installation has not passed science; do not submit a duplicate build')
-    return record
+    # Historical native receipts remain evidence, never a SIF qualification.
+    return None
 
 
 def claim(run_id, value, retry=False):
     validate_delivery(value, run_id)
     check_access()
-    bootstrap(value['identity'])  # Wait before claiming an unqualified first installation.
     result = claim_build(ROOT, [value['identity']], run_id, retry=retry, resume=True)
     stamp = task(run_id) / 'input/created.json'
     if not stamp.exists():
@@ -186,12 +185,32 @@ def module_text(identity, prefix):
     lines = ['whatis(' + literal('SpinGNN2 ' + identity['source_version'] +
              ': ' + identity['partition'] + ' ' + policy['backend'] +
              ' native inference and lmp_spingnn2; no PyTorch runtime') + ')',
-             'conflict("spingnn")', 'conflict("lammps")',
-             'prepend_path("MODULEPATH", "/opt/modules/modulefiles/devtools")',
+             'help("Native SpinGNN2: load inside a supported Slurm allocation; unload uses the saved identity.")',
+             'if mode() ~= "load" and mode() ~= "unload" then return end',
              'if mode() == "load" then',
+             '  local job = os.getenv("SLURM_JOB_ID")',
+             '  if not job or not job:match("^[1-9]%d*$") then LmodError("load SpinGNN2 inside a Slurm allocation") end',
              '  local partition = os.getenv("SLURM_JOB_PARTITION")',
-             '  if partition and partition ~= ' + literal(identity['partition']) + ' then LmodError("SpinGNN2 module does not match this partition") end',
-             'end', *['depends_on(' + literal(name) + ')' for name in settings['modules'][policy['backend']][:2]],
+             '  if partition ~= ' + literal(identity['partition']) + ' then LmodError("SpinGNN2 module does not match this partition") end',
+             'else',
+             '  if os.getenv("SAI_SPINGNN_LOADED_PREFIX") ~= ' + literal(prefix) +
+             ' or os.getenv("SAI_SPINGNN_LOADED_PARTITION") ~= ' + literal(identity['partition']) +
+             ' then LmodError("SpinGNN2 unload identity differs from the loaded installation") end',
+             '  local added = os.getenv("_SAI_SPINGNN_DEVTOOLS_ADDED")',
+             '  if added ~= "0" and added ~= "1" then LmodError("missing SpinGNN2 module-path identity") end',
+             'end',
+             'conflict("spingnn")', 'conflict("lammps")',
+             'local devtools = "/opt/modules/modulefiles/devtools"',
+             'local added = os.getenv("_SAI_SPINGNN_DEVTOOLS_ADDED")',
+             'if mode() == "load" then',
+             '  local paths = ":" .. (os.getenv("MODULEPATH") or "") .. ":"',
+             '  added = paths:find(":" .. devtools .. ":", 1, true) and "0" or "1"',
+             'end',
+             'if added == "1" then prepend_path("MODULEPATH", devtools) end',
+             'pushenv("_SAI_SPINGNN_DEVTOOLS_ADDED", added)',
+             *['depends_on(' + literal(name) + ')' for name in settings['modules'][policy['backend']][:2]],
+             'pushenv("SAI_SPINGNN_LOADED_PREFIX", ' + literal(prefix) + ')',
+             'pushenv("SAI_SPINGNN_LOADED_PARTITION", ' + literal(identity['partition']) + ')',
              'prepend_path("PATH", ' + literal(prefix + '/venv/bin') + ')',
              'prepend_path("PATH", ' + literal(prefix + '/bin') + ')',
              'pushenv("SPINGNN2_ROOT", ' + literal(prefix) + ')',
@@ -208,7 +227,10 @@ def selector_text():
     settings = site()
     root = Path(settings['root'])
     modules = root / 'modulefiles' / settings['module_family']
-    lines = ['local base = ' + literal(modules), 'local pointers = ' + literal(root / 'release-targets'),
+    lines = ['whatis("SpinGNN2 accepted native release for the allocated partition")',
+             'help("Load inside a supported Slurm allocation; SIF deliveries must first be installed at their recorded /opt path.")',
+             'if mode() ~= "load" and mode() ~= "unload" then return end',
+             'local base = ' + literal(modules), 'local pointers = ' + literal(root / 'release-targets'),
              'local targets = {']
     lines += ['  [' + literal(target_policy(target)['partition']) + '] = ' + literal(target) + ','
               for target in SOFTWARE['spingnn2']['targets'] if target_policy(target)['enabled']]
@@ -219,9 +241,12 @@ def selector_text():
               '    local head = base .. "/" .. target .. "/"',
               '    if selected and selected:sub(1,#head) == head and selected:sub(#head+1):match("^[%w_.-]+%.lua$") then permitted = true end',
               '  end', '  if not permitted then LmodError("missing saved SpinGNN partition identity") end',
-              'else', '  local partition = os.getenv("SLURM_JOB_PARTITION") or "DSPRHBM"',
+              'else',
+              '  local job = os.getenv("SLURM_JOB_ID")',
+              '  if not job or not job:match("^[1-9]%d*$") then LmodError("load SpinGNN2 inside a Slurm allocation") end',
+              '  local partition = os.getenv("SLURM_JOB_PARTITION")',
               '  local target = targets[partition]',
-              '  if not target then LmodError("unregistered SpinGNN partition: " .. partition) end',
+              '  if not target then LmodError("unregistered SpinGNN partition: " .. tostring(partition)) end',
               '  local pointer = io.open(pointers .. "/" .. target .. "/current", "r")',
               '  if not pointer then LmodError("no scientifically accepted SpinGNN release for " .. partition) end',
               '  local name = pointer:read("*l"); pointer:close()',
@@ -265,21 +290,10 @@ def site_script(identity, run_id):
 
 
 def render(run_id, value):
-    identity = validate_delivery(value, run_id)['identity']
-    directory = task(run_id)
-    profile = hardware(identity['target'])
-    qos = (project_qos(PROJECT, identity['target']) if identity['target'] in
-           ('4v100-avx512', '16v100-avx2', '8v100v0-avx512') else profile['qos'])
-    # Site GPU policy derives CPU and memory from the GPU count. Explicit CPU
-    # or memory requests would be rejected or exceed that allocation.
-    resources = (['#SBATCH --gres=gpu:1'] if identity['gpus'] else
-                 ['#SBATCH --cpus-per-task=8', '#SBATCH --mem=16G'])
-    return '\n'.join(['#!/bin/bash', '#SBATCH --job-name=spingnn2-' + run_id,
-        '#SBATCH --partition=' + identity['partition'], '#SBATCH --qos=' + qos, '#SBATCH --nodes=1',
-        '#SBATCH --ntasks=1', *resources, '#SBATCH --time=120',
-        *project_batch_directives(PROJECT, directory), '#SBATCH --export=NIL',
-        '#SBATCH --output=' + str(directory / 'evidence/slurm-%j.log'), 'set -euo pipefail',
-        shlex.join(map(str, ['bash', CONTROL / 'spingnn_build.sh', directory, identity['install_prefix'], CONTROL])), ''])
+    from spingnn_sif import render_job
+    return render_job(run_id, value)
+
+
 
 
 def submit(run_id, value):
@@ -292,15 +306,19 @@ def submit(run_id, value):
         return inspect_submission(directory, dict(delivery=value, controller=str(CONTROL)))['request']
     require(not (directory / 'submission-intent.json').exists(),
             'incomplete SpinGNN submission; recover the held Slurm handle before retrying')
-    require(bootstrap(value['identity']) is None, 'first installation must be adopted, not rebuilt')
+    from spingnn_sif import preflight
+    preflight()
     sources = read(directory / 'input/sources.json')
     require(sources['source_sha'] == value['identity']['source_sha'], 'wrong source input')
     (directory / 'evidence').mkdir(exist_ok=True)
+    for name in ('runtime', 'results', 'apptainer-cache'):
+        (directory / name).mkdir(exist_ok=True)
     modules = directory / 'input/modulefiles' / site()['module_family']
     plain(modules).mkdir(parents=True, exist_ok=True)
     immutable(modules / (module_name(value['identity'], run_id) + '.lua'),
               module_text(value['identity'], value['identity']['install_prefix']).encode())
     immutable(directory / 'input/site.sh', site_script(value['identity'], run_id).encode())
+    save(directory / 'input/delivery.json', value)
     immutable(directory / 'job.sbatch', render(run_id, value).encode())
     subprocess.run(['sbatch', '--test-only', str(directory / 'job.sbatch')], check=True, capture_output=True)
     save(directory / 'submission-intent.json', dict(delivery=value, script_sha256=checksum(directory / 'job.sbatch')))
@@ -372,8 +390,9 @@ def gpu_evidence(case, identity, prefix):
                 'LAMMPS did not execute its GPU pair style')
 
 
-def science(case, identity, prefix, job, *, legacy_cpu=False):
+def science(case, identity, prefix, job, *, legacy_cpu=False, runtime_prefix=None):
     case, prefix = plain(case), plain(prefix)
+    runtime_prefix = plain(runtime_prefix) if runtime_prefix is not None else prefix
     value, fixture = read(case / 'acceptance.json'), read(case / 'fixture.json')
     policy = target_policy(identity['target'])
     require(value.get('environment', {}).get('MPI_HOME') == policy['mpi_prefix'],
@@ -385,8 +404,8 @@ def science(case, identity, prefix, job, *, legacy_cpu=False):
                 'SpinGNN science backend or partition differs from its requested target')
     require(value.get('passed') is True and value.get('job_id') == job and value.get('torch_imported') is False,
             'missing successful allocated SpinGNN scientific evidence')
-    require(value['python'] == str(prefix / 'venv/bin/python')
-            and Path(value['spingnn2_file']).is_relative_to(prefix / 'venv')
+    require(value['python'] == str(runtime_prefix / 'venv/bin/python')
+            and Path(value['spingnn2_file']).is_relative_to(runtime_prefix / 'venv')
             and value['binary_sha256'] == checksum(prefix / 'bin/lmp_spingnn2')
             and value['library_sha256'] == checksum(prefix / 'lib/libspingnn2.so.1'),
             'science did not use the accepted installation bytes')
@@ -419,27 +438,12 @@ def science(case, identity, prefix, job, *, legacy_cpu=False):
             and checksum(plain(case / artifact['artifact'])) == artifact['artifact_sha256'],
             'SpinGNN JIT artifact differs from the tested model or backend')
     if identity['gpus']:
-        gpu_evidence(case, identity, prefix)
+        gpu_evidence(case, identity, runtime_prefix)
     return value
 
 
 def seal(directory):
-    directory = plain(directory)
-    require(directory == task(directory.name), 'wrong SpinGNN task root')
-    request = read(directory / 'request.json')
-    identity = validate_delivery(request['delivery'], directory.name)['identity']
-    require(os.environ.get('SLURM_JOB_ID') == request['job_id'], 'seal requires its recorded Slurm allocation')
-    require(checksum(directory / 'input/sources.json') == request['sources_sha256'], 'source inputs changed')
-    prefix = plain(identity['install_prefix'])
-    science(directory / 'acceptance', identity, prefix, request['job_id'])
-    require((directory / 'evidence/module-unload.txt').read_text() == 'passed\n', 'module unload did not pass')
-    for path in [*prefix.rglob('*'), prefix]:
-        if not path.is_symlink():
-            path.chmod(path.stat().st_mode & ~0o222)
-    save(directory / 'completion.json', dict(schema=1, request_sha256=checksum(directory / 'request.json'),
-         prefix=str(prefix), inventory=inventory(prefix),
-         science_files={str(path.relative_to(directory)): checksum(plain(path))
-                        for path in (directory / 'acceptance').rglob('*') if path.is_file()}))
+    raise ValueError("native-only completion cannot qualify a SIF delivery")
 
 
 def accounting(job, workdir, account='proj-sai-hpc-software', partition='DSPRHBM'):
@@ -457,26 +461,6 @@ def accounting(job, workdir, account='proj-sai-hpc-software', partition='DSPRHBM
     return row
 
 
-def verified(run_id):
-    directory = task(run_id)
-    request = read(directory / 'request.json')
-    identity = validate_delivery(request['delivery'], run_id)['identity']
-    receipt = read(directory / 'completion.json')
-    require(receipt['request_sha256'] == checksum(directory / 'request.json'), 'changed SpinGNN request')
-    prefix = plain(receipt['prefix'])
-    if request.get('origin') == 'first-install':
-        boot = bootstrap(identity)
-        require(boot is not None and str(prefix) == boot['prefix'], 'unapproved imported prefix')
-        verify_bootstrap(boot, identity)
-    else:
-        inspect_submission(directory, dict(delivery=request['delivery'], controller=str(CONTROL)))
-        require(str(prefix) == identity['install_prefix'], 'unexpected SpinGNN prefix')
-        accounting(request['job_id'], directory, partition=identity['partition'])
-        science(directory / 'acceptance', identity, prefix, request['job_id'])
-        for name, digest in receipt['science_files'].items():
-            require(checksum(plain(directory / name)) == digest, 'changed SpinGNN scientific evidence')
-    require(receipt['inventory'] == inventory(prefix), 'changed installed SpinGNN runtime')
-    return request, receipt
 
 
 def verify_bootstrap(boot, identity):
@@ -500,65 +484,17 @@ def verify_bootstrap(boot, identity):
 
 
 def adopt(run_id, value):
-    identity = validate_delivery(value, run_id)['identity']
-    boot = bootstrap(identity)
-    require(boot is not None, 'no reviewed first-install record for this source')
-    verify_bootstrap(boot, identity)
-    directory = task(run_id)
-    require(read(directory / 'input/build-attempt.json')['identities'] == [identity], 'missing release claim')
-    request = dict(schema=1, delivery=value, controller=str(CONTROL), origin='first-install',
-                   job_id=boot['job_id'], created_ns=read(directory / 'input/created.json')['created_ns'])
-    save(directory / 'request.json', request)
-    save(directory / 'completion.json', dict(schema=1, request_sha256=checksum(directory / 'request.json'),
-         prefix=boot['prefix'], inventory=inventory(boot['prefix']), bootstrap=boot))
-    return publish(run_id)
+    validate_delivery(value, run_id)
+    raise ValueError('native bootstrap cannot qualify a SIF delivery; build and accept the image')
+
+
 
 
 def publish(run_id):
-    check_access()
-    request, receipt = verified(run_id)
-    root = plain(site()['root'])
-    lock_path = plain(root / '.release.lock')
-    with lock_path.open('a+') as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX)
-        request, receipt = verified(run_id)
-        identity = request['delivery']['identity']
-        module_root = plain(root / 'modulefiles' / site()['module_family'])
-        directory = public_directory(module_root / identity['target'])
-        name = module_name(identity, run_id)
-        text = module_text(identity, receipt['prefix']).encode()
-        proof = dict(schema=1, identity=identity, prefix=receipt['prefix'], run_id=run_id,
-                     created_ns=request['created_ns'], completion_sha256=checksum(task(run_id) / 'completion.json'),
-                     module_sha256=hashlib.sha256(text).hexdigest(), origin=request.get('origin', 'daily-build'))
-        immutable(directory / (name + '.lua'), text)
-        # Receipts stay outside MODULEPATH so Lmod never lists JSON as a module.
-        receipts = plain(root / 'release-receipts' / identity['target'])
-        receipts.mkdir(parents=True, exist_ok=True)
-        save(receipts / (name + '.json'), proof)
-        pointers = public_directory(root / 'release-targets' / identity['target'])
-        current = pointers / 'current'
-        if current.exists() or current.is_symlink():
-            prior_name = plain(current).read_text().strip()
-            require(Path(prior_name).name == prior_name, 'unrecognized SpinGNN release pointer')
-            require(prior_name.endswith('.lua'), 'unexpected release module suffix')
-            prior = read(receipts / (prior_name.removesuffix('.lua') + '.json'))
-            require(checksum(plain(directory / prior_name)) == prior['module_sha256'], 'changed previous release module')
-            if prior['created_ns'] > proof['created_ns']:
-                return dict(proof, published=True, current=False)
-        selectors = public_directory(root / 'release-selectors')
-        selector = selector_text().encode()
-        selector_name = hashlib.sha256(selector).hexdigest() + '.lua'
-        immutable(selectors / selector_name, selector)
-        gateway = module_root / 'release.lua'
-        if gateway.exists() or gateway.is_symlink():
-            require(gateway.is_symlink() and gateway.resolve().parent == selectors
-                    and checksum(gateway.resolve()) == gateway.resolve().stem,
-                    'unrecognized SpinGNN release selector')
-        temporary = module_root / ('.release-' + uuid.uuid4().hex)
-        temporary.symlink_to(Path('../../release-selectors') / selector_name)
-        temporary.replace(gateway)
-        atomic_text(current, name + '.lua\n')
-    return dict(proof, published=True, current=True)
+    from spingnn_sif import publish
+    return publish(run_id)
+
+
 
 
 def main():

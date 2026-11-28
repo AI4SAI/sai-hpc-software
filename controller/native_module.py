@@ -87,6 +87,10 @@ def _install_prefix(value):
               re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", parts[5]) and
               len(parts[5]) <= MAX_BUILD_ID and parts[6] in allowed_partitions(parts[3]))
     current = False
+    if (len(parts) == 6 and parts[1:4] == ('opt', 'apps', 'spingnn') and
+            re.fullmatch(r'v[0-9]+\.[0-9]+\.[0-9]+(?:[.+-][A-Za-z0-9.-]+)?', parts[4]) and
+            parts[5] in ('DSPRHBM', '4V100', '16V100', '8V100V0')):
+        current = True
     if len(parts) == 6 and parts[1:3] == ("opt", "apps") and parts[3] in SOFTWARE:
         stem = APP_STEMS.get(parts[3], parts[3])
         for track in TRACKS:
@@ -124,6 +128,10 @@ def validate_native_entry(entry, *, allowed_prefixes=()):
     if not isinstance(entry, dict) or set(entry) not in (fields, fields | {"site_dependencies"}):
         raise ValueError("native entry requires identity, commands, runtime and external_roots")
     identity = validate_identity(entry["identity"])
+    if identity['software'] == 'spingnn2':
+        from spingnn_config import target_policy
+        if not target_policy(identity['target'])['enabled']:
+            raise ValueError('SpinGNN target is not qualified')
     prefix = _install_prefix(identity["install_prefix"])
     other_prefixes = [_install_prefix(value) for value in _sequence(allowed_prefixes, "allowed_prefixes")]
     other_prefixes = [path for path in other_prefixes if path.name == identity["partition"]]
@@ -204,7 +212,16 @@ def validate_native_entry(entry, *, allowed_prefixes=()):
     for name, value in sorted(settings.items()):
         if not isinstance(value, str) or len(value) > 4096:
             raise ValueError("runtime setting must be a bounded string")
-        if name in _PATH_SETTINGS:
+        if identity['software'] == 'spingnn2' and name in ('SPINGNN2_ROOT', 'SPINGNN2_LIBRARY'):
+            value = runtime_path(value)
+        elif identity['software'] == 'spingnn2' and name in ('SPINGNN2_TARGET', 'SPINGNN2_BACKEND', 'SPINGNN2_ARCH',
+                                                           'PYTHONNOUSERSITE', 'PYTHONDONTWRITEBYTECODE'):
+            expected = dict(SPINGNN2_TARGET=identity['partition'], SPINGNN2_BACKEND='cuda' if identity['gpus'] else 'cpu',
+                            SPINGNN2_ARCH='sm' + identity['cuda_arch'] if identity['gpus'] else '',
+                            PYTHONNOUSERSITE='1', PYTHONDONTWRITEBYTECODE='1')
+            if value != expected[name]:
+                raise ValueError('SpinGNN runtime setting differs from qualified identity')
+        elif name in _PATH_SETTINGS:
             value = runtime_path(value)
         elif name in _THREAD_SETTINGS:
             if not re.fullmatch(r"[1-9][0-9]{0,5}", value) or int(value) > 65536:
@@ -308,6 +325,11 @@ def render_native_selector(identity):
     identity = validate_identity(identity)
     software, track, build_id = (identity[name] for name in ("software", "track", "build_id"))
     stem = _stem(software)
+    partitions = allowed_partitions(software)
+    if software == 'spingnn2':
+        from spingnn_config import target_policy
+        partitions = [target_policy(target)['partition'] for target in SOFTWARE[software]['targets']
+                      if target_policy(target)['enabled']]
     prefix_base = str(PurePosixPath(identity["install_prefix"]).parent)
     description = f"{software} {track} {build_id}: native Slurm-partition selection; expected prefix {prefix_base}/<PARTITION>; dependencies external; staging is not relocation"
     lines = ["#%Module1.0", "module-whatis " + tcl(description + '; Features: ' + feature_summary(software)),
@@ -322,7 +344,7 @@ def render_native_selector(identity):
              f'    if {{![info exists env({stem}_NATIVE_PARTITION)]}} {{error "missing saved native partition for unload"}}',
              f'    set sai_native_partition $env({stem}_NATIVE_PARTITION)', '}',
              'if {$sai_native_partition ne ""} {',
-             '    if {[lsearch -exact [list ' + ' '.join(tcl(partition) for partition in allowed_partitions(software)) + '] $sai_native_partition] < 0} {error "unsupported native software partition"}',
+             '    if {[lsearch -exact [list ' + ' '.join(tcl(partition) for partition in partitions) + '] $sai_native_partition] < 0} {error "unsupported native software partition"}',
              f'    set sai_native_fragment [file join {tcl(prefix_base)} $sai_native_partition share sai native-module.tcl]',
              *('    ' + line for line in _regular_tree('$sai_native_fragment', install_root='/opt/apps' if identity['schema'] == 2 else '/opt/software')),
              '    source $sai_native_fragment', '}', '']

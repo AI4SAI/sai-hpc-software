@@ -24,6 +24,8 @@ class BuildAttemptTests(unittest.TestCase):
     def identity(self, software="abacus", track="release", **changes):
         values = dict(software=software, track=track, source_ref="v1", source_sha="a" * 40,
                       source_version="v1", recipe_sha256="b" * 64, target="4v100-avx512")
+        if software == 'spingnn2':
+            values.update(source_ref='v2.0.0', source_version='v2.0.0')
         values.update(changes)
         return contract.make_identity(**values)
 

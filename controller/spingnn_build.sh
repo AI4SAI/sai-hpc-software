@@ -1,9 +1,11 @@
 #!/bin/bash
-# Shared native/LAMMPS recipe from the SAI CPU and SM70 first installations.
+# Run only inside the SIF overlay; sources and offline wheels are pinned inputs.
 set -eo pipefail
 run=$1
 prefix=$2
 control=$3
+test -n "${APPTAINER_CONTAINER:?container build required}"
+test "${SAI_SPINGNN_CONTEXT:?}" = build
 export PATH=/usr/bin:/bin LD_LIBRARY_PATH='' LD_PRELOAD=''
 source /etc/profile.d/lmod.sh
 module purge
@@ -17,16 +19,17 @@ test "${SLURM_JOB_PARTITION:?}" = "$SAI_SPINGNN_PARTITION"
 test "${MPI_HOME:?}" = "$SAI_SPINGNN_MPI"
 test ! -e "$prefix"
 mkdir -p "$(dirname "$prefix")"
-mkdir "$prefix" build acceptance
+mkdir "$prefix"
+mkdir -p build acceptance
 export PYTHONDONTWRITEBYTECODE=1
 export OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 OMP_PROC_BIND=close OMP_PLACES=cores
 export OMPI_MCA_plm_slurm_args=--external-launcher PRTE_MCA_plm_slurm_args=--external-launcher
 export OMPI_CC="$CC" OMPI_CXX="$CXX"
 export NVCC_WRAPPER_DEFAULT_COMPILER="$CXX" CXXFLAGS=-march=native
-/usr/bin/python3 "$control/spingnn_release.py" unpack "$run"
+export OMPI_ALLOW_RUN_AS_ROOT=1 OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+/usr/bin/python3 -c 'import sys; sys.path.insert(0,sys.argv[1]); from spingnn_inputs import unpack; unpack(sys.argv[2],sys.argv[3])' "$control" "$run" "$SAI_SPINGNN_SOURCE_SHA"
 src="$run/sources/spingnn2"
 /usr/bin/python3 "$control/spingnn_source.py" "$src" "$SAI_SPINGNN_CUDA_ARCH" > evidence/source-adaptation.json
-scontrol show job -o "$SLURM_JOB_ID" > evidence/allocation.txt
 module -t list > evidence/modules.txt 2>&1
 lscpu > evidence/lscpu.txt
 mpicxx --showme > evidence/mpi-wrapper.txt
@@ -43,11 +46,17 @@ fi
   --kokkos-source "$run/sources/kokkos-4.7.02" --json-source "$run/sources/json-3.11.3" \
   --cxx "$CXX" --cmake "$SPINGNN_CMAKE" "${native_opts[@]}" \
   --build-dir "$run/build/native" --install-prefix "$prefix" --jobs 2
+# Preserve site dependencies while using self-relative paths for owned ELF libs.
+"$SPINGNN_CMAKE" -S "$src/libspingnn2" -B "$run/build/native" \
+  -DCMAKE_INSTALL_RPATH="\$ORIGIN;$SPINGNN_GCC/lib64;${CUDA_HOME:-/nonexistent}/lib64;$SPINGNN_MKL/lib"
+"$SPINGNN_CMAKE" --build "$run/build/native" --parallel 2
+"$SPINGNN_CMAKE" --install "$run/build/native"
 # DSPRHBM's system Python has no ensurepip; the first install qualified this path.
 /usr/bin/python3 -m venv --without-pip "$prefix/venv"
-/usr/bin/python3 -m pip --python "$prefix/venv/bin/python" install --disable-pip-version-check \
-  -c "$control/spingnn_runtime.txt" \
-  --report "$run/evidence/runtime-pip-install.json" "$src[ase]" > evidence/runtime-pip.log 2>&1
+/usr/bin/python3 -m pip --python "$prefix/venv/bin/python" install --no-index --find-links "$run/sources/wheels" \
+  -r "$control/spingnn_runtime.txt" setuptools wheel > evidence/runtime-pip.log 2>&1
+/usr/bin/python3 -m pip --python "$prefix/venv/bin/python" install --no-index --no-deps --no-build-isolation \
+  --report "$run/evidence/runtime-pip-install.json" "$src[ase]" >> evidence/runtime-pip.log 2>&1
 /usr/bin/python3 -m pip --python "$prefix/venv/bin/python" freeze > evidence/runtime-pip-freeze.txt
 /usr/bin/python3 "$src/lammps_spingnn2/apply.py" --upstream "$run/sources/lammps-upstream" \
   --destination "$run/sources/lammps-overlay" > evidence/overlay-identity.txt
@@ -69,46 +78,19 @@ fi
   -DCMAKE_CXX_STANDARD=20 -DLAMMPS_MACHINE=spingnn2 \
   -DCMAKE_PREFIX_PATH="$prefix" -DMPI_CXX_COMPILER="$MPI_HOME/bin/mpicxx" \
   -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="$prefix" \
-  -DCMAKE_INSTALL_RPATH="$SPINGNN_GCC/lib64;$MPI_HOME/lib;${CUDA_HOME:-/nonexistent}/lib64" \
+  -DCMAKE_INSTALL_RPATH="\$ORIGIN/../lib;$SPINGNN_GCC/lib64;$MPI_HOME/lib;${CUDA_HOME:-/nonexistent}/lib64" \
   -DBUILD_SHARED_LIBS=OFF -DWITH_PNG=OFF -DWITH_JPEG=OFF -DWITH_FFMPEG=OFF \
   -DCMAKE_EXPORT_COMPILE_COMMANDS=ON "${lammps_opts[@]}"
 "$SPINGNN_CMAKE" --build "$run/build/lammps" --target lmp --parallel 4
 "$SPINGNN_CMAKE" --install "$run/build/lammps" --component spingnn2_runtime
 "$SPINGNN_EXPORT_PYTHON" -m venv --system-site-packages --without-pip "$run/export-env"
-/usr/bin/python3 -m pip --python "$run/export-env/bin/python" install --no-deps --no-build-isolation \
-  "$run/sources/T-e3nn-75334027fffc38f2268db8ab1eed281a18ffdbf2" torch-runstats==0.2.0 pytest \
+/usr/bin/python3 -m pip --python "$run/export-env/bin/python" install --no-index --find-links "$run/sources/wheels" \
+  --no-deps --no-build-isolation "$run/sources/T-e3nn-75334027fffc38f2268db8ab1eed281a18ffdbf2" torch-runstats==0.2.0 \
   > evidence/export-pip.log 2>&1
 # pytest's own dependencies are needed by the imported upstream test harness.
-/usr/bin/python3 -m pip --python "$run/export-env/bin/python" install pytest >> evidence/export-pip.log 2>&1
+/usr/bin/python3 -m pip --python "$run/export-env/bin/python" install --no-index --find-links "$run/sources/wheels" pytest >> evidence/export-pip.log 2>&1
 /usr/bin/python3 -m pip --python "$run/export-env/bin/python" freeze > evidence/export-pip-freeze.txt
 "$run/export-env/bin/python" "$control/spingnn_fixture.py" "$run" > evidence/fixture-export.log 2>&1
-# Test the actual versioned prefix through the same module that publication uses.
-module use "$run/input/modulefiles"
-module load "spingnn/$SAI_SPINGNN_MODULE"
-unset PYTHONPATH
-ldd "$prefix/bin/lmp_spingnn2" > evidence/lammps-ldd.txt
-ldd "$SPINGNN2_LIBRARY" > evidence/native-ldd.txt
-if grep -Eiq 'not found|libtorch|libc10' evidence/native-ldd.txt evidence/lammps-ldd.txt; then
-  echo 'unexpected or unresolved runtime dependency' >&2; exit 1
-fi
-if [[ $SAI_SPINGNN_BACKEND == cpu ]] && grep -Eiq 'libcuda|libcudart' evidence/native-ldd.txt evidence/lammps-ldd.txt; then
-  echo 'CUDA dependency in CPU runtime' >&2; exit 1
-fi
-cd "$run/acceptance"
-if [[ $SAI_SPINGNN_BACKEND == cuda ]]; then
-  cuobjdump --list-elf "$SPINGNN2_LIBRARY" > native-cubins.txt
-  cuobjdump --list-elf "$prefix/bin/lmp_spingnn2" > lammps-cubins.txt
-  nsys profile --trace=cuda,nvtx --sample=none --cpuctxsw=none --output=cuda-trace \
-    python "$control/spingnn_science.py" > "$run/evidence/science.log" 2>&1
-  nsys stats --report cuda_gpu_kern_sum,cuda_api_sum --format csv cuda-trace.nsys-rep > cuda-kernels.csv 2>nsys-stats.log
-  cuobjdump --list-elf kernel-*.cubin > jit-cubin.txt
-else
-  python "$control/spingnn_science.py" > "$run/evidence/science.log" 2>&1
-fi
-cd "$run"
-module unload "spingnn/$SAI_SPINGNN_MODULE"
-test -z "${SPINGNN2_ROOT:-}" && test -z "${SPINGNN2_LIBRARY:-}"
-printf 'passed\n' > evidence/module-unload.txt
 # Carry the exact sources/overlay, build recipe and notices with each delivery.
 mkdir -p "$prefix/share/source" "$prefix/share/doc/spingnn2"
 cp "$run"/input/*.tar.gz "$control/spingnn_runtime.txt" "$control/spingnn_build.sh" \
@@ -118,4 +100,4 @@ tar --exclude=.git -czf "$prefix/share/source/lammps-spingnn2-corresponding-sour
   -C "$run/sources/lammps-overlay" .
 cp "$run/sources/lammps-overlay/LICENSE" "$prefix/share/doc/spingnn2/LAMMPS-LICENSE"
 cp -a "$src/LICENSES" "$src/LICENSES.md" "$prefix/share/doc/spingnn2/"
-/usr/bin/python3 "$control/spingnn_release.py" seal "$run"
+/usr/bin/python3 "$control/spingnn_package.py" "$run" "$run/input/delivery.json"

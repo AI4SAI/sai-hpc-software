@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Daily relay transport for the SpinGNN native release controller."""
+"""Daily relay transport for container-built SpinGNN and its native export."""
 import json
 import os
 from pathlib import Path
@@ -12,7 +12,7 @@ from relay_checkpoint import Checkpoint, Pending, entry, remote as remote_call
 from remote_controller import safe_name, safe_sha
 from source_cache import checksum
 from spingnn_inputs import prepare
-from spingnn_release import CONTROL, FILES, ROOT, bootstrap, delivery
+from spingnn_release import CONTROL, FILES, ROOT, delivery
 
 
 def main():
@@ -68,17 +68,14 @@ def main():
     if not claim['build']:
         print('SPINGNN_RELEASE_ALREADY_ATTEMPTED', json.dumps(claim['skipped']), flush=True)
         return
-    if bootstrap(value['identity']) is not None:
-        result = json.loads(python('spingnn_release.py', 'adopt', run_id, payload, capture_output=True).stdout)
-    else:
-        if not relay.data.get('inputs_ready'):
-            archives = prepare(temporary / 'spingnn-inputs', source)
-            stage_archives(python, upload, ROOT, directory / 'input', archives)
-            relay.set('inputs_ready', True)
-        relay.submitted(ssh, str(directory), dict(delivery=value, controller=str(snapshot)),
-                        lambda: python('spingnn_release.py', 'submit', run_id, payload))
-        relay.wait(ssh, str(directory))
-        result = json.loads(python('spingnn_release.py', 'publish', run_id, capture_output=True).stdout)
+    if not relay.data.get('inputs_ready'):
+        archives = prepare(temporary / 'spingnn-inputs', source)
+        stage_archives(python, upload, ROOT, directory / 'input', archives)
+        relay.set('inputs_ready', True)
+    relay.submitted(ssh, str(directory), dict(delivery=value, controller=str(snapshot)),
+                    lambda: python('spingnn_release.py', 'submit', run_id, payload))
+    relay.wait(ssh, str(directory))
+    result = json.loads(python('spingnn_release.py', 'publish', run_id, capture_output=True).stdout)
     if result.get('published') is not True:
         raise ValueError('SpinGNN release did not pass publication gates')
     (results / 'publication.json').write_text(json.dumps(result, indent=2) + '\n')

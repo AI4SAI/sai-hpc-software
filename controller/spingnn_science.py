@@ -72,6 +72,10 @@ for variant in ('baseline','rotated'):
     (work/'in.spin').write_text(inp)
     cmd=['mpirun','-np','1','--map-by',f'ppr:1:node:pe={threads}','--bind-to','core',str(binary),
          '-log','log.lammps','-in','in.spin']
+    if os.environ.get('SAI_SPINGNN_CONTEXT') == 'container':
+        # This is a one-rank test within the recorded Slurm allocation; do not
+        # request another allocation from an isolated container namespace.
+        cmd[1:1] = ['--mca', 'plm', 'isolated']
     if backend=='cuda': cmd += ['-k','on','g','1','t',str(threads),'-sf','kk','-pk','kokkos','gpu/aware','off','neigh','half']
     start=time.perf_counter()
     proc=subprocess.run(cmd,cwd=work,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
@@ -100,6 +104,8 @@ response=rows[1]['energy_ev']-rows[0]['energy_ev']
 expected_response=rows[1]['reference_energy_ev']-rows[0]['reference_energy_ev']
 assert abs(response)>1e-8 and abs(response-expected_response)<2e-11
 result=dict(passed=True,backend=backend,partition=os.environ.get('SLURM_JOB_PARTITION'),job_id=os.environ.get('SLURM_JOB_ID'),host=os.uname().nodename,
+    execution_context=os.environ.get('SAI_SPINGNN_CONTEXT'),container=os.environ.get('APPTAINER_CONTAINER'),
+    mount_namespace=os.readlink('/proc/self/ns/mnt'),user_namespace=os.readlink('/proc/self/ns/user'),
     affinity=sorted(os.sched_getaffinity(0)),python=sys.executable,spingnn2_file=spingnn2.__file__,
     version=spingnn2.__version__,torch_imported=False,rows=rows,spin_rotation_energy_change_ev=response,
     tolerances=dict(native_fp64=1e-10,lammps_fp64=1e-11),

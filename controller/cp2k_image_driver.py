@@ -103,7 +103,7 @@ def validate_receipt(project, record):
 def prepare(project, run):
     app, site_config = runtime_paths()
     project, run = canonical(project), canonical(run)
-    if run.parent != project / 'runs':
+    if run.parent not in (project / 'runs', project / 'experimental/spingnn2-release/sif/runs'):
         raise ValueError('image driver run escaped the project')
     for directory in (run / 'runtime', run / 'results'):
         if not canonical(directory).is_dir():

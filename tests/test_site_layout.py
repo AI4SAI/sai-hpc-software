@@ -32,7 +32,7 @@ class SiteLayoutTests(unittest.TestCase):
     def test_all_targets_are_flat_version_siblings_with_partition_children(self):
         for software, profile in SOFTWARE.items():
             if software == 'spingnn2':
-                continue  # Explicit home-native contract has its own publication tests.
+                continue  # SpinGNN concrete-version SIF layout has its own tests.
             for track in TRACKS:
                 for target in profile["targets"]:
                     row = identity(software, target, track)
@@ -64,7 +64,7 @@ class SiteLayoutTests(unittest.TestCase):
     def test_exact_site_binds_never_mask_any_new_installation(self):
         for software, profile in SOFTWARE.items():
             if software == 'spingnn2':
-                continue  # Native host recipe does not create a container dependency bind.
+                continue  # SpinGNN container binds are covered by test_spingnn_sif.
             binds = site_app_binds(software)
             command = container_command("/tmp/base.sif", ["/bin/true"], extra_binds=binds)
             self.assertNotIn("/opt/apps:/opt/apps:ro", command)

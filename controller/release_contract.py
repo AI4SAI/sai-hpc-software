@@ -257,7 +257,7 @@ def make_identity(software, track, source_ref, source_sha, source_version,
 
 def _make_identity(software, track, source_ref, source_sha, source_version,
                    recipe_sha256, target, stack_sources=None, *, hardware,
-                   layout_schema=SCHEMA, installation_run=None):
+                   layout_schema=SCHEMA, installation_run=None, historical_spingnn=False):
     if type(layout_schema) is not int or layout_schema not in (1, SCHEMA):
         raise ValueError("unsupported installation layout schema")
     profile = _software(software)
@@ -279,7 +279,7 @@ def _make_identity(software, track, source_ref, source_sha, source_version,
               if layout_schema == 1 else
               f"/opt/apps/{software}/{APP_STEMS.get(software, software)}-{track}-{build_id}/{partition}")
     if installation_run is not None and software != 'spingnn2':
-        raise ValueError('installation_run is only supported for SpinGNN native releases')
+        raise ValueError('installation_run is only supported for SpinGNN releases')
     if software == 'spingnn2':
         if layout_schema != SCHEMA:
             raise ValueError('SpinGNN has no legacy installation layout')
@@ -287,6 +287,9 @@ def _make_identity(software, track, source_ref, source_sha, source_version,
         if installation_run is not None:
             safe_name(installation_run)
         prefix = native_prefix(label, source_sha, recipe_sha256, partition, installation_run)
+        if historical_spingnn:
+            root = Path('/home/stardust/spingnn/versions') / label / source_sha / recipe_sha256
+            prefix = str(root / installation_run / partition if installation_run else root / partition)
     result = {
         "schema": layout_schema, "software": software, "track": track,
         "repository": profile["repository"], "source_ref": source_ref,
@@ -317,10 +320,13 @@ def _validate_historical_identity(record):
     # Read-only provenance: retired CPU-MISC attempts must not poison the
     # shared history scan for supported targets. Never use this for a new
     # claim, resume, submission, adoption or publication.
-    if isinstance(record, dict) and (record.get('software'), record.get('target')) == ('spingnn2', 'cpu-misc'):
+    if isinstance(record, dict) and record.get('software') == 'spingnn2' and (
+            record.get('target') == 'cpu-misc' or
+            str(record.get('install_prefix', '')).startswith('/home/stardust/spingnn/versions/')):
         def historical(**fields):
-            return _make_identity(**fields, hardware=dict(partition='CPU-MISC', gpus=0,
-                                  cuda_arch='', cpu_arch='native', dependency_isa='avx512'))
+            hardware = (dict(partition='CPU-MISC', gpus=0, cuda_arch='', cpu_arch='native', dependency_isa='avx512')
+                        if fields['target'] == 'cpu-misc' else target_profile('spingnn2', fields['target']))
+            return _make_identity(**fields, hardware=hardware, historical_spingnn=True)
         return _validate_identity(record, historical)
     return validate_identity(record)
 

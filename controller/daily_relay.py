@@ -143,6 +143,9 @@ def current_task_policy(task, control=None):
             if 'cpu-misc' in frozen['targets']:
                 raise ValueError('frozen SpinGNN controller can republish CPU-MISC; '
                                  'start a new generation with the current controller')
+            if frozen.get('delivery_format') != 'sif-native-v1':
+                raise ValueError('frozen SpinGNN controller cannot qualify SIF deliveries; '
+                                 'start a new generation with the current controller')
 
 
 def block_ineligible_tasks(generation, control=None):

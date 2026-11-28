@@ -15,6 +15,7 @@ def feature_summary(software):
     gates. Optional external plugins and unaccepted scaling are not implied.
     """
     return {
+        'spingnn2': 'native FP64 spin inference; Python/ASE; LAMMPS SPIN; CPU/OpenMP or V100/SM70 CUDA; single rank and single GPU qualified',
         'abacus': 'MPI/OpenMP; PW/LCAO; HSE (LibRI); DeePKS (LibTorch); NEP; LibXC; ELPA; CUDA on GPU partitions',
         'cp2k': 'MPI/OpenMP; DBCSR; ELPA; LibXC/Libint2; PLUMED; DFT-D4/TBLITE; HDF5; CUDA on GPU partitions',
         'lammps': 'MPI/OpenMP; GPU package + KOKKOS CUDA (V100/SM70); DeePMD; PLUMED; Python; REAXFF; ML-IAP/ML-SNAP',
