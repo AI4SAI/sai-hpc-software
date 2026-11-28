@@ -13,8 +13,14 @@ from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'controller'))
 from daily_relay import make_plan
-from release_contract import PARTITIONS, SOFTWARE, TRACKS, claim_build, make_identity, resolve_tracks
+from release_contract import PARTITIONS, SOFTWARE, TRACKS, claim_build, make_identity, resolve_tracks, validate_identity
 import spingnn_release as native
+
+
+def retired_cpu_misc():
+    # Canonical identity captured from the controller before qualification
+    # was withdrawn; do not regenerate it with the current allowlist.
+    return json.loads((Path(__file__).parent / 'fixtures/spingnn-retired-cpu-misc.json').read_text())
 
 
 class SpinGNNReleaseTests(unittest.TestCase):
@@ -73,14 +79,69 @@ class SpinGNNReleaseTests(unittest.TestCase):
     def test_extra_partitions_are_only_selected_for_spingnn_and_qualified_individually(self):
         settings = self.cpu_only()
         settings['targets']['4v100-avx512']['enabled'] = True
-        settings['targets']['cpu-misc']['enabled'] = True
+        settings['targets']['8a100m40'].update(enabled=True, mpi_prefix='/opt/devtools/openmpi/test')
         with patch('spingnn_config.site', return_value=settings):
             tasks = make_plan('spingnn2', 'release', 'all', self.sources)['tasks']
-        self.assertEqual({row['source']['target'] for row in tasks}, {'dsprhbm', '4v100-avx512', 'cpu-misc'})
+        self.assertEqual({row['source']['target'] for row in tasks}, {'dsprhbm', '4v100-avx512', '8a100m40'})
         self.assertEqual(tuple(PARTITIONS), ('dsprhbm', '4v100-avx512', '16v100-avx2', '8v100v0-avx512'))
         for software in ('qe', 'abacus', 'cp2k', 'gpumd', 'deepmd-kit', 'lammps'):
             with self.subTest(software=software), self.assertRaisesRegex(ValueError, 'no selected software'):
-                make_plan(software, 'release', 'cpu-misc', self.sources)
+                make_plan(software, 'release', '8a100m40', self.sources)
+
+    def test_cpu_misc_is_not_selectable_or_qualified(self):
+        for software in ('spingnn2', 'all'):
+            for targets in ('cpu-misc', 'CPU-MISC', 'dsprhbm,cpu-misc'):
+                resolver = Mock()
+                with self.subTest(software=software, targets=targets), self.assertRaises(ValueError):
+                    make_plan(software, 'release', targets, resolver)
+                resolver.assert_not_called()
+        tasks = make_plan('spingnn2', 'release', 'all', self.sources)['tasks']
+        self.assertEqual({row['source']['target'] for row in tasks}, set(PARTITIONS))
+        self.assertNotIn('cpu-misc', native.site()['targets'])
+        self.assertEqual(set(native.read(native.CONTROL / 'spingnn_bootstrap.json')), set(PARTITIONS))
+        with self.assertRaises(ValueError):
+            self.identity(target='cpu-misc')
+
+    def test_retired_history_does_not_block_supported_claims_or_allow_resume(self):
+        retired = retired_cpu_misc()
+        for legacy in (False, True):
+            with self.subTest(legacy=legacy), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary).resolve()
+                directory = root / 'runs/retired-cpu-misc'
+                directory.mkdir(parents=True)
+                path = directory / ('request.json' if legacy else 'input/build-attempt.json')
+                path.parent.mkdir(exist_ok=True)
+                record = (dict(delivery=dict(schema=1, identity=retired)) if legacy else
+                          dict(schema=1, run_id=directory.name, retry=False, build=True,
+                               identities=[retired], skipped=[],
+                               meaning='build attempt only; no artifact or acceptance claim'))
+                path.write_text(json.dumps(record))
+                original = path.read_bytes()
+                with self.assertRaises(ValueError):
+                    validate_identity(retired)
+                for retry in (False, True):
+                    for resume in (False, True):
+                        with self.subTest(retry=retry, resume=resume), self.assertRaises(ValueError):
+                            claim_build(root, [retired], directory.name, retry=retry, resume=resume)
+                for index, identity in enumerate((self.identity(), make_identity(
+                        'cp2k', 'release', 'v1', 'a' * 40, 'v1', 'b' * 64, 'dsprhbm'))):
+                    first = claim_build(root, [identity], 'supported-' + str(index))
+                    self.assertTrue(first['build'])
+                    repeated = claim_build(root, [identity], 'again-' + str(index))
+                    self.assertFalse(repeated['build'])
+                self.assertEqual(path.read_bytes(), original)
+
+    def test_retired_history_still_rejects_corrupt_identity(self):
+        for changes in (dict(install_prefix='/unreviewed/CPU-MISC'), dict(cpu_arch='other'),
+                        dict(gpus=1), dict(software='cp2k')):
+            with self.subTest(changes=changes), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary).resolve()
+                path = root / 'runs/retired/request.json'
+                path.parent.mkdir(parents=True)
+                path.write_text(json.dumps(dict(identity=dict(retired_cpu_misc(), **changes))))
+                with self.assertRaises(ValueError):
+                    claim_build(root, [self.identity()], 'supported')
+                self.assertFalse((root / 'runs/supported/input/build-attempt.json').exists())
 
     def test_release_absence_skips_and_network_error_does_not_fallback(self):
         resolver = Mock(side_effect=ValueError('no latest-release available'))
@@ -123,6 +184,82 @@ class NativeLifecycleTests(unittest.TestCase):
         self.source = dict(software='spingnn2', repository='Hyyu-Lab/SpinGNN', track='release',
                            requested_ref='latest-release', status='resolved', source_ref='v2.0.1',
                            source_version='v2.0.1', source_sha='c' * 40, target='dsprhbm')
+
+    def test_retired_request_cannot_submit_adopt_seal_publish_or_generate_modules(self):
+        identity = retired_cpu_misc()
+        run_id = identity['installation_run']
+        value = dict(schema=1, identity=identity)
+        directory = self.root / 'runs' / run_id
+        directory.mkdir(parents=True)
+        request = directory / 'request.json'
+        request.write_text(json.dumps(dict(delivery=value, origin='first-install', job_id='2948955')))
+        original = request.read_bytes()
+        with patch.object(native, 'ROOT', self.root), patch.object(native, 'check_access', return_value=True), \
+                patch.object(native.subprocess, 'run') as run, \
+                patch.object(native.subprocess, 'check_output') as output, \
+                patch.object(native, 'immutable') as write, patch.object(native, 'inventory') as inventory:
+            operations = [lambda: native.delivery(dict(self.source, target='cpu-misc'), run_id),
+                          lambda: native.claim(run_id, value), lambda: native.claim(run_id, value, retry=True),
+                          lambda: native.render(run_id, value), lambda: native.submit(run_id, value),
+                          lambda: native.adopt(run_id, value), lambda: native.seal(directory),
+                          lambda: native.publish(run_id), lambda: native.bootstrap(identity),
+                          lambda: native.verify_bootstrap({}, identity),
+                          lambda: native.module_text(identity, self.root),
+                          lambda: native.site_script(identity, run_id)]
+            for index, operation in enumerate(operations):
+                with self.subTest(operation=index), self.assertRaises(ValueError):
+                    operation()
+            for operation in (run, output, write, inventory):
+                operation.assert_not_called()
+        self.assertEqual(request.read_bytes(), original)
+        self.assertFalse((self.root / 'modulefiles').exists())
+
+    def test_selector_ignores_retired_qualification_and_old_pointer(self):
+        settings = copy.deepcopy(native.site())
+        settings['root'] = str(self.root)
+        # An old config/pointer cannot re-enable the removed production target.
+        settings['targets']['cpu-misc'] = dict(settings['targets']['dsprhbm'], partition='CPU-MISC')
+        pointer = self.root / 'release-targets/cpu-misc/current'
+        pointer.parent.mkdir(parents=True)
+        pointer.write_text('old-accepted.lua\n')
+        with patch.object(native, 'site', return_value=settings), patch('spingnn_config.site', return_value=settings):
+            text = native.selector_text()
+            self.assertNotIn('CPU-MISC', text)
+            self.assertNotIn('cpu-misc', text)
+            for partition in PARTITIONS.values():
+                self.assertIn('[' + json.dumps(partition) + ']', text)
+            self.assertNotIn('8A100M40', text)
+            self.assertNotIn('8A100M80', text)
+            with self.assertRaises(ValueError):
+                native.module_text(retired_cpu_misc(), self.root)
+        self.assertEqual(pointer.read_text(), 'old-accepted.lua\n')
+
+    def test_archived_bootstrap_evidence_stays_pinned_inside_project_runs(self):
+        directory = self.root / 'runs/original'
+        archive = self.root / 'runs/withdrawal/before/build.sbatch'
+        directory.mkdir(parents=True)
+        archive.parent.mkdir(parents=True)
+        archive.write_text('original build entry\n')
+        identity = native.delivery(self.source, 'one')['identity']
+        boot = dict(directory=str(directory), prefix=str(self.root / 'prefix'), job_id='123',
+                    workdir=str(directory), account='project', files={str(archive): native.checksum(archive)},
+                    inventory_sha256=hashlib.sha256(b'{}').hexdigest())
+        with patch.object(native, 'PROJECT', self.root), \
+                patch.object(native, 'site', return_value=dict(native.site(), root=str(self.root))), \
+                patch.object(native, 'inventory', return_value={}), patch.object(native, 'accounting'), \
+                patch.object(native, 'science'):
+            native.verify_bootstrap(boot, identity)
+            archive.write_text('changed original entry\n')
+            with self.assertRaisesRegex(ValueError, 'changed first-install evidence'):
+                native.verify_bootstrap(boot, identity)
+            outside = self.root / 'outside-runs'
+            outside.write_text('original build entry\n')
+            with self.assertRaisesRegex(ValueError, 'escaped project runs'):
+                native.verify_bootstrap(dict(boot, files={str(outside): native.checksum(outside)}), identity)
+            redirected = directory / 'redirect'
+            redirected.symlink_to(outside)
+            with self.assertRaisesRegex(ValueError, 'redirected'):
+                native.verify_bootstrap(dict(boot, files={str(redirected): native.checksum(outside)}), identity)
 
     def test_partial_write_never_publishes_and_retry_preserves_existing_bytes(self):
         path = self.root / 'receipt.json'

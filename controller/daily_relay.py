@@ -130,7 +130,28 @@ def enqueue(root, args):
     return path
 
 
+def current_task_policy(task):
+    # Recovery executes the original snapshot. Apply current SpinGNN target
+    # eligibility before allowing that snapshot to schedule or publish.
+    if task['software'] == 'spingnn2':
+        from spingnn_config import target_policy
+        policy = target_policy(task['source']['target'])
+        if not policy['enabled']:
+            raise ValueError(policy['reason'])
+
+
+def block_ineligible_tasks(generation):
+    for task in generation['tasks']:
+        if task['state'] in TERMINAL:
+            continue
+        try:
+            current_task_policy(task)
+        except ValueError as error:
+            task.update(state='blocked', reason=str(error))
+
+
 def task_environment(generation, task, directory, key):
+    current_task_policy(task)
     env = dict(os.environ, GITHUB_RUN_ID=generation['workflow'], GITHUB_RUN_ATTEMPT=generation['attempt'],
                GITHUB_SHA=generation['controller'], REMOTE_USER=generation['user'],
                RUNNER_TEMP=str(directory), SAI_RELAY_TASK=str(directory / 'checkpoint.json'),
@@ -205,6 +226,7 @@ def advance(path, task, generation, key, run=subprocess.run):
 
 
 def ready_tasks(generation, checkpoints, waiting):
+    block_ineligible_tasks(generation)
     states = {task['id']: task['state'] for task in generation['tasks']}
     for task in generation['tasks']:
         if task['state'] in TERMINAL:
@@ -244,7 +266,8 @@ def report(paths, summary):
             checkpoint = path.parent / 'tasks' / task['id'] / 'checkpoint.json'
             data = read(checkpoint) if checkpoint.exists() else {}
             jobs = ', '.join(row['job'] for row in data.get('pending', []))
-            lines.append(f'| {generation["workflow"]} | {task["id"]} | {task["state"]} | {jobs} |')
+            state = task['state'] + (': ' + task['reason'] if task.get('reason') else '')
+            lines.append(f'| {generation["workflow"]} | {task["id"]} | {state} | {jobs} |')
     lines += ['', 'Waiting means observation deferred, not an accepted build. Frozen requests and Slurm jobs are retained.',
               'Full build/scientific evidence remains under `/org/org-open-sai/proj-sai-hpc-software`; the relay retains metadata and controller logs.']
     summary.write_text('\n'.join(lines) + '\n')
@@ -296,6 +319,9 @@ def main():
                 if path not in verified:
                     verify_snapshot(path.parent / 'checkout', generation['pins'])
                     verified.add(path)
+                # Block revoked targets before inspecting pending/held jobs,
+                # not only when their frozen subprocess becomes runnable.
+                block_ineligible_tasks(generation)
                 checkpoints = {}
                 for task in generation['tasks']:
                     saved = path.parent / 'tasks' / task['id'] / 'checkpoint.json'

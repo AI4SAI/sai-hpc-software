@@ -47,7 +47,7 @@ SOFTWARE = {
                "targets": GPU_TARGETS},
     "spingnn2": {"repository": "Hyyu-Lab/SpinGNN", "development_ref": None,
                  "tracks": ("release",),
-                 "targets": (*PARTITIONS, "cpu-misc", "8a100m40", "8a100m80")},
+                 "targets": (*PARTITIONS, "8a100m40", "8a100m80")},
 }
 STACK_SOFTWARE = frozenset(("deepmd-kit", "lammps"))
 MAX_VERSION_LABEL = 64
@@ -133,7 +133,7 @@ def claim_build(root, identities, run_id, *, retry=False, resume=False):
                 else:
                     continue  # Pre-identity requests cannot identify a release.
                 for source in sources:
-                    source = validate_identity(source)
+                    source = _validate_historical_identity(source)
                     prior[tuple(source[key] for key in fields)] = task.name
         selected, skipped = [], []
         for identity in identities:
@@ -249,6 +249,15 @@ def make_identity(software, track, source_ref, source_sha, source_version,
     component is the real Slurm partition. ``stack_sources``, when supplied,
     maps both ``deepmd-kit`` and ``lammps`` to their full 40-digit commits.
     """
+    return _make_identity(software, track, source_ref, source_sha, source_version,
+                          recipe_sha256, target, stack_sources,
+                          hardware=target_profile(software, target), layout_schema=layout_schema,
+                          installation_run=installation_run)
+
+
+def _make_identity(software, track, source_ref, source_sha, source_version,
+                   recipe_sha256, target, stack_sources=None, *, hardware,
+                   layout_schema=SCHEMA, installation_run=None):
     if type(layout_schema) is not int or layout_schema not in (1, SCHEMA):
         raise ValueError("unsupported installation layout schema")
     profile = _software(software)
@@ -258,9 +267,6 @@ def make_identity(software, track, source_ref, source_sha, source_version,
     _source_ref(source_ref)
     _sha(source_sha, 40, "source_sha")
     _sha(recipe_sha256, 64, "recipe_sha256")
-    if not isinstance(target, str) or target not in profile["targets"]:
-        raise ValueError("target is not registered for this software")
-    hardware = target_profile(software, target)
     partition = hardware['partition']
     label = _version_label(source_version)
     stack, stack_digest = _stack(software, source_sha, stack_sources)
@@ -304,10 +310,26 @@ def validate_identity(record):
     This checks internal identity consistency, not scientific acceptance or an
     external signature. Return a fresh canonical record on success.
     """
+    return _validate_identity(record, make_identity)
+
+
+def _validate_historical_identity(record):
+    # Read-only provenance: retired CPU-MISC attempts must not poison the
+    # shared history scan for supported targets. Never use this for a new
+    # claim, resume, submission, adoption or publication.
+    if isinstance(record, dict) and (record.get('software'), record.get('target')) == ('spingnn2', 'cpu-misc'):
+        def historical(**fields):
+            return _make_identity(**fields, hardware=dict(partition='CPU-MISC', gpus=0,
+                                  cuda_arch='', cpu_arch='native', dependency_isa='avx512'))
+        return _validate_identity(record, historical)
+    return validate_identity(record)
+
+
+def _validate_identity(record, builder):
     if not isinstance(record, dict):
         raise ValueError("identity must be a versioned object")
     try:
-        expected = make_identity(layout_schema=record["schema"], installation_run=record.get('installation_run'),
+        expected = builder(layout_schema=record["schema"], installation_run=record.get('installation_run'),
                                 **{name: record[name] for name in (
             "software", "track", "source_ref", "source_sha", "source_version",
             "recipe_sha256", "target", "stack_sources")})

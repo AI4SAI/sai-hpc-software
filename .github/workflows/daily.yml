@@ -20,7 +20,7 @@ on:
         description: Channels; development always builds, unchanged releases skip
         default: development,prerelease,release
       targets:
-        description: Native targets or all; SpinGNN also registers cpu-misc,8a100m40,8a100m80 (qualification gated)
+        description: Native targets or all; SpinGNN also registers 8a100m40,8a100m80 (qualification gated)
         default: all
       retry_releases:
         description: Explicitly retry the selected release/prerelease versions

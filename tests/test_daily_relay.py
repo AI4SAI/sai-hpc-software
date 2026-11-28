@@ -206,6 +206,44 @@ class RelayTests(unittest.TestCase):
         self.assertNotIn('RESUME_RUN', env)
         self.assertNotIn('CI_PHASE', env)
 
+    def test_resume_blocks_retired_spingnn_before_polling_or_running_frozen_controller(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            path = root / '100/plan.json'
+            path.parent.mkdir()
+            retired = dict(id='spingnn2-release-cpu-misc', kind='build', software='spingnn2',
+                           source=dict(software='spingnn2', target='cpu-misc'), state='waiting')
+            supported = relay.make_plan('spingnn2', 'release', 'dsprhbm', self.sources)['tasks'][0]
+            unrelated = relay.make_plan('gpumd', 'release', '16v100-avx2', self.sources)['tasks'][0]
+            generation = dict(workflow='100', attempt='1', controller='a' * 40, user='cluster',
+                              retry_releases=True, state='active', pins={}, tasks=[retired, supported, unrelated])
+            path.write_text(json.dumps(generation))
+            saved = path.parent / 'tasks' / retired['id'] / 'checkpoint.json'
+            saved.parent.mkdir(parents=True)
+            saved.write_text(json.dumps(dict(pending=[dict(job='123', directory='/old/retired')])))
+            original = saved.read_bytes()
+            def succeed(path, task, generation, key):
+                task['state'] = 'succeeded'
+            with patch.dict(os.environ, SAI_RELAY_ROOT=str(root), RUNNER_TEMP=str(root),
+                            REMOTE_USER='cluster', GITHUB_STEP_SUMMARY=str(root / 'summary.md')), \
+                    patch.object(sys, 'argv', ['daily_relay.py', '--mode', 'resume']), \
+                    patch.object(relay, 'connection'), patch.object(relay, 'remote') as remote, \
+                    patch.object(relay, 'advance', side_effect=succeed) as advance:
+                with self.assertRaisesRegex(SystemExit, 'One or more deliveries failed'):
+                    relay.main()
+                remote.assert_not_called()  # Do not release or poll the retired held allocation.
+                self.assertEqual([call.args[1]['id'] for call in advance.call_args_list],
+                                 [supported['id'], unrelated['id']])
+            result = relay.read(path)
+            self.assertEqual([task['state'] for task in result['tasks']], ['blocked', 'succeeded', 'succeeded'])
+            self.assertIn('CPU-MISC', result['tasks'][0]['reason'])
+            self.assertEqual(saved.read_bytes(), original)
+            self.assertIn('CPU-MISC is excluded', (root / 'summary.md').read_text())
+            run = Mock()
+            with self.assertRaisesRegex(ValueError, 'CPU-MISC is excluded'):
+                relay.advance(path, retired, generation, root / 'key', run=run)
+            run.assert_not_called()
+
     def test_failed_child_is_failed_and_pending_is_not_acceptance(self):
         for code, expected in ((0, 'succeeded'), (75, 'waiting'), (76, 'waiting'), (1, 'failed')):
             with self.subTest(code=code), tempfile.TemporaryDirectory() as temporary:

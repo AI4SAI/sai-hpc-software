@@ -10,8 +10,7 @@ def hardware(target):
     if target in ('dsprhbm', '4v100-avx512', '16v100-avx2', '8v100v0-avx512'):
         return TARGETS[target]
     if target == 'cpu-misc':
-        return dict(partition='CPU-MISC', qos='rush-cpu', gpus=0, cuda_arch='',
-                    cpu_arch='native', dependency_isa='avx512')
+        raise ValueError('CPU-MISC is excluded from SpinGNN production use')
     if target in ('8a100m40', '8a100m80'):
         return dict(partition={'8a100m40': '8A100M40', '8a100m80': '8A100M80'}[target],
                     qos='rush-1o2gpu', gpus=1, cuda_arch='80',
@@ -36,11 +35,11 @@ def prefix(label, sha, recipe, partition, run=None):
 
 
 def target_policy(target):
+    profile = hardware(target)
     settings = site()
     if target not in settings['targets']:
         raise ValueError('unregistered SpinGNN target')
     record = settings['targets'][target]
-    profile = hardware(target)
     if (type(record['enabled']) is not bool or record['backend'] != ('cuda' if profile['gpus'] else 'cpu')
             or record['partition'] != profile['partition']
             or (record['enabled'] and not record.get('mpi_prefix', '').startswith('/opt/devtools/openmpi/'))

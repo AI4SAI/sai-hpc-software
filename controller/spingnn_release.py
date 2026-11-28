@@ -16,7 +16,7 @@ import tempfile
 import time
 import uuid
 
-from release_contract import claim_build, make_identity, validate_identity
+from release_contract import SOFTWARE, claim_build, make_identity, validate_identity
 from remote_controller import SAI_PROJECT_ROOT, project_batch_directives, project_qos, safe_name
 from relay_checkpoint import Pending, entry, inspect_submission
 from source_cache import checksum
@@ -103,13 +103,19 @@ def delivery(source, run_id):
 def validate_delivery(value, run_id):
     require(set(value) == {'schema', 'identity'} and type(value['schema']) is int and value['schema'] == 1,
             'invalid SpinGNN delivery schema')
-    identity = validate_identity(value['identity'])
-    require(identity['software'] == 'spingnn2' and identity['recipe_sha256'] == fingerprint()
+    identity = qualified_identity(value['identity'])
+    require(identity['recipe_sha256'] == fingerprint()
             and identity.get('installation_run') == run_id, 'changed SpinGNN controller or request')
+    return value
+
+
+def qualified_identity(value):
+    identity = validate_identity(value)
+    require(identity['software'] == 'spingnn2', 'not a SpinGNN identity')
     policy = target_policy(identity['target'])
     require(policy['enabled'],
             'no qualified build/acceptance implementation for this SpinGNN target')
-    return value
+    return identity
 
 
 def task(run_id):
@@ -139,6 +145,7 @@ def public_directory(path):
 
 
 def bootstrap(identity):
+    identity = qualified_identity(identity)
     record = read(CONTROL / 'spingnn_bootstrap.json').get(identity['target'])
     if record is None:
         return None
@@ -171,6 +178,7 @@ def module_name(identity, run_id):
 
 
 def module_text(identity, prefix):
+    identity = qualified_identity(identity)
     settings = site()
     policy = target_policy(identity['target'])
     prefix = str(plain(prefix))
@@ -202,8 +210,8 @@ def selector_text():
     modules = root / 'modulefiles' / settings['module_family']
     lines = ['local base = ' + literal(modules), 'local pointers = ' + literal(root / 'release-targets'),
              'local targets = {']
-    lines += ['  [' + literal(row['partition']) + '] = ' + literal(target) + ','
-              for target, row in settings['targets'].items()]
+    lines += ['  [' + literal(target_policy(target)['partition']) + '] = ' + literal(target) + ','
+              for target in SOFTWARE['spingnn2']['targets'] if target_policy(target)['enabled']]
     lines += ['}', 'local selected', 'if mode() == "unload" then',
               '  selected = os.getenv("SAI_SPINGNN_RELEASE_FRAGMENT")',
               '  local permitted = false',
@@ -243,6 +251,7 @@ def atomic_text(path, text):
 
 
 def site_script(identity, run_id):
+    identity = qualified_identity(identity)
     settings = site()
     policy = target_policy(identity['target'])
     values = dict(CC=settings['gcc'] + '/bin/gcc', CXX=settings['gcc'] + '/bin/g++',
@@ -471,11 +480,16 @@ def verified(run_id):
 
 
 def verify_bootstrap(boot, identity):
+    identity = qualified_identity(identity)
     directory = plain(boot['directory'])
     require(directory.is_relative_to(PROJECT / 'runs') and plain(boot['prefix']).is_relative_to(site()['root']),
             'bootstrap escaped the reviewed project/deployment roots')
     for name, digest in boot['files'].items():
-        require(checksum(plain(directory / name)) == digest, 'changed first-install evidence: ' + name)
+        # Retired build entry points can live in the deployment's preserved
+        # before/ snapshot; absolute evidence paths must stay in project runs.
+        path = plain(directory / name)
+        require(path.is_relative_to(PROJECT / 'runs'), 'bootstrap evidence escaped project runs')
+        require(checksum(path) == digest, 'changed first-install evidence: ' + name)
     require(hashlib.sha256(json.dumps(inventory(boot['prefix']), sort_keys=True).encode()).hexdigest()
             == boot['inventory_sha256'], 'first-install runtime changed after qualification')
     accounting(boot['job_id'], boot['workdir'], boot['account'], identity['partition'])
@@ -561,7 +575,8 @@ def main():
     elif args.operation == 'unpack':
         from spingnn_inputs import unpack
         directory = plain(args.run)
-        result = unpack(directory, read(directory / 'request.json')['delivery']['identity']['source_sha'])
+        value = validate_delivery(read(directory / 'request.json')['delivery'], directory.name)
+        result = unpack(directory, value['identity']['source_sha'])
     elif args.operation == 'publish':
         result = publish(args.run)
     else:
